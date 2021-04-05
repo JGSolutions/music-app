@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "music-app-5c927"
+  },
+  "targets": {
+    "music-app-5c927": {
+      "hosting": {
+        "music-app": [
+          "music-app-5c927"
+        ]
+      }
+    }
   }
 }
