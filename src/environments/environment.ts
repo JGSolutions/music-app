@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  mixcloud: {
+    clientId: 'Fw4U6rr5W5f58r8HXz',
+    secretApi: 'k6RypyEF3TUFUqQtbrcjBD3W7r4vJkgD'
+  }
 };
 
 /*
