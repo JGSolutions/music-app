@@ -7,11 +7,13 @@
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
-    ]
+    ],
+    "source": "functions"
   },
   "hosting": [
     {
-      "public": "dist",
+      "target": "music-restapi",
+      "public": "public",
       "ignore": [
         "firebase.json",
         "**/.*",
@@ -19,8 +21,8 @@
       ],
       "rewrites": [
         {
-          "source": "**",
-          "destination": "/index.html"
+          "source": "/api/**",
+          "function": "api"
         }
       ]
     },

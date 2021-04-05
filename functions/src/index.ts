@@ -13,13 +13,11 @@ main.use("/api", app);
 main.use(cors({origin: true}));
 main.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 
-export const api = functions.runWith({memory: "2GB", timeoutSeconds: 540})
-    .https.onRequest(main);
+// eslint-disable-next-line max-len
+export const api = functions.runWith({memory: "2GB", timeoutSeconds: 540}).https.onRequest(main);
+app.get("/feed", feed);
 
 export const helloWorld = functions.https.onRequest((request, response) => {
   functions.logger.info("Hello logs!", {structuredData: true});
   response.send("Hello from Firebase!");
 });
-
-app.get("/feed", feed);
-
