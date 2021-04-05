@@ -7,6 +7,7 @@ import { isEmpty } from "lodash";
 import { filter, map, switchMap } from 'rxjs/operators';
 import { MixCloudService } from './services/mixcloud.services';
 import { MusicConnectedService } from './services/music-connected.services';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -25,6 +26,11 @@ export class AppComponent implements OnInit {
       environment.mixcloud.secretApi,
       "http://localhost:4200"
     );
+
+    // auth.config(
+    //   "21832d295e3463208d2ed0371ae08791",
+    //   "http://mustagheesbutt.github.io/SC_API/callback.html"
+    // );
   }
 
   ngOnInit() {
@@ -47,8 +53,4 @@ export class AppComponent implements OnInit {
     this.document.location.href = authorization.authorizeUrl();
   }
 
-  public connectToSoundcloud(): void {
-
-
-  }
 }
