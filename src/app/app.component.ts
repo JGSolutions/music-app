@@ -4,8 +4,8 @@ import { authorization } from '../../functions/sdk/mixcloud.sdk';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Params } from '@angular/router';
 import { isEmpty } from "lodash";
-import { filter, map, switchMap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { filter, switchMap } from 'rxjs/operators';
+import { MixCloudService } from './services/mixcloud.services';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,7 +17,7 @@ export class AppComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
-    private http: HttpClient) {
+    private mixcloudService: MixCloudService) {
     authorization.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,
@@ -25,15 +25,12 @@ export class AppComponent implements OnInit {
     );
   }
 
-
   ngOnInit() {
     this.route.queryParams.pipe(
       filter((params: Params) => !isEmpty(params)),
       switchMap((params: Params) => {
         const url = authorization.createAccessToken(params.code);
-        return this.http.get(url).pipe(
-            map((res: any) => res.access_token
-        ));
+        return this.mixcloudService.getAccessCode(url);
       })
     ).subscribe((access_token: string) => {
         console.log(access_token);

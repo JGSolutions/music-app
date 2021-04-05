@@ -7,6 +7,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularMaterialModule } from 'src/angular-material.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MixCloudService } from './services/mixcloud.services';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [],
+  providers: [MixCloudService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
