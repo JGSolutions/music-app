@@ -11,6 +11,7 @@ import { MixCloudService } from './services/mixcloud.services';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { MusicConnectedService } from './services/music-connected.services';
 @NgModule({
   declarations: [
     AppComponent
@@ -31,7 +32,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [MixCloudService],
+  providers: [MixCloudService, MusicConnectedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

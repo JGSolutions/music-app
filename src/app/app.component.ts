@@ -4,8 +4,9 @@ import { authorization } from '../../functions/sdk/mixcloud.sdk';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Params } from '@angular/router';
 import { isEmpty } from "lodash";
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { MixCloudService } from './services/mixcloud.services';
+import { MusicConnectedService } from './services/music-connected.services';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
+    private connectedServices: MusicConnectedService,
     private mixcloudService: MixCloudService) {
     authorization.config(
       environment.mixcloud.clientId,
@@ -31,10 +33,14 @@ export class AppComponent implements OnInit {
       switchMap((params: Params) => {
         const url = authorization.createAccessToken(params.code);
         return this.mixcloudService.getAccessCode(url);
+      }),
+      map((code: string) => {
+        return this.connectedServices.connectService({
+          token: code,
+          username: 'jerrygag'
+        }, 'mixcloud');
       })
-    ).subscribe((access_token: string) => {
-        console.log(access_token);
-    });
+    ).subscribe();
   }
 
   public connectToMixcloud(): void {
