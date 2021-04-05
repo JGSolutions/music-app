@@ -4,5 +4,5 @@ import {Response, Request} from "express";
 // const db = adminFirebase.firestore();
 
 export const feed = (request: Request, response: Response): void => {
-  response.status(200).send(null);
+  response.status(200).send("dlldull");
 };
