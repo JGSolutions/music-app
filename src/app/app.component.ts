@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { authorization } from '../../functions/sdk/mixcloud.sdk';
+import { MixcloudAuthorization } from '../../functions/sdk/mixcloud.sdk';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Params } from '@angular/router';
 import { isEmpty } from "lodash";
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private connectedServices: MusicConnectedService,
     private mixcloudService: MixCloudService) {
-    authorization.config(
+    MixcloudAuthorization.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,
       "http://localhost:4200"
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
     this.route.queryParams.pipe(
       filter((params: Params) => !isEmpty(params)),
       switchMap((params: Params) => {
-        const url = authorization.createAccessToken(params.code);
+        const url = MixcloudAuthorization.createAccessToken(params.code);
         return this.mixcloudService.getAccessCode(url);
       }),
       map((code: string) => {
@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
   }
 
   public connectToMixcloud(): void {
-    this.document.location.href = authorization.authorizeUrl();
+    this.document.location.href = MixcloudAuthorization.authorizeUrl();
   }
 
 }
