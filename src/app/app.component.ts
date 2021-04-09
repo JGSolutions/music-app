@@ -5,7 +5,7 @@ import { SpotifyAuthorization } from '../../functions/sdk/spotify.sdk';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Params } from '@angular/router';
 import { isEmpty } from "lodash";
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { MixCloudService } from './services/mixcloud.services';
 import { MusicConnectedService } from './services/music-connected.services';
 
@@ -56,7 +56,6 @@ export class AppComponent implements OnInit {
     ).subscribe((code: string) => {
       this.connectedServices.connectService({
         token: code,
-        username: 'jerrygag'
       }, 'mixcloud');
     });
   }

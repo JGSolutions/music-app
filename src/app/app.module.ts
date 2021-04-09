@@ -13,9 +13,13 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { MusicConnectedService } from './services/music-connected.services';
 import { ApiService } from './services/api.service';
+import { SpotifyCallbackComponent } from './spotify-callback/spotify-callback.component';
+import { MixcloudCallbackComponent } from './mixcloud-callback/mixcloud-callback.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SpotifyCallbackComponent,
+    MixcloudCallbackComponent
   ],
   imports: [
     BrowserModule,
