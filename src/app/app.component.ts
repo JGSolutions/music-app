@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { MixcloudAuthorization } from '../../functions/sdk/mixcloud.sdk';
+import { SpotifyAuthorization } from '../../functions/sdk/spotify.sdk';
 import { environment } from '../environments/environment';
 import { ActivatedRoute, Params } from '@angular/router';
 import { isEmpty } from "lodash";
@@ -21,9 +22,15 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private connectedServices: MusicConnectedService,
     private mixcloudService: MixCloudService) {
+
     MixcloudAuthorization.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,
+      "http://localhost:4200"
+    );
+
+    SpotifyAuthorization.config(
+      environment.spotify.clientId,
       "http://localhost:4200"
     );
 
@@ -40,17 +47,25 @@ export class AppComponent implements OnInit {
         const url = MixcloudAuthorization.createAccessToken(params.code);
         return this.mixcloudService.getAccessCode(url);
       }),
-      map((code: string) => {
-        return this.connectedServices.connectService({
-          token: code,
-          username: 'jerrygag'
-        }, 'mixcloud');
-      })
-    ).subscribe();
+      // map((code: string) => {
+      //   return this.connectedServices.connectService({
+      //     token: code,
+      //     username: 'jerrygag'
+      //   }, 'mixcloud');
+      // })
+    ).subscribe((code: string) => {
+      this.connectedServices.connectService({
+        token: code,
+        username: 'jerrygag'
+      }, 'mixcloud');
+    });
   }
 
   public connectToMixcloud(): void {
     this.document.location.href = MixcloudAuthorization.authorizeUrl();
   }
 
+  public connectToSpotify(): void {
+    this.document.location.href = SpotifyAuthorization.authorizeUrl();
+  }
 }
