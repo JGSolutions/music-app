@@ -3,6 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'platform-settings',
+    loadChildren: () => import('./platform-settings/platform-settings.module').then( m => m.PlatformSettingsModule)
+  },
+  {
     path: 'mixcloud-callback',
     loadChildren: () => import('./mixcloud-callback/mixcloud-callback.module').then( m => m.MixcloudCallbackModule)
   },

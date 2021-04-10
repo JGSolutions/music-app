@@ -6,7 +6,7 @@ import { MixcloudCallbackComponent } from './mixcloud-callback.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [MixcloudCallbackComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([

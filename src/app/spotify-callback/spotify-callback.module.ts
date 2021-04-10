@@ -5,7 +5,7 @@ import { SpotifyCallbackComponent } from './spotify-callback.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [SpotifyCallbackComponent],
   imports: [
     CommonModule,
     RouterModule.forChild([

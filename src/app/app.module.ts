@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { AngularMaterialModule } from 'src/angular-material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MixCloudService } from './services/mixcloud.services';
 import { AngularFireModule } from '@angular/fire';
@@ -13,19 +12,14 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { MusicConnectedService } from './services/music-connected.services';
 import { ApiService } from './services/api.service';
-import { SpotifyCallbackComponent } from './spotify-callback/spotify-callback.component';
-import { MixcloudCallbackComponent } from './mixcloud-callback/mixcloud-callback.component';
 @NgModule({
   declarations: [
-    AppComponent,
-    SpotifyCallbackComponent,
-    MixcloudCallbackComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    AngularMaterialModule,
     HttpClientModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase),
