@@ -22,7 +22,7 @@ export const MixcloudAuthorization = {
     return `${this.mixcloudDomain}/oauth/authorize${q}`;
   },
 
-  createAccessToken(oAuthCode: string): string {
+  createAccessTokenUrl(oAuthCode: string): string {
     if (!this.clientId || !this.secretApi) {
       throwError("Api keys are not provided!");
     }

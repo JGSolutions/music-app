@@ -3,8 +3,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 
 @Injectable()
 export class MusicConnectedService {
-    // private redirectUri: String = `${window.location.origin}/services?type=mixcloud`;
-
   constructor(private afs: AngularFirestore) {}
 
   public connectService(data: any, type: string) {

@@ -1,11 +1,8 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify.sdk';
 import { environment } from 'src/environments/environment';
-import { MixCloudService } from '../services/mixcloud.services';
-import { MusicConnectedService } from '../services/music-connected.services';
 
 @Component({
   selector: 'app-platform-settings',
@@ -15,15 +12,12 @@ import { MusicConnectedService } from '../services/music-connected.services';
 export class PlatformSettingsComponent implements OnInit {
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private route: ActivatedRoute,
-    private connectedServices: MusicConnectedService,
-    private mixcloudService: MixCloudService) {
+    @Inject(DOCUMENT) private document: Document) {
 
     MixcloudAuthorization.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,
-      "http://localhost:4200"
+      "http://localhost:4200/mixcloud-callback"
     );
 
     SpotifyAuthorization.config(

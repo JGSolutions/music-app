@@ -5,8 +5,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class MixCloudService {
-    // private redirectUri: String = `${window.location.origin}/services?type=mixcloud`;
-
     constructor(private http: HttpClient) {}
 
     public getAccessCode(url: string): Observable<string> {
