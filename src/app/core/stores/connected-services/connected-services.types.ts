@@ -1,10 +1,14 @@
-import { String } from "lodash";
-
-export interface ConnectedServicesModel {
-  services: Record<string, ConnectedToken>;
-  loaded: boolean;
+export interface IConnectedServicesState {
+  services: ConnectedServices;
+  loading: boolean;
 }
 
+export const connectedServicesStateDefault: IConnectedServicesState = {
+  services: {},
+  loading: false
+};
+
+export type ConnectedServices = Record<string, ConnectedToken>;
 export interface ConnectedToken {
   token: string;
 }

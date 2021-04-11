@@ -3,14 +3,11 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { MusicConnectedService } from 'src/app/services/music-connected.services';
 import { ConnectedServicesAction } from './connected-services.actions';
-import { ConnectedServicesModel } from './connected-services.types';
+import { connectedServicesStateDefault, IConnectedServicesState, IConnectedServicesTypes } from './connected-services.types';
 
-@State<ConnectedServicesModel>({
+@State<IConnectedServicesState>({
   name: 'connectedServices',
-  defaults: {
-    services: {},
-    loaded: false,
-  },
+  defaults: connectedServicesStateDefault,
 })
 @Injectable()
 export class ConnectedServicesState {
@@ -18,19 +15,23 @@ export class ConnectedServicesState {
   }
 
   @Selector()
-  static services(state: ConnectedServicesModel) {
+  static services(state: IConnectedServicesState) {
     return state.services;
   }
 
+  @Selector()
+  static loading(state: IConnectedServicesState) {
+    return state.loading;
+  }
+
   @Action(ConnectedServicesAction)
-  setUser(ctx: StateContext<ConnectedServicesModel>, { uid }: ConnectedServicesAction) {
+  _connectedServices(ctx: StateContext<IConnectedServicesState>, { uid }: ConnectedServicesAction) {
     return this.connectedServices.connectedServices(uid).pipe(
-      tap((services) => {
+      tap((data) => {
         ctx.patchState({
-          services,
+          services: data,
         });
       })
     )
-
   }
 }

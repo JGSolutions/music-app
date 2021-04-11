@@ -1,3 +1,4 @@
-<button mat-button (click)="connectToMixcloud()">Connect Mix cloud</button>
+<button mat-button (click)="connectToMixcloud()" *ngIf="!(isMixcloudConnected$ | async)">Connect Mix cloud</button>
+<button mat-button *ngIf="(isMixcloudConnected$ | async)">Disconnect Mix cloud</button>
 <!-- <button mat-button (click)="connectToSoundcloud()">Connect Soundcoud</button> -->
 <button mat-button (click)="connectToSpotify()">Connect Spotify</button>

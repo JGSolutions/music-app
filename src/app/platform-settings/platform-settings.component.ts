@@ -1,8 +1,13 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
+import { Select } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify.sdk';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
+import { ConnectedServices, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 
 @Component({
   selector: 'app-platform-settings',
@@ -10,6 +15,9 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./platform-settings.component.scss']
 })
 export class PlatformSettingsComponent implements OnInit {
+  @Select(ConnectedServicesState.services) connectedServices$!: Observable<ConnectedServices>;
+
+  public isMixcloudConnected$: Observable<any> | undefined;
 
   constructor(
     @Inject(DOCUMENT) private document: Document) {
@@ -20,6 +28,10 @@ export class PlatformSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isMixcloudConnected$ = this.connectedServices$.pipe(
+      map((services) => services[IConnectedServicesTypes.mixcloud]),
+      shareReplay(1)
+    )
   }
 
   public connectToMixcloud(): void {
