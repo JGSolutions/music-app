@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import firebase from 'firebase';
+import 'firebase/firestore';
+import { IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 
 @Injectable()
 export class MusicConnectedService {
@@ -17,5 +20,11 @@ export class MusicConnectedService {
     return this.afs.collection('connectedServices').doc(uid).snapshotChanges().pipe(
       map((sets: any) => sets.payload.data()),
     );
+  }
+
+  public disonnectService(uid: string | undefined, type: IConnectedServicesTypes) {
+    this.afs.collection('connectedServices').doc(uid).update({
+      [type]: firebase.firestore.FieldValue.delete()
+    });
   }
 }

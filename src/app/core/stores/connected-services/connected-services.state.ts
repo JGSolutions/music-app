@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { MusicConnectedService } from 'src/app/services/music-connected.services';
-import { ConnectedServicesAction } from './connected-services.actions';
+import { ConnectedServicesAction, DisconnectServiceAction } from './connected-services.actions';
 import { connectedServicesStateDefault, IConnectedServicesState, IConnectedServicesTypes } from './connected-services.types';
 
 @State<IConnectedServicesState>({
@@ -33,5 +33,10 @@ export class ConnectedServicesState {
         });
       })
     )
+  }
+
+  @Action(DisconnectServiceAction)
+  _disconnectServices(ctx: StateContext<IConnectedServicesState>, { uid, type }: DisconnectServiceAction) {
+    return this.connectedServices.disonnectService(uid, type);
   }
 }
