@@ -12,6 +12,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { MusicConnectedService } from './services/music-connected.services';
 import { ApiService } from './services/api.service';
 import { NgxsModule } from '@ngxs/store';
+import { UserState } from './core/stores/user/user.state';
 @NgModule({
   declarations: [
     AppComponent
@@ -28,7 +29,7 @@ import { NgxsModule } from '@ngxs/store';
       enabled: environment.production,
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    NgxsModule.forRoot([], {
+    NgxsModule.forRoot([UserState], {
       developmentMode: !environment.production
     })
   ],

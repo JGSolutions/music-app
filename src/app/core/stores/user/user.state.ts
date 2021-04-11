@@ -56,7 +56,7 @@ export class UserState {
       if (result.credential) {
         setTimeout(() => this.updateUserAccount(result), 100);
         sessionStorage.clear();
-        // this.router.navigate(['/', 'dashboard']);
+        this.router.navigate(['/', 'platform-settings']);
       }
     });
 
