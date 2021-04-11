@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { isEmpty } from 'lodash';
-import { filter, switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { MixCloudService } from '../services/mixcloud.services';
 import { MusicConnectedService } from '../services/music-connected.services';
 
 @Component({
@@ -13,10 +13,10 @@ import { MusicConnectedService } from '../services/music-connected.services';
   styleUrls: ['./mixcloud-callback.component.scss']
 })
 export class MixcloudCallbackComponent implements OnInit {
+  private destroy$ = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
-    private mixcloudService: MixCloudService,
     private connectedServices: MusicConnectedService) {
       MixcloudAuthorization.config(
         environment.mixcloud.clientId,
@@ -26,18 +26,19 @@ export class MixcloudCallbackComponent implements OnInit {
     }
 
   ngOnInit(): void {
-
     this.route.queryParams.pipe(
       filter((params: Params) => !isEmpty(params)),
-      switchMap((params: Params) => {
-        const url = MixcloudAuthorization.createAccessTokenUrl(params.code);
-        return this.mixcloudService.getAccessCode(url);
-      })
-    ).subscribe((code: string) => {
+      takeUntil(this.destroy$)
+    ).subscribe(async (params: any) => {
+      const res: any = await MixcloudAuthorization.createAccessTokenUrl(params.code);
       this.connectedServices.connectService({
-        token: code,
+        token: res.data.access_token,
       }, 'mixcloud');
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
   }
 
 }

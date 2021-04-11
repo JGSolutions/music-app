@@ -22,14 +22,14 @@ export const MixcloudAuthorization = {
     return `${this.mixcloudDomain}/oauth/authorize${q}`;
   },
 
-  createAccessTokenUrl(oAuthCode: string): string {
+  async createAccessTokenUrl(oAuthCode: string): Promise<any> {
     if (!this.clientId || !this.secretApi) {
       throwError("Api keys are not provided!");
     }
 
-    const redirectUrl = `${this.redirectUri}`;
     // eslint-disable-next-line max-len
-    return `${this.mixcloudDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${redirectUrl}&client_secret=${this.secretApi}&code=${oAuthCode}`;
+    const url = `${this.mixcloudDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&client_secret=${this.secretApi}&code=${oAuthCode}`;
+    return await axios.get(url);
   },
 
 };
@@ -43,7 +43,6 @@ export const MixcloudSDK = {
   async initialize(accessToken: string): Promise<void> {
     this.queryParamAccessToken = `access_token=${accessToken}`;
     this.accessToken = accessToken;
-    // this.username = await this.getUsername();
   },
 
   async getUsername(): Promise<string> {

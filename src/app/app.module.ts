@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
-import { MixCloudService } from './services/mixcloud.services';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -31,7 +30,7 @@ import { ApiService } from './services/api.service';
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [MixCloudService, MusicConnectedService, ApiService],
+  providers: [MusicConnectedService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
