@@ -11,6 +11,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { MusicConnectedService } from './services/music-connected.services';
 import { ApiService } from './services/api.service';
+import { NgxsModule } from '@ngxs/store';
 @NgModule({
   declarations: [
     AppComponent
@@ -25,9 +26,10 @@ import { ApiService } from './services/api.service';
     AngularFireAuthModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
-      // Register the ServiceWorker as soon as the app is stable
-      // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
+    }),
+    NgxsModule.forRoot([], {
+      developmentMode: !environment.production
     })
   ],
   providers: [MusicConnectedService, ApiService],
