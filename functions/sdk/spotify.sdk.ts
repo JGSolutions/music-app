@@ -8,8 +8,9 @@ export const SpotifyAuthorization = {
   spotifyDomain: "https://accounts.spotify.com",
   redirectUri: "",
 
-  config(clientId: string, redirectUri: string): void {
+  config(clientId: string, secretApi: string, redirectUri: string): void {
     this.clientId = clientId;
+    this.secretApi = secretApi;
     this.redirectUri = redirectUri;
   },
 
@@ -22,15 +23,24 @@ export const SpotifyAuthorization = {
     return `${this.spotifyDomain}/authorize${q}`;
   },
 
-  // createAccessToken(oAuthCode: string): string {
-  //   if (!this.clientId || !this.secretApi) {
-  //     throwError("Api keys are not provided!");
-  //   }
+  async createAccessTokenUrl(oAuthCode: string): Promise<unknown> {
+    if (!this.clientId) {
+      throwError("Api keys are not provided!");
+    }
 
-  //   const redirectUrl = `${this.redirectUri}`;
-  //   // eslint-disable-next-line max-len
-  // eslint-disable-next-line max-len
-  //   return `${this.spotifyDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${redirectUrl}&client_secret=${this.secretApi}&code=${oAuthCode}`;
-  // },
+    // eslint-disable-next-line max-len
+    const url = `${this.spotifyDomain}/api/token`;
+
+    const postHeaders = {
+      headers: {
+        "Authorization": "Basic " + btoa(this.clientId + ":" + this.secretApi),
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    // eslint-disable-next-line max-len
+    const params = "grant_type=authorization_code&code=" + oAuthCode + "&redirect_uri=" + this.redirectUri;
+    return await axios.post(url, params, postHeaders);
+  },
 
 };
