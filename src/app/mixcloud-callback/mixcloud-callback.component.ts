@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Select } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
-import { isEmpty } from 'lodash';
-import { Subject } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { UserState } from '../core/stores/user/user.state';
+import { IUserType } from '../core/stores/user/user.types';
 import { MusicConnectedService } from '../services/music-connected.services';
+import { IConnectedServicesTypes } from '../typings/connected-services-types';
 
 @Component({
   selector: 'app-mixcloud-callback',
@@ -13,27 +16,32 @@ import { MusicConnectedService } from '../services/music-connected.services';
   styleUrls: ['./mixcloud-callback.component.scss']
 })
 export class MixcloudCallbackComponent implements OnInit {
+  @Select(UserState.userState) user$: Observable<IUserType> | undefined;
+
   private destroy$ = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
     private connectedServices: MusicConnectedService) {
-      MixcloudAuthorization.config(
-        environment.mixcloud.clientId,
-        environment.mixcloud.secretApi,
-        "http://localhost:4200/mixcloud-callback"
-      );
     }
 
   ngOnInit(): void {
-    this.route.queryParams.pipe(
-      filter((params: Params) => !isEmpty(params)),
+
+    MixcloudAuthorization.config(
+      environment.mixcloud.clientId,
+      environment.mixcloud.secretApi,
+      "http://localhost:4200/mixcloud-callback"
+    );
+
+    combineLatest([this.user$, this.route.queryParams]).pipe(
+      filter(([user]) => user != null),
       takeUntil(this.destroy$)
-    ).subscribe(async (params: any) => {
+    ).subscribe(async (data: any) => {
+      const [user, params] = data;
       const res: any = await MixcloudAuthorization.createAccessTokenUrl(params.code);
-      this.connectedServices.connectService({
+      this.connectedServices.connectService(user.uid, {
         token: res.data.access_token,
-      }, 'mixcloud');
+      }, IConnectedServicesTypes.mixcloud);
     });
   }
 

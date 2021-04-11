@@ -1,11 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Select } from '@ngxs/store';
 import { SpotifyAuthorization } from 'functions/sdk/spotify.sdk';
-import { isEmpty } from 'lodash';
-import { Subject } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { UserState } from '../core/stores/user/user.state';
+import { IUserType } from '../core/stores/user/user.types';
 import { MusicConnectedService } from '../services/music-connected.services';
+import { IConnectedServicesTypes } from '../typings/connected-services-types';
 
 @Component({
   selector: 'app-spotify-callback',
@@ -13,6 +16,8 @@ import { MusicConnectedService } from '../services/music-connected.services';
   styleUrls: ['./spotify-callback.component.scss']
 })
 export class SpotifyCallbackComponent implements OnInit, OnDestroy {
+  @Select(UserState.userState) user$: Observable<IUserType> | undefined;
+
   private destroy$ = new Subject<boolean>();
 
   constructor(
@@ -26,15 +31,16 @@ export class SpotifyCallbackComponent implements OnInit, OnDestroy {
       "http://localhost:4200/spotify-callback",
     );
 
-    this.route.queryParams.pipe(
-      filter((params: Params) => !isEmpty(params)),
+    combineLatest([this.user$, this.route.queryParams]).pipe(
+      filter(([user]) => user != null),
       takeUntil(this.destroy$)
-    ).subscribe(async(params: any) => {
+    ).subscribe(async(data: any) => {
+      const [user, params] = data;
       const res: any = await SpotifyAuthorization.createAccessTokenUrl(params.code);
 
-      this.connectedServices.connectService({
+      this.connectedServices.connectService(user.uid, {
         token: res.data.access_token,
-      }, 'spotify');
+      }, IConnectedServicesTypes.spotify);
     });
   }
 

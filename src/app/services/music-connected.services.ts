@@ -5,9 +5,9 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class MusicConnectedService {
   constructor(private afs: AngularFirestore) {}
 
-  public connectService(data: any, type: string) {
-    this.afs.collection('connectedServices').add({
+  public connectService(uid: string, data: any, type: string) {
+    this.afs.collection('connectedServices').doc(uid).set({
       [type]: data
-    });
+    }, { merge: true });
   }
 }
