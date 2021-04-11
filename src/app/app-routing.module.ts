@@ -3,6 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginModule)
+  },
+  {
     path: 'platform-settings',
     loadChildren: () => import('./platform-settings/platform-settings.module').then( m => m.PlatformSettingsModule)
   },

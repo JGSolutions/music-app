@@ -4,8 +4,6 @@ import { RouterModule } from '@angular/router';
 import { MixcloudCallbackComponent } from './mixcloud-callback.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
 
-
-
 @NgModule({
   declarations: [MixcloudCallbackComponent],
   imports: [
