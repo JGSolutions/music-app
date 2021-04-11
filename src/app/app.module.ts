@@ -13,6 +13,7 @@ import { MusicConnectedService } from './services/music-connected.services';
 import { ApiService } from './services/api.service';
 import { NgxsModule } from '@ngxs/store';
 import { UserState } from './core/stores/user/user.state';
+import { ConnectedServicesState } from './core/stores/connected-services/connected-services.state';
 @NgModule({
   declarations: [
     AppComponent
@@ -29,7 +30,7 @@ import { UserState } from './core/stores/user/user.state';
       enabled: environment.production,
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    NgxsModule.forRoot([UserState], {
+    NgxsModule.forRoot([UserState, ConnectedServicesState], {
       developmentMode: !environment.production
     })
   ],

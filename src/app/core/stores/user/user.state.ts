@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IUserType, UserStateModel } from './user.types';
 import { LoginWithGoogleAction, LogoutAction, SetUserAction } from './user.actions';
+import { ConnectedServicesAction } from '../connected-services/connected-services.actions';
 
 @State<UserStateModel>({
   name: 'user',
@@ -63,6 +64,7 @@ export class UserState {
     this.angularFireAuth.user.pipe(
       switchMap(user => {
         if (user) {
+          this.store.dispatch(new ConnectedServicesAction(user.uid));
           return this.afs.doc<IUserType>(`users/${user.uid}`).valueChanges();
         } else {
           return of(null);

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { MusicConnectedService } from '../services/music-connected.services';
-import { IConnectedServicesTypes } from '../typings/connected-services-types';
 
 @Component({
   selector: 'app-mixcloud-callback',
@@ -34,7 +34,7 @@ export class MixcloudCallbackComponent implements OnInit {
     );
 
     combineLatest([this.user$, this.route.queryParams]).pipe(
-      filter(([user]) => user != null),
+      filter(([user]) => user !== null),
       takeUntil(this.destroy$)
     ).subscribe(async (data: any) => {
       const [user, params] = data;
