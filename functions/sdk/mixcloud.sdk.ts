@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {throwError} from "rxjs";
 import axios from "axios";
 
@@ -46,7 +47,6 @@ export const MixcloudSDK = {
   },
 
   async getUsername(): Promise<string> {
-    // eslint-disable-next-line max-len
     const url = `${this.mixcloudApiDomain}/me/?${this.queryParamAccessToken}`;
     const res: any = await axios(url);
 
@@ -54,8 +54,42 @@ export const MixcloudSDK = {
   },
 
   async feed(): Promise<any> {
-    // eslint-disable-next-line max-len
     const url = `${this.mixcloudApiDomain}/me/feed/?${this.queryParamAccessToken}&limit=1000`;
+    const res: any = axios(url);
+    const {data} = await res;
+    return data.data;
+  },
+
+  async following(): Promise<any> {
+    const url = `${this.mixcloudApiDomain}/me/following/?${this.queryParamAccessToken}`;
+    const res: any = axios(url);
+    const {data} = await res;
+    return data.data;
+  },
+
+  async artistSongs(artist: string): Promise<any> {
+    const url = `${this.mixcloudApiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}`;
+    const res: any = axios(url);
+    const {data} = await res;
+    return data.data;
+  },
+
+  async playlists(): Promise<any> {
+    const url = `${this.mixcloudApiDomain}/me/playlists/?${this.queryParamAccessToken}`;
+    const res: any = axios(url);
+    const {data} = await res;
+    return data.data;
+  },
+
+  async playlistSongs(playlistName: string): Promise<any> {
+    const url = `${this.mixcloudApiDomain}/me/playlists/${playlistName}/cloudcasts/?${this.queryParamAccessToken}`;
+    const res: any = axios(url);
+    const {data} = await res;
+    return data.data;
+  },
+
+  async playlistDetails(playlistName: string): Promise<any> {
+    const url = `${this.mixcloudApiDomain}/me/playlists/${playlistName}/?${this.queryParamAccessToken}`;
     const res: any = axios(url);
     const {data} = await res;
     return data.data;

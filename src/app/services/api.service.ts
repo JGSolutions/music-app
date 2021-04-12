@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 export class ApiService {
     private uid: String = ``;
     // private domainApi = 'https://us-central1-musiquesuite-jg.cloudfunctions.net';
-    private domainApi = 'http://localhost:5001';
+    private domainApi = 'http://localhost:5000/api';
 
     constructor(private http: HttpClient) {}
 
@@ -15,22 +15,28 @@ export class ApiService {
     // }
 
     public feed() {
-        const url = `${this.domainApi}/feed`;
-        return this.http.post(url, {uid: this.uid}).pipe(
-            map((res: any) => {
-                return res;
-            }
-        ));
+      const url = `${this.domainApi}/feed`;
+      return this.http.post(url, {uid: this.uid}).pipe(
+          map((res: any) => {
+              return res;
+          }
+      ));
     }
 
-    // username() {
-    //     const url = `${this.domainApi}/username`;
-    //     return this.http.post(url, {uid: this.uid}).pipe(
-    //         map((res: any) => {
-    //             return res;
-    //         }
-    //     ));
-    // }
+    public artists(uid: string | undefined) {
+      const url = `${this.domainApi}/artists`;
+      const postHeaders = {
+        headers: {
+          "Authorization": btoa(uid as string)
+        },
+      };
+
+      return this.http.get(url, postHeaders).pipe(
+          map((res: any) => {
+              return res;
+          }
+      ));
+    }
 
     // audioStream(key) {
     //     const httpOptions = {

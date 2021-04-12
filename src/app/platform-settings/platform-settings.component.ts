@@ -4,13 +4,14 @@ import { Select, Store } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify.sdk';
 import { Observable } from 'rxjs';
-import { map, shareReplay, take } from 'rxjs/operators';
+import { filter, map, shareReplay, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { DisconnectServiceAction } from '../core/stores/connected-services/connected-services.actions';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServices, ConnectedToken, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-platform-settings',
@@ -25,7 +26,9 @@ export class PlatformSettingsComponent implements OnInit {
   public isSpotifyConnected$: Observable<ConnectedToken> | undefined;
   public connectedServices = IConnectedServicesTypes;
   constructor(
-    @Inject(DOCUMENT) private document: Document, private store: Store) {
+    @Inject(DOCUMENT) private document: Document,
+    private store: Store,
+    private apiService: ApiService) {
     // auth.config(
     //   "21832d295e3463208d2ed0371ae08791",
     //   "http://mustagheesbutt.github.io/SC_API/callback.html"
@@ -33,6 +36,12 @@ export class PlatformSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.user$.pipe(
+    //   filter(user => user !== null),
+    // ).subscribe((user: IUserType) => {
+    //   this.apiService.artists(user.uid).subscribe()
+    // })
+
     this.isMixcloudConnected$ = this.connectedServices$.pipe(
       map((services) => services[IConnectedServicesTypes.mixcloud]),
       shareReplay(1)
@@ -69,6 +78,6 @@ export class PlatformSettingsComponent implements OnInit {
       take(1)
     ).subscribe((user: IUserType) => {
       this.store.dispatch(new DisconnectServiceAction(user.uid, type))
-    })
+    });
   }
 }
