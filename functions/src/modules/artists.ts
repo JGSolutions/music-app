@@ -9,16 +9,19 @@ const db = adminFirebase.firestore();
 
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const artist = async (request: Request, response: Response) => {
-  // console.log(request);
+export const artists = async (request: Request, response: Response) => {
   const decodedUID = Buffer.from(request.headers["authorization"] as string, "base64").toString("ascii");
-  const connectedServices = await db.collection("connectedServices").doc(decodedUID).get();
-  const g = connectedServices.data() as FirebaseFirestore.DocumentData;
+  if (!decodedUID) {
+    response.status(401).send("Not authenticated");
+  }
+
+  const connectedServicesRef = await db.collection("connectedServices").doc(decodedUID).get();
+  const connectedServices = connectedServicesRef.data() as FirebaseFirestore.DocumentData;
   const platformKeys = keys(connectedServices.data());
   let mixcloudPromiseData;
 
   platformKeys.forEach((key) => {
-    MixcloudSDK.initialize(g[key].token);
+    MixcloudSDK.initialize(connectedServices[key].token);
     mixcloudPromiseData = MixcloudSDK.following();
   });
 

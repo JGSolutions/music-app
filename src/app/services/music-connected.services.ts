@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import firebase from 'firebase';
-import 'firebase/firestore';
+import firebase from 'firebase/app';
 import { IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 
 @Injectable()

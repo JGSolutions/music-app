@@ -3,7 +3,7 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as cors from "cors";
 import {feed} from "./modules/feed";
-import {artist} from "./modules/artist";
+import {artists} from "./modules/artists";
 
 const app = express();
 const main = express();
@@ -17,7 +17,7 @@ main.use(bodyParser.urlencoded({extended: true})); // support encoded bodies
 // eslint-disable-next-line max-len
 export const api = functions.runWith({memory: "2GB", timeoutSeconds: 540}).https.onRequest(main);
 app.get("/feed", feed);
-app.get("/artists", artist);
+app.get("/artists", artists);
 
 export const helloWorld = functions.https.onRequest((request, response) => {
   functions.logger.info("Hello logs!", {structuredData: true});

@@ -1,27 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ApiService {
-    private uid: String = ``;
-    // private domainApi = 'https://us-central1-musiquesuite-jg.cloudfunctions.net';
     private domainApi = 'http://localhost:5000/api';
 
     constructor(private http: HttpClient) {}
-
-    // config(uid) {
-    //     this.uid = uid;
-    // }
-
-    public feed() {
-      const url = `${this.domainApi}/feed`;
-      return this.http.post(url, {uid: this.uid}).pipe(
-          map((res: any) => {
-              return res;
-          }
-      ));
-    }
 
     public artists(uid: string | undefined) {
       const url = `${this.domainApi}/artists`;
@@ -32,10 +17,8 @@ export class ApiService {
       };
 
       return this.http.get(url, postHeaders).pipe(
-          map((res: any) => {
-              return res;
-          }
-      ));
+        map((res: any) => res)
+      );
     }
 
     // audioStream(key) {
