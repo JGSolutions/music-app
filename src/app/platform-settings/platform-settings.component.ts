@@ -36,11 +36,11 @@ export class PlatformSettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.user$.pipe(
-    //   filter(user => user !== null),
-    // ).subscribe((user: IUserType) => {
-    //   this.apiService.artists(user.uid).subscribe()
-    // })
+    this.user$.pipe(
+      filter(user => user !== null),
+    ).subscribe((user: IUserType) => {
+      this.apiService.artists(user.uid).subscribe()
+    })
 
     this.isMixcloudConnected$ = this.connectedServices$.pipe(
       map((services) => services[IConnectedServicesTypes.mixcloud]),

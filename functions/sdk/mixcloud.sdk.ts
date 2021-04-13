@@ -1,6 +1,27 @@
 /* eslint-disable max-len */
 import {throwError} from "rxjs";
 import axios from "axios";
+import {IArtists} from "../src/models/IArtists.types";
+import {IPlatformTypes} from "./IPlatforms.types";
+
+export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
+  return new Promise((resolve) => {
+    const data = artistApi.map((artist: any) => {
+      return {
+        name: artist.name,
+        id: artist.key,
+        username: artist.username,
+        platform: IPlatformTypes.mixcloud,
+        pictures: {
+          medium: artist.pictures.medium,
+          large: artist.pictures.large,
+          exLarge: artist.pictures.extra_large,
+        },
+      };
+    });
+    resolve(data);
+  });
+};
 
 export const MixcloudAuthorization = {
   url: "",
@@ -60,11 +81,11 @@ export const MixcloudSDK = {
     return data.data;
   },
 
-  async following(): Promise<any> {
+  async following(): Promise<IArtists[]> {
     const url = `${this.mixcloudApiDomain}/me/following/?${this.queryParamAccessToken}`;
-    const res: any = axios(url);
-    const {data} = await res;
-    return data.data;
+    const resp = await axios(url);
+
+    return await mixcloudArtistsData(resp.data.data);
   },
 
   async artistSongs(artist: string): Promise<any> {

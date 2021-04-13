@@ -19,7 +19,7 @@ export const api = functions.runWith({memory: "2GB", timeoutSeconds: 540}).https
 app.get("/feed", feed);
 app.get("/artists", artists);
 
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
-});
+// export const helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });
