@@ -62,7 +62,7 @@ export const MixcloudSDK = {
   queryParamAccessToken: "",
   mixcloudApiDomain: "https://api.mixcloud.com",
 
-  async initialize(accessToken: string): Promise<void> {
+  initialize(accessToken: string): void {
     this.queryParamAccessToken = `access_token=${accessToken}`;
     this.accessToken = accessToken;
   },
