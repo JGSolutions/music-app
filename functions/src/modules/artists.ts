@@ -2,7 +2,7 @@
 /* eslint-disable guard-for-in */
 import {Response, Request} from "express";
 import {adminFirebase} from "./fb";
-import {keys} from "lodash";
+import {flatten, keys, groupBy} from "lodash";
 import {MixcloudSDK} from "../../sdk/mixcloud.sdk";
 import {IPlatformTypes} from "../../sdk/IPlatforms.types";
 import {SpotifySDK} from "../../sdk/spotify.sdk";
@@ -28,15 +28,18 @@ export const artists = async (request: Request, response: Response) => {
         pData.push(MixcloudSDK.following());
         break;
       case IPlatformTypes.spotify:
-        console.log("ok spotify");
         SpotifySDK.initialize(connectedServices[key].token);
-        SpotifySDK.following("artist");
-        // pData.push(SpotifySDK.following());
+        pData.push(SpotifySDK.following("artist"));
         break;
     }
   });
 
   Promise.all(pData).then((promiseData: any[]) => {
-    response.status(200).send(promiseData[0]);
+    const allPlatformData: any[] = [];
+    promiseData.forEach((r) => {
+      allPlatformData.push(r);
+    });
+    const goupedArtists = groupBy(flatten(allPlatformData), "name");
+    response.status(200).send(goupedArtists);
   });
 };

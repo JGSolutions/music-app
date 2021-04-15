@@ -3,19 +3,18 @@ import axios from "axios";
 import {IArtists} from "../src/models/IArtists.types";
 import {IPlatformTypes} from "./IPlatforms.types";
 
-
-export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
+export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
     const data = artistApi.map((artist: any) => {
       return {
         name: artist.name,
-        id: artist.key,
-        username: artist.username,
+        id: artist.uri.split(":")[2],
+        username: artist.name.toLowerCase(),
         platform: IPlatformTypes.spotify,
         pictures: {
-          medium: artist.pictures.medium,
-          large: artist.pictures.large,
-          exLarge: artist.pictures.extra_large,
+          medium: artist.images[0].medium,
+          large: artist.images[1].large,
+          exLarge: artist.images[2].extra_large,
         },
       };
     });
@@ -75,8 +74,7 @@ export const SpotifySDK = {
     this.queryParamAccessToken = accessToken;
   },
 
-  async following(type: string) {
-    // eslint-disable-next-line max-len
+  async following(type: string): Promise<IArtists[]> {
     const url = `${this.apiDomain}/me/following?type=${type}`;
 
     const headers = {
@@ -84,12 +82,8 @@ export const SpotifySDK = {
         "Authorization": "Bearer " + this.queryParamAccessToken,
       },
     };
-    try {
-      const resp = await axios(url, headers);
-      console.log(resp.data);
-    } catch (error) {
-      console.log(error);
-    }
-    // return await mixcloudArtistsData(resp.data.data);
+
+    const resp = await axios(url, headers);
+    return await artistsData(resp.data.artists.items);
   },
 };
