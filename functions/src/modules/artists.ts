@@ -5,6 +5,7 @@ import {adminFirebase} from "./fb";
 import {keys} from "lodash";
 import {MixcloudSDK} from "../../sdk/mixcloud.sdk";
 import {IPlatformTypes} from "../../sdk/IPlatforms.types";
+import {SpotifySDK} from "../../sdk/spotify.sdk";
 
 const db = adminFirebase.firestore();
 
@@ -25,6 +26,12 @@ export const artists = async (request: Request, response: Response) => {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key].token);
         pData.push(MixcloudSDK.following());
+        break;
+      case IPlatformTypes.spotify:
+        console.log("ok spotify");
+        SpotifySDK.initialize(connectedServices[key].token);
+        SpotifySDK.following("artist");
+        // pData.push(SpotifySDK.following());
         break;
     }
   });
