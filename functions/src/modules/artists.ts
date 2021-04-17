@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
-/* eslint-disable guard-for-in */
 import {Response, Request} from "express";
 import {adminFirebase} from "./fb";
-import {flatten, groupBy, keys, reduce} from "lodash";
+import {flatten, keys, reduce} from "lodash";
 import {MixcloudSDK} from "../../sdk/mixcloud.sdk";
 import {IPlatformTypes} from "../../sdk/IPlatforms.types";
 import {SpotifySDK} from "../../sdk/spotify.sdk";
@@ -40,12 +39,12 @@ export const artists = async (request: Request, response: Response) => {
     promiseData.forEach((r) => {
       allPlatformData.push(r);
     });
-    const groupedArtists = groupBy(flatten(allPlatformData), (e) => e.name);
+    const flattenData = flatten(allPlatformData);
+    const allArtistsKeys = flattenData.map((data) => {
+      return data.id;
+    });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const allArtistsKeys = keys(groupedArtists);
-
-    const res = reduce(flatten(allPlatformData), (result: any, value: any) => {
+    const res = reduce(flattenData, (result: any, value: any) => {
       const artistKeys = keys(result);
 
       const matches = stringSimilarity.findBestMatch(value.name, artistKeys.length > 0 ? artistKeys : allArtistsKeys);
