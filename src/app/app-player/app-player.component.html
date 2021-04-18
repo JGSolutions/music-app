@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+<mat-toolbar class="example-header">Header</mat-toolbar>
+
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="side"
+    opened
+    class="example-sidenav"
+    [fixedInViewport]="false" [fixedBottomGap]="0"> Sidenav
+  </mat-sidenav>
+
+  <mat-sidenav-content >
+    <router-outlet></router-outlet>
+    <p><button mat-button (click)="sidenav.toggle()">Toggle</button></p>
+  </mat-sidenav-content>
+</mat-sidenav-container>

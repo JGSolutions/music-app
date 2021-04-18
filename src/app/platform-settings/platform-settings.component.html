@@ -1,5 +1,5 @@
-<button mat-button (click)="connectToMixcloud()" *ngIf="!(isMixcloudConnected$ | async)">Connect Mix cloud</button>
-<button mat-button *ngIf="(isMixcloudConnected$ | async)" (click)="disconnectService(connectedServices.mixcloud)">Disconnect Mix cloud</button>
+<button mat-raised-button color="primary" (click)="connectToMixcloud()" *ngIf="!(isMixcloudConnected$ | async)">Connect Mix cloud</button>
+<button mat-raised-button color="primary" *ngIf="(isMixcloudConnected$ | async)" (click)="disconnectService(connectedServices.mixcloud)">Disconnect Mix cloud</button>
 
-<button mat-button (click)="connectToSpotify()" *ngIf="!(isSpotifyConnected$ | async)">Connect Spotify</button>
-<button mat-button (click)="disconnectService(connectedServices.spotify)" *ngIf="(isSpotifyConnected$ | async)">Disconnect Spotify</button>
+<button mat-raised-button color="primary" (click)="connectToSpotify()" *ngIf="!(isSpotifyConnected$ | async)">Connect Spotify</button>
+<button mat-raised-button color="primary" (click)="disconnectService(connectedServices.spotify)" *ngIf="(isSpotifyConnected$ | async)">Disconnect Spotify</button>
