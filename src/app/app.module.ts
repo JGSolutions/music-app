@@ -5,15 +5,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
-import { HttpClientModule } from '@angular/common/http';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { MusicConnectedService } from './services/music-connected.services';
-import { ApiService } from './services/api.service';
-import { NgxsModule } from '@ngxs/store';
-import { UserState } from './core/stores/user/user.state';
-import { ConnectedServicesState } from './core/stores/connected-services/connected-services.state';
 @NgModule({
   declarations: [
     AppComponent
@@ -22,19 +13,11 @@ import { ConnectedServicesState } from './core/stores/connected-services/connect
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule,
-    AngularFirestoreModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
       registrationStrategy: 'registerWhenStable:30000'
-    }),
-    NgxsModule.forRoot([UserState, ConnectedServicesState], {
-      developmentMode: !environment.production
     })
   ],
-  providers: [MusicConnectedService, ApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

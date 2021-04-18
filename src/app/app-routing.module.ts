@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import { redirectUnauthorizedTo, AngularFireAuthGuard } from '@angular/fire/auth-guard';
-import { RouterModule, Routes } from '@angular/router';
-
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -11,31 +8,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginModule)
-  },
-  {
-    path: 'platform-settings',
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin },
-    loadChildren: () => import('./platform-settings/platform-settings.module').then( m => m.PlatformSettingsModule)
-  },
-  {
-    path: 'mixcloud-callback',
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin },
-    loadChildren: () => import('./mixcloud-callback/mixcloud-callback.module').then( m => m.MixcloudCallbackModule)
-  },
-  {
-    path: 'spotify-callback',
-    canActivate: [AngularFireAuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin },
-    loadChildren: () => import('./spotify-callback/spotify-callback.module').then( m => m.SpotifyCallbackModule)
-  },
+    path: '',
+    loadChildren: () => import('./app-content/app-content.module').then( m => m.AppContentModule)
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
