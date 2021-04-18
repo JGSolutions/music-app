@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player',
@@ -12,8 +13,12 @@ import { IUserType } from '../core/stores/user/user.types';
 })
 export class AppPlayerComponent implements OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
+  public isMobile$: Observable<boolean>;
 
-  constructor(private store: Store, private router: Router) {
+  constructor(private breakpointObserver: BreakpointObserver) {
+    this.isMobile$ = this.breakpointObserver.observe('(max-width: 599px)').pipe(
+      map((result) => result.matches)
+    );
   }
 
   ngOnInit() {

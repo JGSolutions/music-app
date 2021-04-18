@@ -1,8 +1,13 @@
-<mat-toolbar class="example-header" color="primary">Header</mat-toolbar>
+<mat-toolbar class="example-header" color="primary">
+  <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+  Header
+</mat-toolbar>
 
 <mat-sidenav-container class="example-container">
-  <mat-sidenav mode="side"
-    opened
+  <mat-sidenav
+    #snav
+    [opened]="(isMobile$ | async) ? false : true"
+    [mode]="(isMobile$ | async) ? 'over' : 'side'"
     class="example-sidenav"
     [fixedInViewport]="false">
 
@@ -22,8 +27,8 @@
 
     <a mat-button [routerLink]="['/', 'profile']" [routerLinkActive]="['active-bottom-link']">
       <div class="menu-button-layout">
-        <mat-icon>home</mat-icon>
-        <span>Home</span>
+        <mat-icon>music_note</mat-icon>
+        <span>Artists</span>
       </div>
     </a>
   </mat-sidenav>
