@@ -11,26 +11,14 @@ const routes: Routes = [
     component: AppContentComponent,
     children: [
       {
+        path: '',
+        canActivate: [AngularFireAuthGuard],
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        loadChildren: () => import('../app-player/app-player.module').then( m => m.AppPlayerModule)
+      },
+      {
         path: 'login',
         loadChildren: () => import('../login/login.module').then( m => m.LoginModule)
-      },
-      {
-        path: 'platform-settings',
-        canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
-        loadChildren: () => import('../platform-settings/platform-settings.module').then( m => m.PlatformSettingsModule)
-      },
-      {
-        path: 'mixcloud-callback',
-        canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
-        loadChildren: () => import('../mixcloud-callback/mixcloud-callback.module').then( m => m.MixcloudCallbackModule)
-      },
-      {
-        path: 'spotify-callback',
-        canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
-        loadChildren: () => import('../spotify-callback/spotify-callback.module').then( m => m.SpotifyCallbackModule)
       }
     ]
   }
