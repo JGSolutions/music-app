@@ -15,8 +15,14 @@ export class ConnectedServicesState {
   }
 
   @Selector()
-  static serviceslist(state: IConnectedServicesState) {
-    return state.servicesList;
+  static servicesList(state: IConnectedServicesState) {
+    const data = state.servicesType;
+    return Object.keys(data).map((key) => {
+      return {
+        type: key,
+        token: data[key].token
+      };
+    });
   }
 
   @Selector()
@@ -33,15 +39,7 @@ export class ConnectedServicesState {
   _connectedServices(ctx: StateContext<IConnectedServicesState>, { uid }: ConnectedServicesAction) {
     return this.connectedServices.connectedServices(uid).pipe(
       tap((data) => {
-        const arrayServices = Object.keys(data).map((key) => {
-          return {
-            type: key,
-            token: data[key].token
-          };
-        });
-
         ctx.patchState({
-          servicesList: arrayServices,
           servicesType: data
         });
       })

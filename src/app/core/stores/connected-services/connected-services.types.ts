@@ -1,11 +1,9 @@
 export interface IConnectedServicesState {
-  servicesList: ConnectedServicesList[];
   servicesType: ConnectedServices;
   loading: boolean;
 }
 
 export const connectedServicesStateDefault: IConnectedServicesState = {
-  servicesList: [],
   servicesType: {},
   loading: false
 };
@@ -16,10 +14,12 @@ export interface ConnectedToken {
 }
 export interface ConnectedServicesList {
   token: string;
-  type: string;
+  type: IConnectedServicesTypes;
 }
 
 export enum IConnectedServicesTypes {
   mixcloud = "mixcloud",
   spotify = "spotify",
+  deezer = "deezer",
+  all = "all"
 }

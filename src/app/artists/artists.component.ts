@@ -4,7 +4,7 @@ import { IArtists } from 'functions/src/models/IArtists.types';
 import { Observable } from 'rxjs';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServices } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServicesList, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 
 @Component({
   selector: 'app-artists',
@@ -13,11 +13,15 @@ import { ConnectedServices } from '../core/stores/connected-services/connected-s
 })
 export class ArtistsComponent implements OnInit {
   @Select(ArtistsState.artists) artists$!: Observable<IArtists[]>;
-  @Select(ConnectedServicesState.serviceslist) connectedServices$!: Observable<ConnectedServices[]>;
+  @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
 
-  constructor() { }
+  public connectedServices = IConnectedServicesTypes;
+  public selectedChip: IConnectedServicesTypes = this.connectedServices.all;
 
   ngOnInit(): void {
   }
 
+  public selectChip(evt: IConnectedServicesTypes): void {
+    this.selectedChip = evt;
+  }
 }
