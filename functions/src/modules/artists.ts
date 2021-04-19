@@ -40,9 +40,7 @@ export const artists = async (request: Request, response: Response) => {
       allPlatformData.push(r);
     });
     const flattenData = flatten(allPlatformData);
-    const allArtistsKeys = flattenData.map((data) => {
-      return data.id;
-    });
+    const allArtistsKeys = flattenData.map((data) => data.id);
 
     const res = reduce(flattenData, (result: any, value: any) => {
       const artistKeys = keys(result);

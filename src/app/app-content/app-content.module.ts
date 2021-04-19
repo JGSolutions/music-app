@@ -12,7 +12,6 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HttpClientModule } from '@angular/common/http';
 import { UserState } from '../core/stores/user/user.state';
-import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 
 @NgModule({
   declarations: [AppContentComponent],
@@ -24,7 +23,7 @@ import { ConnectedServicesState } from '../core/stores/connected-services/connec
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AppContentRoutingModule,
-    NgxsModule.forRoot([UserState, ConnectedServicesState], {
+    NgxsModule.forRoot([UserState], {
       developmentMode: !environment.production
     }),
   ],
