@@ -11,6 +11,12 @@ const routes: Routes = [
     component: AppPlayerComponent,
     children: [
       {
+        path: 'artists',
+        canActivate: [AngularFireAuthGuard],
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        loadChildren: () => import('../artists/artists.module').then( m => m.ArtistsModule)
+      },
+      {
         path: 'platform-settings',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },

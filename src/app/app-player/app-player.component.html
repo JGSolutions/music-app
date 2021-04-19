@@ -27,10 +27,17 @@
       </div>
     </a>
 
-    <a mat-button [routerLink]="['/', 'profile']" [routerLinkActive]="['active-bottom-link']">
+    <a mat-button [routerLink]="['/', 'artists']" [routerLinkActive]="['active-bottom-link']">
       <div class="menu-button-layout">
         <mat-icon>music_note</mat-icon>
         <span>Artists</span>
+      </div>
+    </a>
+
+    <a mat-button [routerLink]="['/', 'platform-settings']" [routerLinkActive]="['active-bottom-link']">
+      <div class="menu-button-layout">
+        <mat-icon>link</mat-icon>
+        <span>Platforms</span>
       </div>
     </a>
   </mat-sidenav>
