@@ -1,7 +1,6 @@
-
 <mat-chip-list aria-label="Platform selection">
   <mat-chip color="primary" selected>All</mat-chip>
-  <!-- <mat-chip color="primary" selected>Primary fish</mat-chip> -->
+  <mat-chip color="primary" *ngFor="let service of connectedServices$ | async">{{service.type}}</mat-chip>
 </mat-chip-list>
 
 <h1 class="mat-display-1">Following</h1>

@@ -13,7 +13,7 @@ import { ConnectedServices } from '../core/stores/connected-services/connected-s
 })
 export class ArtistsComponent implements OnInit {
   @Select(ArtistsState.artists) artists$!: Observable<IArtists[]>;
-  @Select(ConnectedServicesState.services) connectedServices$!: Observable<ConnectedServices>;
+  @Select(ConnectedServicesState.serviceslist) connectedServices$!: Observable<ConnectedServices[]>;
 
   constructor() { }
 

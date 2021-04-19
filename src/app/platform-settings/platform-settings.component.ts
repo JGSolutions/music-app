@@ -18,7 +18,7 @@ import { IUserType } from '../core/stores/user/user.types';
   styleUrls: ['./platform-settings.component.scss']
 })
 export class PlatformSettingsComponent implements OnInit {
-  @Select(ConnectedServicesState.services) connectedServices$!: Observable<ConnectedServices>;
+  @Select(ConnectedServicesState.servicesType) connectedServices$!: Observable<ConnectedServices>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
 
   public isMixcloudConnected$: Observable<ConnectedToken> | undefined;

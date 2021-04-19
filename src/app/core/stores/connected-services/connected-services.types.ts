@@ -1,16 +1,22 @@
 export interface IConnectedServicesState {
-  services: ConnectedServices;
+  servicesList: ConnectedServicesList[];
+  servicesType: ConnectedServices;
   loading: boolean;
 }
 
 export const connectedServicesStateDefault: IConnectedServicesState = {
-  services: {},
+  servicesList: [],
+  servicesType: {},
   loading: false
 };
 
 export type ConnectedServices = Record<string, ConnectedToken>;
 export interface ConnectedToken {
   token: string;
+}
+export interface ConnectedServicesList {
+  token: string;
+  type: string;
 }
 
 export enum IConnectedServicesTypes {

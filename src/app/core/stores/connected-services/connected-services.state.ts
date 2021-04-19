@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { MusicConnectedService } from 'src/app/services/music-connected.services';
 import { ConnectedServicesAction, DisconnectServiceAction } from './connected-services.actions';
-import { connectedServicesStateDefault, IConnectedServicesState, IConnectedServicesTypes } from './connected-services.types';
+import { connectedServicesStateDefault, IConnectedServicesState } from './connected-services.types';
 
 @State<IConnectedServicesState>({
   name: 'connectedServices',
@@ -15,8 +15,13 @@ export class ConnectedServicesState {
   }
 
   @Selector()
-  static services(state: IConnectedServicesState) {
-    return state.services;
+  static serviceslist(state: IConnectedServicesState) {
+    return state.servicesList;
+  }
+
+  @Selector()
+  static servicesType(state: IConnectedServicesState) {
+    return state.servicesType;
   }
 
   @Selector()
@@ -28,8 +33,16 @@ export class ConnectedServicesState {
   _connectedServices(ctx: StateContext<IConnectedServicesState>, { uid }: ConnectedServicesAction) {
     return this.connectedServices.connectedServices(uid).pipe(
       tap((data) => {
+        const arrayServices = Object.keys(data).map((key) => {
+          return {
+            type: key,
+            token: data[key].token
+          };
+        });
+
         ctx.patchState({
-          services: data,
+          servicesList: arrayServices,
+          servicesType: data
         });
       })
     )
