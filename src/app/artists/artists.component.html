@@ -5,4 +5,6 @@
 
 <h1 class="mat-display-1">Following</h1>
 
-<app-artist-item></app-artist-item>
+<ng-container *ngIf="(artists$ | async) as artists">
+  <app-artist-item *ngFor="let artistKey of artists | keyvalue" [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
+</ng-container>

@@ -1,7 +1,7 @@
-import {throwError} from "rxjs";
+import { throwError } from "rxjs";
 import axios from "axios";
-import {IArtists} from "../src/models/IArtists.types";
-import {IPlatformTypes} from "./IPlatforms.types";
+import { IArtists } from "../src/models/IArtists.types";
+import { IPlatformTypes } from "./IPlatforms.types";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -12,9 +12,9 @@ export const artistsData = (artistApi: any): Promise<IArtists[]> => {
         username: artist.name.toLowerCase(),
         platform: IPlatformTypes.spotify,
         pictures: {
-          medium: artist.images[0].medium,
-          large: artist.images[1].large,
-          exLarge: artist.images[2].extra_large,
+          medium: artist.images[2].url,
+          large: artist.images[1].url,
+          exLarge: artist.images[0].url,
         },
       };
     });
