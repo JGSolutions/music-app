@@ -1,9 +1,22 @@
 :host {
-  display: block;
+  display: flex;
+  margin-bottom: 16px;
 }
 
 img {
   border-radius: 50%;
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
+}
+
+.platforms {
+  display: flex;
+  flex-direction: row;
+}
+
+.artist-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 10px;;
 }

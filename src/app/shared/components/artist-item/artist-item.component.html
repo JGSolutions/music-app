@@ -1,6 +1,17 @@
 
-{{artistName}}
+<div>
+  <img [src]="(avatar$ | async)?.large">
+</div>
+<div class="artist-info">
 
-<img [src]="artistDetails[0].pictures.large">
+  <span>
+    {{artistName}}
+  </span>
+
+  <div class="platforms">
+    <div *ngFor="let platform of platforms$ | async">{{platform}}</div>
+  </div>
+</div>
+
 
 
