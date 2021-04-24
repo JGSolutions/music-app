@@ -14,7 +14,8 @@ export class ArtistItemComponent implements OnInit {
   @Input()
   artistName!: string;
 
-  @Input() set artistDetails(value: IArtists[]) {
+  @Input() set artistDetails(value: IArtists[] | any[]) {
+    console.log(value);
     this._artistDetails$.next(value);
   }
 

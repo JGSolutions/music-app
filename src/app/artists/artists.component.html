@@ -6,5 +6,7 @@
 <h1 class="mat-display-1">Following</h1>
 
 <ng-container *ngIf="(artists$ | async) as artists">
-  <app-artist-item *ngFor="let artistKey of artists | keyvalue" [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
+  <a [routerLink]="['/', 'artist', artistKey.key]" *ngFor="let artistKey of artists | keyvalue">
+    <app-artist-item [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
+  </a>
 </ng-container>

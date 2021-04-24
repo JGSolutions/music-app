@@ -14,25 +14,32 @@ const routes: Routes = [
         path: 'artists',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
-        loadChildren: () => import('../artists/artists.module').then( m => m.ArtistsModule)
+        loadChildren: () => import('../artists/artists.module').then(m => m.ArtistsModule)
+      },
+
+      {
+        path: 'artist/:artist',
+        canActivate: [AngularFireAuthGuard],
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        loadChildren: () => import('../artist-profile/artist-profile.module').then(m => m.ArtistProfileModule)
       },
       {
         path: 'platform-settings',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
-        loadChildren: () => import('../platform-settings/platform-settings.module').then( m => m.PlatformSettingsModule)
+        loadChildren: () => import('../platform-settings/platform-settings.module').then(m => m.PlatformSettingsModule)
       },
       {
         path: 'mixcloud-callback',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
-        loadChildren: () => import('../mixcloud-callback/mixcloud-callback.module').then( m => m.MixcloudCallbackModule)
+        loadChildren: () => import('../mixcloud-callback/mixcloud-callback.module').then(m => m.MixcloudCallbackModule)
       },
       {
         path: 'spotify-callback',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
-        loadChildren: () => import('../spotify-callback/spotify-callback.module').then( m => m.SpotifyCallbackModule)
+        loadChildren: () => import('../spotify-callback/spotify-callback.module').then(m => m.SpotifyCallbackModule)
       }
     ]
   }

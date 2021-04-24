@@ -16,7 +16,7 @@ import { MusicConnectedService } from '../services/music-connected.services'
   styleUrls: ['./spotify-callback.component.scss']
 })
 export class SpotifyCallbackComponent implements OnInit, OnDestroy {
-  @Select(UserState.userState) user$: Observable<IUserType> | undefined;
+  @Select(UserState.userState) user$!: Observable<IUserType> | undefined;
 
   private destroy$ = new Subject<boolean>();
 
@@ -34,7 +34,7 @@ export class SpotifyCallbackComponent implements OnInit, OnDestroy {
     combineLatest([this.user$, this.route.queryParams]).pipe(
       filter(([user]) => user !== null),
       takeUntil(this.destroy$)
-    ).subscribe(async(data: any) => {
+    ).subscribe(async (data: any) => {
       const [user, params] = data;
       const res: any = await SpotifyAuthorization.createAccessTokenUrl(params.code);
 

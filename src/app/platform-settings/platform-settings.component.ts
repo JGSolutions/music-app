@@ -4,8 +4,9 @@ import { Select, Store } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify.sdk';
 import { Observable } from 'rxjs';
-import { map, shareReplay, take } from 'rxjs/operators';
+import { filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { DisconnectServiceAction } from '../core/stores/connected-services/connected-services.actions';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServices, ConnectedToken, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
@@ -38,12 +39,20 @@ export class PlatformSettingsComponent implements OnInit {
     this.isMixcloudConnected$ = this.connectedServices$.pipe(
       map((services) => services[IConnectedServicesTypes.mixcloud]),
       shareReplay(1)
-    )
+    );
 
     this.isSpotifyConnected$ = this.connectedServices$.pipe(
       map((services) => services[IConnectedServicesTypes.spotify]),
       shareReplay(1)
-    )
+    );
+
+    this.connectedServices$.pipe(
+      withLatestFrom(this.user$),
+      filter(([connectedServices, user]) => user !== null)
+    ).subscribe(([connectedServices, user]) => {
+      this.store.dispatch(new ArtistsAction(user.uid));
+    });
+
   }
 
   public connectToMixcloud(): void {
@@ -70,7 +79,7 @@ export class PlatformSettingsComponent implements OnInit {
     this.user$.pipe(
       take(1)
     ).subscribe((user: IUserType) => {
-      this.store.dispatch(new DisconnectServiceAction(user.uid, type))
+      this.store.dispatch(new DisconnectServiceAction(user.uid, type));
     });
   }
 }
