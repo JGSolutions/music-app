@@ -39,7 +39,7 @@ export const artist = async (request: Request, response: Response) => {
     switch (key.type) {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key.type].token);
-        pData.push(MixcloudSDK.artistSongs("MarkusSchulz"));
+        pData.push(MixcloudSDK.artistSongs(key.username));
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key.type].token);

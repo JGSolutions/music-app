@@ -75,7 +75,6 @@ export const MixcloudAuthorization = {
     const url = `${this.mixcloudDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&client_secret=${this.secretApi}&code=${oAuthCode}`;
     return await axios.get(url);
   },
-
 };
 
 export const MixcloudSDK = {
@@ -91,7 +90,7 @@ export const MixcloudSDK = {
 
   async getUsername(): Promise<string> {
     const url = `${this.mixcloudApiDomain}/me/?${this.queryParamAccessToken}`;
-    const res: any = await axios(url);
+    const res = await axios(url);
 
     return await res.data.username;
   },

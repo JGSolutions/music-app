@@ -22,5 +22,6 @@ export interface IArtistSongs {
 
 export interface ArtistBodyRequest {
   type: string;
+  username: string;
   id: string;
 }
