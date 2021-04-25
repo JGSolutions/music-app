@@ -5,14 +5,7 @@ import { adminFirebase } from "./fb";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-
-const db = adminFirebase.firestore();
-
-interface ArtistBodyRequest {
-  type: string;
-  id: string;
-}
+import { ArtistBodyRequest } from "../models/IArtists.types";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const artist = async (request: Request, response: Response) => {
@@ -38,14 +31,15 @@ export const artist = async (request: Request, response: Response) => {
     return;
   }
 
-  const connectedServicesRef = await db.collection("connectedServices").doc(authorized).get();
+  const connectedServicesRef = await adminFirebase.firestore().collection("connectedServices").doc(authorized).get();
   const connectedServices = connectedServicesRef.data() as FirebaseFirestore.DocumentData;
+  const pData: unknown[] = [];
 
   requestBody.forEach(async (key: ArtistBodyRequest) => {
     switch (key.type) {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key.type].token);
-        // pData.push(MixcloudSDK.following());
+        pData.push(MixcloudSDK.artistSongs("MarkusSchulz"));
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key.type].token);
@@ -54,8 +48,7 @@ export const artist = async (request: Request, response: Response) => {
     }
   });
 
-  response.status(200).send(connectedServices);
-
-  // Promise.all(pData).then((promiseData: any[]) => {
-  // });
+  Promise.all(pData).then((promiseData: any[]) => {
+    response.status(200).send(promiseData[0]);
+  });
 };
