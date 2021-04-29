@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { throwError } from "rxjs";
 import axios from "axios";
-import { IArtists, IArtistSongs } from "../src/models/IArtists.types";
+import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
 
 export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
@@ -33,6 +33,7 @@ export const mixcloudArtistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
         username: song.user.username,
         artistName: song.user.name,
         length: song.audio_length,
+        trackType: ITrackType.track,
         platform: IPlatformTypes.mixcloud,
         pictures: {
           medium: song.pictures.medium,

@@ -1,6 +1,10 @@
 import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { Pictures } from "./IPictures.types";
 
+export enum ITrackType {
+  track,
+  album,
+}
 export interface IArtists {
   name: string;
   id: string;
@@ -13,6 +17,7 @@ export interface IArtistSongs {
   tags: string[];
   platform: IPlatformTypes;
   createdTime: string;
+  trackType: ITrackType;
   id: string;
   length: number;
   username: string;

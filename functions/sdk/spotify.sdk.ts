@@ -1,6 +1,7 @@
+/* eslint-disable max-len */
 import { throwError } from "rxjs";
 import axios from "axios";
-import { IArtists } from "../src/models/IArtists.types";
+import { IArtists, IArtistSongs } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
@@ -85,5 +86,12 @@ export const SpotifySDK = {
 
     const resp = await axios(url, headers);
     return await artistsData(resp.data.artists.items);
+  },
+
+  async artistSongs(artist: string): Promise<IArtistSongs[]> {
+    const url = `${this.apiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}`;
+    const resp = await axios(url);
+
+    // return await mixcloudArtistSongs(resp.data.data);
   },
 };
