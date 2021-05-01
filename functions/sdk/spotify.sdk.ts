@@ -1,8 +1,10 @@
 /* eslint-disable max-len */
-import { throwError } from "rxjs";
 import axios from "axios";
-import { IArtists, IArtistSongs } from "../src/models/IArtists.types";
+import { IArtists } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
+import { adminFirebase } from "../src/modules/fb";
+
+const db = adminFirebase.firestore();
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -23,59 +25,36 @@ export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   });
 };
 
-export const SpotifyAuthorization = {
-  url: "",
+export const SpotifySDK = {
+  queryParamAccessToken: "",
+  refreshToken: "",
   clientId: "",
-  secretApi: "",
-  spotifyDomain: "https://accounts.spotify.com",
-  redirectUri: "",
+  clientSecret: "",
+  authorized: "",
+  apiDomain: "https://api.spotify.com/v1",
 
-  config(clientId: string, secretApi: string, redirectUri: string): void {
+  initialize(accessToken: string, refreshToken: string, clientId: string, clientSecret: string, authorized: string): void {
+    this.queryParamAccessToken = accessToken;
+    this.refreshToken = refreshToken;
     this.clientId = clientId;
-    this.secretApi = secretApi;
-    this.redirectUri = redirectUri;
+    this.clientSecret = clientSecret;
+    this.authorized = authorized;
   },
 
-  authorizeUrl(): string {
-    if (!this.clientId) {
-      throwError("Please provide a client id");
-    }
-    // eslint-disable-next-line max-len
-    const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=code&scope=user-follow-read`;
-    return `${this.spotifyDomain}/authorize${q}`;
-  },
-
-  async createAccessTokenUrl(oAuthCode: string): Promise<unknown> {
-    if (!this.clientId) {
-      throwError("Api keys are not provided!");
-    }
-
-    // eslint-disable-next-line max-len
-    const url = `${this.spotifyDomain}/api/token`;
+  async recreateAccessToken(): Promise<unknown> {
+    const url = "https://accounts.spotify.com/api/token";
 
     const postHeaders = {
       headers: {
-        "Authorization": "Basic " + btoa(this.clientId + ":" + this.secretApi),
         "Content-Type": "application/x-www-form-urlencoded",
       },
     };
 
-    // eslint-disable-next-line max-len
-    const params = "grant_type=authorization_code&code=" + oAuthCode + "&redirect_uri=" + this.redirectUri;
+    const params = `grant_type=refresh_token&refresh_token=${this.refreshToken}&client_id=${this.clientId}&client_secret=${this.clientSecret}`;
     return await axios.post(url, params, postHeaders);
   },
 
-};
-
-export const SpotifySDK = {
-  queryParamAccessToken: "",
-  apiDomain: "https://api.spotify.com/v1",
-
-  initialize(accessToken: string): void {
-    this.queryParamAccessToken = accessToken;
-  },
-
-  async following(type: string): Promise<IArtists[]> {
+  async following(type: string): Promise<IArtists[] | null> {
     const url = `${this.apiDomain}/me/following?type=${type}`;
 
     const headers = {
@@ -84,14 +63,29 @@ export const SpotifySDK = {
       },
     };
 
-    const resp = await axios(url, headers);
-    return await artistsData(resp.data.artists.items);
+    try {
+      const resp = await axios(url, headers);
+      return await artistsData(resp.data.artists.items);
+    } catch (err) {
+      if (err.response.status === 401) {
+        const res: any = await this.recreateAccessToken();
+
+        await db.collection("connectedServices").doc(this.authorized).set({
+          "spotify": {
+            token: res.data.access_token,
+          },
+        }, { merge: true });
+
+        this.following("artist");
+      }
+      return null;
+    }
   },
 
-  async artistSongs(artist: string): Promise<IArtistSongs[]> {
-    const url = `${this.apiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}`;
-    const resp = await axios(url);
+  // async artistSongs(artist: string): Promise<IArtistSongs[]> {
+  //   const url = `${this.apiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}`;
+  //   const resp = await axios(url);
 
-    // return await mixcloudArtistSongs(resp.data.data);
-  },
+  //   return await mixcloudArtistSongs(resp.data.data);
+  // },
 };

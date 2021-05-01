@@ -6,6 +6,7 @@ import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { ArtistBodyRequest } from "../models/IArtists.types";
+import { spotifyKeys } from "../../sdk/api-keys";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const artist = async (request: Request, response: Response) => {
@@ -42,7 +43,7 @@ export const artist = async (request: Request, response: Response) => {
         pData.push(MixcloudSDK.artistSongs(key.username));
         break;
       case IPlatformTypes.spotify:
-        SpotifySDK.initialize(connectedServices[key.type].token);
+        SpotifySDK.initialize(connectedServices[key.type].token, connectedServices[key.type].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
         // pData.push(SpotifySDK.following("artist"));
         break;
     }

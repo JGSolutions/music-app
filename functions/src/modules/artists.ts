@@ -1,22 +1,31 @@
 /* eslint-disable max-len */
-import {Response, Request} from "express";
-import {adminFirebase} from "./fb";
-import {flatten, keys, reduce} from "lodash";
-import {MixcloudSDK} from "../../sdk/mixcloud.sdk";
-import {IPlatformTypes} from "../../sdk/IPlatforms.types";
-import {SpotifySDK} from "../../sdk/spotify.sdk";
+import { Response, Request } from "express";
+import { adminFirebase } from "./fb";
+import { flatten, keys, reduce } from "lodash";
+import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
+import { IPlatformTypes } from "../../sdk/IPlatforms.types";
+import { SpotifySDK } from "../../sdk/spotify.sdk";
+import { spotifyKeys } from "../../sdk/api-keys";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const stringSimilarity = require("string-similarity");
 const db = adminFirebase.firestore();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const artists = async (request: Request, response: Response) => {
-  const decodedUID = Buffer.from(request.headers["authorization"] as string, "base64").toString("ascii");
-  if (!decodedUID) {
-    response.status(401).send("Not authenticated");
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const authorized = request.headers["authorization"]!;
+
+  if (!authorized) {
+    response.status(401).send("Invalid authenticated");
   }
 
-  const connectedServicesRef = await db.collection("connectedServices").doc(decodedUID).get();
+  try {
+    await adminFirebase.auth().getUser(authorized);
+  } catch (err) {
+    response.status(401).send(err);
+    return;
+  }
+
+  const connectedServicesRef = await db.collection("connectedServices").doc(authorized).get();
   const connectedServices = connectedServicesRef.data() as FirebaseFirestore.DocumentData;
   const platformKeys = keys(connectedServicesRef.data());
   const pData: unknown[] = [];
@@ -28,7 +37,7 @@ export const artists = async (request: Request, response: Response) => {
         pData.push(MixcloudSDK.following());
         break;
       case IPlatformTypes.spotify:
-        SpotifySDK.initialize(connectedServices[key].token);
+        SpotifySDK.initialize(connectedServices[key].token, connectedServices[key].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
         pData.push(SpotifySDK.following("artist"));
         break;
     }

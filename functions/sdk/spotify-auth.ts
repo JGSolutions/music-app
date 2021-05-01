@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { throwError } from "rxjs";
 import axios from "axios";
 
@@ -23,7 +24,7 @@ export const SpotifyAuthorization = {
     return `${this.spotifyDomain}/authorize${q}`;
   },
 
-  async createAccessTokenUrl(oAuthCode: string, grantType = "authorization_code"): Promise<unknown> {
+  async createAccessTokenUrl(oAuthCode: string): Promise<unknown> {
     if (!this.clientId) {
       throwError("Api keys are not provided!");
     }
@@ -37,7 +38,7 @@ export const SpotifyAuthorization = {
       },
     };
 
-    const params = `grant_type=${grantType}&code=${oAuthCode}&redirect_uri=${this.redirectUri}`;
+    const params = `grant_type=authorization_code&code=${oAuthCode}&redirect_uri=${this.redirectUri}`;
     return await axios.post(url, params, postHeaders);
   },
 };

@@ -26,5 +26,10 @@ module.exports = {
   ],
   rules: {
     quotes: ["error", "double"],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "object-curly-spacing": [0, "never", {
+      "objectsInObjects": false,
+      "arraysInObjects": false
+    }]
   },
 };
