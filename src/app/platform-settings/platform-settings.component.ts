@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
-import { SpotifyAuthorization } from 'functions/sdk/spotify.sdk';
+import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
 import { Observable } from 'rxjs';
 import { filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';

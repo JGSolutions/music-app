@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { SpotifyAuthorization } from 'functions/sdk/spotify.sdk';
+import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -40,6 +40,7 @@ export class SpotifyCallbackComponent implements OnInit, OnDestroy {
 
       this.connectedServices.connectService(user.uid, {
         token: res.data.access_token,
+        refresh_token: res.data.refresh_token
       }, IConnectedServicesTypes.spotify);
     });
   }
