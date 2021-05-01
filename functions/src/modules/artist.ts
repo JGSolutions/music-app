@@ -49,7 +49,7 @@ export const artist = async (request: Request, response: Response) => {
     }
   });
 
-  Promise.all(pData).then((promiseData: any[]) => {
+  Promise.all(pData).then((promiseData) => {
     response.status(200).send(promiseData[0]);
   });
 };

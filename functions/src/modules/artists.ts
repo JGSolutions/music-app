@@ -43,7 +43,7 @@ export const artists = async (request: Request, response: Response) => {
     }
   });
 
-  Promise.all(pData).then((promiseData: any[]) => {
+  Promise.all(pData).then((promiseData) => {
     const allPlatformData: any[] = [];
     promiseData.forEach((r) => {
       allPlatformData.push(r);

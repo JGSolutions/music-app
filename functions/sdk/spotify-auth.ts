@@ -19,7 +19,7 @@ export const SpotifyAuthorization = {
     if (!this.clientId) {
       throwError("Please provide a client id");
     }
-    // eslint-disable-next-line max-len
+
     const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=code&scope=user-follow-read`;
     return `${this.spotifyDomain}/authorize${q}`;
   },
