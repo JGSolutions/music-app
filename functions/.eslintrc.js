@@ -27,6 +27,7 @@ module.exports = {
   rules: {
     quotes: ["error", "double"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    '@typescript-eslint/no-non-null-assertion': 'off',
     "object-curly-spacing": [0, "never", {
       "objectsInObjects": false,
       "arraysInObjects": false

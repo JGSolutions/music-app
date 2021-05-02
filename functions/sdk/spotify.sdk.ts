@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import axios from "axios";
-import { IArtists } from "../src/models/IArtists.types";
+import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
 import { adminFirebase } from "../src/modules/fb";
 
@@ -18,6 +18,30 @@ export const artistsData = (artistApi: any): Promise<IArtists[]> => {
           medium: artist.images[2].url,
           large: artist.images[1].url,
           exLarge: artist.images[0].url,
+        },
+      };
+    });
+    resolve(data);
+  });
+};
+
+export const artistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
+  console.log(dataApi);
+  return new Promise((resolve) => {
+    const data = dataApi.map((song: any) => {
+      return {
+        name: song.name,
+        id: song.slug,
+        createdTime: song.created_time,
+        username: song.user.username,
+        artistName: song.user.name,
+        length: song.audio_length,
+        trackType: ITrackType.track,
+        platform: IPlatformTypes.spotify,
+        pictures: {
+          medium: song.pictures.medium,
+          large: song.pictures.large,
+          exLarge: song.pictures.extra_large,
         },
       };
     });
@@ -82,10 +106,16 @@ export const SpotifySDK = {
     }
   },
 
-  // async artistSongs(artist: string): Promise<IArtistSongs[]> {
-  //   const url = `${this.apiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}`;
-  //   const resp = await axios(url);
+  async artistSongs(artistid: string): Promise<IArtistSongs[]> {
+    const url = `${this.apiDomain}/artists/${artistid}/albums/`;
+    const headers = {
+      headers: {
+        "Authorization": "Bearer " + this.queryParamAccessToken,
+      },
+    };
 
-  //   return await mixcloudArtistSongs(resp.data.data);
-  // },
+    const resp = await axios(url, headers);
+
+    return await artistSongs(resp.data);
+  },
 };
