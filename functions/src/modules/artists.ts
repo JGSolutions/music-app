@@ -6,9 +6,9 @@ import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { spotifyKeys } from "../../sdk/api-keys";
+import { getConnectServices } from "../utils/connect-services-firebase";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const stringSimilarity = require("string-similarity");
-const db = adminFirebase.firestore();
 
 export const artists = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
@@ -24,9 +24,8 @@ export const artists = async (request: Request, response: Response) => {
     return;
   }
 
-  const connectedServicesRef = await db.collection("connectedServices").doc(authorized).get();
-  const connectedServices = connectedServicesRef.data() as FirebaseFirestore.DocumentData;
-  const platformKeys = keys(connectedServicesRef.data());
+  const connectedServices = await getConnectServices(authorized);
+  const platformKeys = keys(connectedServices);
   const pData: unknown[] = [];
 
   platformKeys.forEach(async (key) => {

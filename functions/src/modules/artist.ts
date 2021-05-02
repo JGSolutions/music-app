@@ -7,6 +7,7 @@ import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { ArtistBodyRequest } from "../models/IArtists.types";
 import { spotifyKeys } from "../../sdk/api-keys";
+import { getConnectServices } from "../utils/connect-services-firebase";
 
 export const artist = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
@@ -30,15 +31,14 @@ export const artist = async (request: Request, response: Response) => {
     return;
   }
 
-  const connectedServicesRef = await adminFirebase.firestore().collection("connectedServices").doc(authorized).get();
-  const connectedServices = connectedServicesRef.data() as FirebaseFirestore.DocumentData;
-  const pData: unknown[] = [];
+  const connectedServices = await getConnectServices(authorized);
+  const platformPromiseData: unknown[] = [];
 
   requestBody.forEach(async (key: ArtistBodyRequest) => {
     switch (key.type) {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key.type].token);
-        pData.push(MixcloudSDK.artistSongs(key.username));
+        platformPromiseData.push(MixcloudSDK.artistSongs(key.username));
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(
@@ -48,12 +48,12 @@ export const artist = async (request: Request, response: Response) => {
           authorized
         );
 
-        pData.push(SpotifySDK.artistSongs(key.id));
+        platformPromiseData.push(SpotifySDK.artistSongs(key.id));
         break;
     }
   });
 
-  Promise.all(pData).then((promiseData) => {
+  Promise.all(platformPromiseData).then((promiseData) => {
     const allPlatformData = promiseData.map((data) => data);
     const flattenData = flatten(allPlatformData);
     response.status(200).send(flattenData);
