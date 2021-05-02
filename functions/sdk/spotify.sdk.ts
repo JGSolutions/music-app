@@ -26,22 +26,21 @@ export const artistsData = (artistApi: any): Promise<IArtists[]> => {
 };
 
 export const artistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
-  console.log(dataApi);
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
         name: song.name,
-        id: song.slug,
-        createdTime: song.created_time,
-        username: song.user.username,
-        artistName: song.user.name,
-        length: song.audio_length,
-        trackType: ITrackType.track,
+        id: song.id,
+        createdTime: song.release_date,
+        artistName: song.name,
+        length: song.album_type === "album" ? 0 : song.length,
+        totalTracks: song.album_type === "album" ? song.total_tracks : 0,
+        trackType: song.album_type === "album" ? ITrackType.album : ITrackType.single,
         platform: IPlatformTypes.spotify,
         pictures: {
-          medium: song.pictures.medium,
-          large: song.pictures.large,
-          exLarge: song.pictures.extra_large,
+          medium: song.images[2],
+          large: song.images[1],
+          exLarge: song.images[0],
         },
       };
     });
@@ -78,7 +77,7 @@ export const SpotifySDK = {
     return await axios.post(url, params, postHeaders);
   },
 
-  async following(type: string): Promise<IArtists[] | null> {
+  async following(type: string): Promise<IArtists[]> {
     const url = `${this.apiDomain}/me/following?type=${type}`;
 
     const headers = {
@@ -100,9 +99,9 @@ export const SpotifySDK = {
           },
         }, { merge: true });
 
-        this.following("artist");
+        return this.following("artist");
       }
-      return null;
+      return [];
     }
   },
 
@@ -116,6 +115,6 @@ export const SpotifySDK = {
 
     const resp = await axios(url, headers);
 
-    return await artistSongs(resp.data);
+    return await artistSongs(resp.data.items);
   },
 };

@@ -4,6 +4,7 @@ import { Pictures } from "./IPictures.types";
 export enum ITrackType {
   track,
   album,
+  single,
 }
 export interface IArtists {
   name: string;
@@ -23,6 +24,7 @@ export interface IArtistSongs {
   username: string;
   artistName: string;
   pictures: Pictures;
+  totalTracks: number;
 }
 
 export interface ArtistBodyRequest {
