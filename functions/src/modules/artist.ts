@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
-// import { flatten, keys, reduce } from "lodash";
+import { flatten } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
@@ -54,6 +54,8 @@ export const artist = async (request: Request, response: Response) => {
   });
 
   Promise.all(pData).then((promiseData) => {
-    response.status(200).send(promiseData[0]);
+    const allPlatformData = promiseData.map((data) => data);
+    const flattenData = flatten(allPlatformData);
+    response.status(200).send(flattenData);
   });
 };

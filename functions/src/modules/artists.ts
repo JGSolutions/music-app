@@ -11,7 +11,6 @@ const stringSimilarity = require("string-similarity");
 const db = adminFirebase.firestore();
 
 export const artists = async (request: Request, response: Response) => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const authorized = request.headers["authorization"]!;
 
   if (!authorized) {
@@ -44,12 +43,9 @@ export const artists = async (request: Request, response: Response) => {
   });
 
   Promise.all(pData).then((promiseData) => {
-    const allPlatformData: any[] = [];
-    promiseData.forEach((r) => {
-      allPlatformData.push(r);
-    });
+    const allPlatformData = promiseData.map((data) => data);
     const flattenData = flatten(allPlatformData);
-    const allArtistsKeys = flattenData.map((data) => data.id);
+    const allArtistsKeys = flattenData.map((data: any) => data.id);
 
     const res = reduce(flattenData, (result: any, value: any) => {
       const artistKeys = keys(result);
