@@ -3,8 +3,6 @@ import { IArtists } from 'functions/src/models/IArtists.types';
 import { Pictures } from 'functions/src/models/IPictures.types';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-
 @Component({
   selector: 'app-artist-item',
   templateUrl: './artist-item.component.html',
@@ -14,17 +12,17 @@ export class ArtistItemComponent implements OnInit {
   @Input()
   artistName!: string;
 
-  @Input() set artistDetails(value: IArtists[] | any[]) {
-    console.log(value);
+  private _artistDetails$ = new ReplaySubject<IArtists[]>(1);
+  /**
+   * Suppose to be IArtists type but not sure why and seems an issue
+   * with typescript
+   */
+  @Input() set artistDetails(value: any) {
     this._artistDetails$.next(value);
   }
 
   public avatar$!: Observable<Pictures>;
   public platforms$!: Observable<string[]>;
-
-  private _artistDetails$ = new ReplaySubject(1);
-
-  constructor() { }
 
   ngOnInit(): void {
     this.avatar$ = this._artistDetails$.pipe(
@@ -40,5 +38,5 @@ export class ArtistItemComponent implements OnInit {
       })
     );
   }
-
 }
+
