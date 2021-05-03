@@ -31,6 +31,7 @@ module.exports = {
     "object-curly-spacing": [0, "never", {
       "objectsInObjects": false,
       "arraysInObjects": false
-    }]
+    }],
+    "max-len": ["error", { "code": 140 }]
   },
 };

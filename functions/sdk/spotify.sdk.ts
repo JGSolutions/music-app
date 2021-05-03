@@ -2,9 +2,7 @@
 import axios from "axios";
 import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
-import { adminFirebase } from "../src/modules/fb";
-
-const db = adminFirebase.firestore();
+import { updateConnectedService } from "../src/utils/connect-services-firebase";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -93,12 +91,7 @@ export const SpotifySDK = {
       if (err.response.status === 401) {
         const res: any = await this.recreateAccessToken();
 
-        await db.collection("connectedServices").doc(this.authorized).set({
-          "spotify": {
-            token: res.data.access_token,
-          },
-        }, { merge: true });
-
+        await updateConnectedService(this.authorized, res.data.access_token, IPlatformTypes.spotify);
         return this.following("artist");
       }
       return [];
