@@ -1,10 +1,10 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
-import { Observable } from 'rxjs';
-import { filter, map, shareReplay, take, withLatestFrom } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { DisconnectServiceAction } from '../core/stores/connected-services/connected-services.actions';
@@ -18,13 +18,15 @@ import { IUserType } from '../core/stores/user/user.types';
   templateUrl: './platform-settings.component.html',
   styleUrls: ['./platform-settings.component.scss']
 })
-export class PlatformSettingsComponent implements OnInit {
+export class PlatformSettingsComponent implements OnInit, OnDestroy {
   @Select(ConnectedServicesState.servicesType) connectedServices$!: Observable<ConnectedServices>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
 
   public isMixcloudConnected$: Observable<ConnectedToken> | undefined;
   public isSpotifyConnected$: Observable<ConnectedToken> | undefined;
   public connectedServices = IConnectedServicesTypes;
+
+  private destroy$ = new Subject<boolean>();
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -48,11 +50,16 @@ export class PlatformSettingsComponent implements OnInit {
 
     this.connectedServices$.pipe(
       withLatestFrom(this.user$),
+      takeUntil(this.destroy$),
       filter(([connectedServices, user]) => user !== null)
     ).subscribe(([connectedServices, user]) => {
       this.store.dispatch(new ArtistsAction(user.uid));
     });
+  }
 
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   public connectToMixcloud(): void {

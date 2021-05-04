@@ -94,7 +94,6 @@ export const SpotifySDK = {
       const resp = await axios(url, headers);
       return await artistsData(resp.data.artists.items);
     } catch (err) {
-      console.log("ERROR: ", err);
       if (err.response?.status === 401) {
         const res: any = await this.recreateAccessToken();
 

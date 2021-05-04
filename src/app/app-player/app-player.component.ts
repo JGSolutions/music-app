@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 
 @Component({
@@ -24,15 +24,15 @@ export class AppPlayerComponent {
     );
 
     this.user$.pipe(
-      filter(user => user !== null),
-      switchMap((user: IUserType) => this.store.dispatch(new ArtistsAction(user.uid))),
-      takeUntil(this.destroy$)
-    ).subscribe()
+      takeUntil(this.destroy$),
+      filter(user => user !== null)
+    ).subscribe((user) => {
+      this.store.dispatch(new ArtistsAction(user.uid));
+    })
   }
 
   ngOnDestroy() {
     this.destroy$.next(true);
-    this.destroy$.complete();
     this.destroy$.unsubscribe();
   }
 }
