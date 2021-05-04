@@ -7,16 +7,22 @@ import { updateConnectedService } from "../src/utils/connect-services-firebase";
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
     const data = artistApi.map((artist: any) => {
+      let images = {};
+      if (artist.images.length === 0) {
+        images = {};
+      } else {
+        images = {
+          medium: artist.images[2].url,
+          large: artist.images[1].url,
+          exLarge: artist.images[0].url,
+        };
+      }
       return {
         name: artist.name,
         id: artist.uri.split(":")[2],
         username: artist.name.toLowerCase(),
         platform: IPlatformTypes.spotify,
-        pictures: {
-          medium: artist.images[2].url,
-          large: artist.images[1].url,
-          exLarge: artist.images[0].url,
-        },
+        pictures: images,
       };
     });
     resolve(data);
@@ -88,7 +94,8 @@ export const SpotifySDK = {
       const resp = await axios(url, headers);
       return await artistsData(resp.data.artists.items);
     } catch (err) {
-      if (err.response.status === 401) {
+      console.log("ERROR: ", err);
+      if (err.response?.status === 401) {
         const res: any = await this.recreateAccessToken();
 
         await updateConnectedService(this.authorized, res.data.access_token, IPlatformTypes.spotify);
