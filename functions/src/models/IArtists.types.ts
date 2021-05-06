@@ -27,7 +27,7 @@ export interface IArtistSongs {
   totalTracks: number;
 }
 
-export interface ArtistBodyRequest {
+export interface IArtistBodyRequest {
   type: string;
   username: string;
   id: string;

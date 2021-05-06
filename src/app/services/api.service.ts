@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { IArtistBodyRequest } from '../core/stores/artists/artists.types';
 
 @Injectable()
 export class ApiService {
@@ -22,18 +23,16 @@ export class ApiService {
     );
   }
 
-  public artistSongs(uid: string | undefined, artistPlatform?: any[]) {
+  public artistSongs(uid: string | undefined, artistPlatform: IArtistBodyRequest[]) {
     const url = `${this.domainApi}/artist`;
 
-    const headers = {
-      headers: {
+    const httpOptions = {
+      headers: new HttpHeaders({
         "Authorization": uid as string
-      },
+      })
     };
 
-    return this.http.post(url, headers).pipe(
-      map((res: any) => res)
-    );
+    return this.http.post(url, JSON.stringify(artistPlatform), httpOptions);
   }
 
   // audioStream(key) {

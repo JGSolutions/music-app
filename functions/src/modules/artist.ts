@@ -5,13 +5,13 @@ import { flatten } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
-import { ArtistBodyRequest } from "../models/IArtists.types";
+import { IArtistBodyRequest } from "../models/IArtists.types";
 import { spotifyKeys } from "../../sdk/api-keys";
 import { getConnectServices } from "../utils/connect-services-firebase";
 
 export const artist = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
-  let requestBody: ArtistBodyRequest[];
+  let requestBody: IArtistBodyRequest[];
 
   try {
     requestBody = JSON.parse(request.body);
@@ -34,7 +34,7 @@ export const artist = async (request: Request, response: Response) => {
   const connectedServices = await getConnectServices(authorized);
   const platformPromiseData: unknown[] = [];
 
-  requestBody.forEach(async (key: ArtistBodyRequest) => {
+  requestBody.forEach(async (key: IArtistBodyRequest) => {
     switch (key.type) {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key.type].token);

@@ -9,3 +9,9 @@ export const artistsStateDefault: IArtistsState = {
   artists: {},
   loading: false
 };
+
+export interface IArtistBodyRequest {
+  type: string;
+  username: string;
+  id: string;
+}
