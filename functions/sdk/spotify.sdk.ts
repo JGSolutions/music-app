@@ -98,7 +98,9 @@ export const SpotifySDK = {
         const res: any = await this.recreateAccessToken();
 
         await updateConnectedService(this.authorized, res.data.access_token, IPlatformTypes.spotify);
-        return this.following("artist");
+        this.queryParamAccessToken = res.data.access_token;
+        console.log("error occured will try again...");
+        return await this.following("artist");
       }
       return [];
     }

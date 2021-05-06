@@ -10,14 +10,28 @@ export class ApiService {
 
   public artists(uid: string | undefined) {
     const url = `${this.domainApi}/artists`;
-    const postHeaders = {
+
+    const headers = {
       headers: {
-        // "Authorization": btoa(uid as string)
         "Authorization": uid as string
       },
     };
 
-    return this.http.get(url, postHeaders).pipe(
+    return this.http.get(url, headers).pipe(
+      map((res: any) => res)
+    );
+  }
+
+  public artistSongs(uid: string | undefined, artistPlatform?: any[]) {
+    const url = `${this.domainApi}/artist`;
+
+    const headers = {
+      headers: {
+        "Authorization": uid as string
+      },
+    };
+
+    return this.http.post(url, headers).pipe(
       map((res: any) => res)
     );
   }

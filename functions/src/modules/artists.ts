@@ -52,8 +52,10 @@ export const artists = async (request: Request, response: Response) => {
       const matches = stringSimilarity.findBestMatch(value.name, artistKeys.length > 0 ? artistKeys : allArtistsKeys);
 
       if (matches.bestMatch.rating >= 0.75) {
-        result[matches.bestMatch.target] = result[matches.bestMatch.target] || [];
-        result[matches.bestMatch.target].push(value);
+        // result[matches.bestMatch.target] = result[matches.bestMatch.target] || [];
+        // result[matches.bestMatch.target].push(value);
+        result[value.name] = result[matches.bestMatch.target] || [];
+        result[value.name].push(value);
       } else {
         result[value.name] = result[value.name] || [];
         result[value.name].push(value);
