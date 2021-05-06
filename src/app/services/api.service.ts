@@ -23,7 +23,7 @@ export class ApiService {
     );
   }
 
-  public artistSongs(uid: string | undefined, artistPlatform: IArtistBodyRequest[]) {
+  public artistSongs(uid: string | undefined, payload: IArtistBodyRequest[]) {
     const url = `${this.domainApi}/artist`;
 
     const httpOptions = {
@@ -32,7 +32,7 @@ export class ApiService {
       })
     };
 
-    return this.http.post(url, JSON.stringify(artistPlatform), httpOptions);
+    return this.http.post(url, JSON.stringify(payload), httpOptions);
   }
 
   // audioStream(key) {
