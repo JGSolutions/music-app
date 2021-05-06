@@ -40,10 +40,9 @@ export class ArtistsState {
   _artistSongs(ctx: StateContext<IArtistsState>, { uid, artistPlatform }: ArtistSongsAction) {
     return this.apiService.artistSongs(uid, artistPlatform).pipe(
       tap((data) => {
-        console.log(data);
-        // ctx.patchState({
-        //   artists: data,
-        // });
+        ctx.patchState({
+          artistSongs: data,
+        });
       })
     )
   }

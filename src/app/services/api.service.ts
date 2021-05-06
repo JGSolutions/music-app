@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { IArtistBodyRequest } from '../core/stores/artists/artists.types';
+import { IArtistBodyRequest, IArtistSongs } from '../core/stores/artists/artists.types';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class ApiService {
@@ -23,7 +24,7 @@ export class ApiService {
     );
   }
 
-  public artistSongs(uid: string | undefined, payload: IArtistBodyRequest[]) {
+  public artistSongs(uid: string | undefined, payload: IArtistBodyRequest[]): Observable<IArtistSongs[]> {
     const url = `${this.domainApi}/artist`;
 
     const httpOptions = {
@@ -32,7 +33,7 @@ export class ApiService {
       })
     };
 
-    return this.http.post(url, JSON.stringify(payload), httpOptions);
+    return this.http.post<IArtistSongs[]>(url, JSON.stringify(payload), httpOptions);
   }
 
   // audioStream(key) {
