@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ArtistProfileComponent } from './artist-profile.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
+import { PlatformSelectionModule } from '../shared/components/platform-selection/platform-selection.module';
 
 
 
@@ -11,6 +12,7 @@ import { AngularMaterialModule } from 'src/angular-material.module';
   imports: [
     CommonModule,
     AngularMaterialModule,
+    PlatformSelectionModule,
     RouterModule.forChild([
       { path: '', component: ArtistProfileComponent },
     ]),

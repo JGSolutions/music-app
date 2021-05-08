@@ -9,6 +9,8 @@ import { isUndefined } from 'lodash';
 import { ArtistSongsAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
+import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
+import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 @Component({
   selector: 'app-artist-profile',
   templateUrl: './artist-profile.component.html',
@@ -17,6 +19,7 @@ import { IUserType } from '../core/stores/user/user.types';
 export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
+  @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public artist!: string;
@@ -67,6 +70,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+
+  public selectedPlatform(evt: any) {
+    console.log(evt);
   }
 
 }

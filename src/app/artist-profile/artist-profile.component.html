@@ -3,3 +3,5 @@
 
   <span>{{artist}}</span>
 </section>
+
+<app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
