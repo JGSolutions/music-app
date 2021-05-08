@@ -17,8 +17,6 @@ export class ArtistsComponent implements OnInit {
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
   public artistsFiltered$ = this.store.select(ArtistsState.artistsByPlatform);
 
-  public connectedServices = IConnectedServicesTypes;
-  public selectedChip: IConnectedServicesTypes = this.connectedServices.all;
   public artistsByPlatform$!: Observable<Record<string, IArtists[]>>;
 
   private _connectServiceType$ = new BehaviorSubject<IConnectedServicesTypes>(IConnectedServicesTypes.all);
@@ -31,8 +29,7 @@ export class ArtistsComponent implements OnInit {
     );
   }
 
-  public selectChip(evt: IConnectedServicesTypes): void {
-    this.selectedChip = evt;
+  public selectedPlatform(evt: any) {
     this._connectServiceType$.next(evt);
   }
 }

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ArtistsComponent } from './artists.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
 import { ArtistItemModule } from '../shared/components/artist-item/artist-item.module';
+import { PlatformSelectionModule } from '../shared/components/platform-selection/platform-selection.module';
 
 @NgModule({
   declarations: [ArtistsComponent],
@@ -11,6 +12,7 @@ import { ArtistItemModule } from '../shared/components/artist-item/artist-item.m
     CommonModule,
     ArtistItemModule,
     AngularMaterialModule,
+    PlatformSelectionModule,
     RouterModule.forChild([
       { path: '', component: ArtistsComponent },
     ]),
