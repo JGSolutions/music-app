@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { IArtists } from 'functions/src/models/IArtists.types';
-import { reduce } from "lodash";
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
@@ -16,37 +15,24 @@ import { ConnectedServicesList, IConnectedServicesTypes } from '../core/stores/c
 export class ArtistsComponent implements OnInit {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
+  public artistsFiltered$ = this.store.select(ArtistsState.artistsByPlatform);
 
   public connectedServices = IConnectedServicesTypes;
   public selectedChip: IConnectedServicesTypes = this.connectedServices.all;
   public artistsByPlatform$!: Observable<Record<string, IArtists[]>>;
 
-  private _artistsByPlatform$ = new BehaviorSubject<IConnectedServicesTypes>(IConnectedServicesTypes.all);
+  private _connectServiceType$ = new BehaviorSubject<IConnectedServicesTypes>(IConnectedServicesTypes.all);
+
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
-    this.artistsByPlatform$ = combineLatest([this._artistsByPlatform$, this.artists$]).pipe(
-      map(([platform, artists]) => {
-        if (platform === IConnectedServicesTypes.all) {
-          return artists;
-        }
-
-        return reduce(artists, (acc: any, value, key) => {
-          const foundArtist = value.filter((v) => {
-            return v.platform === platform as string;
-          });
-
-          if (foundArtist.length > 0) {
-            acc[key] = foundArtist;
-          }
-
-          return acc;
-        }, {} as Record<string, IArtists[]>);
-
-      })
+    this.artistsByPlatform$ = combineLatest([this._connectServiceType$, this.artistsFiltered$]).pipe(
+      map(([platform, artistsFiltered]) => artistsFiltered(platform))
     );
   }
 
   public selectChip(evt: IConnectedServicesTypes): void {
-    this._artistsByPlatform$.next(evt);
+    this.selectedChip = evt;
+    this._connectServiceType$.next(evt);
   }
 }

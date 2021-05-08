@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
+import { IConnectedServicesTypes } from '../connected-services/connected-services.types';
 import { ArtistsAction, ArtistSongsAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState } from './artists.types';
+import { reduce } from 'lodash';
+import { IArtists } from 'functions/src/models/IArtists.types';
 
 @State<IArtistsState>({
   name: 'artists',
@@ -22,6 +25,27 @@ export class ArtistsState {
   static artistDetails(state: IArtistsState) {
     return (artist: string) => {
       return state.artists[artist];
+    };
+  }
+
+  @Selector()
+  static artistsByPlatform(state: IArtistsState) {
+    return (platform: IConnectedServicesTypes) => {
+      if (platform === IConnectedServicesTypes.all) {
+        return state.artists;
+      }
+
+      return reduce(state.artists, (acc: any, value, key) => {
+        const foundArtist = value.filter((element) => {
+          return element.platform === platform as string;
+        });
+
+        if (foundArtist.length > 0) {
+          acc[key] = foundArtist;
+        }
+
+        return acc;
+      }, {} as Record<string, IArtists[]>);
     };
   }
 

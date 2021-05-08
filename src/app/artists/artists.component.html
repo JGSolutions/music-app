@@ -1,6 +1,6 @@
 <mat-chip-list aria-label="Platform selection" selectable>
-  <mat-chip [selected]="(selectedChip === 'all') ? true: false" (click)="selectChip(connectedServices.all)">All</mat-chip>
-  <mat-chip [selected]="(selectedChip === connectedServices[service.type]) ? true: false" *ngFor="let service of connectedServices$ | async" (click)="selectChip(connectedServices[service.type])">{{service.type}}</mat-chip>
+  <mat-chip color="primary" [selected]="(selectedChip === 'all') ? true: false" (click)="selectChip(connectedServices.all)">All</mat-chip>
+  <mat-chip color="primary" [selected]="(selectedChip === connectedServices[service.type]) ? true: false" *ngFor="let service of connectedServices$ | async" (click)="selectChip(connectedServices[service.type])">{{service.type}}</mat-chip>
 </mat-chip-list>
 
 <h1 class="mat-display-1">Following</h1>
