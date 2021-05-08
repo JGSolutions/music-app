@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
-import { flatten, keys, reduce } from "lodash";
+import { flatten, keys, reduce, orderBy } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
@@ -45,17 +45,16 @@ export const artists = async (request: Request, response: Response) => {
     const allPlatformData = promiseData.map((data) => data);
     const flattenData = flatten(allPlatformData);
     const allArtistsKeys = flattenData.map((data: any) => data.id);
+    const sortedData = orderBy(flattenData, (o: any) => o.name);
 
-    const res = reduce(flattenData, (result: any, value: any) => {
+    const res = reduce(sortedData, (result: any, value: any) => {
       const artistKeys = keys(result);
 
       const matches = stringSimilarity.findBestMatch(value.name, artistKeys.length > 0 ? artistKeys : allArtistsKeys);
 
       if (matches.bestMatch.rating >= 0.75) {
-        // result[matches.bestMatch.target] = result[matches.bestMatch.target] || [];
-        // result[matches.bestMatch.target].push(value);
-        result[value.name] = result[matches.bestMatch.target] || [];
-        result[value.name].push(value);
+        result[matches.bestMatch.target] = result[matches.bestMatch.target] || [];
+        result[matches.bestMatch.target].push(value);
       } else {
         result[value.name] = result[value.name] || [];
         result[value.name].push(value);

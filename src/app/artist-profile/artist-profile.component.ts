@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { IArtists } from 'functions/src/models/IArtists.types';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined } from 'lodash';
 import { ArtistSongsAction } from '../core/stores/artists/artists.actions';
@@ -35,6 +35,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     );
 
     artistDetails$.pipe(
+      take(1),
       map((details) => {
         return details.map((detail) => {
           return {
