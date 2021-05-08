@@ -29,6 +29,11 @@ export class ArtistsState {
   }
 
   @Selector()
+  static artistSongs(state: IArtistsState) {
+    return state.artistSongs;
+  }
+
+  @Selector()
   static artistsByPlatform(state: IArtistsState) {
     return (platform: IConnectedServicesTypes) => {
       if (platform === IConnectedServicesTypes.all) {

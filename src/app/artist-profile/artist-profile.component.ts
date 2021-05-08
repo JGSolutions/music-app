@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { IArtists } from 'functions/src/models/IArtists.types';
+import { IArtists, IArtistSongs } from 'functions/src/models/IArtists.types';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
@@ -20,6 +20,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
+  @Select(ArtistsState.artistSongs) songs$!: Observable<IArtistSongs[]>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public artist!: string;
