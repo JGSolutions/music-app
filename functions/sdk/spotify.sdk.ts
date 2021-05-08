@@ -19,6 +19,7 @@ export const artistsData = (artistApi: any): Promise<IArtists[]> => {
       }
       return {
         name: artist.name,
+        genres: artist.genres,
         id: artist.uri.split(":")[2],
         username: artist.name.toLowerCase(),
         platform: IPlatformTypes.spotify,

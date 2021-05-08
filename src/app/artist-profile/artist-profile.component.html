@@ -1,1 +1,5 @@
-<p>artist-profile works!</p>
+<section *ngIf="profileDetails$ | async as profileDetails">
+  <img [src]="profileDetails.pictures.large" >
+
+  <span>{{artist}}</span>
+</section>

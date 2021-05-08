@@ -9,13 +9,14 @@ export enum ITrackType {
 export interface IArtists {
   name: string;
   id: string;
+  genres?: string;
   platform: IPlatformTypes;
   username: string;
   pictures: Pictures;
 }
 export interface IArtistSongs {
   name: string;
-  tags: string[];
+  genres?: string[];
   platform: IPlatformTypes;
   createdTime: string;
   trackType: ITrackType;

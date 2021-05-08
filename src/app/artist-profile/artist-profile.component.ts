@@ -20,7 +20,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public artist!: string;
-
+  public profileDetails$!: Observable<IArtists>;
   private destroy$ = new Subject<boolean>();
 
   constructor(private route: ActivatedRoute, private store: Store) { }
@@ -34,6 +34,18 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       shareReplay(1)
     );
 
+    /**
+     * Details for artist profile
+     */
+    this.profileDetails$ = artistDetails$.pipe(
+      map((artists) => artists[0]),
+      filter(data => !isUndefined(data)),
+      shareReplay(1)
+    );
+
+    /**
+     * Gets list of songs for artist
+     */
     artistDetails$.pipe(
       take(1),
       map((details) => {
