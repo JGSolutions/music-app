@@ -1,0 +1,12 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.song-list {
+  height: calc(100vh - 50px);
+  width: 100%;
+  overflow-y: auto;
+  background-color: #eee;
+}

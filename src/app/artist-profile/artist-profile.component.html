@@ -4,8 +4,10 @@
   <span>{{artist}}</span>
 </section>
 
-<app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
+<section  style="width: 100%;  height: 100%;">
+  <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
 
-<section>
-  <app-song-item *ngFor="let song of songs$ | async" [name]="song.name"></app-song-item>
+  <section class="song-list">
+    <app-song-item *ngFor="let song of songs$ | async" [name]="song.name"></app-song-item>
+  </section>
 </section>

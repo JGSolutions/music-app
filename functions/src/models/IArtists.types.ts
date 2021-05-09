@@ -22,7 +22,7 @@ export interface IArtistSongs {
   trackType: ITrackType;
   id: string;
   length: number;
-  username: string;
+  username?: string;
   artistName: string;
   pictures: Pictures;
   totalTracks: number;

@@ -34,6 +34,19 @@ export class ArtistsState {
   }
 
   @Selector()
+  static songsByPlatform(state: IArtistsState) {
+    return (platform: IConnectedServicesTypes) => {
+      if (platform === IConnectedServicesTypes.all) {
+        return state.artistSongs;
+      }
+
+      return state.artistSongs.filter((element) => {
+        return element.platform === platform as string;
+      });
+    };
+  }
+
+  @Selector()
   static artistsByPlatform(state: IArtistsState) {
     return (platform: IConnectedServicesTypes) => {
       if (platform === IConnectedServicesTypes.all) {
