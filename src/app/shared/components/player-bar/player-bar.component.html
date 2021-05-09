@@ -1,0 +1,8 @@
+<div class="player-bar-wrapper">
+    <div *ngIf="isLoading" style="width: 100%; height: 100%">
+        Loading audio...please wait!
+    </div>
+    <audio autoplay controls #audio>
+        <source src="{{ streamUrl }}" type="audio/mp4">
+    </audio>
+</div>

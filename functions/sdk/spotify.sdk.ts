@@ -85,14 +85,8 @@ export const SpotifySDK = {
   async following(type: string): Promise<IArtists[]> {
     const url = `${this.apiDomain}/me/following?type=${type}`;
 
-    const headers = {
-      headers: {
-        "Authorization": "Bearer " + this.queryParamAccessToken,
-      },
-    };
-
     try {
-      const resp = await axios(url, headers);
+      const resp = await axios(url, this.requestHeaders());
       return await artistsData(resp.data.artists.items);
     } catch (err) {
       if (err.response?.status === 401) {
@@ -109,14 +103,16 @@ export const SpotifySDK = {
 
   async artistSongs(artistid: string): Promise<IArtistSongs[]> {
     const url = `${this.apiDomain}/artists/${artistid}/albums/`;
-    const headers = {
+    const resp = await axios(url, this.requestHeaders());
+
+    return await artistSongs(resp.data.items);
+  },
+
+  requestHeaders() {
+    return {
       headers: {
         "Authorization": "Bearer " + this.queryParamAccessToken,
       },
     };
-
-    const resp = await axios(url, headers);
-
-    return await artistSongs(resp.data.items);
   },
 };

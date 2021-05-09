@@ -111,8 +111,8 @@ export const MixcloudSDK = {
     return await mixcloudArtistsData(resp.data.data);
   },
 
-  async artistSongs(artist: string): Promise<IArtistSongs[]> {
-    const url = `${this.mixcloudApiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}`;
+  async artistSongs(artist: string, limit = 100): Promise<IArtistSongs[]> {
+    const url = `${this.mixcloudApiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}&limit=${limit}`;
     const resp = await axios(url);
 
     return await mixcloudArtistSongs(resp.data.data);
