@@ -36,23 +36,19 @@ export class ApiService {
     return this.http.post<IArtistSongs[]>(url, JSON.stringify(payload), httpOptions);
   }
 
-  // audioStream(key) {
-  //     const httpOptions = {
-  //         headers: new HttpHeaders({
-  //           'Content-Type':  'application/json'
-  //         })
-  //       };
+  public audioStream(uid: string | undefined, key: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
 
-  //     const url = `${this.domainApi}/audiofile`;
-  //     const params = {
-  //         uid: this.uid,
-  //         key: key
-  //     };
-  //     return this.http.post(url, params, httpOptions).pipe(
-  //         map((res: any) => {
-  //             return res;
-  //         }
-  //     ));
-  // }
+    const url = `${this.domainApi}/audiofile`;
+    const params = {
+      uid: uid,
+      key: key
+    };
+    return this.http.post(url, params, httpOptions);
+  }
 }
 

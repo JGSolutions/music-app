@@ -3,6 +3,8 @@ import { throwError } from "rxjs";
 import axios from "axios";
 import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
+// import * as cheerio from "cheerio";
+// import * as puppeteer from "puppeteer";
 
 export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -138,4 +140,38 @@ export const MixcloudSDK = {
     const { data } = await res;
     return data.data;
   },
+
+  // async audioStream(): Promise<string | null> {
+  //   // const url = `${this.mixcloudApiDomain}/${this.queryParamAccessToken}embed-json/?access_token=${this.queryParamAccessToken}`;
+  //   const url = "https://api.mixcloud.com/spartacus/party-time/embed-json/";
+
+  //   const res: any = await axios(url);
+  //   const { data } = await res;
+
+  //   return await this._scrapStreamUrl(data.html);
+  // },
+
+  // async _scrapStreamUrl(iframe: string) {
+  //   const $ = cheerio.load(iframe);
+  //   const src = $("iframe").attr("src") as string;
+
+  //   const browser = await puppeteer.launch({
+  //     headless: true,
+  //   });
+  //   const page = await browser.newPage();
+
+  //   await page.goto(src);
+
+  //   const allResultsSelector = ".widget-play-button";
+  //   await page.waitForSelector(allResultsSelector);
+  //   await page.click(allResultsSelector);
+
+  //   const textContent = await page.evaluate(() => {
+  //     return document.querySelector("source")!.getAttribute("src");
+  //   });
+
+  //   browser.close();
+
+  //   return textContent;
+  // },
 };

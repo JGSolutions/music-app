@@ -5,6 +5,7 @@ import * as cors from "cors";
 import { feed } from "./modules/feed";
 import { artists } from "./modules/artists";
 import { artist } from "./modules/artist";
+import { mixcloudAudio } from "./modules/mixcloudAudio";
 
 const app = express();
 const main = express();
@@ -20,6 +21,7 @@ export const api = functions.runWith({ memory: "2GB", timeoutSeconds: 540 }).htt
 app.get("/feed", feed);
 app.get("/artists", artists);
 app.post("/artist", artist);
+app.post("/mixcloud-audio", mixcloudAudio);
 
 // export const helloWorld = functions.https.onRequest((request, response) => {
 //   functions.logger.info("Hello logs!", {structuredData: true});

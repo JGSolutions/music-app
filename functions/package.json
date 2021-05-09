@@ -14,22 +14,25 @@
   },
   "main": "lib/src/index.js",
   "dependencies": {
+    "@types/cheerio": "^0.22.28",
+    "@types/puppeteer": "^5.4.3",
     "axios": "^0.21.1",
+    "cheerio": "1.0.0-rc.9",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^9.7.0",
     "firebase-functions": "^3.13.2",
-    "puppeteer": "^9.1.1",
+    "puppeteer": "^7.1.0",
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
-    "eslint": "^7.25.0",
+    "eslint": "^7.26.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.22.1",
     "firebase-functions-test": "^0.2.3",
-    "typescript": "^3.9.9"
+    "typescript": "^4.2.4"
   },
   "private": true
 }
