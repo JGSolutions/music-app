@@ -36,17 +36,16 @@ export class ApiService {
     return this.http.post<IArtistSongs[]>(url, JSON.stringify(payload), httpOptions);
   }
 
-  public audioStream(uid: string | undefined, key: string): Observable<any> {
+  public mixcloudAudioStream(uid: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type': 'application/json'
+        "Authorization": uid
       })
     };
 
-    const url = `${this.domainApi}/audiofile`;
+    const url = `${this.domainApi}/mixcloud-audio`;
     const params = {
-      uid: uid,
-      key: key
+      key: ""
     };
     return this.http.post(url, params, httpOptions);
   }

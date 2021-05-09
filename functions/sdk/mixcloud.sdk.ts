@@ -38,6 +38,7 @@ export const mixcloudArtistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
         length: song.audio_length,
         trackType: ITrackType.track,
         platform: IPlatformTypes.mixcloud,
+        externalUrl: song.url,
         pictures: {
           medium: song.pictures.medium,
           large: song.pictures.large,
@@ -139,6 +140,23 @@ export const MixcloudSDK = {
     const res: any = axios(url);
     const { data } = await res;
     return data.data;
+  },
+
+  async _audioFileUrl(externalUrl: string): Promise<string> {
+    const url = "https://www.dlmixcloud.com/ajax.php";
+
+    const postHeaders = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    const params = `url=${externalUrl}`;
+    return await axios.post(url, params, postHeaders);
+  },
+
+  async audioStream(url: string): Promise<string | null> {
+    return this._audioFileUrl(url);
   },
 
   // async audioStream(): Promise<string | null> {

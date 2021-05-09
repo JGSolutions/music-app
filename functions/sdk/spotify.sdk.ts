@@ -38,6 +38,7 @@ export const artistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
         id: song.id,
         createdTime: song.release_date,
         artistName: song.name,
+        externalUrl: song.url,
         length: song.album_type === "album" ? 0 : song.length,
         totalTracks: song.album_type === "album" ? song.total_tracks : 0,
         trackType: song.album_type === "album" ? ITrackType.album : ITrackType.single,
