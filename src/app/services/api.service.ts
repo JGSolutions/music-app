@@ -36,7 +36,7 @@ export class ApiService {
     return this.http.post<IArtistSongs[]>(url, JSON.stringify(payload), httpOptions);
   }
 
-  public mixcloudAudioStream(uid: string): Observable<any> {
+  public mixcloudAudioStream(uid: string): Observable<string> {
     const httpOptions = {
       headers: new HttpHeaders({
         "Authorization": uid
@@ -47,7 +47,7 @@ export class ApiService {
     const params = {
       key: ""
     };
-    return this.http.post(url, params, httpOptions);
+    return this.http.post<string>(url, params, httpOptions);
   }
 }
 

@@ -9,6 +9,7 @@ import { AngularMaterialModule } from 'src/angular-material.module';
 import { NgxsModule } from '@ngxs/store';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ArtistsState } from '../core/stores/artists/artists.state';
+import { PlayerState } from '../core/stores/player/player.state';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -17,8 +18,8 @@ import { ArtistsState } from '../core/stores/artists/artists.state';
     RouterModule,
     AngularMaterialModule,
     AppPlayerRoutingModule,
-    NgxsModule.forFeature([ConnectedServicesState, ArtistsState]),
+    NgxsModule.forFeature([ConnectedServicesState, ArtistsState, PlayerState]),
   ],
   providers: [MusicConnectedService, ApiService],
 })
-export class AppPlayerModule {}
+export class AppPlayerModule { }
