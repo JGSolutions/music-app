@@ -6,6 +6,9 @@ import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
+import { PlayerState } from '../core/stores/player/player.state';
+import { ICurrentTrack } from '../core/stores/player/player.types';
+import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'app-player',
@@ -14,7 +17,9 @@ import { ArtistsAction } from '../core/stores/artists/artists.actions';
 })
 export class AppPlayerComponent {
   @Select(UserState.userState) user$!: Observable<IUserType>;
+  @Select(PlayerState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   public isMobile$: Observable<boolean>;
+  public currentTrackSelected$!: Observable<boolean>;
 
   private destroy$ = new Subject<boolean>();
 
@@ -28,7 +33,13 @@ export class AppPlayerComponent {
       filter(user => user !== null)
     ).subscribe((user) => {
       this.store.dispatch(new ArtistsAction(user.uid));
-    })
+    });
+
+    this.currentTrackSelected$ = this.currentTrack$.pipe(
+      map((currentTrack) => {
+        return !isEmpty(currentTrack)
+      })
+    )
   }
 
   ngOnDestroy() {

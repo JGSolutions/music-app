@@ -8,6 +8,11 @@
   <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
 
   <section class="song-list">
-    <app-song-item *ngFor="let song of songs$ | async" [name]="song.name" [trackType]="song.trackType"></app-song-item>
+    <app-song-item
+      *ngFor="let song of songs$ | async"
+      [name]="song.name"
+      [trackType]="song.trackType"
+      (selectedSong)="selectedSong($event)">
+    </app-song-item>
   </section>
 </section>

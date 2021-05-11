@@ -11,6 +11,8 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
+import { ICurrentTrack } from '../core/stores/player/player.types';
+import { OpenPlayerAction } from '../core/stores/player/player.actions';
 @Component({
   selector: 'app-artist-profile',
   templateUrl: './artist-profile.component.html',
@@ -81,5 +83,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
   public selectedPlatform(evt: any) {
     this._connectServiceType$.next(evt);
+  }
+
+  public selectedSong(evt: ICurrentTrack): void {
+    this.store.dispatch(new OpenPlayerAction(evt));
   }
 }
