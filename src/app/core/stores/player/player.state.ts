@@ -31,8 +31,8 @@ export class PlayerState {
   }
 
   @Action(MixcloudAudioAction)
-  _mixcloudAudio(ctx: StateContext<IPlayerState>, { uid }: MixcloudAudioAction) {
-    return this._apiService.mixcloudAudioStream(uid!).pipe(
+  _mixcloudAudio(ctx: StateContext<IPlayerState>, { uid, externalUrl }: MixcloudAudioAction) {
+    return this._apiService.mixcloudAudioStream(uid!, externalUrl!).pipe(
       tap((url) => {
         ctx.patchState({
           mixcloudAudio: url

@@ -12,5 +12,5 @@ export class CurrentPlayerAction {
 
 export class MixcloudAudioAction {
   static readonly type = '[Player] Mixcloud Audio';
-  constructor(public uid: string | undefined) { }
+  constructor(public uid: string | undefined, public externalUrl: string | undefined) { }
 }

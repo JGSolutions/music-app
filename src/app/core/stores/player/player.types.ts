@@ -19,4 +19,5 @@ export interface ICurrentTrack {
   name: string;
   trackType: ITrackType,
   artist?: string;
+  externalUrl?: string;
 }
