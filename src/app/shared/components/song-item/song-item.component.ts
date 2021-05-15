@@ -17,6 +17,9 @@ export class SongItemComponent {
   @Input()
   trackType!: ITrackType;
 
+  @Input()
+  externalUrl!: string;
+
   @Output() selectedSong = new EventEmitter<ICurrentTrack>();
 
   public avatar$!: Observable<Pictures>;
@@ -25,6 +28,7 @@ export class SongItemComponent {
   public selectedItem(): void {
     this.selectedSong.emit({
       name: this.name,
+      externalUrl: this.externalUrl,
       trackType: this.trackType,
     });
 

@@ -19,7 +19,7 @@ export class PlayerBarComponent implements OnChanges {
 
     const containStreamUrl = changes.streamUrl && changes.streamUrl.currentValue;
 
-    if (changes.isLoading && !changes.isLoading.currentValue && containStreamUrl) {
+    if (containStreamUrl) {
       this.nameAudio.nativeElement.load();
       this.streamUrl = changes.streamUrl.currentValue;
     }

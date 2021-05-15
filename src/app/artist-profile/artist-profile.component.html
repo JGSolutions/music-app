@@ -11,6 +11,7 @@
     <app-song-item
       *ngFor="let song of songs$ | async"
       [name]="song.name"
+      [externalUrl]="song.externalUrl!"
       [trackType]="song.trackType"
       (selectedSong)="selectedSong($event)">
     </app-song-item>
