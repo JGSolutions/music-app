@@ -142,8 +142,8 @@ export const MixcloudSDK = {
     return data.data;
   },
 
-  async _audioFileUrl(externalUrl: string): Promise<string> {
-    const url = "https://www.dlmixcloud.com/ajax.php";
+  async audioStream(url: string): Promise<any> {
+    const apiUrl = "https://www.dlmixcloud.com/ajax.php";
 
     const postHeaders = {
       headers: {
@@ -151,12 +151,9 @@ export const MixcloudSDK = {
       },
     };
 
-    const params = `url=${externalUrl}`;
-    return await axios.post(url, params, postHeaders);
-  },
+    const params = `url=${url}`;
 
-  async audioStream(url: string): Promise<string | null> {
-    return this._audioFileUrl(url);
+    return await axios.post(apiUrl, params, postHeaders);
   },
 
   // async audioStream(): Promise<string | null> {

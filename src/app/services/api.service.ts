@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { IArtistBodyRequest, IArtistSongs } from '../core/stores/artists/artists.types';
 import { Observable } from 'rxjs';
+import { IStreamUrl } from '../core/stores/player/player.types';
 
 @Injectable()
 export class ApiService {
@@ -36,7 +37,7 @@ export class ApiService {
     return this.http.post<IArtistSongs[]>(url, JSON.stringify(payload), httpOptions);
   }
 
-  public mixcloudAudioStream(uid: string): Observable<string> {
+  public mixcloudAudioStream(uid: string): Observable<IStreamUrl> {
     const httpOptions = {
       headers: new HttpHeaders({
         "Authorization": uid
@@ -47,7 +48,8 @@ export class ApiService {
     const params = {
       key: ""
     };
-    return this.http.post<string>(url, params, httpOptions);
+
+    return this.http.post<IStreamUrl>(url, params, httpOptions);
   }
 }
 

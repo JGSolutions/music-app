@@ -9,3 +9,8 @@ export class CurrentPlayerAction {
   static readonly type = '[Player] Current Player Bar';
   constructor(public uid: string) { }
 }
+
+export class MixcloudAudioAction {
+  static readonly type = '[Player] Mixcloud Audio';
+  constructor(public uid: string | undefined) { }
+}

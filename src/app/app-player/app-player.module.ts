@@ -10,6 +10,7 @@ import { NgxsModule } from '@ngxs/store';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { PlayerState } from '../core/stores/player/player.state';
+import { PlayerbarModule } from '../shared/components/player-bar/player-bar.module';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -18,6 +19,7 @@ import { PlayerState } from '../core/stores/player/player.state';
     RouterModule,
     AngularMaterialModule,
     AppPlayerRoutingModule,
+    PlayerbarModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, PlayerState]),
   ],
   providers: [MusicConnectedService, ApiService],

@@ -23,7 +23,6 @@ export const mixcloudAudio = async (request: Request, response: Response) => {
 
   MixcloudSDK.initialize(connectedServices[IPlatformTypes.mixcloud].token);
 
-  const res = await MixcloudSDK.audioStream("https://www.mixcloud.com/hernancattaneo/resident-episode-522-may-08-2021/");
-
-  response.status(200).send(res);
+  const { data: result } = await MixcloudSDK.audioStream("https://www.mixcloud.com/hernancattaneo/resident-episode-522-may-08-2021/");
+  response.status(200).send({ url: result.url });
 };

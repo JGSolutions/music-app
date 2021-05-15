@@ -4,11 +4,12 @@ import { Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { PlayerState } from '../core/stores/player/player.state';
-import { ICurrentTrack } from '../core/stores/player/player.types';
+import { ICurrentTrack, IStreamUrl } from '../core/stores/player/player.types';
 import { isEmpty } from 'lodash';
+import { MixcloudAudioAction } from '../core/stores/player/player.actions';
 
 @Component({
   selector: 'app-player',
@@ -18,6 +19,8 @@ import { isEmpty } from 'lodash';
 export class AppPlayerComponent {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlayerState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(PlayerState.mixcloudAudio) mixcloudAudio$!: Observable<IStreamUrl>;
+
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
 
@@ -34,6 +37,13 @@ export class AppPlayerComponent {
     ).subscribe((user) => {
       this.store.dispatch(new ArtistsAction(user.uid));
     });
+
+    this.currentTrack$.pipe(
+      withLatestFrom(this.user$),
+      filter(([track, user]) => user !== null),
+      tap(([track, u]) => console.log(track)),
+      switchMap(([track, user]) => this.store.dispatch(new MixcloudAudioAction(user.uid)))
+    ).subscribe();
 
     this.currentTrackSelected$ = this.currentTrack$.pipe(
       map((currentTrack) => {

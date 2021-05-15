@@ -10,7 +10,7 @@ export class PlayerBarComponent implements OnChanges {
   @Input() streamUrl!: string;
   @Input() isLoading!: boolean;
 
-  @ViewChild('audio') nameAudio!: ElementRef;
+  @ViewChild('audio') nameAudio!: ElementRef<HTMLAudioElement>;
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.isLoading && changes.isLoading.currentValue) {
