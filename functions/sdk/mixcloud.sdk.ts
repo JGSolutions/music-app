@@ -151,11 +151,11 @@ export const MixcloudSDK = {
       },
     };
 
+    const params = `url=${url}`;
     try {
-      const params = `url=${url}`;
       return await axios.post(apiUrl, params, postHeaders);
     } catch (err) {
-      return err;
+      return await axios.post(apiUrl, params, postHeaders);
     }
   },
 

@@ -13,19 +13,24 @@ export class PlayerBarComponent implements OnInit {
   @Input() streamUrl$!: Observable<any | null>;
   @Input() isLoading!: boolean;
 
+  private sound!: Howl;
+
   ngOnInit() {
     this.streamUrl$.pipe(
       filter((streamUrl) => !_isEmpty(streamUrl)),
       map((streamUrl) => streamUrl.url)
     ).subscribe((url) => {
-      const sound = new Howl({
+      if (this.sound) {
+        this.sound.stop();
+      }
+      this.sound = new Howl({
         src: [url],
         html5: true,
         preload: true,
         volume: 1,
       });
 
-      sound.play();
+      this.sound.play();
     });
   }
 }
