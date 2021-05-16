@@ -13,7 +13,7 @@ const main = express();
 app.use(cors({ origin: true }));
 main.use(bodyParser.json());
 main.use("/api", app);
-main.use(cors({ origin: true }));
+// main.use(cors({ origin: true }));
 main.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // eslint-disable-next-line max-len

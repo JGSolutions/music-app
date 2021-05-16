@@ -40,7 +40,6 @@ export class AppPlayerComponent {
 
     this.currentTrack$.pipe(
       withLatestFrom(this.user$),
-      tap((e) => console.log(e)),
       filter(([track, user]) => user !== null),
       switchMap(([track, user]) => this.store.dispatch(new MixcloudAudioAction(user.uid, track.externalUrl)))
     ).subscribe();
