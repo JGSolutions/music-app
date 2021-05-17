@@ -33,7 +33,6 @@ export class HowlerPlayer {
     this.$progress = new Subject();
   }
 
-  /** */
   public play(index: any = null) {
     if (index == null)
       index = this._index;
@@ -44,8 +43,6 @@ export class HowlerPlayer {
     if (!sound.howl) {
       sound.howl = new Howl({
         src: [sound.sourceUrl as string],
-        // html5: true,
-        autoplay: true,
         volume: 0.5,
         onplay: () => {
           requestAnimationFrame(this.seekStep);
