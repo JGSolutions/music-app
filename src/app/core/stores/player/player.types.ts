@@ -7,11 +7,13 @@ export interface IStreamUrl {
 export interface IPlayerState {
   currentTrack: ICurrentTrack;
   mixcloudAudio: IStreamUrl;
+  loadingPlayer: boolean;
 }
 
 export const playerStateDefault: IPlayerState = {
   currentTrack: {} as ICurrentTrack,
-  mixcloudAudio: {} as IStreamUrl
+  mixcloudAudio: {} as IStreamUrl,
+  loadingPlayer: false,
 };
 
 export interface ICurrentTrack {

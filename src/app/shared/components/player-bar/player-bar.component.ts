@@ -1,7 +1,7 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
-import { isUndefined as _isUndefined, isEmpty as _isEmpty } from "lodash";
+import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
 @Component({
   selector: 'app-player-bar',
@@ -9,34 +9,45 @@ import { HowlerPlayerService } from './howl-player.service';
   styleUrls: ['./player-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlayerBarComponent implements OnInit {
+export class PlayerBarComponent implements OnInit, OnDestroy {
   @Input() streamUrl$!: Observable<any | null>;
-  @Input() isLoading!: boolean;
+  @Input() loading$!: Observable<boolean>;
+
+  private destroy$ = new Subject<boolean>();
 
   constructor(private howlService: HowlerPlayerService) { }
 
   ngOnInit() {
     this.streamUrl$.pipe(
+      takeUntil(this.destroy$),
       filter((streamUrl) => !_isEmpty(streamUrl)),
       map((streamUrl) => streamUrl.url)
     ).subscribe((url) => {
       this.howlService.initHowler(url);
     });
 
-    this.howlService.$onload.subscribe(() => {
+    this.howlService.$onload.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
       console.log("WOW LOADED");
     });
   }
 
-  public play() {
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
+  public play(): void {
     this.howlService.play();
   }
 
-  public pause() {
+  public pause(): void {
     this.howlService.pause();
   }
 
-  public stop() {
+  public stop(): void {
     this.howlService.stop();
   }
+
 }

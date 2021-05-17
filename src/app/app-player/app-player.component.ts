@@ -20,6 +20,7 @@ export class AppPlayerComponent {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlayerState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(PlayerState.mixcloudAudio) mixcloudAudio$!: Observable<IStreamUrl>;
+  @Select(PlayerState.loadingPlayer) loadingPlayer$!: Observable<boolean>;
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;

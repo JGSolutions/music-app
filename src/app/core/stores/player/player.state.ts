@@ -23,6 +23,11 @@ export class PlayerState {
     return state.mixcloudAudio;
   }
 
+  @Selector()
+  static loadingPlayer(state: IPlayerState) {
+    return state.loadingPlayer;
+  }
+
   @Action(OpenPlayerAction)
   _openPlayerBar(ctx: StateContext<IPlayerState>, { currentTrack }: OpenPlayerAction) {
     return ctx.patchState({
