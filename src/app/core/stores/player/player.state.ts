@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { MixcloudAudioAction, OpenPlayerAction } from './player.actions';
+import { LoadingPlayerAction, MixcloudAudioAction, OpenPlayerAction } from './player.actions';
 import { IPlayerState, playerStateDefault } from './player.types';
 
 @State<IPlayerState>({
@@ -44,6 +44,15 @@ export class PlayerState {
         });
       })
     )
+  }
+
+  @Action(LoadingPlayerAction)
+  _loadingPlayer(ctx: StateContext<IPlayerState>, { loadingValue }: LoadingPlayerAction) {
+    ctx.patchState({
+      loadingPlayer: loadingValue
+    });
+
+    return;
   }
 
 }

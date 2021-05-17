@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { IArtistBodyRequest, IArtistSongs } from '../core/stores/artists/artists.types';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { IStreamUrl } from '../core/stores/player/player.types';
 
 @Injectable()
@@ -49,6 +49,14 @@ export class ApiService {
       externalUrl
     };
 
-    return this.http.post<IStreamUrl>(url, params, httpOptions);
+    try {
+      return this.http.post<IStreamUrl>(url, params, httpOptions);
+    } catch (error) {
+      console.error(error);
+
+      return of({
+        url: "dldldl"
+      });
+    }
   }
 }

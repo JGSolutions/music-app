@@ -5,4 +5,6 @@
   <button (click)="play()">play</button>
   <button (click)="pause()">Pause</button>
   <button (click)="stop()">Stop</button>
+
+  {{ loading$ | async }}
 </div>
