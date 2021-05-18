@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";

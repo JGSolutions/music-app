@@ -16,19 +16,17 @@ export const artist = async (request: Request, response: Response) => {
   try {
     requestBody = JSON.parse(request.body);
   } catch (err) {
-    response.status(403).send("Invalid Body Request");
-    return;
+    return response.status(403).send("Invalid Body Request");
   }
 
   if (!authorized) {
-    response.status(401).send("Invalid authenticated");
+    return response.status(401).send("Invalid authenticated");
   }
 
   try {
     await adminFirebase.auth().getUser(authorized);
   } catch (err) {
-    response.status(401).send(err);
-    return;
+    return response.status(401).send(err);
   }
 
   const connectedServices = await getConnectServices(authorized);
@@ -50,6 +48,8 @@ export const artist = async (request: Request, response: Response) => {
   Promise.all(platformPromiseData).then((promiseData) => {
     const allPlatformData = promiseData.map((data) => data);
     const flattenData = flatten(allPlatformData);
-    response.status(200).send(flattenData);
+    return response.status(200).send(flattenData);
   });
+
+  return;
 };

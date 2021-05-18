@@ -49,9 +49,7 @@ export class AppPlayerComponent implements OnDestroy {
     });
 
     this.currentTrackSelected$ = this.currentTrack$.pipe(
-      map((currentTrack) => {
-        return !isEmpty(currentTrack)
-      }),
+      map((currentTrack) => !isEmpty(currentTrack)),
       shareReplay(1)
     )
   }

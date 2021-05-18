@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import axios from "axios";
 import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";

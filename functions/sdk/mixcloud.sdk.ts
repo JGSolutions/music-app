@@ -1,10 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
-import { throwError } from "rxjs";
+// import { throwError } from "rxjs";
 import axios from "axios";
 import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
-// import * as cheerio from "cheerio";
-// import * as puppeteer from "puppeteer";
 
 export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -64,17 +63,17 @@ export const MixcloudAuthorization = {
   },
 
   authorizeUrl(): string {
-    if (!this.clientId) {
-      throwError("Please provide a client id");
-    }
+    // if (!this.clientId) {
+    //   throwError("Please provide a client id");
+    // }
     const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}`;
     return `${this.mixcloudDomain}/oauth/authorize${q}`;
   },
 
   async createAccessTokenUrl(oAuthCode: string): Promise<any> {
-    if (!this.clientId || !this.secretApi) {
-      throwError("Api keys are not provided!");
-    }
+    // if (!this.clientId || !this.secretApi) {
+    //   throwError("Api keys are not provided!");
+    // }
 
     // eslint-disable-next-line max-len
     const url = `${this.mixcloudDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&client_secret=${this.secretApi}&code=${oAuthCode}`;
@@ -152,11 +151,7 @@ export const MixcloudSDK = {
     };
 
     const params = `url=${url}`;
-    try {
-      return await axios.post(apiUrl, params, postHeaders);
-    } catch (err) {
-      return await axios.post(apiUrl, params, postHeaders);
-    }
+    return await axios.post(apiUrl, params, postHeaders);
   },
 
   // async audioStream(): Promise<string | null> {

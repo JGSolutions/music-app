@@ -25,13 +25,13 @@ module.exports = {
     "import",
   ],
   rules: {
-    quotes: ["error", "double"],
+    "quotes": ["error", "double"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    '@typescript-eslint/no-non-null-assertion': 'off',
+    "@typescript-eslint/no-non-null-assertion": "off",
     "object-curly-spacing": [0, "never", {
       "objectsInObjects": false,
-      "arraysInObjects": false
+      "arraysInObjects": false,
     }],
-    "max-len": ["error", { "code": 140 }]
+    "max-len": ["error", { "code": 140 }],
   },
 };

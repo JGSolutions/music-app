@@ -13,25 +13,24 @@ export const mixcloudAudio = async (request: Request, response: Response) => {
   try {
     requestBody = request.body;
   } catch (err) {
-    response.status(403).send("Invalid Body Request");
-    return;
+    return response.status(403).send("Invalid Body Request");
   }
 
   if (!authorized) {
-    response.status(401).send("Invalid authenticated");
+    return response.status(401).send("Invalid authenticated");
   }
 
   try {
     await adminFirebase.auth().getUser(authorized);
   } catch (err) {
-    response.status(401).send(err);
-    return;
+    return response.status(401).send(err);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const connectedServices = await getConnectServices(authorized);
 
   MixcloudSDK.initialize(connectedServices[IPlatformTypes.mixcloud].token);
 
   const { data: result } = await MixcloudSDK.audioStream(requestBody.externalUrl);
-  response.status(200).send({ url: result.url });
+  return response.status(200).send({ url: result.url });
 };
