@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Howl, Howler } from 'howler';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class HowlerPlayerService {

@@ -3,6 +3,8 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
+import { Store } from '@ngxs/store';
+import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 @Component({
   selector: 'app-player-bar',
   templateUrl: './player-bar.component.html',
@@ -15,7 +17,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<boolean>();
 
-  constructor(private howlService: HowlerPlayerService) { }
+  constructor(private howlService: HowlerPlayerService, private store: Store) { }
 
   ngOnInit() {
     this.streamUrl$.pipe(
@@ -29,7 +31,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     this.howlService.$onload.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      console.log("WOW LOADED");
+      this.store.dispatch(new LoadingPlayerAction(false))
     });
   }
 

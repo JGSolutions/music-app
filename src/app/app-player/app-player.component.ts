@@ -44,7 +44,7 @@ export class AppPlayerComponent implements OnDestroy {
       withLatestFrom(this.user$),
       filter(([track, user]) => user !== null),
     ).subscribe(([track, user]) => {
-      this.store.dispatch(new LoadingPlayerAction(false))
+      this.store.dispatch(new LoadingPlayerAction(true))
       this.store.dispatch(new MixcloudAudioAction(user.uid, track.externalUrl));
     });
 
