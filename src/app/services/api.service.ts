@@ -4,10 +4,11 @@ import { map } from 'rxjs/operators';
 import { IArtistBodyRequest, IArtistSongs } from '../core/stores/artists/artists.types';
 import { Observable, of } from 'rxjs';
 import { IStreamUrl } from '../core/stores/player/player.types';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class ApiService {
-  private domainApi = 'http://localhost:5000/api';
+  private domainApi = environment.restapiDomain;
 
   constructor(private http: HttpClient) { }
 
