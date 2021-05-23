@@ -1,40 +1,40 @@
-<mat-toolbar class="example-header" color="primary">
+<mat-toolbar class="toolbar-header">
   <button mat-icon-button (click)="snav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   Header
 </mat-toolbar>
 
-<mat-sidenav-container class="example-container">
+<mat-sidenav-container class="side-menu-nav">
   <mat-sidenav
     #snav
     [opened]="(isMobile$ | async) ? false : true"
     [mode]="(isMobile$ | async) ? 'over' : 'side'"
-    class="example-sidenav"
+    class="menu-nav"
     [fixedInViewport]="false">
 
-    <a mat-button [routerLink]="['/', 'profile']" [routerLinkActive]="['active-bottom-link']">
+    <a mat-button [routerLink]="['/', 'profile']" [routerLinkActive]="['active-link']">
       <div class="menu-button-layout">
         <mat-icon>home</mat-icon>
         <span>Home</span>
       </div>
     </a>
 
-    <a mat-button [routerLink]="['/', 'profile']" [routerLinkActive]="['active-bottom-link']">
+    <a mat-button [routerLink]="['/', 'profile']" [routerLinkActive]="['active-link']">
       <div class="menu-button-layout">
         <mat-icon>queue_music</mat-icon>
         <span>Playlist</span>
       </div>
     </a>
 
-    <a mat-button [routerLink]="['/', 'artists']" [routerLinkActive]="['active-bottom-link']">
+    <a mat-button [routerLink]="['/', 'artists']" [routerLinkActive]="['active-link']">
       <div class="menu-button-layout">
         <mat-icon>music_note</mat-icon>
         <span>Artists</span>
       </div>
     </a>
 
-    <a mat-button [routerLink]="['/', 'platform-settings']" [routerLinkActive]="['active-bottom-link']">
+    <a mat-button [routerLink]="['/', 'platform-settings']" [routerLinkActive]="['active-link']">
       <div class="menu-button-layout">
         <mat-icon>link</mat-icon>
         <span>Platforms</span>

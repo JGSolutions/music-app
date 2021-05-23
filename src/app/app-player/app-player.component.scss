@@ -1,6 +1,7 @@
 @import '../../theme/breakpoints.scss';
+@import '../../theme/variables.scss';
 
-.example-container {
+.side-menu-nav {
   position: absolute;
   top: 56px;
 
@@ -11,20 +12,21 @@
   bottom: 0;
   left: 0;
   right: 0;
+
+  .menu-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+  }
 }
 
-.example-sidenav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 75px;
-}
-
-.example-header {
+.toolbar-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  background-color: white;
 }
 
 a.mat-button {
@@ -37,7 +39,7 @@ a.mat-button .menu-button-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
-  line-height: 20px;
+  line-height: $line-height;
   height: 100%;
 }
 
@@ -47,6 +49,5 @@ a.mat-button .menu-button-layout {
   left:0;
   width: 100%;
   height: 84px;
-  background-color: #eee;
   z-index: 1;
 }

@@ -1,27 +1,29 @@
 
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
+@use '../src/app/app-player/side-nav-theme.scss' as sideNav;
+
 @import './theme/custom-theme.scss';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
 // Be sure that you only ever include this mixin once!
-@include mat-core();
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 
 /* For use in src/lib/core/theming/_palette.scss */
-$music-app-primary: mat-palette($md-primary);
-$music-app-accent: mat-palette($md-secondary, A200, A100, A400);
-$music-app-warn: mat-palette($mat-red);
+$music-app-primary: mat.define-palette($md-primary, 500);
+$music-app-accent: mat.define-palette($md-secondary, A200, A100, A400);
+$music-app-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$music-app-theme: mat-light-theme((
+$music-app-theme: mat.define-light-theme((
   color: (
     primary: $music-app-primary,
     accent: $music-app-accent,
@@ -29,11 +31,9 @@ $music-app-theme: mat-light-theme((
   )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-// @include angular-material-theme($my-app-theme-custom);
-@include angular-material-theme($music-app-theme);
+@include mat.all-component-themes($music-app-theme);
+@include sideNav.theme($music-app-theme);
+
 
 /* You can add global styles to this file, and also import other style files */
 html, body {
@@ -44,8 +44,4 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-.accent-color {
-  color: mat-color($music-app-primary, 300) !important;
 }
