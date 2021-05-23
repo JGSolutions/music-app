@@ -1,13 +1,25 @@
-<mat-slider aria-label="unit(s)" color="primary"></mat-slider>
-<section class="playback-actions">
-  <button mat-icon-button (click)="play()">
-    <mat-icon>skip_previous</mat-icon>
-  </button>
-  <button (click)="pause()" mat-fab color="primary">
-    <mat-icon>pause</mat-icon>
-  </button>
-  <button mat-icon-button (click)="stop()">
-    <mat-icon>skip_next</mat-icon>
-  </button>
+<mat-slider color="primary" class="slider"></mat-slider>
+
+<section class="wrapper">
+  <section class="playback-actions">
+    <button mat-icon-button (click)="play()">
+      <mat-icon>skip_previous</mat-icon>
+    </button>
+    <button (click)="pause()" mat-fab color="primary">
+      <mat-icon>pause</mat-icon>
+    </button>
+    <button mat-icon-button (click)="stop()">
+      <mat-icon>skip_next</mat-icon>
+    </button>
+    <span class="mat-body-2">0:23/3:43</span>
+  </section>
+
+  <section class="music-info">
+    <img src="https://mi4l.s3.amazonaws.com/uploads/2018/09/herman.jpeg" class="music-avatar">
+
+    <div style="display: flex; flex-direction: column; padding-left: 10px">
+      <span class="mat-body-1">Music song</span>
+      <span class="mat-caption">Artist</span>
+    </div>
+  </section>
 </section>
-<span class="mat-body-2">0:23/3:43</span>
