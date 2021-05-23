@@ -1,6 +1,6 @@
 <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
 
-<h1 class="mat-display-1">Following</h1>
+  <div class="mat-display-1">Following</div>
 
 <ng-container *ngIf="(artistsByPlatform$ | async) as artists">
   <a [routerLink]="['/', 'artist', artistKey.key]" *ngFor="let artistKey of artists | keyvalue">

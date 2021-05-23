@@ -1,7 +1,13 @@
-<div class="player-bar-wrapper">
-  <button (click)="play()">play</button>
-  <button (click)="pause()">Pause</button>
-  <button (click)="stop()">Stop</button>
-
-  {{ loading$ | async }}
-</div>
+<mat-slider aria-label="unit(s)" color="primary"></mat-slider>
+<section class="playback-actions">
+  <button mat-icon-button (click)="play()">
+    <mat-icon>skip_previous</mat-icon>
+  </button>
+  <button (click)="pause()" mat-fab color="primary">
+    <mat-icon>pause</mat-icon>
+  </button>
+  <button mat-icon-button (click)="stop()">
+    <mat-icon>skip_next</mat-icon>
+  </button>
+</section>
+<span class="mat-body-2">0:23/3:43</span>

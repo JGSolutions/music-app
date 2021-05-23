@@ -32,12 +32,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 // import { MatRadioModule } from '@angular/material/radio';
 // import { MatDatepickerModule } from '@angular/material/datepicker';
 // import { MatTooltipModule } from '@angular/material/tooltip';
-
+import { MatSliderModule } from '@angular/material/slider';
 
 const materialModules = [
   // CdkTreeModule,
   // MatAutocompleteModule,
   MatButtonModule,
+  MatSliderModule,
   MatCardModule,
   // MatCheckboxModule,
   MatChipsModule,
