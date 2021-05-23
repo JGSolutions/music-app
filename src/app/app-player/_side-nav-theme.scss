@@ -7,9 +7,14 @@
 
   // Get the primary color palette from the color-config.
   $primary-palette: map.get($color-config, 'primary');
+  $foreground: map.get($color-config, 'foreground');
 
   .active-link {
-    color: mat.get-color-from-palette($primary-palette, 500);
+    color: mat.get-color-from-palette($primary-palette, 500) !important;
+  }
+
+  a.link {
+    color: mat.get-color-from-palette($foreground, 'secondary-text');
   }
 }
 
