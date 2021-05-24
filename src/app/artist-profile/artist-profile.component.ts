@@ -97,6 +97,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         name: song!.name,
         trackType: song?.trackType as ITrackType,
         artist: song?.artistName,
+        externalUrl: song?.externalUrl,
         avatar: song?.pictures.medium
       }));
     });

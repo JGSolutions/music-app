@@ -24,7 +24,9 @@ export interface IArtistSongs {
   totalTracks: number;
   trackType: ITrackType;
   pictures: Pictures;
+  externalUrl?: string;
 }
+
 export interface IArtistBodyRequest {
   type: string;
   username: string;
