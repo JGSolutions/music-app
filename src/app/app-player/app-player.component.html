@@ -46,9 +46,10 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
-<!-- <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
-  <app-player-bar [streamUrl$]="mixcloudAudio$!" [loading$]="loadingPlayer$"></app-player-bar>
-</div> -->
-<div class="player-bar-container">
-  <app-player-bar [streamUrl$]="mixcloudAudio$!" [loading$]="loadingPlayer$"></app-player-bar>
+<div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
+  <app-player-bar
+    [streamUrl$]="mixcloudAudio$!"
+    [currentTrack]="(currentTrack$ | async)!"
+    [loading$]="loadingPlayer$">
+  </app-player-bar>
 </div>

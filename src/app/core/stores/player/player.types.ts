@@ -22,4 +22,5 @@ export interface ICurrentTrack {
   trackType: ITrackType,
   artist?: string;
   externalUrl?: string;
+  avatar?: string;
 }

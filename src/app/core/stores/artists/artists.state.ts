@@ -47,6 +47,11 @@ export class ArtistsState {
   }
 
   @Selector()
+  static songDetailById(state: IArtistsState) {
+    return (id: string) => state.artistSongs.find((song) => song.id === id);
+  }
+
+  @Selector()
   static artistsByPlatform(state: IArtistsState) {
     return (platform: IConnectedServicesTypes) => {
       if (platform === IConnectedServicesTypes.all) {

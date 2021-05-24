@@ -5,6 +5,7 @@ import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
 import { Store } from '@ngxs/store';
 import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
+import { ICurrentTrack } from 'src/app/core/stores/player/player.types';
 @Component({
   selector: 'app-player-bar',
   templateUrl: './player-bar.component.html',
@@ -14,6 +15,8 @@ import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 export class PlayerBarComponent implements OnInit, OnDestroy {
   @Input() streamUrl$!: Observable<any | null>;
   @Input() loading$!: Observable<boolean>;
+  @Input() currentTrack!: ICurrentTrack;
+
   public isPlaying$ = new BehaviorSubject(false);
 
   private destroy$ = new Subject<boolean>();

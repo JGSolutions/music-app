@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { IArtists, IArtistSongs } from 'functions/src/models/IArtists.types';
+import { IArtists, IArtistSongs, ITrackType } from 'functions/src/models/IArtists.types';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
@@ -11,8 +11,8 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
-import { ICurrentTrack } from '../core/stores/player/player.types';
 import { OpenPlayerAction } from '../core/stores/player/player.actions';
+
 @Component({
   selector: 'app-artist-profile',
   templateUrl: './artist-profile.component.html',
@@ -22,7 +22,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
+
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
+  public songDetailById$ = this.store.select(ArtistsState.songDetailById);
   public songsByPlatform$ = this.store.select(ArtistsState.songsByPlatform);
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
@@ -85,7 +87,18 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this._connectServiceType$.next(evt);
   }
 
-  public selectedSong(evt: ICurrentTrack): void {
-    this.store.dispatch(new OpenPlayerAction(evt));
+  public selectedSong(evt: string): void {
+    this.songDetailById$.pipe(
+      take(1),
+      map((fn) => fn(evt))
+    ).subscribe((song) => {
+      this.store.dispatch(new OpenPlayerAction({
+        platform: song!.platform,
+        name: song!.name,
+        trackType: song?.trackType as ITrackType,
+        artist: song?.artistName,
+        avatar: song?.pictures.medium
+      }));
+    });
   }
 }

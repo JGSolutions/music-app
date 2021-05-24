@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { ITrackType } from 'functions/src/models/IArtists.types';
 import { Pictures } from 'functions/src/models/IPictures.types';
 import { Observable } from 'rxjs';
-import { ICurrentTrack } from 'src/app/core/stores/player/player.types';
 
 @Component({
   selector: 'app-song-item',
@@ -18,7 +17,7 @@ export class SongItemComponent {
   id!: string;
 
   @Input()
-  image!: string;
+  avatar!: string;
 
   @Input()
   length!: number;
@@ -29,18 +28,13 @@ export class SongItemComponent {
   @Input()
   externalUrl!: string;
 
-  @Output() selectedSong = new EventEmitter<ICurrentTrack>();
+  @Output() selectedSong = new EventEmitter<string>();
 
   public avatar$!: Observable<Pictures>;
   public platforms$!: Observable<string[]>;
 
   public selectedItem(): void {
-    this.selectedSong.emit({
-      name: this.name,
-      externalUrl: this.externalUrl,
-      trackType: this.trackType,
-    });
-
+    this.selectedSong.emit(this.id);
   }
 }
 
