@@ -47,4 +47,11 @@ export class HowlerPlayerService {
     }
   }
 
+  public isPlaying(): boolean {
+    if (this._sound) {
+      return this._sound.playing();
+    }
+
+    return false;
+  }
 }
