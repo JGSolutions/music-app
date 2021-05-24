@@ -15,6 +15,15 @@ export class SongItemComponent {
   name!: string;
 
   @Input()
+  id!: string;
+
+  @Input()
+  image!: string;
+
+  @Input()
+  length!: number;
+
+  @Input()
   trackType!: ITrackType;
 
   @Input()
