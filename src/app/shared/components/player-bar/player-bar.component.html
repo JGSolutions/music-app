@@ -5,10 +5,10 @@
     <button mat-icon-button (click)="play()" class="skip-previous">
       <mat-icon>skip_previous</mat-icon>
     </button>
-    <button (click)="play()" mat-fab color="primary" *ngIf="(isPlaying$ | async) === false" class="play-button">
+    <button (click)="play()" mat-fab color="primary" *ngIf="(isPlaying$ | async) === false" class="play-button" [disabled]="(loading$ | async)">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button (click)="pause()" mat-fab color="primary" *ngIf="isPlaying$ | async">
+    <button (click)="pause()" mat-fab color="primary" *ngIf="isPlaying$ | async" [disabled]="(loading$ | async)">
       <mat-icon>pause</mat-icon>
     </button>
     <button mat-icon-button (click)="stop()" class="skip-next">

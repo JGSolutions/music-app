@@ -43,7 +43,12 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <router-outlet></router-outlet>
+    <main style="display: flex; flex-direction: column; height: 100%;">
+      <div id="app-content">
+        <router-outlet #outlet="outlet"></router-outlet>
+      </div>
+      <section *ngIf="currentTrackSelected$ | async" class="blank-bar-container"></section>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
 <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
