@@ -1,5 +1,3 @@
-<!-- <mat-slider color="primary" class="slider"></mat-slider> -->
-
 <mat-slider
 class="slider"
 color="primary"
@@ -7,8 +5,8 @@ color="primary"
 (input)="sliderInput($event)"
 [step]="1"
 min="0"
-[max]="howlService.$rawDuration| async"
-[value]="howlService.$percentageProgress | async">
+[value]="howlService.$percentageProgress | async"
+[max]="howlService.$rawDuration| async">
 </mat-slider>
 
 <section class="wrapper" [ngClass]="{'loading': (loading$ | async)}">

@@ -12,6 +12,7 @@ export class HowlerPlayerService {
   public $rawDuration: ReplaySubject<number>;
 
   private _sound: Howl | undefined;
+  private _raf = 0;
 
   constructor() {
     this.$onload = new ReplaySubject();
@@ -38,10 +39,10 @@ export class HowlerPlayerService {
         const formattedDurationTime = this.formatTime(Math.round(this._sound?.duration()!));
         this.$duration.next(formattedDurationTime);
         this.$rawDuration.next(this._sound?.duration()!);
-        requestAnimationFrame(this.step.bind(this));
+        this._raf = requestAnimationFrame(this.step.bind(this));
       },
-      onseek: () => {
-        requestAnimationFrame(this.step.bind(this));
+      onpause: () => {
+        cancelAnimationFrame(this._raf);
       }
     })
   }
@@ -95,10 +96,10 @@ export class HowlerPlayerService {
     this.$timer.next(timer);
     this.$percentageProgress.next(seek as number);
 
-    requestAnimationFrame(this.step.bind(this));
+    this._raf = requestAnimationFrame(this.step.bind(this));
   }
 
-  public seek(per: number) {
+  public seek(per: number): void {
     this._sound?.seek(per);
   }
 }
