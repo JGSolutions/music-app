@@ -6,6 +6,7 @@ import { HowlerPlayerService } from './howl-player.service';
 import { Store } from '@ngxs/store';
 import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { ICurrentTrack } from 'src/app/core/stores/player/player.types';
+import { MatSliderChange } from '@angular/material/slider';
 @Component({
   selector: 'app-player-bar',
   templateUrl: './player-bar.component.html',
@@ -21,7 +22,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<boolean>();
 
-  constructor(private howlService: HowlerPlayerService, private store: Store) { }
+  constructor(public howlService: HowlerPlayerService, private store: Store) { }
 
   ngOnInit() {
     this.streamUrl$.pipe(
@@ -36,7 +37,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.isPlaying$.next(true);
-      this.store.dispatch(new LoadingPlayerAction(false))
+      this.store.dispatch(new LoadingPlayerAction(false));
     });
   }
 
@@ -59,4 +60,23 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     this.howlService.stop();
   }
 
+  private _formatTime(secs: number): string {
+    const minutes = Math.floor(secs / 60) || 0;
+    const seconds = (secs - minutes * 60) || 0;
+
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  }
+
+  public sliderChange(evt: any) {
+    // console.log(evt.value);
+    // this.howlService.seek(evt.value);
+
+    // this.howlService.play();
+    // this.isPlaying$.next(true);
+  }
+  public sliderInput(evt: any) {
+    // const newTime: number = this.howlService.duration() * (evt.value / 100);
+    // this.currentTime = this._formatTime(newTime);
+    this.howlService.seek(evt.value)
+  }
 }
