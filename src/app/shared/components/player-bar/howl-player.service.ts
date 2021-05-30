@@ -24,21 +24,23 @@ export class HowlerPlayerService {
 
   public initHowler(streamUrl: string): void {
     if (this._sound) {
+      cancelAnimationFrame(this._raf);
       this._sound.unload();
     }
     this._sound = new Howl({
       src: [streamUrl],
       html5: true,
-      autoplay: true,
+      autoplay: false,
       preload: 'metadata',
       volume: 1,
       onload: () => {
+        const formattedDurationTime = this.formatTime(Math.round(this._sound?.duration()!));
+        this.$duration.next(formattedDurationTime);
+        this.$timer.next("0:00");
+        this.$rawDuration.next(this._sound?.duration()!);
         this.$onload.next();
       },
       onplay: () => {
-        const formattedDurationTime = this.formatTime(Math.round(this._sound?.duration()!));
-        this.$duration.next(formattedDurationTime);
-        this.$rawDuration.next(this._sound?.duration()!);
         this._raf = requestAnimationFrame(this.step.bind(this));
       }
     })
@@ -97,7 +99,9 @@ export class HowlerPlayerService {
   }
 
   public cancelAnimationFrame(): void {
-    cancelAnimationFrame(this._raf);
+    if (this._sound?.playing()) {
+      cancelAnimationFrame(this._raf);
+    }
   }
 
   public seek(per: number): void {

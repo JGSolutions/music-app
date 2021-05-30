@@ -36,7 +36,6 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     this.howlService.$onload.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      this.isPlaying$.next(true);
       this.store.dispatch(new LoadingPlayerAction(false));
     });
   }
@@ -52,8 +51,9 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   }
 
   public pause(): void {
-    this.isPlaying$.next(false);
+    this.howlService.cancelAnimationFrame();
     this.howlService.pause();
+    this.isPlaying$.next(false);
   }
 
   public stop(): void {
