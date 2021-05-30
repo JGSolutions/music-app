@@ -74,9 +74,17 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
    * When user drags slider just pause the music file and update timer as user is dragging
    */
   public sliderInput(evt: any): void {
-    // const newTime: number = this.howlService.duration() * (evt.value / 100);
-    // this.currentTime = this._formatTime(newTime);
-
+    const timer = this._formatTime(Math.round(evt.value as number));
+    this.howlService.$timer.next(timer);
+    this.howlService.cancelAnimationFrame();
     this.howlService.pause();
+
+  }
+
+  private _formatTime(secs: number): string {
+    const minutes = Math.floor(secs / 60) || 0;
+    const seconds = (secs - minutes * 60) || 0;
+
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
   }
 }

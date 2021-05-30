@@ -40,9 +40,6 @@ export class HowlerPlayerService {
         this.$duration.next(formattedDurationTime);
         this.$rawDuration.next(this._sound?.duration()!);
         this._raf = requestAnimationFrame(this.step.bind(this));
-      },
-      onpause: () => {
-        cancelAnimationFrame(this._raf);
       }
     })
   }
@@ -97,6 +94,10 @@ export class HowlerPlayerService {
     this.$percentageProgress.next(seek as number);
 
     this._raf = requestAnimationFrame(this.step.bind(this));
+  }
+
+  public cancelAnimationFrame(): void {
+    cancelAnimationFrame(this._raf);
   }
 
   public seek(per: number): void {

@@ -1,6 +1,7 @@
 <mat-slider
 class="slider"
 color="primary"
+[disabled]="(loading$ | async)"
 (change)="sliderChange($event)"
 (input)="sliderInput($event)"
 [step]="1"
@@ -8,6 +9,9 @@ min="0"
 [value]="howlService.$percentageProgress | async"
 [max]="howlService.$rawDuration| async">
 </mat-slider>
+
+<!-- <input type="range" [step]="1" min="0" [max]="howlService.$rawDuration| async" [value]="howlService.$percentageProgress | async" (change)="sliderChange($event)"
+(input)="sliderInput($event)"> -->
 
 <section class="wrapper" [ngClass]="{'loading': (loading$ | async)}">
   <section class="playback-actions">
