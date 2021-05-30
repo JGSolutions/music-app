@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Howl, Howler } from 'howler';
 import { ReplaySubject, Subject } from 'rxjs';
+import { formatTime } from 'src/app/core/utils/utils';
 
 @Injectable()
 export class HowlerPlayerService {
@@ -11,15 +12,15 @@ export class HowlerPlayerService {
   public $duration: ReplaySubject<string>;
   public $rawDuration: ReplaySubject<number>;
 
-  private _sound: Howl | undefined;
+  private _sound!: Howl;
   private _raf = 0;
 
   constructor() {
-    this.$onload = new ReplaySubject();
-    this.$percentageProgress = new ReplaySubject();
-    this.$timer = new ReplaySubject();
-    this.$duration = new ReplaySubject();
-    this.$rawDuration = new ReplaySubject();
+    this.$onload = new ReplaySubject(1);
+    this.$percentageProgress = new ReplaySubject(1);
+    this.$timer = new ReplaySubject(1);
+    this.$duration = new ReplaySubject(1);
+    this.$rawDuration = new ReplaySubject(1);
   }
 
   public initHowler(streamUrl: string): void {
@@ -27,6 +28,7 @@ export class HowlerPlayerService {
       cancelAnimationFrame(this._raf);
       this._sound.unload();
     }
+
     this._sound = new Howl({
       src: [streamUrl],
       html5: true,
@@ -34,7 +36,7 @@ export class HowlerPlayerService {
       preload: 'metadata',
       volume: 1,
       onload: () => {
-        const formattedDurationTime = this.formatTime(Math.round(this._sound?.duration()!));
+        const formattedDurationTime = formatTime(Math.round(this._sound?.duration()!));
         this.$duration.next(formattedDurationTime);
         this.$timer.next("0:00");
         this.$rawDuration.next(this._sound?.duration()!);
@@ -62,6 +64,9 @@ export class HowlerPlayerService {
 
   public pause(): void {
     if (this._sound) {
+      if (this._sound?.playing()) {
+        cancelAnimationFrame(this._raf);
+      }
       this._sound.pause();
     }
   }
@@ -80,28 +85,14 @@ export class HowlerPlayerService {
     return false;
   }
 
-  public formatTime(secs: number): string {
-    const minutes = Math.floor(secs / 60) || 0;
-    const seconds = (secs - minutes * 60) || 0;
-
-    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-  }
-
   private step() {
     const seek = this._sound?.seek() || 0 as number;
-    const timer = this.formatTime(Math.round(seek as number));
-    const percentageProgress = (((seek as number / this._sound?.duration()!) * 100) || 0);
+    const timer = formatTime(Math.round(seek as number));
 
     this.$timer.next(timer);
     this.$percentageProgress.next(seek as number);
 
     this._raf = requestAnimationFrame(this.step.bind(this));
-  }
-
-  public cancelAnimationFrame(): void {
-    if (this._sound?.playing()) {
-      cancelAnimationFrame(this._raf);
-    }
   }
 
   public seek(per: number): void {

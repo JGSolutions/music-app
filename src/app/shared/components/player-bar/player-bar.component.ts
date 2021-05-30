@@ -6,6 +6,7 @@ import { HowlerPlayerService } from './howl-player.service';
 import { Store } from '@ngxs/store';
 import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { ICurrentTrack } from 'src/app/core/stores/player/player.types';
+import { formatTime } from 'src/app/core/utils/utils';
 
 @Component({
   selector: 'app-player-bar',
@@ -51,7 +52,6 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   }
 
   public pause(): void {
-    this.howlService.cancelAnimationFrame();
     this.howlService.pause();
     this.isPlaying$.next(false);
   }
@@ -74,17 +74,10 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
    * When user drags slider just pause the music file and update timer as user is dragging
    */
   public sliderInput(evt: any): void {
-    const timer = this._formatTime(Math.round(evt.value as number));
-    this.howlService.$timer.next(timer);
-    this.howlService.cancelAnimationFrame();
+    const timer = formatTime(Math.round(evt.value as number));
+    this.howlService.$timer.next(timer)
     this.howlService.pause();
 
   }
 
-  private _formatTime(secs: number): string {
-    const minutes = Math.floor(secs / 60) || 0;
-    const seconds = (secs - minutes * 60) || 0;
-
-    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-  }
 }
