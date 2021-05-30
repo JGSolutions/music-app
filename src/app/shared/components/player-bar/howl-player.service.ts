@@ -11,6 +11,7 @@ export class HowlerPlayerService {
   public $currentTimer: ReplaySubject<string>;
   public $duration: ReplaySubject<string>;
   public $rawDuration: ReplaySubject<number>;
+  public $isPlaying: ReplaySubject<boolean>;
 
   private _sound!: Howl;
   private _raf = 0;
@@ -21,6 +22,7 @@ export class HowlerPlayerService {
     this.$currentTimer = new ReplaySubject(1);
     this.$duration = new ReplaySubject(1);
     this.$rawDuration = new ReplaySubject(1);
+    this.$isPlaying = new ReplaySubject(1);
   }
 
   public initHowler(streamUrl: string): void {
@@ -40,10 +42,12 @@ export class HowlerPlayerService {
         this.$duration.next(formattedDurationTime);
         this.$currentTimer.next("0:00");
         this.$rawDuration.next(this._sound?.duration()!);
+        this.$isPlaying.next(this._sound?.playing());
         this.$onload.next();
       },
       onplay: () => {
         this._raf = requestAnimationFrame(this.step.bind(this));
+        this.$isPlaying.next(this._sound.playing());
       }
     })
   }
@@ -68,12 +72,14 @@ export class HowlerPlayerService {
         cancelAnimationFrame(this._raf);
       }
       this._sound.pause();
+      this.$isPlaying.next(this._sound.playing());
     }
   }
 
   public stop(): void {
     if (this._sound) {
       this._sound.stop();
+      this.$isPlaying.next(this._sound.playing());
     }
   }
 

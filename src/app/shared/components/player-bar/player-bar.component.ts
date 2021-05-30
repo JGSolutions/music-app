@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
@@ -18,8 +18,6 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   @Input() streamUrl$!: Observable<any | null>;
   @Input() loading$!: Observable<boolean>;
   @Input() currentTrack!: ICurrentTrack;
-
-  public isPlaying$ = new BehaviorSubject(false);
 
   private destroy$ = new Subject<boolean>();
 
@@ -47,13 +45,11 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   }
 
   public play(): void {
-    this.isPlaying$.next(true);
     this.howlService.play();
   }
 
   public pause(): void {
     this.howlService.pause();
-    this.isPlaying$.next(false);
   }
 
   public stop(): void {
@@ -67,7 +63,6 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   public sliderChange(evt: any) {
     this.howlService.seek(evt.value);
     this.howlService.play();
-    this.isPlaying$.next(true);
   }
 
   /**
@@ -77,7 +72,6 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     const timer = formatTime(Math.round(evt.value as number));
     this.howlService.$currentTimer.next(timer)
     this.howlService.pause();
-
   }
 
 }
