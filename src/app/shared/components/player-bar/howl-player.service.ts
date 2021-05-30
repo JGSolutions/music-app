@@ -43,10 +43,11 @@ export class HowlerPlayerService {
         this.$currentTimer.next("0:00");
         this.$rawDuration.next(this._sound?.duration()!);
         this.$isPlaying.next(this._sound?.playing());
+        this.$sliderProgress.next(0);
         this.$onload.next();
       },
       onplay: () => {
-        this._raf = requestAnimationFrame(this.step.bind(this));
+        this._raf = requestAnimationFrame(this._whilePlaying.bind(this));
         this.$isPlaying.next(this._sound.playing());
       }
     })
@@ -91,14 +92,14 @@ export class HowlerPlayerService {
     return false;
   }
 
-  private step() {
+  private _whilePlaying() {
     const seek = this._sound?.seek() || 0 as number;
     const timer = formatTime(Math.round(seek as number));
 
     this.$currentTimer.next(timer);
     this.$sliderProgress.next(seek as number);
 
-    this._raf = requestAnimationFrame(this.step.bind(this));
+    this._raf = requestAnimationFrame(this._whilePlaying.bind(this));
   }
 
   public seek(per: number): void {
