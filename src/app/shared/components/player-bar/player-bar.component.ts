@@ -75,7 +75,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
    */
   public sliderInput(evt: any): void {
     const timer = formatTime(Math.round(evt.value as number));
-    this.howlService.$timer.next(timer)
+    this.howlService.$currentTimer.next(timer)
     this.howlService.pause();
 
   }

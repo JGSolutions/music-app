@@ -7,8 +7,8 @@ import { formatTime } from 'src/app/core/utils/utils';
 export class HowlerPlayerService {
   public howler = Howler;
   public $onload: ReplaySubject<void>;
-  public $percentageProgress: ReplaySubject<number>;
-  public $timer: ReplaySubject<string>;
+  public $sliderProgress: ReplaySubject<number>;
+  public $currentTimer: ReplaySubject<string>;
   public $duration: ReplaySubject<string>;
   public $rawDuration: ReplaySubject<number>;
 
@@ -17,8 +17,8 @@ export class HowlerPlayerService {
 
   constructor() {
     this.$onload = new ReplaySubject(1);
-    this.$percentageProgress = new ReplaySubject(1);
-    this.$timer = new ReplaySubject(1);
+    this.$sliderProgress = new ReplaySubject(1);
+    this.$currentTimer = new ReplaySubject(1);
     this.$duration = new ReplaySubject(1);
     this.$rawDuration = new ReplaySubject(1);
   }
@@ -38,7 +38,7 @@ export class HowlerPlayerService {
       onload: () => {
         const formattedDurationTime = formatTime(Math.round(this._sound?.duration()!));
         this.$duration.next(formattedDurationTime);
-        this.$timer.next("0:00");
+        this.$currentTimer.next("0:00");
         this.$rawDuration.next(this._sound?.duration()!);
         this.$onload.next();
       },
@@ -89,8 +89,8 @@ export class HowlerPlayerService {
     const seek = this._sound?.seek() || 0 as number;
     const timer = formatTime(Math.round(seek as number));
 
-    this.$timer.next(timer);
-    this.$percentageProgress.next(seek as number);
+    this.$currentTimer.next(timer);
+    this.$sliderProgress.next(seek as number);
 
     this._raf = requestAnimationFrame(this.step.bind(this));
   }
