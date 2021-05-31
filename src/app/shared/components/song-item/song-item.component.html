@@ -1,3 +1,18 @@
-<div (click)="selectedItem()">
-  {{name}}
+<div class="item">
+  <div class="avatar-wrapper" (click)="selectedItem()">
+    <img [src]="avatar" class="avatar">
+  </div>
+  <div class="info-wrapper">
+    <span class="mat-caption">{{dateCreated | dateAgo}}</span>
+    <span class="mat-body-1">{{name}}</span>
+    <span>
+      <img src="../assets/platforms/mixcloud.png" >
+    </span>
+    <span class="mat-caption">{{trackType}} {{ length }} min</span>
+  </div>
+  <div class="options">
+    <button mat-icon-button color="primary">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
 </div>

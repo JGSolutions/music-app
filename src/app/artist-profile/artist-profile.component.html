@@ -12,9 +12,11 @@
       [name]="song.name"
       [id]="song.id"
       [length]="song.length"
+      [platform]="song.platform"
       [avatar]="song.pictures.medium"
       [externalUrl]="song.externalUrl!"
       [trackType]="song.trackType"
+      [dateCreated]="song.createdTime"
       (selectedSong)="selectedSong($event)">
     </app-song-item>
   </section>

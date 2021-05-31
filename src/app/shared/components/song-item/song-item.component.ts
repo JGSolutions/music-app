@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { IPlatformTypes } from 'functions/sdk/IPlatforms.types';
 import { ITrackType } from 'functions/src/models/IArtists.types';
 import { Pictures } from 'functions/src/models/IPictures.types';
 import { Observable } from 'rxjs';
@@ -23,7 +24,13 @@ export class SongItemComponent {
   length!: number;
 
   @Input()
+  dateCreated!: any;
+
+  @Input()
   trackType!: ITrackType;
+
+  @Input()
+  platform!: IPlatformTypes;
 
   @Input()
   externalUrl!: string;
