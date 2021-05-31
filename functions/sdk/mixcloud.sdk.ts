@@ -150,8 +150,12 @@ export const MixcloudSDK = {
       },
     };
 
-    const params = `url=${url}`;
-    return await axios.post(apiUrl, params, postHeaders);
+    try {
+      const params = `url=${url}`;
+      return await axios.post(apiUrl, params, postHeaders);
+    } catch (error) {
+      return await this.audioStream(url);
+    }
   },
 
   // async audioStream(): Promise<string | null> {
