@@ -6,9 +6,9 @@
     <span class="mat-caption">{{dateCreated | dateAgo}}</span>
     <span class="mat-body-1">{{name}}</span>
     <span>
-      <img src="../assets/platforms/mixcloud.png" >
+      <img src="../assets/platforms/{{platform}}.png" >
     </span>
-    <span class="mat-caption">{{trackType}} {{ length }} min</span>
+    <span class="mat-caption">{{trackType}} {{length | minuteSeconds}}</span>
   </div>
   <div class="options">
     <button mat-icon-button color="primary">
