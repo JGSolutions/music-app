@@ -2,9 +2,9 @@ import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { Pictures } from "./IPictures.types";
 
 export enum ITrackType {
-  track = "track",
-  album = "album",
-  single = "single",
+  track,
+  album,
+  single,
 }
 export interface IArtists {
   name: string;

@@ -3,12 +3,16 @@
     <img [src]="avatar" class="avatar">
   </div>
   <div class="info-wrapper">
-    <span class="mat-caption">{{dateCreated | dateAgo}}</span>
-    <span class="mat-body-1">{{name}}</span>
-    <span>
-      <img src="../assets/platforms/{{platform}}.png" >
+    <span class="mat-caption">Posted {{dateCreated | dateAgo}}</span>
+    <div class="music-info">
+      <span class="mat-body-2">{{name}}</span>
+      <span>
+        <img src="../assets/platforms/{{platform}}.png" >
+      </span>
+    </div>
+    <span class="mat-caption">
+      <span class="type">{{trackType}}</span> - {{length | minuteSeconds}}
     </span>
-    <span class="mat-caption">{{trackType}} {{length | minuteSeconds}}</span>
   </div>
   <div class="options">
     <button mat-icon-button color="primary">
