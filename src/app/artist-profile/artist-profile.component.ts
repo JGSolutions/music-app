@@ -96,7 +96,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.store.dispatch(new OpenPlayerAction({
         platform: song!.platform,
         name: song!.name,
-        trackType: song?.trackType as ISongTrackType,
+        trackType: song!.trackType,
         artist: song?.artistName,
         externalUrl: song?.externalUrl,
         avatar: song?.pictures.medium
