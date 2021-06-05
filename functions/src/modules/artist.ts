@@ -18,10 +18,6 @@ export const artist = async (request: Request, response: Response) => {
     return response.status(403).send("Invalid Body Request");
   }
 
-  if (!authorized) {
-    return response.status(401).send("Invalid authenticated");
-  }
-
   try {
     await adminFirebase.auth().getUser(authorized);
   } catch (err) {
@@ -36,6 +32,7 @@ export const artist = async (request: Request, response: Response) => {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key.type].token);
         platformPromiseData.push(MixcloudSDK.artistSongs(key.username));
+        // platformPromiseData.push([]);
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key.type].token, connectedServices[key.type].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
@@ -46,8 +43,7 @@ export const artist = async (request: Request, response: Response) => {
 
   Promise.all(platformPromiseData).then((promiseData) => {
     const allPlatformData = promiseData.map((data) => data);
-    const flattenData = flatten(allPlatformData);
-    return response.status(200).send(flattenData);
+    return response.status(200).send(flatten(allPlatformData));
   });
 
   return;

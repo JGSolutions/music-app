@@ -3,14 +3,13 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import firebase from 'firebase/app';
-import { IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
-
+import { IPlatformTypes } from 'models/artist.types';
 @Injectable()
 export class MusicConnectedService {
-  constructor(private afs: AngularFirestore) {}
+  constructor(private afs: AngularFirestore) { }
 
-  public connectService(uid: string, data: any, type: string) {
-    this.afs.collection('connectedServices').doc(uid).set({
+  public connectService(uid: string, data: any, type: string): Promise<void> {
+    return this.afs.collection('connectedServices').doc(uid).set({
       [type]: data
     }, { merge: true });
   }
@@ -21,8 +20,8 @@ export class MusicConnectedService {
     );
   }
 
-  public disonnectService(uid: string | undefined, type: IConnectedServicesTypes) {
-    this.afs.collection('connectedServices').doc(uid).update({
+  public disconnectService(uid: string | undefined, type: IPlatformTypes): Promise<void> {
+    return this.afs.collection('connectedServices').doc(uid).update({
       [type]: firebase.firestore.FieldValue.delete()
     });
   }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { IPlatformTypes } from 'functions/sdk/IPlatforms.types';
-import { ITrackType } from 'functions/src/models/IArtists.types';
-import { Pictures } from 'functions/src/models/IPictures.types';
+import { IPlatformTypes } from 'models/artist.types';
+import { IAvatar } from 'models/avatar.types';
+import { ISongTrackType } from 'models/song.types';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -27,7 +27,7 @@ export class SongItemComponent {
   dateCreated!: any;
 
   @Input()
-  trackType!: ITrackType;
+  trackType!: ISongTrackType;
 
   @Input()
   platform!: IPlatformTypes;
@@ -37,9 +37,9 @@ export class SongItemComponent {
 
   @Output() selectedSong = new EventEmitter<string>();
 
-  public avatar$!: Observable<Pictures>;
+  public avatar$!: Observable<IAvatar>;
   public platforms$!: Observable<string[]>;
-  public trackTypes = ITrackType;
+  public trackTypes = ISongTrackType;
 
   public selectedItem(): void {
     this.selectedSong.emit(this.id);

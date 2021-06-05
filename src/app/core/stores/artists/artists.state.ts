@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { IConnectedServicesTypes } from '../connected-services/connected-services.types';
 import { ArtistsAction, ArtistSongsAction } from './artists.actions';
-import { artistsStateDefault, IArtistsState } from './artists.types';
+import { artistsStateDefault, IArtistsState } from './artists-state.types';
 import { reduce } from 'lodash';
-import { IArtists } from 'functions/src/models/IArtists.types';
+import { IArtists, IPlatformTypes } from 'models/artist.types';
 
 @State<IArtistsState>({
   name: 'artists',
@@ -35,8 +34,8 @@ export class ArtistsState {
 
   @Selector()
   static songsByPlatform(state: IArtistsState) {
-    return (platform: IConnectedServicesTypes) => {
-      if (platform === IConnectedServicesTypes.all) {
+    return (platform: IPlatformTypes) => {
+      if (platform === IPlatformTypes.all) {
         return state.artistSongs;
       }
 
@@ -53,8 +52,8 @@ export class ArtistsState {
 
   @Selector()
   static artistsByPlatform(state: IArtistsState) {
-    return (platform: IConnectedServicesTypes) => {
-      if (platform === IConnectedServicesTypes.all) {
+    return (platform: IPlatformTypes) => {
+      if (platform === IPlatformTypes.all) {
         return state.artists;
       }
 

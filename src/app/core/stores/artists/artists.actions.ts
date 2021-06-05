@@ -1,4 +1,4 @@
-import { IArtistBodyRequest } from "./artists.types";
+import { IArtistBodyRequest } from "models/artist.types";
 
 export class ArtistsAction {
   static readonly type = '[Artists] List of artists';

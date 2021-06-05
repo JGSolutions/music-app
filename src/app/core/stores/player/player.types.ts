@@ -1,5 +1,5 @@
-import { IPlatformTypes } from "functions/sdk/IPlatforms.types";
-import { ITrackType } from "functions/src/models/IArtists.types";
+import { IPlatformTypes } from "models/artist.types";
+import { ISongTrackType } from "models/song.types";
 
 export interface IStreamUrl {
   url: string;
@@ -19,7 +19,7 @@ export const playerStateDefault: IPlayerState = {
 export interface ICurrentTrack {
   platform?: IPlatformTypes;
   name: string;
-  trackType: ITrackType,
+  trackType: ISongTrackType,
   artist?: string;
   externalUrl?: string;
   avatar?: string;

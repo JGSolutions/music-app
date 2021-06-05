@@ -9,10 +9,11 @@ import { environment } from 'src/environments/environment';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { DisconnectServiceAction } from '../core/stores/connected-services/connected-services.actions';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServices, ConnectedToken, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServices, ConnectedToken } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { isEqual } from "lodash";
+import { IPlatformTypes } from 'models/artist.types';
 @Component({
   selector: 'app-platform-settings',
   templateUrl: './platform-settings.component.html',
@@ -24,7 +25,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
 
   public isMixcloudConnected$: Observable<ConnectedToken> | undefined;
   public isSpotifyConnected$: Observable<ConnectedToken> | undefined;
-  public connectedServices = IConnectedServicesTypes;
+  public connectedServices = IPlatformTypes;
 
   private destroy$ = new Subject<boolean>();
 
@@ -39,12 +40,12 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isMixcloudConnected$ = this.connectedServices$.pipe(
-      map((services) => services[IConnectedServicesTypes.mixcloud]),
+      map((services) => services[IPlatformTypes.mixcloud]),
       shareReplay(1)
     );
 
     this.isSpotifyConnected$ = this.connectedServices$.pipe(
-      map((services) => services[IConnectedServicesTypes.spotify]),
+      map((services) => services[IPlatformTypes.spotify]),
       shareReplay(1)
     );
 
@@ -83,7 +84,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     this.document.location.href = SpotifyAuthorization.authorizeUrl();
   }
 
-  public disconnectService(type: IConnectedServicesTypes) {
+  public disconnectService(type: IPlatformTypes) {
     this.user$.pipe(
       take(1)
     ).subscribe((user: IUserType) => {

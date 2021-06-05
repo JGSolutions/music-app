@@ -2,9 +2,9 @@ import { IPlatformTypes } from "./artist.types";
 import { IAvatar } from "./avatar.types";
 
 export enum ISongTrackType {
-  track,
-  album,
-  single,
+  track = "track",
+  album = "album",
+  single = "single",
 }
 
 export interface ISong {

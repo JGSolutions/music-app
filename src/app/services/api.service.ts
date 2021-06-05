@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, retry } from 'rxjs/operators';
-import { IArtistBodyRequest, IArtistSongs } from '../core/stores/artists/artists.types';
 import { Observable, of } from 'rxjs';
 import { IStreamUrl } from '../core/stores/player/player.types';
 import { environment } from 'src/environments/environment';
-import { IArtists } from 'functions/src/models/IArtists.types';
+import { IArtistBodyRequest, IArtists } from 'models/artist.types';
+import { ISong } from 'models/song.types';
+
 
 @Injectable()
 export class ApiService {
@@ -27,7 +28,7 @@ export class ApiService {
     );
   }
 
-  public artistSongs(uid: string | undefined, payload: IArtistBodyRequest[]): Observable<IArtistSongs[]> {
+  public artistSongs(uid: string | undefined, payload: IArtistBodyRequest[]): Observable<ISong[]> {
     const url = `${this.domainApi}/artist`;
 
     const httpOptions = {
@@ -36,7 +37,7 @@ export class ApiService {
       })
     };
 
-    return this.http.post<IArtistSongs[]>(url, JSON.stringify(payload), httpOptions);
+    return this.http.post<ISong[]>(url, JSON.stringify(payload), httpOptions);
   }
 
   public mixcloudAudioStream(uid: string, externalUrl: string): Observable<IStreamUrl> {

@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { IArtists, IArtistSongs, ITrackType } from 'functions/src/models/IArtists.types';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
@@ -10,8 +9,10 @@ import { ArtistSongsAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServicesList, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { OpenPlayerAction } from '../core/stores/player/player.actions';
+import { IArtists, IPlatformTypes } from 'models/artist.types';
+import { ISong, ISongTrackType } from 'models/song.types';
 
 @Component({
   selector: 'app-artist-profile',
@@ -28,10 +29,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   public songsByPlatform$ = this.store.select(ArtistsState.songsByPlatform);
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
-  public songs$!: Observable<IArtistSongs[]>;
+  public songs$!: Observable<ISong[]>;
   private destroy$ = new Subject<boolean>();
 
-  private _connectServiceType$ = new BehaviorSubject<IConnectedServicesTypes>(IConnectedServicesTypes.all);
+  private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
   constructor(private route: ActivatedRoute, private store: Store) { }
 
@@ -95,7 +96,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.store.dispatch(new OpenPlayerAction({
         platform: song!.platform,
         name: song!.name,
-        trackType: song?.trackType as ITrackType,
+        trackType: song?.trackType as ISongTrackType,
         artist: song?.artistName,
         externalUrl: song?.externalUrl,
         avatar: song?.pictures.medium

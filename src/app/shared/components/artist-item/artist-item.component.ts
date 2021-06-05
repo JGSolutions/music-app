@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IArtists } from 'functions/src/models/IArtists.types';
-import { Pictures } from 'functions/src/models/IPictures.types';
+import { IArtists } from 'models/artist.types';
+import { IAvatar } from 'models/avatar.types';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 @Component({
@@ -21,7 +21,7 @@ export class ArtistItemComponent implements OnInit {
     this._artistDetails$.next(value);
   }
 
-  public avatar$!: Observable<Pictures>;
+  public avatar$!: Observable<IAvatar>;
   public platforms$!: Observable<string[]>;
 
   ngOnInit(): void {

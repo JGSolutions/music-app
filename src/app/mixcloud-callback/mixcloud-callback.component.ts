@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
+import { IPlatformTypes } from 'models/artist.types';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { MusicConnectedService } from '../services/music-connected.services';
@@ -23,7 +23,7 @@ export class MixcloudCallbackComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private connectedServices: MusicConnectedService) {
-    }
+  }
 
   ngOnInit(): void {
 
@@ -41,7 +41,7 @@ export class MixcloudCallbackComponent implements OnInit {
       const res: any = await MixcloudAuthorization.createAccessTokenUrl(params.code);
       this.connectedServices.connectService(user.uid, {
         token: res.data.access_token,
-      }, IConnectedServicesTypes.mixcloud);
+      }, IPlatformTypes.mixcloud);
     });
   }
 

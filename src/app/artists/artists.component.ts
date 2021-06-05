@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { IArtists } from 'functions/src/models/IArtists.types';
+import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServicesList, IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 
 @Component({
   selector: 'app-artists',
@@ -19,7 +19,7 @@ export class ArtistsComponent implements OnInit {
 
   public artistsByPlatform$!: Observable<Record<string, IArtists[]>>;
 
-  private _connectServiceType$ = new BehaviorSubject<IConnectedServicesTypes>(IConnectedServicesTypes.all);
+  private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
   constructor(private store: Store) { }
 
