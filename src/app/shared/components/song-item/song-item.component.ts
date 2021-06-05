@@ -39,6 +39,7 @@ export class SongItemComponent {
 
   public avatar$!: Observable<Pictures>;
   public platforms$!: Observable<string[]>;
+  public trackTypes = ITrackType;
 
   public selectedItem(): void {
     this.selectedSong.emit(this.id);
