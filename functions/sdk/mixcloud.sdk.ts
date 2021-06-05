@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
-// import { throwError } from "rxjs";
+
 import axios from "axios";
 import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
@@ -63,19 +63,11 @@ export const MixcloudAuthorization = {
   },
 
   authorizeUrl(): string {
-    // if (!this.clientId) {
-    //   throwError("Please provide a client id");
-    // }
     const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}`;
     return `${this.mixcloudDomain}/oauth/authorize${q}`;
   },
 
   async createAccessTokenUrl(oAuthCode: string): Promise<any> {
-    // if (!this.clientId || !this.secretApi) {
-    //   throwError("Api keys are not provided!");
-    // }
-
-    // eslint-disable-next-line max-len
     const url = `${this.mixcloudDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&client_secret=${this.secretApi}&code=${oAuthCode}`;
     return await axios.get(url);
   },
