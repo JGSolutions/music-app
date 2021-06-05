@@ -4,6 +4,7 @@ import axios from "axios";
 import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
 import { IPlatformTypes } from "./IPlatforms.types";
 import { updateConnectedService } from "../src/utils/connect-services-firebase";
+import { spotifyKeys } from "./api-keys";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -81,6 +82,19 @@ export const SpotifySDK = {
     };
 
     const params = `grant_type=refresh_token&refresh_token=${this.refreshToken}&client_id=${this.clientId}&client_secret=${this.clientSecret}`;
+    return await axios.post(url, params, postHeaders);
+  },
+
+  async createAccessTokenUrl(oAuthCode: any): Promise<unknown> {
+    const url = "https://accounts.spotify.com/api/token";
+
+    const postHeaders = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
     return await axios.post(url, params, postHeaders);
   },
 

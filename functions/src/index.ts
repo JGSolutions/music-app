@@ -5,6 +5,7 @@ import * as cors from "cors";
 import { artists } from "./modules/artists";
 import { artist } from "./modules/artist";
 import { mixcloudAudio } from "./modules/mixcloudAudio";
+import { createSpotifyToken } from "./modules/createSpotifyToken";
 
 const app = express();
 const main = express();
@@ -20,3 +21,4 @@ export const api = functions.runWith({ memory: "2GB", timeoutSeconds: 540 }).htt
 app.get("/artists", artists);
 app.post("/artist", artist);
 app.post("/mixcloud-audio", mixcloudAudio);
+app.get("/create-spotify-token", createSpotifyToken);

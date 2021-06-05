@@ -3,12 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IConnectedServicesTypes } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { MusicConnectedService } from '../services/music-connected.services'
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-spotify-callback',
@@ -22,7 +21,7 @@ export class SpotifyCallbackComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private connectedServices: MusicConnectedService) { }
+    private apiService: ApiService) { }
 
   ngOnInit(): void {
     SpotifyAuthorization.config(
@@ -33,16 +32,12 @@ export class SpotifyCallbackComponent implements OnInit, OnDestroy {
 
     combineLatest([this.user$, this.route.queryParams]).pipe(
       filter(([user]) => user !== null),
+      switchMap((data: any) => {
+        const [user, params] = data;
+        return this.apiService.createSpotifyToken(params.code, user.uid);
+      }),
       takeUntil(this.destroy$)
-    ).subscribe(async (data: any) => {
-      const [user, params] = data;
-      const res: any = await SpotifyAuthorization.createAccessTokenUrl(params.code);
-
-      this.connectedServices.connectService(user.uid, {
-        token: res.data.access_token,
-        refresh_token: res.data.refresh_token
-      }, IConnectedServicesTypes.spotify);
-    });
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
