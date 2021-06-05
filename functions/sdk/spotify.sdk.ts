@@ -47,9 +47,9 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
         trackType: song.album_type === "album" ? ISongTrackType.album : ISongTrackType.single,
         platform: IPlatformTypes.spotify,
         pictures: {
-          medium: song.images[2],
-          large: song.images[1],
-          exLarge: song.images[0],
+          medium: song.images[2].url,
+          large: song.images[1].url,
+          exLarge: song.images[0].url,
         },
       };
     });
@@ -82,7 +82,9 @@ export const SpotifySDK = {
     };
 
     const params = `grant_type=refresh_token&refresh_token=${this.refreshToken}&client_id=${this.clientId}&client_secret=${this.clientSecret}`;
-    return await axios.post(this.accountApi, params, postHeaders);
+    const { data } = await axios.post(this.accountApi, params, postHeaders);
+
+    return data;
   },
 
   async createAccessTokenUrl(oAuthCode: any): Promise<IAuthorizationToken> {
