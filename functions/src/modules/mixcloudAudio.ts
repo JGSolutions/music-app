@@ -2,8 +2,8 @@
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
-import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { getConnectServices } from "../utils/connect-services-firebase";
+import { IPlatformTypes } from "../../../models/artist.types";
 
 export const mixcloudAudio = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;

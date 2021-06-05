@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import axios from "axios";
-import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
-import { IPlatformTypes } from "./IPlatforms.types";
 import { updateConnectedService } from "../src/utils/connect-services-firebase";
 import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
+import { IArtists, IPlatformTypes } from "../../models/artist.types";
+import { ISong, ISongTrackType } from "../../models/song.types";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -33,7 +33,7 @@ export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   });
 };
 
-export const artistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
+export const artistSongs = (dataApi: any): Promise<ISong[]> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
@@ -44,7 +44,7 @@ export const artistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
         externalUrl: song.url,
         length: song.album_type === "album" ? 0 : song.length,
         totalTracks: song.album_type === "album" ? song.total_tracks : 0,
-        trackType: song.album_type === "album" ? ITrackType.album : ITrackType.single,
+        trackType: song.album_type === "album" ? ISongTrackType.album : ISongTrackType.single,
         platform: IPlatformTypes.spotify,
         pictures: {
           medium: song.images[2],
@@ -116,7 +116,7 @@ export const SpotifySDK = {
     }
   },
 
-  async artistSongs(artistid: string): Promise<IArtistSongs[]> {
+  async artistSongs(artistid: string): Promise<ISong[]> {
     const url = `${this.apiDomain}/artists/${artistid}/albums/`;
     const resp = await axios(url, this.requestHeaders());
 

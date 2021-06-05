@@ -1,3 +1,5 @@
+import { IPlatformTypes } from "models/artist.types";
+
 export interface IConnectedServicesState {
   servicesType: ConnectedServices;
   loading: boolean;
@@ -14,12 +16,5 @@ export interface ConnectedToken {
 }
 export interface ConnectedServicesList {
   token: string;
-  type: IConnectedServicesTypes;
-}
-
-export enum IConnectedServicesTypes {
-  mixcloud = "mixcloud",
-  spotify = "spotify",
-  deezer = "deezer",
-  all = "all"
+  type: IPlatformTypes;
 }

@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
-
 import axios from "axios";
-import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types";
-import { IPlatformTypes } from "./IPlatforms.types";
+import { IArtists, IPlatformTypes } from "../../models/artist.types";
+import { ISong, ISongTrackType } from "../../models/song.types";
 
 export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -24,7 +23,7 @@ export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
   });
 };
 
-export const mixcloudArtistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
+export const mixcloudArtistSongs = (dataApi: any): Promise<ISong[]> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
@@ -35,7 +34,7 @@ export const mixcloudArtistSongs = (dataApi: any): Promise<IArtistSongs[]> => {
         username: song.user.username,
         artistName: song.user.name,
         length: song.audio_length,
-        trackType: ITrackType.track,
+        trackType: ISongTrackType.track,
         platform: IPlatformTypes.mixcloud,
         externalUrl: song.url,
         pictures: {
@@ -105,7 +104,7 @@ export const MixcloudSDK = {
     return await mixcloudArtistsData(resp.data.data);
   },
 
-  async artistSongs(artist: string, limit = 100): Promise<IArtistSongs[]> {
+  async artistSongs(artist: string, limit = 100): Promise<ISong[]> {
     const url = `${this.mixcloudApiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}&limit=${limit}`;
     const resp = await axios(url);
 

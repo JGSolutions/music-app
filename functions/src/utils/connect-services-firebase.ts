@@ -1,5 +1,6 @@
-import { IPlatformTypes } from "../../sdk/IPlatforms.types";
+/* eslint-disable max-len */
 import { adminFirebase } from "../modules/fb";
+import { IPlatformTypes } from "../../../models/artist.types";
 
 const db = adminFirebase.firestore();
 
@@ -8,7 +9,7 @@ export const getConnectServices = async (uid: string) => {
   return connectedServicesRef.data() as FirebaseFirestore.DocumentData;
 };
 
-export const updateConnectedService = async (uid: string, token: string, platform: IPlatformTypes) => {
+export const updateConnectedService = async (uid: string, token: string, platform: IPlatformTypes): Promise<FirebaseFirestore.WriteResult> => {
   return await db.collection("connectedServices").doc(uid).set({
     [platform]: {
       token: token,

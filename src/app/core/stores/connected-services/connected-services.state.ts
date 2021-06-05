@@ -48,6 +48,6 @@ export class ConnectedServicesState {
 
   @Action(DisconnectServiceAction)
   _disconnectServices(ctx: StateContext<IConnectedServicesState>, { uid, type }: DisconnectServiceAction) {
-    return this.connectedServices.disonnectService(uid, type);
+    return this.connectedServices.disconnectService(uid, type);
   }
 }

@@ -1,6 +1,6 @@
-import { IPlatformTypes } from "functions/sdk/IPlatforms.types";
-import { IArtists, ITrackType } from "functions/src/models/IArtists.types";
+import { IArtists } from "functions/src/models/IArtists.types";
 import { Pictures } from "functions/src/models/IPictures.types";
+import { IPlatformTypes } from "models/artist.types";
 
 export interface IArtistsState {
   artists: Record<string, IArtists[]>;
@@ -25,10 +25,4 @@ export interface IArtistSongs {
   trackType: ITrackType;
   pictures: Pictures;
   externalUrl?: string;
-}
-
-export interface IArtistBodyRequest {
-  type: string;
-  username: string;
-  id: string;
 }

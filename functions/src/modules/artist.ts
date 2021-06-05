@@ -3,11 +3,10 @@ import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
 import { flatten } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
-import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
-import { IArtistBodyRequest } from "../models/IArtists.types";
 import { spotifyKeys } from "../../sdk/api-keys";
 import { getConnectServices } from "../utils/connect-services-firebase";
+import { IArtistBodyRequest, IPlatformTypes } from "../../../models/artist.types";
 
 export const artist = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
