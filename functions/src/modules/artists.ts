@@ -8,15 +8,13 @@ import { IPlatformTypes } from "../../sdk/IPlatforms.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { spotifyKeys } from "../../sdk/api-keys";
 import { getConnectServices } from "../utils/connect-services-firebase";
+import { IArtists } from "../models/IArtists.types";
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const stringSimilarity = require("string-similarity");
 
 export const artists = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
-
-  if (!authorized) {
-    response.status(401).send("Invalid authenticated");
-  }
 
   try {
     await adminFirebase.auth().getUser(authorized);
@@ -48,7 +46,7 @@ export const artists = async (request: Request, response: Response) => {
     const allArtistsKeys = flattenData.map((data: any) => data.id);
     const sortedData = orderBy(flattenData, (o: any) => o.name);
 
-    const res = reduce(sortedData, (result: any, value: any) => {
+    const res: Record<string, IArtists[]> = reduce(sortedData, (result: any, value: any) => {
       const artistKeys = keys(result);
 
       const matches = stringSimilarity.findBestMatch(value.name, artistKeys.length > 0 ? artistKeys : allArtistsKeys);
@@ -62,7 +60,7 @@ export const artists = async (request: Request, response: Response) => {
       }
 
       return result;
-    }, {});
+    });
 
     response.status(200).send(res);
   });

@@ -5,6 +5,7 @@ import { IArtistBodyRequest, IArtistSongs } from '../core/stores/artists/artists
 import { Observable, of } from 'rxjs';
 import { IStreamUrl } from '../core/stores/player/player.types';
 import { environment } from 'src/environments/environment';
+import { IArtists } from 'functions/src/models/IArtists.types';
 
 @Injectable()
 export class ApiService {
@@ -12,12 +13,12 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  public artists(uid: string | undefined) {
+  public artists(uid: string): Observable<Record<string, IArtists[]>> {
     const url = `${this.domainApi}/artists`;
 
     const headers = {
       headers: {
-        "Authorization": uid as string
+        "Authorization": uid
       },
     };
 
@@ -59,7 +60,7 @@ export class ApiService {
 
   }
 
-  public createSpotifyToken(code: string, uid: string): Observable<IStreamUrl> {
+  public createSpotifyToken(code: string, uid: string): Observable<string> {
     const httpOptions = {
       headers: new HttpHeaders({
         "Authorization": uid
@@ -68,6 +69,6 @@ export class ApiService {
 
     const url = `${this.domainApi}/create-spotify-token?code=${code}`;
 
-    return this.http.get<IStreamUrl>(url, httpOptions);
+    return this.http.get<string>(url, httpOptions);
   }
 }

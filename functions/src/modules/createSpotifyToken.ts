@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
+import { IAuthorizationToken } from "../../../models/spotify.model";
 
 const db = adminFirebase.firestore();
 
@@ -14,12 +15,12 @@ export const createSpotifyToken = async (request: Request, response: Response) =
     return;
   }
 
-  const data: any = await SpotifySDK.createAccessTokenUrl(request.query.code);
+  const data: IAuthorizationToken = await SpotifySDK.createAccessTokenUrl(request.query.code);
 
   db.collection("connectedServices").doc(authorized).set({
     "spotify": {
-      token: data.data.access_token,
-      refresh_token: data.data.refresh_token,
+      token: data.access_token,
+      refresh_token: data.refresh_token,
     },
   }, { merge: true });
 

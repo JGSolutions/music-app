@@ -5,6 +5,7 @@ import { IArtists, IArtistSongs, ITrackType } from "../src/models/IArtists.types
 import { IPlatformTypes } from "./IPlatforms.types";
 import { updateConnectedService } from "../src/utils/connect-services-firebase";
 import { spotifyKeys } from "./api-keys";
+import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -63,6 +64,7 @@ export const SpotifySDK = {
   clientSecret: "",
   authorized: "",
   apiDomain: "https://api.spotify.com/v1",
+  accountApi: "https://accounts.spotify.com/api/token",
 
   initialize(accessToken: string, refreshToken: string, clientId: string, clientSecret: string, authorized: string): void {
     this.queryParamAccessToken = accessToken;
@@ -72,9 +74,7 @@ export const SpotifySDK = {
     this.authorized = authorized;
   },
 
-  async recreateAccessToken(): Promise<unknown> {
-    const url = "https://accounts.spotify.com/api/token";
-
+  async recreateAccessToken(): Promise<IRefreshAuthorizationToken> {
     const postHeaders = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -82,12 +82,10 @@ export const SpotifySDK = {
     };
 
     const params = `grant_type=refresh_token&refresh_token=${this.refreshToken}&client_id=${this.clientId}&client_secret=${this.clientSecret}`;
-    return await axios.post(url, params, postHeaders);
+    return await axios.post(this.accountApi, params, postHeaders);
   },
 
-  async createAccessTokenUrl(oAuthCode: any): Promise<unknown> {
-    const url = "https://accounts.spotify.com/api/token";
-
+  async createAccessTokenUrl(oAuthCode: any): Promise<IAuthorizationToken> {
     const postHeaders = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -95,7 +93,8 @@ export const SpotifySDK = {
     };
 
     const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
-    return await axios.post(url, params, postHeaders);
+    const data = await axios.post(this.accountApi, params, postHeaders);
+    return data.data;
   },
 
   async following(type: string): Promise<IArtists[]> {
@@ -106,10 +105,10 @@ export const SpotifySDK = {
       return await artistsData(resp.data.artists.items);
     } catch (err) {
       if (err.response?.status === 401) {
-        const res: any = await this.recreateAccessToken();
+        const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
-        await updateConnectedService(this.authorized, res.data.access_token, IPlatformTypes.spotify);
-        this.queryParamAccessToken = res.data.access_token;
+        await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
+        this.queryParamAccessToken = res.access_token;
         console.log("error occured will try again...");
         return await this.following("artist");
       }
