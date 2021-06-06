@@ -70,3 +70,9 @@ a.mat-button .menu-button-layout {
     overflow-y: auto;
   }
 }
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

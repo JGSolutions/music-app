@@ -42,6 +42,8 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
+
+    this.stop();
   }
 
   public play(): void {

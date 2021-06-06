@@ -43,7 +43,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <main style="display: flex; flex-direction: column; height: 100%;">
+    <main class="main-container">
       <div id="app-content">
         <router-outlet #outlet="outlet"></router-outlet>
       </div>
@@ -53,8 +53,11 @@
 </mat-sidenav-container>
 <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
   <app-player-bar
+    *ngIf="(currentTrack$ | async)?.platform === 'mixcloud'"
     [streamUrl$]="mixcloudAudio$!"
     [currentTrack]="(currentTrack$ | async)!"
     [loading$]="loadingPlayer$">
   </app-player-bar>
+
+  <div *ngIf="(currentTrack$ | async)?.platform === 'spotify'">Need to create player</div>
 </div>
