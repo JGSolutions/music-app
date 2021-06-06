@@ -24,6 +24,9 @@ export class SongItemComponent {
   length!: number;
 
   @Input()
+  totalTracks!: number;
+
+  @Input()
   dateCreated!: any;
 
   @Input()

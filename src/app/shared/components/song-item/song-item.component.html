@@ -11,7 +11,10 @@
       </span>
     </div>
     <span class="mat-caption">
-      <span class="type">{{trackTypes[trackType]}}</span> - {{length | minuteSeconds}}
+      <span class="type" *ngIf="trackType === trackTypes.track">
+        {{trackTypes[trackType]}} <span *ngIf="length > 0">- {{length | minuteSeconds}}</span>
+      </span>
+      <span class="type" *ngIf="trackType !== 'track'">{{trackTypes[trackType]}} - {{totalTracks}} Track(s)</span>
     </span>
   </div>
   <div class="options">
