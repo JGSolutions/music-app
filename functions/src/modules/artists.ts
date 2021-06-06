@@ -59,7 +59,7 @@ export const artists = async (request: Request, response: Response) => {
       }
 
       return result;
-    });
+    }, {});
 
     response.status(200).send(res);
   });
