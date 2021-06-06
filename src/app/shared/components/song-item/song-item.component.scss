@@ -36,6 +36,12 @@
     flex-direction: column;
   }
 
+  .platform-logo {
+    width: auto;
+    height: auto;
+    max-height: 15px;
+  }
+
   .type {
     text-transform: capitalize;
   }
