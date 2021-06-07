@@ -62,16 +62,16 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
    * When user stops dragging then seek and continue playing
    * @param evt
    */
-  public sliderChange(evt: any) {
-    this.howlService.seek(evt.value);
+  public sliderChange(evt: number) {
+    this.howlService.seek(evt);
     this.howlService.play();
   }
 
   /**
    * When user drags slider just pause the music file and update timer as user is dragging
    */
-  public sliderInput(evt: any): void {
-    const timer = formatTime(Math.round(evt.value as number));
+  public sliderInput(evt: number): void {
+    const timer = formatTime(Math.round(evt));
     this.howlService.$currentTimer.next(timer)
     this.howlService.pause();
   }

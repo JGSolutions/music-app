@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Howl, Howler } from 'howler';
-import { ReplaySubject, Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { formatTime } from 'src/app/core/utils/utils';
 
 @Injectable()

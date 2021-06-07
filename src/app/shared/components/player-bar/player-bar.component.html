@@ -1,40 +1,15 @@
-<mat-slider
-class="slider"
-color="primary"
-[disabled]="(loading$ | async)"
-(change)="sliderChange($event)"
-(input)="sliderInput($event)"
-[step]="1"
-min="0"
-[value]="howlService.$sliderProgress | async"
-[max]="howlService.$rawDuration| async">
-</mat-slider>
-
-<section class="wrapper" [ngClass]="{'loading': (loading$ | async)}">
-  <section class="playback-actions">
-    <button mat-icon-button (click)="play()" class="skip-previous">
-      <mat-icon>skip_previous</mat-icon>
-    </button>
-    <button (click)="play()" mat-fab color="primary" *ngIf="(howlService.$isPlaying | async) === false" class="play-button" [disabled]="(loading$ | async)">
-      <mat-icon>play_arrow</mat-icon>
-    </button>
-    <button (click)="pause()" mat-fab color="primary" *ngIf="howlService.$isPlaying | async" [disabled]="(loading$ | async)">
-      <mat-icon>pause</mat-icon>
-    </button>
-    <button mat-icon-button (click)="stop()" class="skip-next">
-      <mat-icon>skip_next</mat-icon>
-    </button>
-    <span class="mat-body-2 duration">
-      {{howlService.$currentTimer | async}}/{{howlService.$duration | async}}
-    </span>
-  </section>
-
-  <section class="music-info">
-    <img [src]=" currentTrack.avatar" class="music-avatar">
-    <div class="loading-avatar"></div>
-    <div class="music-details">
-      <span class="mat-body-1">{{currentTrack.name}}</span>
-      <span class="mat-caption">{{currentTrack.artist}}</span>
-    </div>
-  </section>
-</section>
+<app-audio-player
+[loading]="(loading$ | async)!"
+[progress]="(howlService.$sliderProgress | async)!"
+[rawDuration]="(howlService.$rawDuration | async)!"
+[avatar]="currentTrack.avatar!"
+[name]="currentTrack.name"
+[isPlaying]="(howlService.$isPlaying | async)!"
+[artist]="currentTrack.artist!"
+[currentTimer]="(howlService.$currentTimer | async)!"
+[duration]="(howlService.$duration | async)!"
+(sliderChange)="sliderChange($event)"
+(sliderInput)="sliderInput($event)"
+(play)="play()"
+(pause)="pause()"
+></app-audio-player>

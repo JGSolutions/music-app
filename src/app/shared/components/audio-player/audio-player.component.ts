@@ -19,17 +19,19 @@ export class AudioPlayerComponent implements OnInit {
 
   @Output() sliderChange = new EventEmitter<number>();
   @Output() sliderInput = new EventEmitter<number>();
+  @Output() play = new EventEmitter<void>();
+  @Output() pause = new EventEmitter<void>();
 
   ngOnInit() {
 
   }
 
-  public play(): void {
-
+  public playHandler(): void {
+    this.play.emit();
   }
 
-  public pause(): void {
-
+  public pauseHandler(): void {
+    this.pause.emit();
   }
 
   public stop(): void {
