@@ -1,0 +1,40 @@
+<mat-slider
+class="slider"
+color="primary"
+[disabled]="loading"
+(change)="sliderChangeHandler($event)"
+(input)="sliderInputHandler($event)"
+[step]="1"
+min="0"
+[value]="progress"
+[max]="rawDuration">
+</mat-slider>
+
+<section class="wrapper" [ngClass]="{'loading': loading}">
+  <section class="playback-actions">
+    <button mat-icon-button (click)="play()" class="skip-previous">
+      <mat-icon>skip_previous</mat-icon>
+    </button>
+    <button (click)="play()" mat-fab color="primary" *ngIf="isPlaying === false" class="play-button" [disabled]="loading">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button (click)="pause()" mat-fab color="primary" *ngIf="isPlaying" [disabled]="loading">
+      <mat-icon>pause</mat-icon>
+    </button>
+    <button mat-icon-button (click)="stop()" class="skip-next">
+      <mat-icon>skip_next</mat-icon>
+    </button>
+    <span class="mat-body-2 duration">
+      {{currentTimer}}/{{duration}}
+    </span>
+  </section>
+
+  <section class="music-info">
+    <img [src]=" avatar" class="music-avatar">
+    <div class="loading-avatar"></div>
+    <div class="music-details">
+      <span class="mat-body-1">{{name}}</span>
+      <span class="mat-caption">{{artist}}</span>
+    </div>
+  </section>
+</section>
