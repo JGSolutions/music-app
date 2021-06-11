@@ -1,24 +1,31 @@
-<section *ngIf="profileDetails$ | async as profileDetails">
-  <img [src]="profileDetails.pictures.large" >
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5 col-lg-4">
+      <section *ngIf="profileDetails$ | async as profileDetails">
+        <img [src]="profileDetails.pictures.large" >
 
-  <span>{{artist}}</span>
-</section>
-
-<section class="songs-list-wrapper">
-  <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
-  <section class="song-list">
-    <app-song-item
-      *ngFor="let song of songs$ | async"
-      [name]="song.name"
-      [id]="song.id"
-      [length]="song.length"
-      [totalTracks]="song.totalTracks"
-      [platform]="song.platform"
-      [avatar]="song.pictures.medium"
-      [externalUrl]="song.externalUrl!"
-      [trackType]="song.trackType"
-      [dateCreated]="song.createdTime"
-      (selectedSong)="selectedSong($event)">
-    </app-song-item>
-  </section>
-</section>
+        <span>{{artist}}</span>
+      </section>
+    </div>
+    <div class="col-md-7 col-lg-8">
+      <section class="songs-list-wrapper">
+        <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
+        <section class="song-list">
+          <app-song-item
+            *ngFor="let song of songs$ | async"
+            [name]="song.name"
+            [id]="song.id"
+            [length]="song.length"
+            [totalTracks]="song.totalTracks"
+            [platform]="song.platform"
+            [avatar]="song.pictures.medium"
+            [externalUrl]="song.externalUrl!"
+            [trackType]="song.trackType"
+            [dateCreated]="song.createdTime"
+            (selectedSong)="selectedSong($event)">
+          </app-song-item>
+        </section>
+      </section>
+    </div>
+  </div>
+</div>
