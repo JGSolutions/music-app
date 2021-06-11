@@ -1,5 +1,5 @@
-<div class="container-fluid">
-  <div class="row">
+<div class="container-fluid fixed-height">
+  <div class="row fixed-height">
     <div class="col-md-5 col-lg-4">
       <section *ngIf="profileDetails$ | async as profileDetails">
         <img [src]="profileDetails.pictures.large" >
@@ -7,7 +7,7 @@
         <span>{{artist}}</span>
       </section>
     </div>
-    <div class="col-md-7 col-lg-8">
+    <div class="col-md-7 col-lg-8 fixed-height">
       <section class="songs-list-wrapper">
         <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
         <section class="song-list">
