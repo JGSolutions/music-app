@@ -6,3 +6,12 @@ $s-padding-gap: 10px;
 $padding-gap: 16px;
 $xl-padding-gap: 24px;
 $line-height: 24px;
+
+@mixin fluid-container() {
+  width: 100%;
+  // padding-right: 0;
+  padding-left: $padding-gap;
+  // margin-right: auto;
+  // margin-left: auto;
+  padding-top: $padding-gap;
+}

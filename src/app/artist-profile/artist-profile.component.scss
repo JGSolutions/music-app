@@ -1,10 +1,7 @@
+@import '../../theme/variables.scss';
+
 :host {
   display: block;
-}
-
-img {
-  width: 100%;
-  height: auto;
 }
 
 .songs-list-wrapper {
@@ -16,7 +13,12 @@ img {
 }
 
 .song-list {
-  height: calc(100% - 40px);
+  height: calc(100% - 45px);
   width: 100%;
+  margin-top: $padding-gap;
   overflow-y: auto;
+}
+
+.container-fluid {
+  @include fluid-container();
 }

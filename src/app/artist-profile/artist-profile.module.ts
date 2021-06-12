@@ -5,6 +5,7 @@ import { ArtistProfileComponent } from './artist-profile.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
 import { PlatformSelectionModule } from '../shared/components/platform-selection/platform-selection.module';
 import { SongItemModule } from '../shared/components/song-item/song-item.module';
+import { ArtistAvatarModule } from '../shared/components/artist-avatar/artist-avatar.module';
 
 @NgModule({
   declarations: [ArtistProfileComponent],
@@ -13,6 +14,7 @@ import { SongItemModule } from '../shared/components/song-item/song-item.module'
     AngularMaterialModule,
     PlatformSelectionModule,
     SongItemModule,
+    ArtistAvatarModule,
     RouterModule.forChild([
       { path: '', component: ArtistProfileComponent },
     ]),
