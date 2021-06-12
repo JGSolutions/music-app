@@ -29,6 +29,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   public songsByPlatform$ = this.store.select(ArtistsState.songsByPlatform);
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
+  public artistGenres$!: Observable<string[]>;
   public songs$!: Observable<ISong[]>;
   private destroy$ = new Subject<boolean>();
 
@@ -74,6 +75,17 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       this.store.dispatch(new ArtistSongsAction(user.uid, data))
     });
 
+    this.artistGenres$ = artistDetails$.pipe(
+      map((details) => {
+        return details.reduce((acc, value) => {
+          if (value.genres) {
+            acc = value.genres.map(genre => genre);
+          }
+
+          return acc;
+        }, [] as string[]);
+      })
+    )
     this.songs$ = combineLatest([this._connectServiceType$, this.songsByPlatform$]).pipe(
       map(([platform, songsByPlatform]) => songsByPlatform(platform))
     );

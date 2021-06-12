@@ -14,6 +14,9 @@ export class ArtistAvatarComponent implements OnInit {
   @Input()
   avatar!: string;
 
+  @Input()
+  genres!: string[];
+
   ngOnInit(): void {
 
   }
