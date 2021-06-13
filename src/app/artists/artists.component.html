@@ -3,7 +3,7 @@
   <div class="mat-display-1">Following</div>
 
 <ng-container *ngIf="(artistsByPlatform$ | async) as artists">
-  <a [routerLink]="['/', 'artist', artistKey.key]" *ngFor="let artistKey of artists | keyvalue">
+  <a [routerLink]="['/', 'artist', artistKey.key]" *ngFor="let artistKey of artists | keyvalue" class="item-link">
     <app-artist-item [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
   </a>
 </ng-container>

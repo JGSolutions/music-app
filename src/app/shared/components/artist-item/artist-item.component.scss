@@ -1,22 +1,14 @@
 :host {
-  display: flex;
+  display: block;
   margin-bottom: 16px;
 }
 
 img {
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  max-height: 225px;
+  object-fit: cover;
 }
 
-.platforms {
-  display: flex;
-  flex-direction: row;
-}
-
-.artist-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: 10px;;
+.example-card {
+  width: 320px;
+  position: relative;
 }

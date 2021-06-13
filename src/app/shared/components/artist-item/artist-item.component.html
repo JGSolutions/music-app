@@ -1,17 +1,12 @@
-
-<div>
-  <img [src]="(avatar$ | async)?.large">
-</div>
-<div class="artist-info">
-
-  <span>
-    {{artistName}}
-  </span>
-
-  <div class="platforms">
-    <div *ngFor="let platform of platforms$ | async">{{platform}}</div>
-  </div>
-</div>
+<mat-card class="example-card">
+  <img mat-card-image [src]="(avatar$ | async)?.large">
+  <mat-card-content>
+    <p class="mat-title">{{artistName}}</p>
+    <mat-chip-list>
+      <mat-chip color="primary" *ngFor="let platform of platforms$ | async">{{platform}}</mat-chip>
+    </mat-chip-list>
+  </mat-card-content>
+</mat-card>
 
 
 
