@@ -3,7 +3,7 @@
   <mat-card-content>
     <p class="mat-title">{{artistName}}</p>
     <mat-chip-list>
-      <mat-chip color="primary" *ngFor="let platform of platforms$ | async">{{platform}}</mat-chip>
+      <mat-chip color="primary" *ngFor="let platform of platforms$ | async" class="chip-label">{{platform}}</mat-chip>
     </mat-chip-list>
   </mat-card-content>
 </mat-card>

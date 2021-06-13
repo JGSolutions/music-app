@@ -1,9 +1,13 @@
 <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
 
-  <div class="mat-display-1">Following</div>
+<div class="mat-display-1">Following</div>
 
-<ng-container *ngIf="(artistsByPlatform$ | async) as artists">
-  <a [routerLink]="['/', 'artist', artistKey.key]" *ngFor="let artistKey of artists | keyvalue" class="item-link">
-    <app-artist-item [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
-  </a>
-</ng-container>
+<div class="container-fluid" *ngIf="(artistsByPlatform$ | async) as artists">
+  <div class="row">
+    <div class="col-sm-6 col-md-3" *ngFor="let artistKey of artists | keyvalue">
+      <a [routerLink]="['/', 'artist', artistKey.key]" class="item-link">
+        <app-artist-item [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
+      </a>
+    </div>
+  </div>
+</div>

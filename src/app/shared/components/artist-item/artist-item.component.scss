@@ -9,6 +9,10 @@ img {
 }
 
 .example-card {
-  width: 320px;
+  width: 100%;
   position: relative;
+}
+
+.chip-label {
+  text-transform: capitalize;
 }
