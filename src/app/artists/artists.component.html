@@ -1,8 +1,14 @@
-<app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
-
-<div class="mat-display-1">Following</div>
-
+<mat-divider></mat-divider>
+<section class="platform-wrappers">
+  <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
+</section>
+<mat-divider></mat-divider>
 <div class="container-fluid" *ngIf="(artistsByPlatform$ | async) as artists">
+  <div class="row">
+    <div>
+      <div class="mat-headline">Artists</div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-sm-6 col-md-3" *ngFor="let artistKey of artists | keyvalue">
       <a [routerLink]="['/', 'artist', artistKey.key]" class="item-link">
