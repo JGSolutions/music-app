@@ -1,8 +1,16 @@
 <mat-toolbar class="toolbar-header">
-  <button mat-icon-button (click)="snav.toggle()">
+  <button mat-icon-button (click)="snav.toggle()" *ngIf="isMobile$ | async">
     <mat-icon>menu</mat-icon>
   </button>
-  Header
+  <div class="header-wrapper">
+    <div>logo</div>
+    <div class="search-container">
+      <input type="text" class="search-field">
+    </div>
+    <div class="options">
+      <img [src]="(user$ | async)?.photoURL" class="avatar">
+    </div>
+  </div>
 </mat-toolbar>
 
 <mat-sidenav-container class="side-menu-nav">

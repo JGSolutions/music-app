@@ -28,7 +28,7 @@ export class AppPlayerComponent implements OnDestroy {
   private destroy$ = new Subject<boolean>();
 
   constructor(private breakpointObserver: BreakpointObserver, private store: Store) {
-    this.isMobile$ = this.breakpointObserver.observe('(max-width: 599px)').pipe(
+    this.isMobile$ = this.breakpointObserver.observe('(max-width: 576px)').pipe(
       map((result) => result.matches)
     );
 
