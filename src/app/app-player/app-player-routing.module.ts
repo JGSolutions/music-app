@@ -16,12 +16,17 @@ const routes: Routes = [
         data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../artists/artists.module').then(m => m.ArtistsModule)
       },
-
       {
         path: 'artist/:artist',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../artist-profile/artist-profile.module').then(m => m.ArtistProfileModule)
+      },
+      {
+        path: 'artist-album/:artist',
+        canActivate: [AngularFireAuthGuard],
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        loadChildren: () => import('../artist-album/artist-album.module').then(m => m.ArtistAlbumModule)
       },
       {
         path: 'platform-settings',

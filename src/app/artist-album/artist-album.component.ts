@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined } from 'lodash';
@@ -15,11 +15,11 @@ import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISong, ISongTrackType } from 'models/song.types';
 
 @Component({
-  selector: 'app-artist-profile',
-  templateUrl: './artist-profile.component.html',
-  styleUrls: ['./artist-profile.component.scss']
+  selector: 'app-artist-album',
+  templateUrl: './artist-album.component.html',
+  styleUrls: ['./artist-album.component.scss']
 })
-export class ArtistProfileComponent implements OnInit, OnDestroy {
+export class ArtistAlbumComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
@@ -33,9 +33,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   public songs$!: Observable<ISong[]>;
   private destroy$ = new Subject<boolean>();
 
-  private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
-
-  constructor(private route: ActivatedRoute, private store: Store, private router: Router) { }
+  constructor(private route: ActivatedRoute, private store: Store) { }
 
   ngOnInit(): void {
     this.artist = this.route.snapshot.params.artist;
@@ -86,9 +84,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         }, [] as string[]);
       })
     )
-    this.songs$ = combineLatest([this._connectServiceType$, this.songsByPlatform$]).pipe(
-      map(([platform, songsByPlatform]) => songsByPlatform(platform))
-    );
+    // this.songs$ = combineLatest([this._connectServiceType$, this.songsByPlatform$]).pipe(
+    //   map(([platform, songsByPlatform]) => songsByPlatform(platform))
+    // );
   }
 
   ngOnDestroy() {
@@ -96,27 +94,19 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  public selectedPlatform(evt: any) {
-    this._connectServiceType$.next(evt);
-  }
-
   public selectedSong(evt: string): void {
     this.songDetailById$.pipe(
       take(1),
       map((songDetail) => songDetail(evt))
     ).subscribe((song) => {
-      if (song?.trackType === ISongTrackType.album) {
-        this.router.navigate(['artist-album', 'sdlsdl']);
-      } else {
-        this.store.dispatch(new OpenPlayerAction({
-          platform: song!.platform,
-          name: song!.name,
-          trackType: song!.trackType,
-          artist: song?.artistName,
-          externalUrl: song?.externalUrl,
-          avatar: song?.pictures.medium
-        }));
-      }
+      this.store.dispatch(new OpenPlayerAction({
+        platform: song!.platform,
+        name: song!.name,
+        trackType: song!.trackType,
+        artist: song?.artistName,
+        externalUrl: song?.externalUrl,
+        avatar: song?.pictures.medium
+      }));
     });
   }
 }
