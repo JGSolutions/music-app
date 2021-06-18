@@ -17,7 +17,7 @@ export interface ISong {
   length: number;
   username?: string;
   artistName: string;
-  pictures: IAvatar;
+  pictures?: IAvatar;
   totalTracks: number;
   externalUrl?: string;
 }

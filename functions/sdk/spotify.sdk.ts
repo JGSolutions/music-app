@@ -57,6 +57,26 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
   });
 };
 
+
+export const artistAlbums = (dataApi: any): Promise<ISong[]> => {
+  return new Promise((resolve) => {
+    const data = dataApi.map((song: any) => {
+      return {
+        name: song.name,
+        id: song.id,
+        createdTime: song.release_date,
+        artistName: song.name,
+        externalUrl: song.external_urls.spotify,
+        length: song.album_type === "album" ? 0 : song.length,
+        totalTracks: song.total_tracks,
+        trackType: song.album_type === "album" ? ISongTrackType.album : ISongTrackType.single,
+        platform: IPlatformTypes.spotify,
+      };
+    });
+    resolve(data);
+  });
+};
+
 export const SpotifySDK = {
   queryParamAccessToken: "",
   refreshToken: "",
@@ -128,7 +148,7 @@ export const SpotifySDK = {
   async getArtistAlbum(id: string): Promise<ISong[]> {
     const url = `${this.apiDomain}/albums/${id}/tracks/`;
     const resp = await axios(url, this.requestHeaders());
-    return await artistSongs(resp.data.items);
+    return await artistAlbums(resp.data.items);
   },
 
   requestHeaders() {
