@@ -125,6 +125,12 @@ export const SpotifySDK = {
     return await artistSongs(resp.data.items);
   },
 
+  async getArtistAlbum(id: string): Promise<ISong[]> {
+    const url = `${this.apiDomain}/albums/${id}/tracks/`;
+    const resp = await axios(url, this.requestHeaders());
+    return await artistSongs(resp.data.items);
+  },
+
   requestHeaders() {
     return {
       headers: {

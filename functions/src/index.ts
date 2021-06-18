@@ -6,6 +6,7 @@ import { artists } from "./modules/artists";
 import { artist } from "./modules/artist";
 import { mixcloudAudio } from "./modules/mixcloudAudio";
 import { createSpotifyToken } from "./modules/createSpotifyToken";
+import { artistAlbum } from "./modules/artistAlbum";
 
 const app = express();
 const main = express();
@@ -22,3 +23,4 @@ app.get("/artists", artists);
 app.post("/artist", artist);
 app.post("/mixcloud-audio", mixcloudAudio);
 app.get("/create-spotify-token", createSpotifyToken);
+app.get("/artist-album", artistAlbum);
