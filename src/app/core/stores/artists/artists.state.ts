@@ -34,6 +34,11 @@ export class ArtistsState {
   }
 
   @Selector()
+  static artistAlbum(state: IArtistsState) {
+    return state.artistAlbum;
+  }
+
+  @Selector()
   static songsByPlatform(state: IArtistsState) {
     return (platform: IPlatformTypes) => {
       if (platform === IPlatformTypes.all) {
@@ -105,5 +110,4 @@ export class ArtistsState {
       })
     )
   }
-
 }

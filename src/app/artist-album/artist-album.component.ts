@@ -9,7 +9,7 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { OpenPlayerAction } from '../core/stores/player/player.actions';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
-import { ISong } from 'models/song.types';
+import { IAlbumInfo, ISong } from 'models/song.types';
 
 @Component({
   selector: 'app-artist-album',
@@ -18,11 +18,10 @@ import { ISong } from 'models/song.types';
 })
 export class ArtistAlbumComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
+  @Select(ArtistsState.artistAlbum) artistAlbum$!: Observable<IAlbumInfo>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
 
-  public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public songDetailById$ = this.store.select(ArtistsState.songDetailById);
-  public songsByPlatform$ = this.store.select(ArtistsState.songsByPlatform);
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
@@ -78,18 +77,18 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   }
 
   public selectedSong(evt: string): void {
-    this.songDetailById$.pipe(
-      take(1),
-      map((songDetail) => songDetail(evt))
-    ).subscribe((song) => {
-      this.store.dispatch(new OpenPlayerAction({
-        platform: song!.platform,
-        name: song!.name,
-        trackType: song!.trackType,
-        artist: song?.artistName,
-        externalUrl: song?.externalUrl,
-        avatar: song?.pictures?.medium
-      }));
-    });
+    // this.songDetailById$.pipe(
+    //   take(1),
+    //   map((songDetail) => songDetail(evt))
+    // ).subscribe((song) => {
+    //   this.store.dispatch(new OpenPlayerAction({
+    //     platform: song!.platform,
+    //     name: song!.name,
+    //     trackType: song!.trackType,
+    //     artist: song?.artistName,
+    //     externalUrl: song?.externalUrl,
+    //     avatar: song?.pictures?.medium
+    //   }));
+    // });
   }
 }
