@@ -106,7 +106,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       map((songDetail) => songDetail(evt))
     ).subscribe((song) => {
       if (song?.trackType === ISongTrackType.album) {
-        this.router.navigate(['artist-album', 'sdlsdl']);
+        this.router.navigate(['artist-album', song.platform, song.id]);
       } else {
         this.store.dispatch(new OpenPlayerAction({
           platform: song!.platform,
@@ -114,7 +114,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           trackType: song!.trackType,
           artist: song?.artistName,
           externalUrl: song?.externalUrl,
-          avatar: song?.pictures.medium
+          avatar: song?.pictures?.medium
         }));
       }
     });

@@ -105,7 +105,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
         trackType: song!.trackType,
         artist: song?.artistName,
         externalUrl: song?.externalUrl,
-        avatar: song?.pictures.medium
+        avatar: song?.pictures?.medium
       }));
     });
   }
