@@ -23,7 +23,7 @@ const routes: Routes = [
         loadChildren: () => import('../artist-profile/artist-profile.module').then(m => m.ArtistProfileModule)
       },
       {
-        path: 'artist-album/:artist',
+        path: 'artist-album/:platform/:id',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../artist-album/artist-album.module').then(m => m.ArtistAlbumModule)
