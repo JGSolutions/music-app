@@ -1,0 +1,15 @@
+
+<img [src]="avatar" class="avatar">
+<div class="artist-info">
+  <span class="mat-headline">
+    {{name}}
+  </span>
+</div>
+<mat-divider></mat-divider>
+
+<mat-chip-list class="chip-list">
+  <mat-chip color="primary" *ngFor="let service of genres">{{service}}</mat-chip>
+</mat-chip-list>
+
+
+
