@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { IStreamUrl } from '../core/stores/player/player.types';
 import { environment } from 'src/environments/environment';
 import { IArtistBodyRequest, IArtists, IPlatformTypes } from 'models/artist.types';
-import { ISong } from 'models/song.types';
+import { IAlbum, ISong } from 'models/song.types';
 
 
 @Injectable()
@@ -40,7 +40,7 @@ export class ApiService {
     return this.http.post<ISong[]>(url, JSON.stringify(payload), httpOptions);
   }
 
-  public artistAlbum(uid: string, platform: IPlatformTypes, id: string): Observable<ISong[]> {
+  public artistAlbum(uid: string, platform: IPlatformTypes, id: string): Observable<IAlbum> {
     const url = `${this.domainApi}/artist-album?platform=${platform}&id=${id}`;
 
     const headers = {

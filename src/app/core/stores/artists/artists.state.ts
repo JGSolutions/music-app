@@ -6,6 +6,7 @@ import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction } from './artists.ac
 import { artistsStateDefault, IArtistsState } from './artists-state.types';
 import { reduce } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
+import { IAlbum } from 'models/song.types';
 
 @State<IArtistsState>({
   name: 'artists',
@@ -96,9 +97,10 @@ export class ArtistsState {
   @Action(ArtistAlbumSongs)
   _artistAlbumSongs(ctx: StateContext<IArtistsState>, { uid, platform, id }: ArtistAlbumSongs) {
     return this.apiService.artistAlbum(uid!, platform, id).pipe(
-      tap((data) => {
+      tap((data: IAlbum) => {
         ctx.patchState({
-          artistSongs: data,
+          artistSongs: data.tracks,
+          artistAlbum: data.album
         });
       })
     )

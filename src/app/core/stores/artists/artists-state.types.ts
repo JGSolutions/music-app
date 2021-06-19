@@ -1,14 +1,16 @@
 import { IArtists } from "models/artist.types";
-import { ISong } from "models/song.types";
+import { IAlbumInfo, ISong } from "models/song.types";
 
 export interface IArtistsState {
   artists: Record<string, IArtists[]>;
-  artistSongs: ISong[]
+  artistSongs: ISong[],
+  artistAlbum: IAlbumInfo;
   loading: boolean;
 }
 
 export const artistsStateDefault: IArtistsState = {
   artists: {},
   artistSongs: [],
-  loading: false
+  artistAlbum: {} as IAlbumInfo,
+  loading: false,
 };
