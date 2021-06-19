@@ -21,3 +21,18 @@ export interface ISong {
   totalTracks: number;
   externalUrl?: string;
 }
+
+export interface IAlbumInfo {
+  id: string;
+  genres?: string[];
+  name: string;
+  releaseDate: string;
+  totalTracks: number;
+  externalUrl?: string;
+  pictures?: IAvatar;
+}
+
+export interface IAlbum {
+  album: IAlbumInfo;
+  tracks: ISong[]
+}

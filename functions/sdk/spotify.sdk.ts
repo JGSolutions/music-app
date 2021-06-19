@@ -5,7 +5,7 @@ import { updateConnectedService } from "../src/utils/connect-services-firebase";
 import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
-import { ISong, ISongTrackType } from "../../models/song.types";
+import { IAlbum, ISong, ISongTrackType } from "../../models/song.types";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -58,22 +58,34 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
 };
 
 
-export const artistAlbums = (dataApi: any): Promise<ISong[]> => {
+export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
   return new Promise((resolve) => {
-    const data = dataApi.map((song: any) => {
+    const tracks = dataApi.tracks.items.map((song: any) => {
       return {
         name: song.name,
         id: song.id,
         createdTime: song.release_date,
-        artistName: song.name,
         externalUrl: song.external_urls.spotify,
-        length: song.album_type === "album" ? 0 : song.length,
-        totalTracks: song.total_tracks,
-        trackType: song.album_type === "album" ? ISongTrackType.album : ISongTrackType.single,
+        length: song.duration_ms,
+        trackType: song.type,
         platform: IPlatformTypes.spotify,
       };
     });
-    resolve(data);
+    resolve({
+      album: {
+        id: dataApi.id,
+        name: dataApi.name,
+        externalUrl: dataApi.external_urls.spotify,
+        releaseDate: dataApi.release_date,
+        totalTracks: dataApi.total_tracks,
+        pictures: {
+          medium: dataApi.images[2].url,
+          large: dataApi.images[1].url,
+          exLarge: dataApi.images[0].url,
+        },
+      },
+      tracks,
+    });
   });
 };
 
@@ -145,10 +157,10 @@ export const SpotifySDK = {
     return await artistSongs(resp.data.items);
   },
 
-  async getArtistAlbum(id: string): Promise<ISong[]> {
-    const url = `${this.apiDomain}/albums/${id}/tracks/`;
+  async getArtistAlbum(albumId: string): Promise<IAlbum> {
+    const url = `${this.apiDomain}/albums/${albumId}`;
     const resp = await axios(url, this.requestHeaders());
-    return await artistAlbums(resp.data.items);
+    return await artistAlbums(resp.data);
   },
 
   requestHeaders() {

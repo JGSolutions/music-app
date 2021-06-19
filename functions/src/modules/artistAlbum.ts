@@ -17,17 +17,20 @@ export const artistAlbum = async (request: Request, response: Response) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const connectedServices = await getConnectServices(authorized);
-
+  let data;
   switch (request.query.platform) {
     case IPlatformTypes.spotify:
-      SpotifySDK.initialize(connectedServices[request.query.platform].token, connectedServices[request.query.platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
-
-      // eslint-disable-next-line no-case-declarations
-      const data = await SpotifySDK.getArtistAlbum(request.query.id as string);
-      response.status(200).send(data);
+      SpotifySDK.initialize(
+        connectedServices[request.query.platform].token,
+        connectedServices[request.query.platform].refresh_token,
+        spotifyKeys.clientId,
+        spotifyKeys.secretApi,
+        authorized
+      );
+      data = await SpotifySDK.getArtistAlbum(request.query.id as string);
 
       break;
   }
 
-  return response.status(200).send([]);
+  return response.status(200).send(data || []);
 };
