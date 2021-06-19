@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistsAction, ArtistSongsAction } from './artists.actions';
+import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState } from './artists-state.types';
 import { reduce } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
@@ -85,6 +85,17 @@ export class ArtistsState {
   @Action(ArtistSongsAction)
   _artistSongs(ctx: StateContext<IArtistsState>, { uid, artistPlatform }: ArtistSongsAction) {
     return this.apiService.artistSongs(uid, artistPlatform).pipe(
+      tap((data) => {
+        ctx.patchState({
+          artistSongs: data,
+        });
+      })
+    )
+  }
+
+  @Action(ArtistAlbumSongs)
+  _artistAlbumSongs(ctx: StateContext<IArtistsState>, { uid, platform, id }: ArtistAlbumSongs) {
+    return this.apiService.artistAlbum(uid!, platform, id).pipe(
       tap((data) => {
         ctx.patchState({
           artistSongs: data,

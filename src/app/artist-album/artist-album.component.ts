@@ -2,17 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { isUndefined } from 'lodash';
-import { ArtistSongsAction } from '../core/stores/artists/artists.actions';
+import { ArtistAlbumSongs } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { OpenPlayerAction } from '../core/stores/player/player.actions';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
-import { ISong, ISongTrackType } from 'models/song.types';
+import { ISong } from 'models/song.types';
 
 @Component({
   selector: 'app-artist-album',
@@ -22,7 +19,6 @@ import { ISong, ISongTrackType } from 'models/song.types';
 export class ArtistAlbumComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public songDetailById$ = this.store.select(ArtistsState.songDetailById);
@@ -31,62 +27,49 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
   public songs$!: Observable<ISong[]>;
+  public id!: string;
+  public platform!: string;
+
   private destroy$ = new Subject<boolean>();
 
   constructor(private route: ActivatedRoute, private store: Store) { }
 
   ngOnInit(): void {
-    this.artist = this.route.snapshot.params.artist;
+    this.platform = this.route.snapshot.params.platform;
+    this.id = this.route.snapshot.params.id;
 
-    const artistDetails$ = this.artistDetails$.pipe(
-      map((artist) => artist(this.artist)),
-      filter(data => !isUndefined(data)),
-      shareReplay(1)
-    );
+    this.user$.pipe(
+      takeUntil(this.destroy$),
+      filter(user => user !== null)
+    ).subscribe((user) => {
+      this.store.dispatch(new ArtistAlbumSongs(user.uid, this.platform as IPlatformTypes, this.id));
+    });
+    // const artistDetails$ = this.artistDetails$.pipe(
+    //   map((artist) => artist(this.artist)),
+    //   filter(data => !isUndefined(data)),
+    //   shareReplay(1)
+    // );
 
     /**
      * Details for artist profile
      */
-    this.profileDetails$ = artistDetails$.pipe(
-      map((artists) => artists[0]),
-      filter(data => !isUndefined(data)),
-      shareReplay(1)
-    );
-
-    /**
-     * Gets list of songs for artist
-     */
-    artistDetails$.pipe(
-      take(1),
-      map((details) => {
-        return details.map((detail) => {
-          return {
-            type: detail.platform,
-            id: detail.id,
-            username: detail.username
-          }
-        })
-      }),
-      withLatestFrom(this.user$),
-      takeUntil(this.destroy$)
-    ).subscribe(([data, user]) => {
-      this.store.dispatch(new ArtistSongsAction(user.uid, data))
-    });
-
-    this.artistGenres$ = artistDetails$.pipe(
-      map((details) => {
-        return details.reduce((acc, value) => {
-          if (value.genres) {
-            acc = value.genres.map(genre => genre);
-          }
-
-          return acc;
-        }, [] as string[]);
-      })
-    )
-    // this.songs$ = combineLatest([this._connectServiceType$, this.songsByPlatform$]).pipe(
-    //   map(([platform, songsByPlatform]) => songsByPlatform(platform))
+    // this.profileDetails$ = artistDetails$.pipe(
+    //   map((artists) => artists[0]),
+    //   filter(data => !isUndefined(data)),
+    //   shareReplay(1)
     // );
+
+    // this.artistGenres$ = artistDetails$.pipe(
+    //   map((details) => {
+    //     return details.reduce((acc, value) => {
+    //       if (value.genres) {
+    //         acc = value.genres.map(genre => genre);
+    //       }
+
+    //       return acc;
+    //     }, [] as string[]);
+    //   })
+    // )
   }
 
   ngOnDestroy() {

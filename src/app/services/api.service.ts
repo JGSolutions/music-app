@@ -4,7 +4,7 @@ import { catchError, map, retry } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { IStreamUrl } from '../core/stores/player/player.types';
 import { environment } from 'src/environments/environment';
-import { IArtistBodyRequest, IArtists } from 'models/artist.types';
+import { IArtistBodyRequest, IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISong } from 'models/song.types';
 
 
@@ -38,6 +38,20 @@ export class ApiService {
     };
 
     return this.http.post<ISong[]>(url, JSON.stringify(payload), httpOptions);
+  }
+
+  public artistAlbum(uid: string, platform: IPlatformTypes, id: string): Observable<ISong[]> {
+    const url = `${this.domainApi}/artist-album?platform=${platform}&id=${id}`;
+
+    const headers = {
+      headers: {
+        "Authorization": uid
+      },
+    };
+
+    return this.http.get(url, headers).pipe(
+      map((res: any) => res)
+    );
   }
 
   public mixcloudAudioStream(uid: string, externalUrl: string): Observable<IStreamUrl> {
