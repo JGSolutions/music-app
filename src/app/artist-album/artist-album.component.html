@@ -3,6 +3,7 @@
   <div class="row fixed-height">
     <div class="col-md-5 col-lg-3">
       <app-album-avatar
+        [artist]="(artistAlbum$ | async)?.artist!"
         [platform]="(artistAlbum$ | async)?.platform!"
         [avatar]="(artistAlbum$ | async)?.pictures?.large!"
         [releaseDate]="(artistAlbum$ | async)?.releaseDate!"

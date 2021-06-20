@@ -10,6 +10,9 @@ export class AlbumAvatarComponent {
   name!: string;
 
   @Input()
+  artist!: string;
+
+  @Input()
   avatar!: string;
 
   @Input()
