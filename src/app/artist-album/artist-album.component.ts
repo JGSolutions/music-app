@@ -22,8 +22,6 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
 
   public songDetailById$ = this.store.select(ArtistsState.songDetailById);
-  public artist!: string;
-  public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
   public songs$!: Observable<ISong[]>;
   public id!: string;
@@ -43,32 +41,6 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
     ).subscribe((user) => {
       this.store.dispatch(new ArtistAlbumSongs(user.uid, this.platform as IPlatformTypes, this.id));
     });
-    // const artistDetails$ = this.artistDetails$.pipe(
-    //   map((artist) => artist(this.artist)),
-    //   filter(data => !isUndefined(data)),
-    //   shareReplay(1)
-    // );
-
-    /**
-     * Details for artist profile
-     */
-    // this.profileDetails$ = artistDetails$.pipe(
-    //   map((artists) => artists[0]),
-    //   filter(data => !isUndefined(data)),
-    //   shareReplay(1)
-    // );
-
-    // this.artistGenres$ = artistDetails$.pipe(
-    //   map((details) => {
-    //     return details.reduce((acc, value) => {
-    //       if (value.genres) {
-    //         acc = value.genres.map(genre => genre);
-    //       }
-
-    //       return acc;
-    //     }, [] as string[]);
-    //   })
-    // )
   }
 
   ngOnDestroy() {
