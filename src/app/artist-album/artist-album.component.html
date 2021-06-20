@@ -15,7 +15,7 @@
       <section class="songs-list-wrapper">
         <section class="song-list">
           <app-song-item
-            *ngFor="let song of songs$ | async"
+            *ngFor="let song of tracks$ | async"
             [name]="song.name"
             [id]="song.id"
             [length]="song.length"

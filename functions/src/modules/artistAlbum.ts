@@ -20,12 +20,7 @@ export const artistAlbum = async (request: Request, response: Response) => {
   let data;
   switch (request.query.platform) {
     case IPlatformTypes.spotify:
-      SpotifySDK.initialize(
-        connectedServices[request.query.platform].token,
-        connectedServices[request.query.platform].refresh_token,
-        spotifyKeys.clientId,
-        spotifyKeys.secretApi,
-        authorized
+      SpotifySDK.initialize(connectedServices[request.query.platform].token, connectedServices[request.query.platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized
       );
       data = await SpotifySDK.getArtistAlbum(request.query.id as string);
 
