@@ -75,9 +75,12 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
       album: {
         id: dataApi.id,
         name: dataApi.name,
+        artist: dataApi.artists[0].name,
+        artistid: dataApi.artists[0].id,
         externalUrl: dataApi.external_urls.spotify,
         releaseDate: dataApi.release_date,
         totalTracks: dataApi.total_tracks,
+        platform: IPlatformTypes.spotify,
         pictures: {
           medium: dataApi.images[2].url,
           large: dataApi.images[1].url,
