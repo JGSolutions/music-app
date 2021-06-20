@@ -1,14 +1,34 @@
-
-<img [src]="avatar" class="avatar">
+<div class="image-wrapper">
+  <div class="platform">
+    <img src="../assets/platforms/{{platform}}.png" class="platform-logo" >
+  </div>
+  <div class="album-name mat-caption">{{name}}</div>
+  <img [src]="avatar" class="avatar">
+</div>
 <div class="artist-info">
   <span class="mat-headline">
     {{name}}
   </span>
 </div>
 <mat-divider></mat-divider>
+<div class="artist-info">
+  <div>
+    <span class="mat-body-2">
+      {{releaseDate | date: 'MMM dd, YYYY'}}
+    </span>
 
+    <span class="mat-caption">
+      {{totalTracks}} tracks
+    </span>
+  </div>
+
+  <button mat-icon-button color="primary">
+    <mat-icon>favorite_border</mat-icon>
+  </button>
+</div>
+<mat-divider></mat-divider>
 <mat-chip-list class="chip-list">
-  <mat-chip color="primary" *ngFor="let service of genres">{{service}}</mat-chip>
+  <mat-chip color="primary" *ngFor="let genre of genres">{{genre}}</mat-chip>
 </mat-chip-list>
 
 

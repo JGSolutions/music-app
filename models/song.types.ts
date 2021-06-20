@@ -28,6 +28,7 @@ export interface IAlbumInfo {
   name: string;
   releaseDate: string;
   totalTracks: number;
+  platform: IPlatformTypes;
   externalUrl?: string;
   pictures?: IAvatar;
 }

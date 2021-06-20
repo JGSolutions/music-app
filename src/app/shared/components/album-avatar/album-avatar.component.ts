@@ -17,5 +17,11 @@ export class AlbumAvatarComponent {
 
   @Input()
   platform!: string;
+
+  @Input()
+  releaseDate!: string;
+
+  @Input()
+  totalTracks!: number;
 }
 

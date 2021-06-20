@@ -1,3 +1,5 @@
+@import '../../../../theme/variables.scss';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -11,6 +13,32 @@
   object-fit: cover;
 }
 
-.artist-info, .chip-list{
-  padding: 10px 0 10px 0;
+.album-info, .artist-info, .chip-list {
+  padding: $s-padding-gap 0 $s-padding-gap 0;
+}
+
+.image-wrapper {
+  position: relative;
+
+  .album-name {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    color: white;
+    background-color: black;
+    padding: $xs-padding-gap;
+    border-radius: 4px;
+  }
+
+  .platform {
+    position: absolute;
+    top: 5px;
+    right: 5px
+  }
+}
+
+.artist-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
