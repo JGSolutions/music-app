@@ -7,7 +7,7 @@ import { AngularMaterialModule } from 'src/angular-material.module';
   declarations: [TrackItemComponent],
   imports: [
     CommonModule,
-    // AngularMaterialModule
+    AngularMaterialModule
   ],
   exports: [
     TrackItemComponent

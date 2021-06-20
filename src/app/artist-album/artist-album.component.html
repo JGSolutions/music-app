@@ -14,19 +14,17 @@
     <div class="col-md-7 col-lg-9 fixed-height">
       <section class="songs-list-wrapper">
         <section class="song-list">
-          <app-song-item
+          <app-track-item
             *ngFor="let song of tracks$ | async"
             [name]="song.name"
             [id]="song.id"
             [length]="song.length"
-            [totalTracks]="song.totalTracks"
             [platform]="song.platform"
             [avatar]="song?.pictures?.medium!"
             [externalUrl]="song.externalUrl!"
             [trackType]="song.trackType"
-            [dateCreated]="song.createdTime"
             (selectedSong)="selectedSong($event)">
-          </app-song-item>
+          </app-track-item>
         </section>
       </section>
     </div>

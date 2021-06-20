@@ -24,9 +24,6 @@ export class TrackItemComponent {
   length!: number;
 
   @Input()
-  dateCreated!: any;
-
-  @Input()
   trackType!: ISongTrackType;
 
   @Input()

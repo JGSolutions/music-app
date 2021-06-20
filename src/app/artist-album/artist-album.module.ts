@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ArtistAlbumComponent } from './artist-album.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
-import { SongItemModule } from '../shared/components/song-item/song-item.module';
 import { AlbumAvatarModule } from '../shared/components/album-avatar/album-avatar.module';
+import { TrackItemModule } from '../shared/components/track-item/track-item.module';
 @NgModule({
   declarations: [ArtistAlbumComponent],
   imports: [
     CommonModule,
     AngularMaterialModule,
     AlbumAvatarModule,
-    SongItemModule,
+    TrackItemModule,
     RouterModule.forChild([
       { path: '', component: ArtistAlbumComponent },
     ]),
