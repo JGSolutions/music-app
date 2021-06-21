@@ -15,6 +15,9 @@ export class TrackItemComponent {
   name!: string;
 
   @Input()
+  index!: number;
+
+  @Input()
   id!: string;
 
   @Input()

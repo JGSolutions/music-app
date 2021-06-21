@@ -4,52 +4,27 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  height: 100px;
+  height: 48px;
   margin-bottom: $xl-padding-gap;
+  background-color: #eee;
+  padding: 0 10px;
 }
 
-.item {
-  width: 100%;
+.avatar-wrapper {
+  cursor: pointer;
+}
+
+.avatar {
+  border-radius: 6px;
+  width: 100px;
+  height: 100px;
+}
+
+.s {
   display: flex;
-  flex-direction: row;
-  gap: $s-padding-gap;
-
-  .avatar-wrapper {
-    cursor: pointer;
-  }
-
-  .avatar {
-    border-radius: 6px;
-    width: 100px;
-    height: 100px;
-  }
-
-  .info-wrapper {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-  }
-
-  .music-info {
-    width: 100%;
-    padding: $xs-padding-gap 0 $s-padding-gap 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .platform-logo {
-    width: auto;
-    height: auto;
-    max-height: 15px;
-  }
-
-  .type {
-    text-transform: capitalize;
-  }
-
-  .options {
-    display: flex;
-    align-items: center;
-  }
+  justify-content: space-between;
+  align-items: center;
+  width: 125px;
 }
