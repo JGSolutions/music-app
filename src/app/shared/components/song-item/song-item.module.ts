@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { SongItemComponent } from './song-item.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
 import { DateAgoPipe } from 'src/app/core/pipes/date-ago.pipe';
-import { MinuteSecondsPipe } from 'src/app/core/pipes/minute-seconds.pipe';
+import { MinuteSecondsModule } from 'src/app/core/pipes/minute-seconds.module';
 
 @NgModule({
-  declarations: [SongItemComponent, DateAgoPipe, MinuteSecondsPipe],
+  declarations: [SongItemComponent, DateAgoPipe],
   imports: [
     CommonModule,
+    MinuteSecondsModule,
     AngularMaterialModule
   ],
   exports: [
