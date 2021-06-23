@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from "@angular/core";
+import { IDurationType } from "models/song.types";
 
 const toHoursMinutesSeconds = (totalSeconds: number) => {
   const hours = Math.floor(totalSeconds / 3600);
@@ -20,8 +21,11 @@ const toHoursMinutesSeconds = (totalSeconds: number) => {
 })
 export class MinuteSecondsPipe implements PipeTransform {
 
-  transform(value: number): string {
-    return toHoursMinutesSeconds(value)
+  transform(value: number, duration: IDurationType): string {
+    if (duration === IDurationType.milliseconds) {
+      return toHoursMinutesSeconds(Math.round(value / 1000));
+    }
+    return toHoursMinutesSeconds(value);
   }
 
 }

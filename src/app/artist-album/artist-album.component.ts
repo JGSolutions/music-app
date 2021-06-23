@@ -41,8 +41,6 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
     ).subscribe((user) => {
       this.store.dispatch(new ArtistAlbumSongs(user.uid, this.platform as IPlatformTypes, this.id));
     });
-
-    this.tracks$.subscribe(e => console.log(e));
   }
 
   ngOnDestroy() {
