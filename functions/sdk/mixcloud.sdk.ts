@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 import axios from "axios";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
-import { ISong, ISongTrackType } from "../../models/song.types";
+import { IDurationType, ISong, ISongTrackType } from "../../models/song.types";
 
 export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -33,7 +33,8 @@ export const mixcloudArtistSongs = (dataApi: any): Promise<ISong[]> => {
         createdTime: song.created_time,
         username: song.user.username,
         artistName: song.user.name,
-        length: song.audio_length,
+        duration: song.audio_length,
+        durationType: IDurationType.seconds,
         trackType: ISongTrackType.track,
         platform: IPlatformTypes.mixcloud,
         externalUrl: song.url,

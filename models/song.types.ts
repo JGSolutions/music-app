@@ -7,6 +7,10 @@ export enum ISongTrackType {
   single = "single",
 }
 
+export enum IDurationType {
+  milliseconds,
+  seconds,
+}
 export interface ISong {
   name: string;
   genres?: string[];
@@ -14,7 +18,8 @@ export interface ISong {
   createdTime: string;
   trackType: ISongTrackType;
   id: string;
-  length: number;
+  duration: number;
+  durationType: IDurationType;
   username?: string;
   artistName: string;
   pictures?: IAvatar;

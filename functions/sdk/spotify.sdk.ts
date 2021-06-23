@@ -5,7 +5,7 @@ import { updateConnectedService } from "../src/utils/connect-services-firebase";
 import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
-import { IAlbum, ISong, ISongTrackType } from "../../models/song.types";
+import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.types";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -42,7 +42,8 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
         createdTime: song.release_date,
         artistName: song.name,
         externalUrl: song.external_urls.spotify,
-        length: song.album_type === "album" ? 0 : song.length,
+        duration: song.album_type === "album" ? 0 : song.length,
+        durationType: IDurationType.milliseconds,
         totalTracks: song.total_tracks,
         trackType: song.album_type === "album" ? ISongTrackType.album : ISongTrackType.single,
         platform: IPlatformTypes.spotify,
@@ -66,7 +67,8 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         id: song.id,
         createdTime: song.release_date,
         externalUrl: song.external_urls.spotify,
-        length: song.duration_ms,
+        duration: song.duration_ms,
+        durationType: IDurationType.milliseconds,
         trackType: song.type,
         platform: IPlatformTypes.spotify,
       };
