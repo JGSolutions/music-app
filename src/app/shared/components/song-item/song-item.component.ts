@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAvatar } from 'models/avatar.types';
-import { ISongTrackType } from 'models/song.types';
+import { IDurationType, ISongTrackType } from 'models/song.types';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -22,6 +22,9 @@ export class SongItemComponent {
 
   @Input()
   length!: number;
+
+  @Input()
+  durationType!: IDurationType;
 
   @Input()
   totalTracks!: number;
