@@ -105,8 +105,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       take(1),
       map((songDetail) => songDetail(evt))
     ).subscribe((song) => {
-      if (song?.trackType === ISongTrackType.album) {
-        this.router.navigate(['artist-album', song.platform, song.id]);
+      if (song?.trackType !== ISongTrackType.track) {
+        this.router.navigate(['artist-album', song?.platform, song?.id]);
       } else {
         this.store.dispatch(new OpenPlayerAction({
           platform: song!.platform,
