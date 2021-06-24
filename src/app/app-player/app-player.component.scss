@@ -105,6 +105,10 @@ a.mat-button .menu-button-layout {
   }
 }
 
+mat-sidenav-container {
+  background-color: $app-backgorund-color;
+}
+
 .main-container {
   display: flex;
   flex-direction: column;

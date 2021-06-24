@@ -7,6 +7,8 @@ $padding-gap: 16px;
 $xl-padding-gap: 24px;
 $line-height: 24px;
 
+$app-backgorund-color: #F4F7FC;
+
 @mixin fluid-container() {
   width: 100%;
   // padding-right: 0;
