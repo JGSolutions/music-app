@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Howl, Howler } from 'howler';
 import { ReplaySubject } from 'rxjs';
-import { formatTime } from 'src/app/core/utils/utils';
 
 @Injectable()
 export class HowlerPlayerService {
   public howler = Howler;
   public $onload: ReplaySubject<void>;
   public $sliderProgress: ReplaySubject<number>;
-  public $currentTimer: ReplaySubject<string>;
+  public $currentTimer: ReplaySubject<number>;
   public $rawDuration: ReplaySubject<number>;
   public $isPlaying: ReplaySubject<boolean>;
 
@@ -36,7 +35,7 @@ export class HowlerPlayerService {
       preload: 'metadata',
       volume: 1,
       onload: () => {
-        this.$currentTimer.next("0:00");
+        this.$currentTimer.next(0);
         this.$rawDuration.next(this._sound?.duration()!);
         this.$isPlaying.next(this._sound?.playing());
         this.$sliderProgress.next(0);
@@ -90,9 +89,7 @@ export class HowlerPlayerService {
 
   private _whilePlaying() {
     const seek = this._sound?.seek() || 0 as number;
-    const timer = formatTime(Math.round(seek as number));
-
-    this.$currentTimer.next(timer);
+    this.$currentTimer.next(seek as number);
     this.$sliderProgress.next(seek as number);
 
     this._raf = requestAnimationFrame(this._whilePlaying.bind(this));

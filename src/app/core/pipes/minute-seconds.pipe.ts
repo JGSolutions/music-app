@@ -16,6 +16,13 @@ const toHoursMinutesSeconds = (totalSeconds: number) => {
   return result;
 };
 
+const formatTime = (secs: number): string => {
+  const minutes = Math.floor(secs / 60) || 0;
+  const seconds = (secs - minutes * 60) || 0;
+
+  return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+}
+
 @Pipe({
   name: 'minuteSeconds'
 })

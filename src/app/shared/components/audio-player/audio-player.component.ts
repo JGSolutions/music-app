@@ -12,7 +12,7 @@ export class AudioPlayerComponent implements OnInit {
   @Input() avatar!: string;
   @Input() name!: string;
   @Input() artist!: string;
-  @Input() currentTimer!: string;
+  @Input() currentTimer!: number;
   @Input() rawDuration!: number;
   @Input() progress!: number;
   @Input() isPlaying!: boolean;
