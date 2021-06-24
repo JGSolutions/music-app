@@ -7,9 +7,9 @@
   align-items: center;
   width: 100%;
   height: 48px;
-  margin-bottom: $xl-padding-gap;
-  background-color: #eee;
-  padding: 0 10px;
+  margin-bottom: $xs-padding-gap;
+  padding: 0 $s-padding-gap;
+  border-radius: 6px;
 }
 
 :host:hover {
@@ -17,19 +17,24 @@
   cursor: pointer;
 }
 
-// .avatar-wrapper {
-//   cursor: pointer;
-// }
+.info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
-// .avatar {
-//   border-radius: 6px;
-//   width: 100px;
-//   height: 100px;
-// }
+  .track-name {
+    padding-left: $xs-padding-gap;
+  }
+}
+.avatar {
+  border-radius: 6px;
+  width: auto;
+  height: 48px;
+}
 
 .options {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 125px;
+  width: 120px;
 }
