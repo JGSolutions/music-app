@@ -14,7 +14,7 @@
       <span class="type" *ngIf="trackType === trackTypes.track">
         {{trackTypes[trackType]}} <span *ngIf="length > 0">- {{length | minuteSeconds: durationType}}</span>
       </span>
-      <span class="type" *ngIf="trackType !== 'track'">{{trackTypes[trackType]}} - {{totalTracks}} Track(s)</span>
+      <span class="type" *ngIf="trackType !== 'track'">{{trackTypes[trackType]}} - {{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
     </span>
   </div>
   <div class="options">
