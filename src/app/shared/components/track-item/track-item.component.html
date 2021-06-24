@@ -1,16 +1,18 @@
-<div class="info">
-  <div *ngIf="avatar">
-    <img [src]="avatar" class="avatar">
+<div (click)="selectedItem()" class="wrapper">
+  <div class="info">
+    <div *ngIf="avatar">
+      <img [src]="avatar" class="avatar">
+    </div>
+    <div *ngIf="!avatar">{{ index }}.</div>
+    <div class="track-name">
+      {{ name }}
+    </div>
   </div>
-  <div *ngIf="!avatar">{{ index }}.</div>
-  <div class="track-name">
-    {{ name }}
-  </div>
-</div>
 
-<div class="options">
-  <span>{{length | minuteSeconds: durationType}}</span>
-  <button mat-icon-button>
-    <mat-icon>more_horiz</mat-icon>
-  </button>
+  <div class="options" >
+    <span>{{length | minuteSeconds: durationType}}</span>
+    <button mat-icon-button>
+      <mat-icon>more_horiz</mat-icon>
+    </button>
+  </div>
 </div>

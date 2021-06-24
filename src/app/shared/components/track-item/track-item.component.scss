@@ -1,6 +1,10 @@
 @import '../../../../theme/variables.scss';
 
 :host {
+  display: block;
+}
+
+.wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -12,7 +16,7 @@
   border-radius: 6px;
 }
 
-:host:hover {
+.wrapper:hover {
   background-color: #f4f4f4;
   cursor: pointer;
 }
