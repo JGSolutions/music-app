@@ -9,7 +9,6 @@ export class HowlerPlayerService {
   public $onload: ReplaySubject<void>;
   public $sliderProgress: ReplaySubject<number>;
   public $currentTimer: ReplaySubject<string>;
-  public $duration: ReplaySubject<string>;
   public $rawDuration: ReplaySubject<number>;
   public $isPlaying: ReplaySubject<boolean>;
 
@@ -20,7 +19,6 @@ export class HowlerPlayerService {
     this.$onload = new ReplaySubject(1);
     this.$sliderProgress = new ReplaySubject(1);
     this.$currentTimer = new ReplaySubject(1);
-    this.$duration = new ReplaySubject(1);
     this.$rawDuration = new ReplaySubject(1);
     this.$isPlaying = new ReplaySubject(1);
   }
@@ -38,8 +36,6 @@ export class HowlerPlayerService {
       preload: 'metadata',
       volume: 1,
       onload: () => {
-        const formattedDurationTime = formatTime(Math.round(this._sound?.duration()!));
-        this.$duration.next(formattedDurationTime);
         this.$currentTimer.next("0:00");
         this.$rawDuration.next(this._sound?.duration()!);
         this.$isPlaying.next(this._sound?.playing());

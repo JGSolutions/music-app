@@ -25,7 +25,7 @@ export class MinuteSecondsPipe implements PipeTransform {
     if (duration === IDurationType.milliseconds) {
       return toHoursMinutesSeconds(Math.round(value / 1000));
     }
-    return toHoursMinutesSeconds(value);
+    return toHoursMinutesSeconds(Math.round(value));
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
+import { IDurationType } from 'models/song.types';
 
 @Component({
   selector: 'app-audio-player',
@@ -12,7 +13,6 @@ export class AudioPlayerComponent implements OnInit {
   @Input() name!: string;
   @Input() artist!: string;
   @Input() currentTimer!: string;
-  @Input() duration!: string;
   @Input() rawDuration!: number;
   @Input() progress!: number;
   @Input() isPlaying!: boolean;
@@ -21,6 +21,8 @@ export class AudioPlayerComponent implements OnInit {
   @Output() sliderInput = new EventEmitter<number>();
   @Output() play = new EventEmitter<void>();
   @Output() pause = new EventEmitter<void>();
+
+  public durationType = IDurationType;
 
   ngOnInit() {
 

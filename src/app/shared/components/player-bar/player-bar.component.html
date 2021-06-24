@@ -7,7 +7,6 @@
 [isPlaying]="(howlService.$isPlaying | async)!"
 [artist]="currentTrack.artist!"
 [currentTimer]="(howlService.$currentTimer | async)!"
-[duration]="(howlService.$duration | async)!"
 (sliderChange)="sliderChange($event)"
 (sliderInput)="sliderInput($event)"
 (play)="play()"
