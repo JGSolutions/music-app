@@ -81,7 +81,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     MixcloudAuthorization.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,
-      "http://localhost:4200/mixcloud-callback"
+      `${environment.appDomain}mixcloud-callback`
     );
 
     this.document.location.href = MixcloudAuthorization.authorizeUrl();
@@ -91,7 +91,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     SpotifyAuthorization.config(
       environment.spotify.clientId,
       environment.spotify.secretApi,
-      "http://localhost:4200/spotify-callback",
+      `${environment.appDomain}spotify-callback`,
     );
 
     this.document.location.href = SpotifyAuthorization.authorizeUrl();

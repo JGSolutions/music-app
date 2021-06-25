@@ -22,7 +22,8 @@ export const environment = {
     secretApi: 'd412e35440c64c1b804123c3e295f5f8'
   },
   // restapiDomain: "https://music-restapi.web.app/api",
-  restapiDomain: "http://localhost:5000/api"
+  restapiDomain: "http://localhost:5000/api",
+  appDomain: "http://localhost:4200/",
 };
 
 /*
