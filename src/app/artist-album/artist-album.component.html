@@ -1,18 +1,19 @@
 <mat-divider></mat-divider>
-<div class="container-fluid fixed-height">
-  <div class="row fixed-height">
+<div class="container-fluid">
+  <div class="row">
     <div class="col-md-5 col-lg-3">
-      <app-album-avatar
-        [artist]="(artistAlbum$ | async)?.artist!"
-        [platform]="(artistAlbum$ | async)?.platform!"
-        [avatar]="(artistAlbum$ | async)?.pictures?.large!"
-        [releaseDate]="(artistAlbum$ | async)?.releaseDate!"
-        [totalTracks]="(artistAlbum$ | async)?.totalTracks!"
-        [name]="(artistAlbum$ | async)?.name!">
-      </app-album-avatar>
+      <section class="sticky-element">
+        <app-album-avatar
+          [artist]="(artistAlbum$ | async)?.artist!"
+          [platform]="(artistAlbum$ | async)?.platform!"
+          [avatar]="(artistAlbum$ | async)?.pictures?.large!"
+          [releaseDate]="(artistAlbum$ | async)?.releaseDate!"
+          [totalTracks]="(artistAlbum$ | async)?.totalTracks!"
+          [name]="(artistAlbum$ | async)?.name!">
+        </app-album-avatar>
+      </section>
     </div>
-    <div class="col-md-7 col-lg-9 fixed-height">
-      <section class="songs-list-wrapper">
+    <div class="col-md-7 col-lg-9">
         <section class="song-list">
           <app-track-item
             *ngFor="let song of tracks$ | async; let index = index"
@@ -28,7 +29,6 @@
             (selectedSong)="selectedSong($event)">
           </app-track-item>
         </section>
-      </section>
     </div>
   </div>
 </div>
