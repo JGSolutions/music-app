@@ -9,11 +9,12 @@ import { environment } from 'src/environments/environment';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { DisconnectServiceAction } from '../core/stores/connected-services/connected-services.actions';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServices, ConnectedToken } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServices } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { isEqual } from "lodash";
 import { IPlatformTypes } from 'models/artist.types';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 @Component({
   selector: 'app-platform-settings',
   templateUrl: './platform-settings.component.html',
@@ -23,8 +24,8 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
   @Select(ConnectedServicesState.servicesType) connectedServices$!: Observable<ConnectedServices>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
 
-  public isMixcloudConnected$: Observable<ConnectedToken> | undefined;
-  public isSpotifyConnected$: Observable<ConnectedToken> | undefined;
+  public isMixcloudConnected$!: Observable<boolean>;
+  public isSpotifyConnected$!: Observable<boolean>;
   public connectedServices = IPlatformTypes;
 
   private destroy$ = new Subject<boolean>();
@@ -40,12 +41,24 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isMixcloudConnected$ = this.connectedServices$.pipe(
-      map((services) => services[IPlatformTypes.mixcloud]),
+      map((services) => {
+        if (services[IPlatformTypes.mixcloud]) {
+          return true;
+        }
+
+        return false;
+      }),
       shareReplay(1)
     );
 
     this.isSpotifyConnected$ = this.connectedServices$.pipe(
-      map((services) => services[IPlatformTypes.spotify]),
+      map((services) => {
+        if (services[IPlatformTypes.spotify]) {
+          return true;
+        }
+
+        return false;
+      }),
       shareReplay(1)
     );
 
@@ -90,5 +103,20 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     ).subscribe((user: IUserType) => {
       this.store.dispatch(new DisconnectServiceAction(user.uid, type));
     });
+  }
+
+  public settingsToService(evt: MatSlideToggleChange, platform: IPlatformTypes) {
+    if (evt.checked) {
+      switch (platform) {
+        case IPlatformTypes.spotify:
+          this.connectToSpotify();
+          break;
+        case IPlatformTypes.mixcloud:
+          this.connectToMixcloud();
+          break;
+      }
+    } else {
+      this.disconnectService(platform);
+    }
   }
 }

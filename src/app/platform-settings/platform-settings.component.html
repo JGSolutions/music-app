@@ -1,5 +1,30 @@
-<button mat-raised-button color="primary" (click)="connectToMixcloud()" *ngIf="!(isMixcloudConnected$ | async)">Connect Mix cloud</button>
-<button mat-raised-button color="primary" *ngIf="(isMixcloudConnected$ | async)" (click)="disconnectService(connectedServices.mixcloud)">Disconnect Mix cloud</button>
+<mat-divider></mat-divider>
+<div class="container-fluid">
+  <div class="row">
+    <div>
+      <div class="mat-headline">Music Platforms</div>
+      <div class="mat-body-1">Select and connect to multipule music platforms.</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-10">
+      <section class="platform-wrapper">
+        <div class="logo">
+          <img src="../../assets/platforms/spotify.png" class="image">
+          <mat-slide-toggle [checked]="(isSpotifyConnected$ | async)" (change)="settingsToService($event, connectedServices.spotify)"></mat-slide-toggle>
+        </div>
+        <p class="mat-body-2">Spotify premium account is required to play music. You able to view your artists.</p>
+        <mat-divider></mat-divider>
+      </section>
 
-<button mat-raised-button color="primary" (click)="connectToSpotify()" *ngIf="!(isSpotifyConnected$ | async)">Connect Spotify</button>
-<button mat-raised-button color="primary" (click)="disconnectService(connectedServices.spotify)" *ngIf="(isSpotifyConnected$ | async)">Disconnect Spotify</button>
+      <section class="platform-wrapper">
+        <div class="logo">
+          <img src="../../assets/platforms/mixcloud-large.png" class="image">
+          <mat-slide-toggle [checked]="(isMixcloudConnected$ | async)" (change)="settingsToService($event, connectedServices.mixcloud)"></mat-slide-toggle>
+        </div>
+        <p class="mat-body-2">Connect to your mixcloud account all for free. You will be able to view your favorite artists & tracks!</p>
+        <mat-divider></mat-divider>
+      </section>
+    </div>
+  </div>
+</div>
