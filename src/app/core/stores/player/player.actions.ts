@@ -5,6 +5,11 @@ export class OpenPlayerAction {
   constructor(public currentTrack: ICurrentTrack) { }
 }
 
+export class SaveCurrentTrackAction {
+  static readonly type = '[Player] Save Current Track';
+  constructor(public uid: string, public currentTrack: ICurrentTrack) { }
+}
+
 export class CurrentPlayerAction {
   static readonly type = '[Player] Current Player Bar';
   constructor(public uid: string) { }

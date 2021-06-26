@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { LoadingPlayerAction, MixcloudAudioAction, OpenPlayerAction } from './player.actions';
+import { CurrentTrackService } from 'src/app/services/current-track.service';
+import { LoadingPlayerAction, MixcloudAudioAction, OpenPlayerAction, SaveCurrentTrackAction } from './player.actions';
 import { IPlayerState, playerStateDefault } from './player.types';
 
 @State<IPlayerState>({
@@ -11,7 +12,7 @@ import { IPlayerState, playerStateDefault } from './player.types';
 })
 @Injectable()
 export class PlayerState {
-  constructor(private _apiService: ApiService) { }
+  constructor(private _apiService: ApiService, private _currentTrackService: CurrentTrackService) { }
 
   @Selector()
   static currentTrack(state: IPlayerState) {
@@ -26,6 +27,11 @@ export class PlayerState {
   @Selector()
   static loadingPlayer(state: IPlayerState) {
     return state.loadingPlayer;
+  }
+
+  @Action(SaveCurrentTrackAction)
+  _saveCurrentTrackAction(ctx: StateContext<IPlayerState>, { uid, currentTrack }: SaveCurrentTrackAction) {
+    return this._currentTrackService.saveCurrentTrack(uid, currentTrack);
   }
 
   @Action(OpenPlayerAction)

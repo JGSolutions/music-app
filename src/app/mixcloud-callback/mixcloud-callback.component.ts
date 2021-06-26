@@ -8,7 +8,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { MusicConnectedService } from '../services/music-connected.services';
+import { MusicConnectedService } from '../services/music-connected.service';
 
 @Component({
   selector: 'app-mixcloud-callback',

@@ -5,7 +5,7 @@ import { NgxsModule } from '@ngxs/store';
 import { CommonModule } from '@angular/common';
 import { AppContentRoutingModule } from './app-content-routing.module';
 import { environment } from 'src/environments/environment';
-import { MusicConnectedService } from '../services/music-connected.services';
+import { MusicConnectedService } from '../services/music-connected.service';
 import { ApiService } from '../services/api.service';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
@@ -29,4 +29,4 @@ import { UserState } from '../core/stores/user/user.state';
   ],
   providers: [MusicConnectedService, ApiService],
 })
-export class AppContentModule {}
+export class AppContentModule { }

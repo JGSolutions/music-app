@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { map, tap } from 'rxjs/operators';
-import { MusicConnectedService } from 'src/app/services/music-connected.services';
+import { tap } from 'rxjs/operators';
+import { MusicConnectedService } from 'src/app/services/music-connected.service';
 import { ConnectedServicesAction, DisconnectServiceAction } from './connected-services.actions';
 import { connectedServicesStateDefault, IConnectedServicesState } from './connected-services.types';
 
