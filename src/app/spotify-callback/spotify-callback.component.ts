@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
+import { IPlatformTypes } from 'models/artist.types';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -16,6 +17,8 @@ import { ApiService } from '../services/api.service';
 })
 export class SpotifyCallbackComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType> | undefined;
+
+  public platformTypes = IPlatformTypes;
 
   private destroy$ = new Subject<boolean>();
 
