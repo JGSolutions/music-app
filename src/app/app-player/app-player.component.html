@@ -61,7 +61,7 @@
 </mat-sidenav-container>
 <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
   <app-player-bar
-    *ngIf="(currentTrack$ | async)?.platform === 'mixcloud'"
+    *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
     [streamUrl$]="mixcloudAudio$!"
     [currentTrack]="(currentTrack$ | async)!"
     [loading$]="loadingPlayer$">

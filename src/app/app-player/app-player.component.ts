@@ -10,6 +10,7 @@ import { PlayerState } from '../core/stores/player/player.state';
 import { ICurrentTrack, IStreamUrl } from '../core/stores/player/player.types';
 import { isEmpty } from 'lodash';
 import { LoadingPlayerAction, MixcloudAudioAction } from '../core/stores/player/player.actions';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-player',
@@ -24,6 +25,7 @@ export class AppPlayerComponent implements OnDestroy {
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
+  public platformTypes = IPlatformTypes;
 
   private destroy$ = new Subject<boolean>();
 
@@ -45,8 +47,19 @@ export class AppPlayerComponent implements OnDestroy {
       withLatestFrom(this.user$),
       filter(([track, user]) => user !== null),
     ).subscribe(([track, user]) => {
-      this.store.dispatch(new LoadingPlayerAction(true))
-      this.store.dispatch(new MixcloudAudioAction(user.uid, track.externalUrl));
+      this.store.dispatch([
+        new LoadingPlayerAction(true),
+        new MixcloudAudioAction(user.uid, track.externalUrl)
+      ]);
+
+      // this.store.dispatch(new SaveCurrentTrackAction(user.uid!, {
+      //   platform: song!.platform,
+      //   name: song!.name,
+      //   trackType: song!.trackType,
+      //   artist: song?.artistName,
+      //   externalUrl: song?.externalUrl,
+      //   avatar: song?.pictures?.medium
+      // }));
     });
 
     this.currentTrackSelected$ = this.currentTrack$.pipe(

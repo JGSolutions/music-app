@@ -10,7 +10,7 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
-import { OpenPlayerAction, SaveCurrentTrackAction } from '../core/stores/player/player.actions';
+import { OpenPlayerAction } from '../core/stores/player/player.actions';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISong, ISongTrackType } from 'models/song.types';
 
@@ -100,24 +100,15 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this._connectServiceType$.next(evt);
   }
 
-  public selectedSong(evt: string): void {
+  public selectedSong(id: string): void {
     this.songDetailById$.pipe(
       take(1),
-      map((songDetail) => songDetail(evt))
+      map((songDetail) => songDetail(id))
     ).subscribe((song) => {
       if (song?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', song?.platform, song?.id]);
       } else {
         this.store.dispatch(new OpenPlayerAction({
-          platform: song!.platform,
-          name: song!.name,
-          trackType: song!.trackType,
-          artist: song?.artistName,
-          externalUrl: song?.externalUrl,
-          avatar: song?.pictures?.medium
-        }));
-
-        this.store.dispatch(new SaveCurrentTrackAction('dfjdj', {
           platform: song!.platform,
           name: song!.name,
           trackType: song!.trackType,
