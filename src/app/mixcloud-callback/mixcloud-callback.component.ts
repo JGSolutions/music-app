@@ -18,6 +18,7 @@ import { MusicConnectedService } from '../services/music-connected.services';
 export class MixcloudCallbackComponent implements OnInit {
   @Select(UserState.userState) user$: Observable<IUserType> | undefined;
 
+  public platformTypes = IPlatformTypes;
   private destroy$ = new Subject<boolean>();
 
   constructor(
