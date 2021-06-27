@@ -2,13 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { ArtistAlbumSongs } from '../core/stores/artists/artists.actions';
+import { ArtistAlbumSongs, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAlbumInfo, ISong } from 'models/song.types';
+import { LoadingPlayerAction } from '../core/stores/player/player.actions';
+import { ISelectedSong } from '../typings/selected-song.types';
 
 @Component({
   selector: 'app-artist-album',
@@ -47,19 +49,11 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  public selectedSong(id: string): void {
-    // this.songDetailById$.pipe(
-    //   map((songDetail) => songDetail(id)),
-    //   take(1)
-    // ).subscribe((song) => {
-    //   this.store.dispatch(new OpenPlayerAction({
-    //     platform: song!.platform,
-    //     name: song!.name,
-    //     trackType: song!.trackType,
-    //     artist: song?.artistName,
-    //     externalUrl: song?.externalUrl,
-    //     avatar: song?.pictures?.medium
-    //   }));
-    // });
+  public selectedSong(selectedSong: ISelectedSong): void {
+    this.user$.pipe(
+      take(1)
+    ).subscribe((user) => {
+      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(user.uid!, selectedSong.id)]);
+    });
   }
 }
