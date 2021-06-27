@@ -11,7 +11,9 @@ import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
-import { ISong } from 'models/song.types';
+import { ISong, ISongTrackType } from 'models/song.types';
+import { ISelectedSong } from '../typings/selected-song.types';
+import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 
 @Component({
   selector: 'app-artist-profile',
@@ -99,24 +101,15 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this._connectServiceType$.next(evt);
   }
 
-  public selectedSong(id: string): void {
-    this.store.dispatch(new CurrentSelectedSongAction(id));
-    // this.songDetailById$.pipe(
-    //   take(1),
-    //   map((songDetail) => songDetail(id))
-    // ).subscribe((song) => {
-    //   if (song?.trackType !== ISongTrackType.track) {
-    //     this.router.navigate(['artist-album', song?.platform, song?.id]);
-    //   } else {
-    //     this.store.dispatch(new OpenPlayerAction({
-    //       platform: song!.platform,
-    //       name: song!.name,
-    //       trackType: song!.trackType,
-    //       artist: song?.artistName,
-    //       externalUrl: song?.externalUrl,
-    //       avatar: song?.pictures?.medium
-    //     }));
-    //   }
-    // });
+  public selectedSong(selectedSong: ISelectedSong): void {
+    this.user$.pipe(
+      take(1)
+    ).subscribe((user) => {
+      if (selectedSong?.trackType !== ISongTrackType.track) {
+        this.router.navigate(['artist-album', selectedSong?.platform, selectedSong?.id]);
+      } else {
+        this.store.dispatch([new LoadingPlayerAction(true), new CurrentSelectedSongAction(user.uid!, selectedSong.id)]);
+      }
+    });
   }
 }

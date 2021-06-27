@@ -119,15 +119,24 @@ export class ArtistsState {
 
 
   @Action(CurrentSelectedSongAction)
-  async _currentSelectedSongAction({ getState, patchState }: StateContext<IArtistsState>, { id }: CurrentSelectedSongAction) {
+  async _currentSelectedSongAction({ getState, patchState }: StateContext<IArtistsState>, { uid, id }: CurrentSelectedSongAction) {
     const state = getState();
 
     const song = state.artistSongs.find((song) => song.id === id);
-    console.log(song);
 
-    // await this._currentTrack.saveCurrentTrack(uid, currentTrack)
-    // patchState({
-    //     currentTrack
-    // });
+    const currentTrack = {
+      platform: song!.platform,
+      name: song!.name,
+      trackType: song!.trackType,
+      artist: song?.artistName,
+      externalUrl: song?.externalUrl,
+      avatar: song?.pictures?.medium
+    };
+
+    await this._currentTrack.saveCurrentTrack(uid, currentTrack);
+
+    patchState({
+      currentTrack
+    });
   }
 }

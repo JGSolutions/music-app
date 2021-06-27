@@ -9,7 +9,7 @@ import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { PlayerState } from '../core/stores/player/player.state';
 import { IStreamUrl } from '../core/stores/player/player.types';
 import { isEmpty } from 'lodash';
-import { LoadingPlayerAction, MixcloudAudioAction } from '../core/stores/player/player.actions';
+import { MixcloudAudioAction } from '../core/stores/player/player.actions';
 import { IPlatformTypes } from 'models/artist.types';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 import { ArtistsState } from '../core/stores/artists/artists.state';
@@ -52,7 +52,6 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       filter(([track, user]) => user !== null),
     ).subscribe(([track, user]) => {
       this.store.dispatch([
-        new LoadingPlayerAction(true),
         new MixcloudAudioAction(user.uid, track.externalUrl)
       ]);
     });

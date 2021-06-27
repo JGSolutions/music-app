@@ -16,6 +16,6 @@ export class ArtistAlbumSongs {
 
 export class CurrentSelectedSongAction {
   static readonly type = '[Artists] Selected Current Track';
-  constructor(public id: string) { }
+  constructor(public uid: string, public id: string) { }
 }
 
