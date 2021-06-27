@@ -123,14 +123,14 @@ export class ArtistsState {
     const state = getState();
 
     const song = state.artistSongs.find((song) => song.id === id);
-
+    console.log(song);
     const currentTrack: ICurrentTrack = {
       platform: song!.platform,
       name: song!.name,
       trackType: song!.trackType,
-      artist: song?.artistName,
+      artist: song?.artistName || '',
       externalUrl: song?.externalUrl,
-      avatar: song?.pictures?.medium,
+      avatar: song?.pictures?.medium || '',
       id: song?.id!
     };
 

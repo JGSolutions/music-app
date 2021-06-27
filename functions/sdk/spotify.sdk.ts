@@ -65,12 +65,18 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
       return {
         name: song.name,
         id: song.id,
+        artistName: dataApi.artists[0].name,
         createdTime: song.release_date,
         externalUrl: song.external_urls.spotify,
         duration: song.duration_ms,
         durationType: IDurationType.milliseconds,
         trackType: song.type,
         platform: IPlatformTypes.spotify,
+        pictures: {
+          medium: dataApi.images[2].url,
+          large: dataApi.images[1].url,
+          exLarge: dataApi.images[0].url,
+        },
       };
     });
     resolve({
