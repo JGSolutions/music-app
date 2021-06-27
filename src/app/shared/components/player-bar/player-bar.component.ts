@@ -1,11 +1,15 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
-import { Store } from '@ngxs/store';
-import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
+import { Select, Store } from '@ngxs/store';
+import { LoadingPlayerAction, MixcloudAudioAction } from 'src/app/core/stores/player/player.actions';
 import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
+import { UserState } from 'src/app/core/stores/user/user.state';
+import { IUserType } from 'src/app/core/stores/user/user.types';
+import { PlayerState } from 'src/app/core/stores/player/player.state';
+import { IStreamUrl } from 'src/app/core/stores/player/player.types';
 
 @Component({
   selector: 'app-player-bar',
@@ -14,21 +18,30 @@ import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlayerBarComponent implements OnInit, OnDestroy {
-  @Input() streamUrl$!: Observable<any | null>;
+  @Select(UserState.userState) user$!: Observable<IUserType>;
+  @Select(PlayerState.mixcloudAudio) mixcloudAudio$!: Observable<IStreamUrl>;
+
   @Input() loading$!: Observable<boolean>;
-  @Input() currentTrack!: ICurrentTrack;
+  @Input() currentTrack$!: Observable<ICurrentTrack>;
 
   private destroy$ = new Subject<boolean>();
 
   constructor(public howlService: HowlerPlayerService, private store: Store) { }
 
   ngOnInit() {
-    this.streamUrl$.pipe(
+    this.currentTrack$.pipe(
       takeUntil(this.destroy$),
       filter((streamUrl) => !_isEmpty(streamUrl)),
-      map((streamUrl) => streamUrl.url)
-    ).subscribe((url) => {
-      this.howlService.initHowler(url);
+      map((streamUrl) => streamUrl.externalUrl),
+      withLatestFrom(this.user$),
+      switchMap(([url, user]) => this.store.dispatch(new MixcloudAudioAction(user.uid, url)))
+    ).subscribe();
+
+    this.mixcloudAudio$.pipe(
+      takeUntil(this.destroy$),
+      filter((streamUrl) => !_isEmpty(streamUrl))
+    ).subscribe((audioFile) => {
+      this.howlService.initHowler(audioFile.url)
     });
 
     this.howlService.$onload.pipe(

@@ -4,12 +4,10 @@ import { Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { filter, map, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { PlayerState } from '../core/stores/player/player.state';
-import { IStreamUrl } from '../core/stores/player/player.types';
 import { isEmpty } from 'lodash';
-import { MixcloudAudioAction } from '../core/stores/player/player.actions';
 import { IPlatformTypes } from 'models/artist.types';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 import { ArtistsState } from '../core/stores/artists/artists.state';
@@ -22,7 +20,6 @@ import { ArtistsState } from '../core/stores/artists/artists.state';
 export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
-  @Select(PlayerState.mixcloudAudio) mixcloudAudio$!: Observable<IStreamUrl>;
   @Select(PlayerState.loadingPlayer) loadingPlayer$!: Observable<boolean>;
 
   public isMobile$: Observable<boolean>;
@@ -44,16 +41,6 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       filter(user => user !== null)
     ).subscribe((user) => {
       this.store.dispatch(new ArtistsAction(user.uid));
-    });
-
-    this.currentTrack$.pipe(
-      takeUntil(this.destroy$),
-      withLatestFrom(this.user$),
-      filter(([track, user]) => user !== null),
-    ).subscribe(([track, user]) => {
-      this.store.dispatch([
-        new MixcloudAudioAction(user.uid, track.externalUrl)
-      ]);
     });
 
     this.currentTrackSelected$ = this.currentTrack$.pipe(

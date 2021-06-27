@@ -62,8 +62,7 @@
 <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
   <app-player-bar
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
-    [streamUrl$]="mixcloudAudio$!"
-    [currentTrack]="(currentTrack$ | async)!"
+    [currentTrack$]="currentTrack$!"
     [loading$]="loadingPlayer$">
   </app-player-bar>
 
