@@ -5,7 +5,7 @@ import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined } from 'lodash';
-import { ArtistSongsAction, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
+import { ArtistSongsAction, SaveCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
@@ -108,7 +108,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       if (selectedSong?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', selectedSong?.platform, selectedSong?.id]);
       } else {
-        this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(user.uid!, selectedSong.id)]);
+        this.store.dispatch([new LoadingPlayerAction(true), new SaveCurrentSelectedSongAction(user.uid!, selectedSong.id)]);
       }
     });
   }
