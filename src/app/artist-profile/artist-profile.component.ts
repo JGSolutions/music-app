@@ -32,8 +32,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
   public songs$!: Observable<ISong[]>;
-  private destroy$ = new Subject<boolean>();
 
+  private destroy$ = new Subject<boolean>();
   private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
   constructor(private route: ActivatedRoute, private store: Store, private router: Router) { }

@@ -1,13 +1,12 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { IDurationType } from 'models/song.types';
-
 @Component({
   selector: 'app-audio-player',
   templateUrl: './audio-player.component.html',
   styleUrls: ['./audio-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AudioPlayerComponent implements OnInit {
+export class AudioPlayerComponent {
   @Input() loading!: boolean;
   @Input() avatar!: string;
   @Input() name!: string;
@@ -23,10 +22,6 @@ export class AudioPlayerComponent implements OnInit {
   @Output() pause = new EventEmitter<void>();
 
   public durationType = IDurationType;
-
-  ngOnInit() {
-
-  }
 
   public playHandler(): void {
     this.play.emit();

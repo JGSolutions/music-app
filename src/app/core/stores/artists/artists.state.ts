@@ -117,7 +117,6 @@ export class ArtistsState {
     )
   }
 
-
   @Action(SaveCurrentSelectedSongAction)
   async _setCurrentSelectedSongAction({ getState }: StateContext<IArtistsState>, { uid, id }: SaveCurrentSelectedSongAction) {
     const state = getState();
