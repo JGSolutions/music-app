@@ -14,8 +14,13 @@ export class ArtistAlbumSongs {
   constructor(public uid: string | undefined, public platform: IPlatformTypes, public id: string) { }
 }
 
-export class CurrentSelectedSongAction {
-  static readonly type = '[Artists] Selected Current Track';
+export class SetCurrentSelectedSongAction {
+  static readonly type = '[Artists] Set Selected Current Track';
   constructor(public uid: string, public id: string) { }
+}
+
+export class GetCurrentSelectedTrackAction {
+  static readonly type = '[Artists] Get selected Current Track';
+  constructor(public uid: string) { }
 }
 

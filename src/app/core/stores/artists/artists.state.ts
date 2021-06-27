@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, CurrentSelectedSongAction } from './artists.actions';
-import { artistsStateDefault, IArtistsState } from './artists-state.types';
+import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SetCurrentSelectedSongAction, GetCurrentSelectedTrackAction } from './artists.actions';
+import { artistsStateDefault, IArtistsState, ICurrentTrack } from './artists-state.types';
 import { reduce } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { IAlbum } from 'models/song.types';
@@ -118,25 +118,33 @@ export class ArtistsState {
   }
 
 
-  @Action(CurrentSelectedSongAction)
-  async _currentSelectedSongAction({ getState, patchState }: StateContext<IArtistsState>, { uid, id }: CurrentSelectedSongAction) {
+  @Action(SetCurrentSelectedSongAction)
+  async _setCurrentSelectedSongAction({ getState }: StateContext<IArtistsState>, { uid, id }: SetCurrentSelectedSongAction) {
     const state = getState();
 
     const song = state.artistSongs.find((song) => song.id === id);
 
-    const currentTrack = {
+    const currentTrack: ICurrentTrack = {
       platform: song!.platform,
       name: song!.name,
       trackType: song!.trackType,
       artist: song?.artistName,
       externalUrl: song?.externalUrl,
-      avatar: song?.pictures?.medium
+      avatar: song?.pictures?.medium,
+      id: song?.id!
     };
 
     await this._currentTrack.saveCurrentTrack(uid, currentTrack);
+  }
 
-    patchState({
-      currentTrack
-    });
+  @Action(GetCurrentSelectedTrackAction)
+  _getCurrentSelectedTrackAction({ patchState }: StateContext<IArtistsState>, { uid }: GetCurrentSelectedTrackAction) {
+    return this._currentTrack.getCurrentTrack(uid).pipe(
+      tap((currentTrack) => {
+        patchState({
+          currentTrack
+        });
+      })
+    );
   }
 }
