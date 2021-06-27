@@ -5,14 +5,13 @@ import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined } from 'lodash';
-import { ArtistSongsAction } from '../core/stores/artists/artists.actions';
+import { ArtistSongsAction, CurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
-import { OpenPlayerAction } from '../core/stores/player/player.actions';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
-import { ISong, ISongTrackType } from 'models/song.types';
+import { ISong } from 'models/song.types';
 
 @Component({
   selector: 'app-artist-profile',
@@ -101,22 +100,23 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   public selectedSong(id: string): void {
-    this.songDetailById$.pipe(
-      take(1),
-      map((songDetail) => songDetail(id))
-    ).subscribe((song) => {
-      if (song?.trackType !== ISongTrackType.track) {
-        this.router.navigate(['artist-album', song?.platform, song?.id]);
-      } else {
-        this.store.dispatch(new OpenPlayerAction({
-          platform: song!.platform,
-          name: song!.name,
-          trackType: song!.trackType,
-          artist: song?.artistName,
-          externalUrl: song?.externalUrl,
-          avatar: song?.pictures?.medium
-        }));
-      }
-    });
+    this.store.dispatch(new CurrentSelectedSongAction(id));
+    // this.songDetailById$.pipe(
+    //   take(1),
+    //   map((songDetail) => songDetail(id))
+    // ).subscribe((song) => {
+    //   if (song?.trackType !== ISongTrackType.track) {
+    //     this.router.navigate(['artist-album', song?.platform, song?.id]);
+    //   } else {
+    //     this.store.dispatch(new OpenPlayerAction({
+    //       platform: song!.platform,
+    //       name: song!.name,
+    //       trackType: song!.trackType,
+    //       artist: song?.artistName,
+    //       externalUrl: song?.externalUrl,
+    //       avatar: song?.pictures?.medium
+    //     }));
+    //   }
+    // });
   }
 }

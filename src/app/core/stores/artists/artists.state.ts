@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction } from './artists.actions';
+import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, CurrentSelectedSongAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState } from './artists-state.types';
 import { reduce } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { IAlbum } from 'models/song.types';
+import { CurrentTrackService } from 'src/app/services/current-track.service';
 
 @State<IArtistsState>({
   name: 'artists',
@@ -14,7 +15,7 @@ import { IAlbum } from 'models/song.types';
 })
 @Injectable()
 export class ArtistsState {
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private _currentTrack: CurrentTrackService) { }
 
   @Selector()
   static artists(state: IArtistsState) {
@@ -77,6 +78,11 @@ export class ArtistsState {
     };
   }
 
+  @Selector()
+  static currentTrack(state: IArtistsState) {
+    return state.currentTrack;
+  }
+
   @Action(ArtistsAction)
   _artistList(ctx: StateContext<IArtistsState>, { uid }: ArtistsAction) {
     return this.apiService.artists(uid!).pipe(
@@ -109,5 +115,19 @@ export class ArtistsState {
         });
       })
     )
+  }
+
+
+  @Action(CurrentSelectedSongAction)
+  async _currentSelectedSongAction({ getState, patchState }: StateContext<IArtistsState>, { id }: CurrentSelectedSongAction) {
+    const state = getState();
+
+    const song = state.artistSongs.find((song) => song.id === id);
+    console.log(song);
+
+    // await this._currentTrack.saveCurrentTrack(uid, currentTrack)
+    // patchState({
+    //     currentTrack
+    // });
   }
 }

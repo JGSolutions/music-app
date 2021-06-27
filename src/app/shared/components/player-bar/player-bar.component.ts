@@ -5,7 +5,7 @@ import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
 import { Store } from '@ngxs/store';
 import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
-import { ICurrentTrack } from 'src/app/core/stores/player/player.types';
+import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
 
 @Component({
   selector: 'app-player-bar',
