@@ -1,10 +1,10 @@
 import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
 import { Select, Store } from '@ngxs/store';
-import { LoadingPlayerAction, MixcloudAudioAction } from 'src/app/core/stores/player/player.actions';
+import { LoadingPlayerAction, AudioFileAction } from 'src/app/core/stores/player/player.actions';
 import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
@@ -32,9 +32,10 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     this.currentTrack$.pipe(
       takeUntil(this.destroy$),
       filter((streamUrl) => !_isEmpty(streamUrl)),
+      distinctUntilChanged((prev, curr) => prev.externalUrl === curr.externalUrl),
       map((streamUrl) => streamUrl.externalUrl),
       withLatestFrom(this.user$),
-      switchMap(([url, user]) => this.store.dispatch(new MixcloudAudioAction(user.uid, url)))
+      switchMap(([url, user]) => this.store.dispatch(new AudioFileAction(user.uid, url)))
     ).subscribe();
 
     this.mixcloudAudio$.pipe(
