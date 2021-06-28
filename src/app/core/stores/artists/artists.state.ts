@@ -160,7 +160,7 @@ export class ArtistsState {
     );
   }
 
-  @Action(AudioFileAction)
+  @Action(AudioFileAction, { cancelUncompleted: true })
   _audioFileAction({ getState, patchState }: StateContext<IArtistsState>, { uid, externalUrl }: AudioFileAction) {
     return this.apiService.mixcloudAudioStream(uid!, externalUrl!).pipe(
       tap((audioFile) => {

@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { ArtistAlbumSongs, SaveCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
+import { ArtistAlbumSongs, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
@@ -50,10 +50,6 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   }
 
   public selectedSong(selectedSong: ISelectedSong): void {
-    this.user$.pipe(
-      take(1)
-    ).subscribe((user) => {
-      this.store.dispatch([new LoadingPlayerAction(true), new SaveCurrentSelectedSongAction(user.uid!, selectedSong.id)]);
-    });
+    this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong.id)]);
   }
 }
