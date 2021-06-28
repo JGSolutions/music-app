@@ -16,7 +16,12 @@ export class ArtistAlbumSongs {
 
 export class SaveCurrentSelectedSongAction {
   static readonly type = '[Artists] Save Selected Current Track';
-  constructor(public uid: string, public id: string) { }
+  constructor(public uid: string) { }
+}
+
+export class SetCurrentSelectedSongAction {
+  static readonly type = '[Artists] Set State Selected Current Track';
+  constructor(public id: string) { }
 }
 
 export class GetCurrentSelectedTrackAction {
@@ -24,3 +29,7 @@ export class GetCurrentSelectedTrackAction {
   constructor(public uid: string) { }
 }
 
+export class AudioFileAction {
+  static readonly type = '[Artists] Audio Stream File';
+  constructor(public uid: string | undefined, public externalUrl: string | undefined) { }
+}

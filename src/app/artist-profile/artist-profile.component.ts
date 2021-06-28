@@ -5,7 +5,7 @@ import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined } from 'lodash';
-import { ArtistSongsAction, SaveCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
+import { ArtistSongsAction, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
@@ -102,14 +102,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   public selectedSong(selectedSong: ISelectedSong): void {
-    this.user$.pipe(
-      take(1)
-    ).subscribe((user) => {
-      if (selectedSong?.trackType !== ISongTrackType.track) {
-        this.router.navigate(['artist-album', selectedSong?.platform, selectedSong?.id]);
-      } else {
-        this.store.dispatch([new LoadingPlayerAction(true), new SaveCurrentSelectedSongAction(user.uid!, selectedSong.id)]);
-      }
-    });
+    if (selectedSong?.trackType !== ISongTrackType.track) {
+      this.router.navigate(['artist-album', selectedSong?.platform, selectedSong?.id]);
+    } else {
+      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong.id)]);
+    }
   }
 }

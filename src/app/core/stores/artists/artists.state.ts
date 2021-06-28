@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction } from './artists.actions';
+import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState, ICurrentTrack } from './artists-state.types';
-import { reduce } from 'lodash';
+import { cloneDeep, reduce } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { IAlbum } from 'models/song.types';
 import { CurrentTrackService } from 'src/app/services/current-track.service';
@@ -83,6 +83,11 @@ export class ArtistsState {
     return state.currentTrack;
   }
 
+  @Selector()
+  static audioFile(state: IArtistsState) {
+    return state.currentTrack.audioFile;
+  }
+
   @Action(ArtistsAction)
   _artistList(ctx: StateContext<IArtistsState>, { uid }: ArtistsAction) {
     return this.apiService.artists(uid!).pipe(
@@ -118,7 +123,13 @@ export class ArtistsState {
   }
 
   @Action(SaveCurrentSelectedSongAction)
-  async _setCurrentSelectedSongAction({ getState }: StateContext<IArtistsState>, { uid, id }: SaveCurrentSelectedSongAction) {
+  async _saveCurrentSelectedSongAction({ getState }: StateContext<IArtistsState>, { uid }: SaveCurrentSelectedSongAction) {
+    const state = getState();
+    await this._currentTrack.saveCurrentTrack(uid, state.currentTrack);
+  }
+
+  @Action(SetCurrentSelectedSongAction)
+  async _setCurrentSelectedSongAction({ getState, patchState }: StateContext<IArtistsState>, { id }: SetCurrentSelectedSongAction) {
     const state = getState();
 
     const song = state.artistSongs.find((song) => song.id === id);
@@ -133,7 +144,9 @@ export class ArtistsState {
       id: song?.id!
     };
 
-    await this._currentTrack.saveCurrentTrack(uid, currentTrack);
+    patchState({
+      currentTrack
+    });
   }
 
   @Action(GetCurrentSelectedTrackAction)
@@ -145,5 +158,19 @@ export class ArtistsState {
         });
       })
     );
+  }
+
+  @Action(AudioFileAction)
+  _audioFileAction({ getState, patchState }: StateContext<IArtistsState>, { uid, externalUrl }: AudioFileAction) {
+    return this.apiService.mixcloudAudioStream(uid!, externalUrl!).pipe(
+      tap((audioFile) => {
+        const currentTrack = cloneDeep(getState().currentTrack);
+        currentTrack.audioFile = audioFile.url;
+
+        patchState({
+          currentTrack
+        });
+      })
+    )
   }
 }
