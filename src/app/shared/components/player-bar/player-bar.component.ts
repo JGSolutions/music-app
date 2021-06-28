@@ -10,6 +10,7 @@ import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { AudioFileAction, SaveCurrentSelectedSongAction } from 'src/app/core/stores/artists/artists.actions';
 import { ArtistsState } from 'src/app/core/stores/artists/artists.state';
+import { AddHistoryAction } from 'src/app/core/stores/history/history.actions';
 
 @Component({
   selector: 'app-player-bar',
@@ -41,10 +42,11 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     this.audioFile$.pipe(
       takeUntil(this.destroy$),
       filter((audioFile) => !_isEmpty(audioFile)),
-      withLatestFrom(this.user$),
-    ).subscribe(([audioFile, user]) => {
+      withLatestFrom(this.user$, this.currentTrack$),
+    ).subscribe(([audioFile, user, currentTrack]) => {
       this.howlService.initHowler(audioFile);
-      this.store.dispatch(new SaveCurrentSelectedSongAction(user.uid!))
+      this.store.dispatch(new SaveCurrentSelectedSongAction(user.uid!));
+      this.store.dispatch(new AddHistoryAction(user.uid!, currentTrack));
     });
 
     this.howlService.$onload.pipe(

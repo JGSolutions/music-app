@@ -13,6 +13,7 @@ import { PlayerState } from '../core/stores/player/player.state';
 import { PlayerbarModule } from '../shared/components/player-bar/player-bar.module';
 import { HowlerPlayerService } from '../shared/components/player-bar/howl-player.service';
 import { CurrentTrackService } from '../services/current-track.service';
+import { HistoryService } from '../services/history.service';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -24,6 +25,6 @@ import { CurrentTrackService } from '../services/current-track.service';
     PlayerbarModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, PlayerState]),
   ],
-  providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService],
+  providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService],
 })
 export class AppPlayerModule { }
