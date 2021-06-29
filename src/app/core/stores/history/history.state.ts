@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { HistoryService } from 'src/app/services/history.service';
-import { AddHistoryAction } from './history.actions';
+import { AddHistoryAction, HistoryListAction } from './history.actions';
 import { historyStateDefault, IHistoryState } from './history.types';
 
 @State<IHistoryState>({
@@ -12,14 +12,18 @@ import { historyStateDefault, IHistoryState } from './history.types';
 export class HistoryState {
   constructor(private _historyService: HistoryService) { }
 
-  // @Selector()
-  // static loadingPlayer(state: IHistoryState) {
-  //   return state.loadingPlayer;
-  // }
+  @Selector()
+  static historyList(state: IHistoryState) {
+    return state.histroyTracks;
+  }
 
   @Action(AddHistoryAction)
   _addHistory(ctx: StateContext<IHistoryState>, { uid, track }: AddHistoryAction) {
     return this._historyService.addToHistory(uid, track);
   }
 
+  @Action(HistoryListAction)
+  _historyListAction(ctx: StateContext<IHistoryState>, { uid }: HistoryListAction) {
+    // return this._historyService.addToHistory(uid, track);
+  }
 }
