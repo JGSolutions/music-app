@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction } from './artists.actions';
+import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, ArtistClearSongs } from './artists.actions';
 import { artistsStateDefault, IArtistsState, ICurrentTrack } from './artists-state.types';
 import { cloneDeep, reduce } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
@@ -108,6 +108,14 @@ export class ArtistsState {
         });
       })
     )
+  }
+
+  @Action(ArtistClearSongs)
+  _artistClearSongs(ctx: StateContext<IArtistsState>) {
+    ctx.patchState({
+      artistSongs: [],
+      artistAlbum: undefined,
+    });
   }
 
   @Action(ArtistAlbumSongs)

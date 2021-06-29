@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { ArtistAlbumSongs, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
+import { ArtistAlbumSongs, ArtistClearSongs, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
@@ -33,6 +33,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private store: Store) { }
 
   ngOnInit(): void {
+    this.store.dispatch(new ArtistClearSongs());
     this.platform = this.route.snapshot.params.platform;
     this.id = this.route.snapshot.params.id;
 

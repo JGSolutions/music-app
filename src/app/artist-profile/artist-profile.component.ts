@@ -5,7 +5,7 @@ import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined } from 'lodash';
-import { ArtistSongsAction, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
+import { ArtistClearSongs, ArtistSongsAction, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
@@ -39,6 +39,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private store: Store, private router: Router) { }
 
   ngOnInit(): void {
+    this.store.dispatch(new ArtistClearSongs());
     this.artist = this.route.snapshot.params.artist;
 
     const artistDetails$ = this.artistDetails$.pipe(

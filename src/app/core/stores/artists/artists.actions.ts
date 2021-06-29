@@ -33,3 +33,8 @@ export class AudioFileAction {
   static readonly type = '[Artists] Audio Stream File';
   constructor(public uid: string | undefined, public externalUrl: string | undefined) { }
 }
+
+
+export class ArtistClearSongs {
+  static readonly type = '[Artists] Clear Song State';
+}
