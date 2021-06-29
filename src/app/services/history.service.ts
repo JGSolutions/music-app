@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 import { IHistoryTracks } from '../core/stores/history/history.types';
 
 @Injectable()
@@ -12,8 +11,8 @@ export class HistoryService {
     return this.afs.collection('history').doc(uid).collection('tracks').doc(track.id).set(track);
   }
 
-  public getHistory(uid: string): Observable<any> {
-    const historyTracks = this.afs.doc<ICurrentTrack>(`history/${uid}`).collection('tracks').valueChanges();
+  public getHistory(uid: string): Observable<IHistoryTracks[]> {
+    const historyTracks = this.afs.doc(`history/${uid}`).collection<IHistoryTracks>('tracks').valueChanges();
     return historyTracks;
   }
 }
