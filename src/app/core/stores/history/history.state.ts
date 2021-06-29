@@ -24,7 +24,11 @@ export class HistoryState {
   }
 
   @Action(HistoryListAction)
-  _historyListAction(ctx: StateContext<IHistoryState>, { uid }: HistoryListAction) {
-    return this._historyService.getHistory(uid).pipe(tap((e) => console.log(e)));
+  _historyListAction({ patchState }: StateContext<IHistoryState>, { uid }: HistoryListAction) {
+    return this._historyService.getHistory(uid).pipe(tap((tracks) => {
+      patchState({
+        histroyTracks: tracks
+      })
+    }));
   }
 }
