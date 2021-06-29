@@ -45,8 +45,17 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
       withLatestFrom(this.user$, this.currentTrack$),
     ).subscribe(([audioFile, user, currentTrack]) => {
       this.howlService.initHowler(audioFile);
-      this.store.dispatch(new SaveCurrentSelectedSongAction(user.uid!));
-      this.store.dispatch(new AddHistoryAction(user.uid!, currentTrack));
+      this.store.dispatch([new SaveCurrentSelectedSongAction(user.uid!), new AddHistoryAction(user.uid!, {
+        name: currentTrack.name,
+        dateViewed: new Date,
+        platform: currentTrack.platform,
+        id: currentTrack.id,
+        trackType: currentTrack.trackType,
+        artist: currentTrack.artist,
+        externalUrl: currentTrack.externalUrl,
+        avatar: currentTrack.avatar,
+        audioFile: currentTrack.audioFile
+      })]);
     });
 
     this.howlService.$onload.pipe(
