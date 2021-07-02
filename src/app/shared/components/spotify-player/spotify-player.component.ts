@@ -1,14 +1,14 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 
 import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, of, Subject, timer } from 'rxjs';
 import { isEmpty as _isEmpty } from "lodash";
 import { Select } from '@ngxs/store';
 import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 
@@ -25,12 +25,17 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   @Input() loading$!: Observable<boolean>;
   @Input() currentTrack$!: Observable<ICurrentTrack>;
 
-  public initPlaying = false;
-  public isPlaying = false;
+  public initPlaying = true;
+  public progress$!: Observable<number>;
+  public isPlaying$ = new BehaviorSubject<boolean>(false);
+  public playbackState$ = new BehaviorSubject<any>(null);
+  public currentTimer$ = new BehaviorSubject<number>(0);
+
   private destroy$ = new Subject<boolean>();
   private playerUrl: string;
   private token!: string;
-  private player!: Spotify.Player
+  private player!: Spotify.Player;
+
   constructor(private http: HttpClient) {
     this.playerUrl = `https://api.spotify.com/v1/me/player`;
   }
@@ -40,7 +45,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       this.player = new Spotify.Player({
         name: 'Music App Playback SDK',
         getOAuthToken: (cb: any) => { cb(this.token); },
-        volume: 0.5
+        volume: 0.4
       });
 
       // Error handling
@@ -51,7 +56,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
       // Playback status updates
       this.player.addListener('player_state_changed', state => {
-        console.log(state);
+        this.playbackState$.next(state);
       });
 
       // Ready
@@ -68,6 +73,28 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       this.token = token["spotify"].token;
       window.onSpotifyWebPlaybackSDKReady();
     });
+
+    this.progress$ = combineLatest([this.isPlaying$, this.playbackState$]).pipe(
+      debounceTime(20),
+      filter(([isPlaying, playbackState]) => !_isEmpty(playbackState)),
+      switchMap(([isPlaying, playbackState]) => {
+        if (this.initPlaying) {
+          return of(0);
+        }
+
+        if (!isPlaying) {
+          return of(playbackState.position);
+        }
+
+        return timer(0, 1000).pipe(
+          map((x) => x * 1000),
+          map((x) => {
+            this.currentTimer$.next(x + playbackState.position);
+            return x + playbackState.position;
+          }),
+        );
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -78,13 +105,13 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   public play() {
-    if (!this.initPlaying) {
+    if (this.initPlaying) {
       this.initialPlay().subscribe(() => {
-        this.initPlaying = true;
-        this.isPlaying = true;
+        this.initPlaying = false;
+        this.isPlaying$.next(true);
       });
     } else {
-      this.isPlaying = true;
+      this.isPlaying$.next(true);
       this.player.resume();
     }
   }
@@ -123,7 +150,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   async pause() {
-    this.isPlaying = false;
+    this.isPlaying$.next(false);
     await this.player.pause();
   }
 
@@ -132,16 +159,15 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
    * @param evt
    */
   public sliderChange(evt: number) {
-    // this.howlService.seek(evt);
-    // this.howlService.play();
+    this.player.seek(evt);
+    this.play();
   }
 
   /**
    * When user drags slider just pause the music file and update timer as user is dragging
    */
   public sliderInput(evt: number): void {
-    // this.howlService.$currentTimer.next(evt)
-    // this.howlService.pause();
+    this.currentTimer$.next(evt);
   }
 
 }

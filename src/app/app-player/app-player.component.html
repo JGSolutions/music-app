@@ -65,8 +65,5 @@
     [currentTrack$]="currentTrack$!"
     [loading$]="loadingPlayer$">
   </app-player-bar>
-
-  <div *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
-    <app-spotify-player [currentTrack$]="currentTrack$!"></app-spotify-player>
-  </div>
+  <app-spotify-player [currentTrack$]="currentTrack$!" *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify"></app-spotify-player>
 </div>

@@ -1,25 +1,12 @@
-<!-- <app-audio-player
-[loading]="(loading$ | async)!"
-[progress]="(howlService.$sliderProgress | async)!"
-[rawDuration]="(howlService.$rawDuration | async)!"
-[avatar]="(currentTrack$ | async)?.avatar!"
-[name]="(currentTrack$ | async)?.name!"
-[isPlaying]="(howlService.$isPlaying | async)!"
-[artist]="(currentTrack$ | async)?.artist!"
-[currentTimer]="(howlService.$currentTimer | async)!"
-(sliderChange)="sliderChange($event)"
-(sliderInput)="sliderInput($event)"
-(play)="play()"
-(pause)="pause()"
-></app-audio-player> -->
-
 <app-audio-player
 [loading]="(loading$ | async)!"
+[progress]="(progress$ | async)!"
+[currentTimer]="(currentTimer$ | async)!"
 [rawDuration]="(currentTrack$ | async)?.duration!"
 [durationType]="(currentTrack$ | async)?.durationType!"
 [avatar]="(currentTrack$ | async)?.avatar!"
 [name]="(currentTrack$ | async)?.name!"
-[isPlaying]="isPlaying"
+[isPlaying]="(isPlaying$ | async)!"
 [artist]="(currentTrack$ | async)?.artist!"
 (sliderChange)="sliderChange($event)"
 (sliderInput)="sliderInput($event)"
