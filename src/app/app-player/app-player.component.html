@@ -66,5 +66,7 @@
     [loading$]="loadingPlayer$">
   </app-player-bar>
 
-  <div *ngIf="(currentTrack$ | async)?.platform === 'spotify'">Create player for SPOTIFY</div>
+  <div *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
+    <app-spotify-player></app-spotify-player>
+  </div>
 </div>
