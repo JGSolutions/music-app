@@ -149,6 +149,8 @@ export class ArtistsState {
       artist: song?.artistName,
       externalUrl: song?.externalUrl,
       avatar: song?.pictures?.medium,
+      duration: song?.duration,
+      durationType: song?.durationType,
       id: song?.id!
     };
 

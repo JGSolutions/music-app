@@ -7,15 +7,10 @@ import { Select } from '@ngxs/store';
 import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
-import { ArtistsState } from 'src/app/core/stores/artists/artists.state';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, takeUntil } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
-
-// declare global {
-//   interface Window { onSpotifyWebPlaybackSDKReady: any; }
-// }
 
 @Component({
   selector: 'app-spotify-player',
@@ -33,6 +28,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   private playerUrl: string;
   private token!: string;
+  private player!: Spotify.Player
 
   constructor(private http: HttpClient) {
     this.playerUrl = `https://api.spotify.com/v1/me/player`;
@@ -40,30 +36,32 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     window.onSpotifyWebPlaybackSDKReady = () => {
-      const player = new Spotify.Player({
+      this.player = new Spotify.Player({
         name: 'Music App Playback SDK',
         getOAuthToken: (cb: any) => { cb(this.token); },
         volume: 0.5
       });
 
       // Error handling
-      player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      player.addListener('authentication_error', ({ message }) => { console.error(message); });
-      player.addListener('account_error', ({ message }) => { console.error(message); });
-      player.addListener('playback_error', ({ message }) => { console.error(message); });
+      this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      this.player.addListener('account_error', ({ message }) => { console.error(message); });
+      this.player.addListener('playback_error', ({ message }) => { console.error(message); });
 
       // Playback status updates
-      player.addListener('player_state_changed', state => { console.log(state); });
+      this.player.addListener('player_state_changed', state => { console.log(state); });
 
       // Ready
-      player.addListener('ready', ({ device_id }) => {
+      this.player.addListener('ready', ({ device_id }) => {
         this.transferUserPlayback(device_id).subscribe();
       });
 
-      player.connect();
+      this.player.connect();
     };
 
-    this.connectedServices$.subscribe(token => {
+    this.connectedServices$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(token => {
       this.token = token["spotify"].token;
       window.onSpotifyWebPlaybackSDKReady();
     });
@@ -72,6 +70,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
+
+    this.player.disconnect();
   }
 
   public play() {
@@ -107,9 +107,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     }, httpOptions);
   }
 
-  // public pause(): void {
-  //   this.howlService.pause();
-  // }
+  public pause(): void {
+    this.player.togglePlay().then(() => {
+      console.log('Toggled playback!');
+    });
+  }
 
   // public stop(): void {
   //   this.howlService.stop();

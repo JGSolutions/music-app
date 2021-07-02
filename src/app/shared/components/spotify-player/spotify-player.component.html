@@ -13,4 +13,17 @@
 (pause)="pause()"
 ></app-audio-player> -->
 
-<button (click)="play().subscribe()">Play</button>
+<app-audio-player
+[loading]="(loading$ | async)!"
+[rawDuration]="(currentTrack$ | async)?.duration!"
+[durationType]="(currentTrack$ | async)?.durationType!"
+[avatar]="(currentTrack$ | async)?.avatar!"
+[name]="(currentTrack$ | async)?.name!"
+[isPlaying]="false"
+[artist]="(currentTrack$ | async)?.artist!"
+(sliderChange)="sliderChange($event)"
+(sliderInput)="sliderInput($event)"
+(play)="play().subscribe()"
+(pause)="pause()"></app-audio-player>
+
+<button (click)="pause()">Pause</button>
