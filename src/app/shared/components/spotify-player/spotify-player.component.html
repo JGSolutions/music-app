@@ -19,11 +19,9 @@
 [durationType]="(currentTrack$ | async)?.durationType!"
 [avatar]="(currentTrack$ | async)?.avatar!"
 [name]="(currentTrack$ | async)?.name!"
-[isPlaying]="false"
+[isPlaying]="isPlaying"
 [artist]="(currentTrack$ | async)?.artist!"
 (sliderChange)="sliderChange($event)"
 (sliderInput)="sliderInput($event)"
-(play)="play().subscribe()"
+(play)="play()"
 (pause)="pause()"></app-audio-player>
-
-<button (click)="pause()">Pause</button>

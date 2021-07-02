@@ -25,11 +25,12 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   @Input() loading$!: Observable<boolean>;
   @Input() currentTrack$!: Observable<ICurrentTrack>;
 
+  public initPlaying = false;
+  public isPlaying = false;
   private destroy$ = new Subject<boolean>();
   private playerUrl: string;
   private token!: string;
   private player!: Spotify.Player
-
   constructor(private http: HttpClient) {
     this.playerUrl = `https://api.spotify.com/v1/me/player`;
   }
@@ -49,7 +50,9 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       this.player.addListener('playback_error', ({ message }) => { console.error(message); });
 
       // Playback status updates
-      this.player.addListener('player_state_changed', state => { console.log(state); });
+      this.player.addListener('player_state_changed', state => {
+        console.log(state);
+      });
 
       // Ready
       this.player.addListener('ready', ({ device_id }) => {
@@ -75,12 +78,25 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   public play() {
+    if (!this.initPlaying) {
+      this.initialPlay().subscribe(() => {
+        this.initPlaying = true;
+        this.isPlaying = true;
+      });
+    } else {
+      this.isPlaying = true;
+      this.player.resume();
+    }
+  }
+
+  private initialPlay() {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         "Authorization": `Bearer ${this.token}`
       })
     };
+
     return this.currentTrack$.pipe(
       take(1),
       switchMap((currentTrack) => {
@@ -90,7 +106,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         return this.http.put(`${this.playerUrl}/play`, request, httpOptions);
       })
     );
-
   }
 
   public transferUserPlayback(deviceId: string) {
@@ -107,15 +122,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     }, httpOptions);
   }
 
-  public pause(): void {
-    this.player.togglePlay().then(() => {
-      console.log('Toggled playback!');
-    });
+  async pause() {
+    this.isPlaying = false;
+    await this.player.pause();
   }
-
-  // public stop(): void {
-  //   this.howlService.stop();
-  // }
 
   /**
    * When user stops dragging then seek and continue playing
