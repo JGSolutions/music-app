@@ -1,6 +1,6 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 
-import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, of, Subject, timer } from 'rxjs';
 import { isEmpty as _isEmpty } from "lodash";
 import { Select } from '@ngxs/store';
@@ -8,7 +8,7 @@ import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { debounceTime, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 
@@ -24,6 +24,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
   @Input() loading$!: Observable<boolean>;
   @Input() currentTrack$!: Observable<ICurrentTrack>;
+
+  @Output() trackReady = new EventEmitter<any>();
 
   public initPlaying = true;
   public progress$!: Observable<number>;
@@ -61,6 +63,13 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
       // Ready
       this.player.addListener('ready', ({ device_id }) => {
+        this.currentTrack$.pipe(
+          distinctUntilChanged((prev, curr) => prev.id === curr.id),
+          takeUntil(this.destroy$)
+        ).subscribe(currentTrack => {
+          this.trackReady.emit(currentTrack);
+        });
+
         this.transferUserPlayback(device_id).subscribe();
       });
 
@@ -75,7 +84,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     });
 
     this.progress$ = combineLatest([this.isPlaying$, this.playbackState$]).pipe(
-      debounceTime(20),
       filter(([isPlaying, playbackState]) => !_isEmpty(playbackState)),
       switchMap(([isPlaying, playbackState]) => {
         if (this.initPlaying) {

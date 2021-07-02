@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
@@ -8,9 +8,8 @@ import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
-import { AudioFileAction, SaveCurrentSelectedSongAction } from 'src/app/core/stores/artists/artists.actions';
+import { AudioFileAction } from 'src/app/core/stores/artists/artists.actions';
 import { ArtistsState } from 'src/app/core/stores/artists/artists.state';
-import { AddHistoryAction, HistoryListAction } from 'src/app/core/stores/history/history.actions';
 
 @Component({
   selector: 'app-player-bar',
@@ -24,6 +23,8 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
 
   @Input() loading$!: Observable<boolean>;
   @Input() currentTrack$!: Observable<ICurrentTrack>;
+
+  @Output() trackReady = new EventEmitter<any>();
 
   private destroy$ = new Subject<boolean>();
 
@@ -42,22 +43,10 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     this.audioFile$.pipe(
       takeUntil(this.destroy$),
       filter((audioFile) => !_isEmpty(audioFile)),
-      withLatestFrom(this.user$, this.currentTrack$),
-    ).subscribe(([audioFile, user, currentTrack]) => {
+      withLatestFrom(this.currentTrack$),
+    ).subscribe(([audioFile, currentTrack]) => {
       this.howlService.initHowler(audioFile);
-
-      this.store.dispatch(new HistoryListAction(user.uid!));
-      this.store.dispatch([new SaveCurrentSelectedSongAction(user.uid!), new AddHistoryAction(user.uid!, {
-        name: currentTrack.name,
-        dateViewed: new Date,
-        platform: currentTrack.platform,
-        id: currentTrack.id,
-        trackType: currentTrack.trackType,
-        artist: currentTrack.artist,
-        externalUrl: currentTrack.externalUrl,
-        avatar: currentTrack.avatar,
-        audioFile: currentTrack.audioFile
-      })]);
+      this.trackReady.emit(currentTrack);
     });
 
     this.howlService.$onload.pipe(
