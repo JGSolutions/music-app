@@ -67,6 +67,7 @@
     [loading$]="loadingPlayer$">
   </app-player-bar>
   <app-spotify-player
+    [loading$]="loadingPlayer$"
     (trackReady)="trackHistory($event)"
     [currentTrack$]="currentTrack$!"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
