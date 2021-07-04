@@ -25,7 +25,7 @@ min="0"
       <mat-icon>skip_next</mat-icon>
     </button>
     <span class="mat-body-2 duration">
-      {{currentTimer | minuteSeconds: durationType.seconds}}/{{rawDuration | minuteSeconds: durationType.seconds}}
+      {{currentTimer | minuteSeconds: durationTypes[durationType]}}/{{rawDuration | minuteSeconds: durationTypes[durationType]}}
     </span>
   </section>
 

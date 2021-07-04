@@ -62,9 +62,14 @@
 <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
   <app-player-bar
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
+    (trackReady)="trackHistory($event)"
     [currentTrack$]="currentTrack$!"
     [loading$]="loadingPlayer$">
   </app-player-bar>
-
-  <div *ngIf="(currentTrack$ | async)?.platform === 'spotify'">Create player for SPOTIFY</div>
+  <app-spotify-player
+    [loading$]="loadingPlayer$"
+    (trackReady)="trackHistory($event)"
+    [currentTrack$]="currentTrack$!"
+    *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
+  </app-spotify-player>
 </div>

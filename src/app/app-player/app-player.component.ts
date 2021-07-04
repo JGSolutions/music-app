@@ -4,14 +4,15 @@ import { Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
-import { ArtistsAction, GetCurrentSelectedTrackAction } from '../core/stores/artists/artists.actions';
+import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
+import { ArtistsAction, GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { PlayerState } from '../core/stores/player/player.state';
 import { isEmpty } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
+import { AddHistoryAction, HistoryListAction } from '../core/stores/history/history.actions';
 
 @Component({
   selector: 'app-player',
@@ -53,5 +54,24 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
+  }
+
+  public trackHistory(currentTrack: any): void {
+    this.user$.pipe(
+      take(1)
+    ).subscribe((user) => {
+      this.store.dispatch([new SaveCurrentSelectedSongAction(user.uid!), new AddHistoryAction(user.uid!, {
+        name: currentTrack.name,
+        dateViewed: new Date,
+        platform: currentTrack.platform,
+        id: currentTrack.id,
+        trackType: currentTrack.trackType,
+        artist: currentTrack.artist,
+        externalUrl: currentTrack.externalUrl,
+        avatar: currentTrack.avatar,
+        audioFile: currentTrack.audioFile || ''
+      })]);
+    })
+
   }
 }

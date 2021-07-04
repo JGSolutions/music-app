@@ -8,9 +8,10 @@ export enum ISongTrackType {
 }
 
 export enum IDurationType {
-  milliseconds,
-  seconds,
+  milliseconds = "milliseconds",
+  seconds = "seconds",
 }
+
 export interface ISong {
   name: string;
   genres?: string[];

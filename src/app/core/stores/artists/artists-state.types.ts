@@ -1,5 +1,5 @@
 import { IArtists, IPlatformTypes } from "models/artist.types";
-import { IAlbumInfo, ISong, ISongTrackType } from "models/song.types";
+import { IAlbumInfo, IDurationType, ISong, ISongTrackType } from "models/song.types";
 
 export interface IArtistsState {
   artists: Record<string, IArtists[]>;
@@ -26,4 +26,6 @@ export interface ICurrentTrack {
   externalUrl?: string;
   avatar?: string;
   audioFile?: string;
+  duration?: number;
+  durationType?: IDurationType;
 }

@@ -15,6 +15,11 @@ export class ConnectedServicesState {
   }
 
   @Selector()
+  static connectedServices(state: IConnectedServicesState) {
+    return state.servicesType;
+  }
+
+  @Selector()
   static servicesList(state: IConnectedServicesState) {
     const data = state.servicesType;
     return Object.keys(data).map((key) => {

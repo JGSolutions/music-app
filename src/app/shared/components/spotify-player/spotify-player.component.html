@@ -1,0 +1,14 @@
+<app-audio-player
+[loading]="(loading$ | async)!"
+[progress]="(currentTimer$ | async)!"
+[currentTimer]="(currentTimer$ | async)!"
+[rawDuration]="(currentTrack$ | async)?.duration!"
+[durationType]="(currentTrack$ | async)?.durationType!"
+[avatar]="(currentTrack$ | async)?.avatar!"
+[name]="(currentTrack$ | async)?.name!"
+[isPlaying]="(isPlaying$ | async)!"
+[artist]="(currentTrack$ | async)?.artist!"
+(sliderChange)="sliderChange($event)"
+(sliderInput)="sliderInput($event)"
+(play)="play()"
+(pause)="pause()"></app-audio-player>

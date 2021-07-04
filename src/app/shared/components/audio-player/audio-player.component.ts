@@ -13,6 +13,7 @@ export class AudioPlayerComponent {
   @Input() artist!: string;
   @Input() currentTimer!: number;
   @Input() rawDuration!: number;
+  @Input() durationType!: IDurationType;
   @Input() progress!: number;
   @Input() isPlaying!: boolean;
 
@@ -21,7 +22,7 @@ export class AudioPlayerComponent {
   @Output() play = new EventEmitter<void>();
   @Output() pause = new EventEmitter<void>();
 
-  public durationType = IDurationType;
+  public durationTypes = IDurationType;
 
   public playHandler(): void {
     this.play.emit();

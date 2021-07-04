@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PlayerBarComponent } from './player-bar.component';
+import { SpotifyPlayerComponent } from './spotify-player.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
 import { AudioPlayerModule } from '../audio-player/audio-player.module';
 
 @NgModule({
-  declarations: [PlayerBarComponent],
+  declarations: [SpotifyPlayerComponent],
   imports: [
     CommonModule,
     AngularMaterialModule,
-    AudioPlayerModule
+    AudioPlayerModule,
   ],
   exports: [
-    PlayerBarComponent
+    SpotifyPlayerComponent
   ]
 })
-export class PlayerbarModule { }
+export class SpotifyPlayerModule { }

@@ -14,6 +14,7 @@ import { PlayerbarModule } from '../shared/components/player-bar/player-bar.modu
 import { HowlerPlayerService } from '../shared/components/player-bar/howl-player.service';
 import { CurrentTrackService } from '../services/current-track.service';
 import { HistoryService } from '../services/history.service';
+import { SpotifyPlayerModule } from '../shared/components/spotify-player/spotify-player.module';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -23,6 +24,7 @@ import { HistoryService } from '../services/history.service';
     AngularMaterialModule,
     AppPlayerRoutingModule,
     PlayerbarModule,
+    SpotifyPlayerModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, PlayerState]),
   ],
   providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService],
