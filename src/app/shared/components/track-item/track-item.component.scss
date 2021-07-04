@@ -25,11 +25,19 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   .track-name {
     padding-left: $xs-padding-gap;
+    padding-right: $xs-padding-gap;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
+
 .avatar {
   border-radius: 6px;
   width: auto;
