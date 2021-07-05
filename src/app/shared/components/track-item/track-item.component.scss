@@ -29,6 +29,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  .avatar {
+    border-radius: 6px;
+    width: auto;
+    height: 48px;
+  }
+
   .track-name {
     padding-left: $xs-padding-gap;
     padding-right: $xs-padding-gap;
@@ -36,12 +42,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-}
 
-.avatar {
-  border-radius: 6px;
-  width: auto;
-  height: 48px;
+  .isPlaying {
+    font-weight: 500;
+    color: #ff0000;
+  }
 }
 
 .options {

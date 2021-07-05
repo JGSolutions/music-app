@@ -16,6 +16,9 @@ export class TrackItemComponent {
   name!: string;
 
   @Input()
+  isPlaying!: boolean;
+
+  @Input()
   index!: number;
 
   @Input()

@@ -11,6 +11,7 @@ import { IPlatformTypes } from 'models/artist.types';
 import { IAlbumInfo, ISong } from 'models/song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { ISelectedSong } from '../typings/selected-song.types';
+import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 
 @Component({
   selector: 'app-artist-album',
@@ -21,6 +22,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artistAlbum) artistAlbum$!: Observable<IAlbumInfo>;
   @Select(ArtistsState.artistSongs) tracks$!: Observable<ISong[]>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
+  @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public songDetailById$ = this.store.select(ArtistsState.songDetailById);
 

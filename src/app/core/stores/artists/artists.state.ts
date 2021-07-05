@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, ArtistClearSongs } from './artists.actions';
+import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, ArtistClearSongs, SetCurrentTrackPlayStatusAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState, ICurrentTrack } from './artists-state.types';
 import { cloneDeep, reduce } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
@@ -151,6 +151,7 @@ export class ArtistsState {
       avatar: song?.pictures?.medium,
       duration: song?.duration,
       durationType: song?.durationType,
+      isPlaying: false,
       id: song?.id!
     };
 
@@ -182,5 +183,15 @@ export class ArtistsState {
         });
       })
     )
+  }
+
+  @Action(SetCurrentTrackPlayStatusAction, { cancelUncompleted: true })
+  _setCurrentTrackPlayStatusAction({ getState, patchState }: StateContext<IArtistsState>, { isPlaying }: SetCurrentTrackPlayStatusAction) {
+    const currentTrack = cloneDeep(getState().currentTrack);
+    currentTrack.isPlaying = isPlaying;
+
+    patchState({
+      currentTrack
+    });
   }
 }

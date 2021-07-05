@@ -34,7 +34,11 @@ export class AudioFileAction {
   constructor(public uid: string | undefined, public externalUrl: string | undefined) { }
 }
 
-
 export class ArtistClearSongs {
   static readonly type = '[Artists] Clear Song State';
+}
+
+export class SetCurrentTrackPlayStatusAction {
+  static readonly type = '[Artists] Set the current playing status';
+  constructor(public isPlaying: boolean) { }
 }

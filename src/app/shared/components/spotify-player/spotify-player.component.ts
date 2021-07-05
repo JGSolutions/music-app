@@ -12,6 +12,7 @@ import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap, withLate
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
+import { SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/artists/artists.actions';
 
 @Component({
   selector: 'app-spotify-player',
@@ -120,6 +121,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   public play() {
+    this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
     this.initPlaying$.pipe(
       take(1)
     ).subscribe(initPlaying => {
@@ -177,6 +179,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   async pause(): Promise<void> {
     this.isPlaying$.next(false);
     clearInterval(this._setIntervalTimer);
+    this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
     return await this.player.pause();
   }
 

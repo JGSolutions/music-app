@@ -4,7 +4,7 @@
       <img [src]="avatar" class="avatar">
     </div>
     <div *ngIf="!avatar">{{ index }}.</div>
-    <div class="track-name">
+    <div class="track-name" [ngClass]="{'isPlaying': isPlaying}">
       {{ name }}
     </div>
   </div>
