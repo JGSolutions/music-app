@@ -26,6 +26,8 @@
             [avatar]="song?.pictures?.medium!"
             [externalUrl]="song.externalUrl!"
             [trackType]="song.trackType"
+            [currentTrackId]="(currentTrack$ | async)?.id!"
+            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
             (selectedSong)="selectedSong($event)">
           </app-track-item>
         </section>
