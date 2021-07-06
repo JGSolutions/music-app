@@ -31,7 +31,7 @@ export class MixcloudCallbackComponent implements OnInit {
     MixcloudAuthorization.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,
-      "http://localhost:4200/mixcloud-callback"
+      `${environment.appDomain}mixcloud-callback`
     );
 
     combineLatest([this.user$, this.route.queryParams]).pipe(

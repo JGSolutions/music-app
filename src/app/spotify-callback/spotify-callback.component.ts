@@ -30,7 +30,7 @@ export class SpotifyCallbackComponent implements OnInit, OnDestroy {
     SpotifyAuthorization.config(
       environment.spotify.clientId,
       environment.spotify.secretApi,
-      "http://localhost:4200/spotify-callback",
+      `${environment.appDomain}spotify-callback`,
     );
 
     combineLatest([this.user$, this.route.queryParams]).pipe(
