@@ -4,5 +4,25 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
+
+    match /connectedServices/{id} {
+      allow read
+      allow write: if true;
+    }
+
+    match /currentTrack/{id} {
+      allow read
+      allow write: if true;
+    }
+
+    match /history/{document=**} {
+        allow read
+      allow write: if true;
+    }
+
+    match /users/{id} {
+      allow read
+      allow write: if true;
+    }
   }
 }
