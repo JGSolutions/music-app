@@ -18,8 +18,8 @@ export const artistsStateDefault: IArtistsState = {
 };
 
 export interface ICurrentTrack {
-  platform?: IPlatformTypes;
-  isPlaying: boolean;
+  platform: IPlatformTypes;
+  isPlaying?: boolean;
   id: string;
   name: string;
   trackType: ISongTrackType,

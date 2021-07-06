@@ -40,7 +40,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   private token!: string;
   private player!: Spotify.Player;
   private _setIntervalTimer!: any;
-  private _position = 0;
+  private _seekPosition = 0;
 
   constructor(private http: HttpClient, private store: Store) {
     this.playerUrl = `https://api.spotify.com/v1/me/player`;
@@ -54,13 +54,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         volume: 0.3
       });
 
-      // Error handling
       this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
       this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
       this.player.addListener('account_error', ({ message }) => { console.error(message); });
       this.player.addListener('playback_error', ({ message }) => { console.error(message); });
 
-      // Playback status updates
       this.player.addListener('player_state_changed', state => {
         if (this.isEndOfTrack(state)) {
           this.currentTimer$.next(0);
@@ -73,7 +71,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         this.playbackState$.next(state);
       });
 
-      // Ready
       this.player.addListener('ready', ({ device_id }) => {
         this.currentTrack$.pipe(
           tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
@@ -84,10 +81,13 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$)
         ).subscribe(async ([d, initPlaying]) => {
           if (!initPlaying) {
-            this._position = 0;
-            this.currentTimer$.next(this._position);
+            this._seekPosition = 0;
+            this.currentTimer$.next(this._seekPosition);
             this.initPlaying$.next(true);
             await this.pause();
+            this.play();
+          } else {
+            this.initPlaying$.next(false);
             this.play();
           }
         });
@@ -107,8 +107,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       filter((isPlaying) => isPlaying),
     ).subscribe(() => {
       this._setIntervalTimer = setInterval(() => {
-        this._position++;
-        this.currentTimer$.next(this._position * 1000);
+        this._seekPosition++;
+        this.currentTimer$.next(this._seekPosition * 1000);
       }, 1000);
     })
   }
@@ -188,7 +188,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
    * @param evt
    */
   public sliderChange(evt: number) {
-    this._position = evt / 1000;
+    this._seekPosition = evt / 1000;
     this.player.seek(evt);
   }
 
@@ -196,7 +196,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
    * When user drags slider just pause the music file and update timer as user is dragging
    */
   public sliderInput(evt: number): void {
-    this._position = evt / 1000;
+    this._seekPosition = evt / 1000;
     this.currentTimer$.next(evt);
   }
 

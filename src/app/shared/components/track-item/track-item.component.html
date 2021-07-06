@@ -3,8 +3,8 @@
     <div *ngIf="avatar" class="avatar-wrapper">
       <div class="play-button-wrapper">
         <div class="play-button">
-          <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
-          <mat-icon *ngIf="isPlaying">pause_arrow</mat-icon>
+          <mat-icon *ngIf="!isPlaying || currentTrackId !== id">play_arrow</mat-icon>
+          <mat-icon *ngIf="isPlaying && currentTrackId === id">pause_arrow</mat-icon>
         </div>
       </div>
       <img [src]="avatar" class="avatar">

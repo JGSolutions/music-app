@@ -151,7 +151,6 @@ export class ArtistsState {
       avatar: song?.pictures?.medium,
       duration: song?.duration,
       durationType: song?.durationType,
-      isPlaying: false,
       id: song?.id!
     };
 
