@@ -1,16 +1,22 @@
-<div (click)="selectedItem()" class="track-item-wrapper">
+<div (click)="selectedItem()" class="track-item-wrapper" [ngClass]="{'selected': currentTrackId === id}">
   <div class="info">
-    <div *ngIf="avatar">
+    <div *ngIf="avatar" class="avatar-wrapper">
+      <div class="play-button-wrapper">
+        <div class="play-button">
+          <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
+          <mat-icon *ngIf="isPlaying">pause_arrow</mat-icon>
+        </div>
+      </div>
       <img [src]="avatar" class="avatar">
     </div>
     <div *ngIf="!avatar">{{ index }}.</div>
-    <div class="track-name" [ngClass]="{'isPlaying': isPlaying && currentTrackId === id}">
+    <div class="track-name">
       {{ name }}
     </div>
   </div>
 
   <div class="options" >
-    <span>{{length | minuteSeconds: durationType}}</span>
+    <span class="track-time">{{length | minuteSeconds: durationType}}</span>
     <button mat-icon-button>
       <mat-icon>more_horiz</mat-icon>
     </button>

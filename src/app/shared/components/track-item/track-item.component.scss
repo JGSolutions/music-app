@@ -16,6 +16,13 @@
   border-radius: 6px;
 }
 
+.track-item-wrapper.selected,
+.track-item-wrapper:hover {
+  .play-button-wrapper {
+    display: flex;
+  }
+}
+
 .info {
   display: flex;
   flex-direction: row;
@@ -36,6 +43,29 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+}
+
+.avatar-wrapper {
+  position: relative;
+
+  .play-button-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    .play-button {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(196, 196, 196, 0.75);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 }
 
