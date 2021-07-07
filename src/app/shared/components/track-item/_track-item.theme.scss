@@ -16,6 +16,10 @@
       }
     }
 
+    .mat-icon {
+      color:  mat.get-color-from-palette($primary-palette, 500) !important;
+    }
+
     .options {
       .track-time {
         font-weight: 500;
