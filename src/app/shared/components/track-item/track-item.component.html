@@ -4,7 +4,7 @@
       <div class="play-button-wrapper">
         <div class="play-button">
           <mat-icon *ngIf="!isPlaying || currentTrackId !== id">play_arrow</mat-icon>
-          <mat-icon *ngIf="isPlaying && currentTrackId === id">equalizer</mat-icon>
+          <app-equalizer-icon *ngIf="isPlaying && currentTrackId === id"></app-equalizer-icon>
         </div>
       </div>
       <img [src]="avatar" class="avatar">
