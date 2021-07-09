@@ -1,6 +1,6 @@
 <div class="item">
   <div class="avatar-wrapper" (click)="selectedItem()">
-    <span *ngIf="trackType !== trackTypes.track && isPlaying && (albumId === id)">ok</span>
+    <span *ngIf="isPlaying && (albumId === id || currentTrackId === id)">ok</span>
     <img [src]="avatar" class="avatar">
   </div>
   <div class="info-wrapper">

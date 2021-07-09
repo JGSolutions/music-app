@@ -152,7 +152,7 @@ export class ArtistsState {
       duration: song?.duration,
       durationType: song?.durationType,
       id: song?.id!,
-      albumid: song?.albumid!
+      albumid: song?.albumid || ""
     };
 
     patchState({
