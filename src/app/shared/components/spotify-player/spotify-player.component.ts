@@ -13,6 +13,7 @@ import { ConnectedServicesState } from 'src/app/core/stores/connected-services/c
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/artists/artists.actions';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-spotify-player',
@@ -73,12 +74,13 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
       this.player.addListener('ready', ({ device_id }) => {
         this.currentTrack$.pipe(
+          takeUntil(this.destroy$),
+          filter((currentTrack) => currentTrack.platform == IPlatformTypes.spotify),
           tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
           distinctUntilChanged((prev, curr) => prev.id === curr.id),
           tap((currentTrack) => this.trackReady.emit(currentTrack)),
           switchMap(() => this.transferUserPlayback(device_id)),
-          withLatestFrom(this.initPlaying$),
-          takeUntil(this.destroy$)
+          withLatestFrom(this.initPlaying$)
         ).subscribe(async ([d, initPlaying]) => {
           if (!initPlaying) {
             this._seekPosition = 0;
@@ -104,7 +106,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     });
 
     this.isPlaying$.pipe(
-      filter((isPlaying) => isPlaying),
+      takeUntil(this.destroy$),
+      filter((isPlaying) => isPlaying)
     ).subscribe(() => {
       this._setIntervalTimer = setInterval(() => {
         this._seekPosition++;
@@ -114,15 +117,15 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.player.disconnect();
     this.destroy$.next(true);
     this.destroy$.complete();
-
-    this.player.disconnect();
   }
 
   public play() {
     this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
     this.initPlaying$.pipe(
+      takeUntil(this.destroy$),
       take(1)
     ).subscribe(initPlaying => {
       if (initPlaying) {

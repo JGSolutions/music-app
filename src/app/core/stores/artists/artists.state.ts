@@ -151,6 +151,7 @@ export class ArtistsState {
       avatar: song?.pictures?.medium,
       duration: song?.duration,
       durationType: song?.durationType,
+      audioFile: "",
       id: song?.id!,
       albumid: song?.albumid || ""
     };

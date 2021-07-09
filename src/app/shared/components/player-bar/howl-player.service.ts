@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Howl, Howler } from 'howler';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 
 @Injectable()
 export class HowlerPlayerService {
   public howler = Howler;
-  public $onload: ReplaySubject<void>;
+  public $onload: Subject<void>;
   public $sliderProgress: ReplaySubject<number>;
   public $currentTimer: ReplaySubject<number>;
   public $rawDuration: ReplaySubject<number>;
@@ -15,7 +15,7 @@ export class HowlerPlayerService {
   private _raf = 0;
 
   constructor() {
-    this.$onload = new ReplaySubject(1);
+    this.$onload = new Subject();
     this.$sliderProgress = new ReplaySubject(1);
     this.$currentTimer = new ReplaySubject(1);
     this.$rawDuration = new ReplaySubject(1);
