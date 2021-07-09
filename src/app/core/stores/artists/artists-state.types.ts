@@ -21,6 +21,7 @@ export interface ICurrentTrack {
   platform: IPlatformTypes;
   isPlaying?: boolean;
   id: string;
+  albumid?: string;
   name: string;
   trackType: ISongTrackType,
   artist?: string;

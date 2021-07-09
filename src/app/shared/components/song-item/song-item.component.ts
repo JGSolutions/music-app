@@ -13,7 +13,16 @@ import { ISelectedSong } from 'src/app/typings/selected-song.types';
 })
 export class SongItemComponent {
   @Input()
+  isPlaying!: boolean;
+
+  @Input()
+  currentTrackId!: string;
+
+  @Input()
   name!: string;
+
+  @Input()
+  albumId!: string;
 
   @Input()
   id!: string;

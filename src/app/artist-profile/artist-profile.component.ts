@@ -14,6 +14,7 @@ import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISong, ISongTrackType } from 'models/song.types';
 import { ISelectedSong } from '../typings/selected-song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
+import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 
 @Component({
   selector: 'app-artist-profile',
@@ -24,6 +25,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
+  @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public songDetailById$ = this.store.select(ArtistsState.songDetailById);

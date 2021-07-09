@@ -151,7 +151,8 @@ export class ArtistsState {
       avatar: song?.pictures?.medium,
       duration: song?.duration,
       durationType: song?.durationType,
-      id: song?.id!
+      id: song?.id!,
+      albumid: song?.albumid!
     };
 
     patchState({

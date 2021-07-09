@@ -11,10 +11,12 @@
       <section class="sticky-element platform-sections">
         <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
       </section>
-
       <section class="song-list">
         <app-song-item
           *ngFor="let song of songs$ | async"
+          [currentTrackId]="(currentTrack$ | async)?.id!"
+          [albumId]="(currentTrack$ | async)?.albumid!"
+          [isPlaying]="(currentTrack$ | async)?.isPlaying!"
           [name]="song.name"
           [id]="song.id"
           [length]="song.duration"
