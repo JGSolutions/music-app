@@ -39,7 +39,7 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
       return {
         name: song.name,
         id: song.id,
-        createdTime: song.release_date,
+        createdTime: new Date(song.release_date),
         artistName: song.name,
         externalUrl: song.external_urls.spotify,
         duration: song.album_type === "album" ? 0 : song.length,
@@ -67,7 +67,7 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         id: song.id,
         albumid: dataApi.id,
         artistName: dataApi.artists[0].name,
-        createdTime: song.release_date,
+        createdTime: new Date(song.release_date),
         externalUrl: song.external_urls.spotify,
         duration: song.duration_ms,
         durationType: IDurationType.milliseconds,

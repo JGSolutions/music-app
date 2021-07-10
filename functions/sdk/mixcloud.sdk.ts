@@ -30,7 +30,7 @@ export const mixcloudArtistSongs = (dataApi: any): Promise<ISong[]> => {
         name: song.name,
         id: song.slug,
         tags: song.tags.map((tag: any) => tag.name),
-        createdTime: song.created_time,
+        createdTime: new Date(song.created_time),
         username: song.user.username,
         artistName: song.user.name,
         duration: song.audio_length,

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
-import { flatten } from "lodash";
+import { flatten as _flatten } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { spotifyKeys } from "../../sdk/api-keys";
@@ -32,7 +32,6 @@ export const artist = async (request: Request, response: Response) => {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key.type].token);
         platformPromiseData.push(MixcloudSDK.artistSongs(key.username));
-        // platformPromiseData.push([]);
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key.type].token, connectedServices[key.type].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
@@ -43,7 +42,7 @@ export const artist = async (request: Request, response: Response) => {
 
   Promise.all(platformPromiseData).then((promiseData) => {
     const allPlatformData = promiseData.map((data) => data);
-    return response.status(200).send(flatten(allPlatformData));
+    return response.status(200).send(_flatten(allPlatformData));
   });
 
   return;

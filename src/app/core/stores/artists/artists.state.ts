@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 import { ArtistAlbumSongs, ArtistsAction, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, ArtistClearSongs, SetCurrentTrackPlayStatusAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState, ICurrentTrack } from './artists-state.types';
-import { cloneDeep, reduce } from 'lodash';
+import { cloneDeep, reduce, orderBy as _orderBy } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { IAlbum } from 'models/song.types';
 import { CurrentTrackService } from 'src/app/services/current-track.service';
@@ -42,11 +42,12 @@ export class ArtistsState {
   @Selector()
   static songsByPlatform(state: IArtistsState) {
     return (platform: IPlatformTypes) => {
+      const data = _orderBy(state.artistSongs, ['createdTime'], ['desc']);
       if (platform === IPlatformTypes.all) {
-        return state.artistSongs;
+        return data;
       }
 
-      return state.artistSongs.filter((element) => {
+      return data.filter((element) => {
         return element.platform === platform as string;
       });
     };
