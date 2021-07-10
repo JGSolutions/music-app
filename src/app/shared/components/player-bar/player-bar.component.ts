@@ -8,7 +8,7 @@ import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
-import { AudioFileAction } from 'src/app/core/stores/artists/artists.actions';
+import { AudioFileAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/artists/artists.actions';
 import { ArtistsState } from 'src/app/core/stores/artists/artists.state';
 
 @Component({
@@ -52,6 +52,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     this.howlService.$onload.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
+      this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
       this.store.dispatch(new LoadingPlayerAction(false));
     });
   }
@@ -64,11 +65,13 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   }
 
   public play(): void {
+    this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
     this.howlService.play();
   }
 
   public pause(): void {
     this.howlService.pause();
+    this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
   }
 
   public stop(): void {
