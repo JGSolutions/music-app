@@ -1,6 +1,11 @@
-<div class="item">
+<div class="track-item-wrapper" [ngClass]="{'selected': (albumId === id || currentTrackId === id)}">
   <div class="avatar-wrapper" (click)="selectedItem()">
-    <span *ngIf="isPlaying && (albumId === id || currentTrackId === id)">ok</span>
+    <div class="play-button-wrapper">
+      <div class="play-button">
+        <mat-icon *ngIf="!isPlaying || (albumId !== id && currentTrackId !== id)">play_arrow</mat-icon>
+        <app-equalizer-icon *ngIf="isPlaying && (albumId === id || currentTrackId === id)"></app-equalizer-icon>
+      </div>
+    </div>
     <img [src]="avatar" class="avatar">
   </div>
   <div class="info-wrapper">
