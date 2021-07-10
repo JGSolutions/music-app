@@ -152,6 +152,7 @@ export class ArtistsState {
       duration: song?.duration,
       durationType: song?.durationType,
       audioFile: "",
+      isPlaying: false,
       id: song?.id!,
       albumid: song?.albumid || ""
     };

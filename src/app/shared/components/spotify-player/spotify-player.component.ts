@@ -87,10 +87,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
             this.currentTimer$.next(this._seekPosition);
             this.initPlaying$.next(true);
             await this.pause();
-            this.play();
           } else {
             this.initPlaying$.next(false);
-            this.play();
           }
         });
       });
@@ -122,8 +120,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  public play() {
-    this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
+  public play(): void {
     this.initPlaying$.pipe(
       takeUntil(this.destroy$),
       take(1)
