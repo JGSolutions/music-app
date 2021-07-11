@@ -7,7 +7,6 @@
       </section>
     </div>
     <div class="col-md-7 col-lg-9">
-
       <section class="sticky-element platform-sections">
         <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
       </section>
@@ -31,7 +30,10 @@
         </app-song-item>
       </section>
 
-      <app-empty-results [message]="'No tracks or albums'" *ngIf="(songs$ | async)?.length === 0"></app-empty-results>
+      <app-empty-results
+        [message]="'No tracks or albums'"
+        *ngIf="(songs$ | async)?.length === 0 && (loading$ | async) === false">
+      </app-empty-results>
     </div>
   </div>
 </div>

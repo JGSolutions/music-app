@@ -89,6 +89,11 @@ export class ArtistsState {
     return state.currentTrack.audioFile;
   }
 
+  @Selector()
+  static loading(state: IArtistsState) {
+    return state.loading;
+  }
+
   @Action(ArtistsAction)
   _artistList(ctx: StateContext<IArtistsState>, { uid }: ArtistsAction) {
     return this.apiService.artists(uid!).pipe(
@@ -102,10 +107,14 @@ export class ArtistsState {
 
   @Action(ArtistSongsAction)
   _artistSongs(ctx: StateContext<IArtistsState>, { uid, artistPlatform }: ArtistSongsAction) {
+    ctx.patchState({
+      loading: true,
+    });
     return this.apiService.artistSongs(uid, artistPlatform).pipe(
       tap((data) => {
         ctx.patchState({
           artistSongs: data,
+          loading: false
         });
       })
     )

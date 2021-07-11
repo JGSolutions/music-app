@@ -23,6 +23,7 @@ import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 })
 export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
+  @Select(ArtistsState.loading) loading$!: Observable<boolean>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
   @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
