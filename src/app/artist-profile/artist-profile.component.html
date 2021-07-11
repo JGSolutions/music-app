@@ -10,30 +10,32 @@
       <section class="sticky-element platform-sections">
         <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
       </section>
-      <section class="song-list" *ngIf="(songs$ | async)?.length! > 0 && (songs$ | async) as songs">
-        <app-song-item
-          *ngFor="let song of songs"
-          [currentTrackId]="(currentTrack$ | async)?.id!"
-          [albumId]="(currentTrack$ | async)?.albumid!"
-          [isPlaying]="(currentTrack$ | async)?.isPlaying!"
-          [name]="song.name"
-          [id]="song.id"
-          [length]="song.duration"
-          [durationType]="song.durationType"
-          [totalTracks]="song.totalTracks"
-          [platform]="song.platform"
-          [avatar]="song?.pictures?.medium!"
-          [externalUrl]="song.externalUrl!"
-          [trackType]="song.trackType"
-          [dateCreated]="song.createdTime"
-          (selectedSong)="selectedSong($event)">
-        </app-song-item>
-      </section>
+      <ng-container  *ngIf="(songs$ | async) as songs">
+        <section class="song-list" *ngIf="songs?.length! > 0">
+          <app-song-item
+            *ngFor="let song of songs"
+            [currentTrackId]="(currentTrack$ | async)?.id!"
+            [albumId]="(currentTrack$ | async)?.albumid!"
+            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+            [name]="song.name"
+            [id]="song.id"
+            [length]="song.duration"
+            [durationType]="song.durationType"
+            [totalTracks]="song.totalTracks"
+            [platform]="song.platform"
+            [avatar]="song?.pictures?.medium!"
+            [externalUrl]="song.externalUrl!"
+            [trackType]="song.trackType"
+            [dateCreated]="song.createdTime"
+            (selectedSong)="selectedSong($event)">
+          </app-song-item>
+        </section>
+        <app-empty-results
+          [message]="'No tracks or albums'"
+          *ngIf="songs?.length === 0 && (loading$ | async) === false">
+        </app-empty-results>
+      </ng-container>
 
-      <app-empty-results
-        [message]="'No tracks or albums'"
-        *ngIf="(songs$ | async)?.length === 0 && (loading$ | async) === false">
-      </app-empty-results>
     </div>
   </div>
 </div>
