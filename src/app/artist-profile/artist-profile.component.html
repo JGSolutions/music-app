@@ -11,9 +11,9 @@
       <section class="sticky-element platform-sections">
         <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
       </section>
-      <section class="song-list">
+      <section class="song-list" *ngIf="songs$ | async as songs">
         <app-song-item
-          *ngFor="let song of songs$ | async"
+          *ngFor="let song of songs"
           [currentTrackId]="(currentTrack$ | async)?.id!"
           [albumId]="(currentTrack$ | async)?.albumid!"
           [isPlaying]="(currentTrack$ | async)?.isPlaying!"
@@ -30,6 +30,8 @@
           (selectedSong)="selectedSong($event)">
         </app-song-item>
       </section>
+
+      <app-empty-results [message]="'No tracks or albums'" *ngIf="(songs$ | async)?.length === 0"></app-empty-results>
     </div>
   </div>
 </div>
