@@ -52,6 +52,7 @@ export class SongItemComponent {
   externalUrl!: string;
 
   @Output() selectedSong = new EventEmitter<ISelectedSong>();
+  @Output() addToPlaylistEvent = new EventEmitter<void>();
 
   public avatar$!: Observable<IAvatar>;
   public platforms$!: Observable<string[]>;
@@ -59,6 +60,14 @@ export class SongItemComponent {
 
   public selectedItem(): void {
     this.selectedSong.emit({ id: this.id, platform: this.platform, trackType: this.trackType });
+  }
+
+  public addToFavorites(): void {
+
+  }
+
+  public addToPlaylist(): void {
+    this.addToPlaylistEvent.emit();
   }
 }
 

@@ -7,6 +7,7 @@ import { PlatformSelectionModule } from '../shared/components/platform-selection
 import { SongItemModule } from '../shared/components/song-item/song-item.module';
 import { ArtistAvatarModule } from '../shared/components/artist-avatar/artist-avatar.module';
 import { EmptyResultsModule } from '../shared/components/empty-results/empty-results.module';
+import { AddPlaylistModule } from '../shared/components/add-playlist-dialog/add-playlist-dialog.module';
 
 @NgModule({
   declarations: [ArtistProfileComponent],
@@ -17,6 +18,7 @@ import { EmptyResultsModule } from '../shared/components/empty-results/empty-res
     SongItemModule,
     ArtistAvatarModule,
     EmptyResultsModule,
+    AddPlaylistModule,
     RouterModule.forChild([
       { path: '', component: ArtistProfileComponent },
     ]),

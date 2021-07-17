@@ -34,11 +34,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 // import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const materialModules = [
   // CdkTreeModule,
   // MatAutocompleteModule,
   MatButtonModule,
+  MatDialogModule,
   MatSlideToggleModule,
   MatSliderModule,
   MatCardModule,

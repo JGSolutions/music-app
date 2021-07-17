@@ -15,6 +15,8 @@ import { ISong, ISongTrackType } from 'models/song.types';
 import { ISelectedSong } from '../typings/selected-song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
+import { MatDialog } from '@angular/material/dialog';
+import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 
 @Component({
   selector: 'app-artist-profile',
@@ -39,7 +41,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
-  constructor(private route: ActivatedRoute, private store: Store, private router: Router) { }
+  constructor(private route: ActivatedRoute, private store: Store, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.store.dispatch(new ArtistClearSongs());
@@ -111,5 +113,18 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong.id)]);
     }
+  }
+
+  public addToPlayList(): void {
+    console.log("dkddk");
+    const dialogRef = this.dialog.open(AddPlaylistDialogComponent, {
+      maxWidth: '600px',
+      panelClass: 'stop-watch-dialog',
+      hasBackdrop: true,
+      disableClose: true,
+      // data: {
+      //   seconds: exercise.restMinutes
+      // },
+    });
   }
 }

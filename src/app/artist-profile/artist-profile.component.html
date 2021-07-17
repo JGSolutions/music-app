@@ -27,6 +27,7 @@
             [externalUrl]="song.externalUrl!"
             [trackType]="song.trackType"
             [dateCreated]="song.createdTime"
+            (addToPlaylistEvent)="addToPlayList()"
             (selectedSong)="selectedSong($event)">
           </app-song-item>
         </section>
