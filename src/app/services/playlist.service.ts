@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import firebase from 'firebase/app';
-import { IPlatformTypes } from 'models/artist.types';
+import { IPlaylist } from '../core/stores/playlist/playlist.types';
 
 @Injectable()
 export class PlaylistService {
@@ -15,5 +14,20 @@ export class PlaylistService {
 
   public addToPlaylist(data: any): Promise<void> {
     return this.afs.collection('playlist').doc().set(data);
+  }
+
+  public getPlaylists(uid: string): Observable<IPlaylist[]> {
+    return this.afs
+      .collection<IPlaylist>("playlist", (ref) =>
+        ref.where("uid", "==", uid)
+      ).snapshotChanges()
+      .pipe(
+        map((exercises) => {
+          const data = exercises.map((a) => {
+            return { id: a.payload.doc.id, ...a.payload.doc.data() };
+          })
+          return data;
+        })
+      );
   }
 }

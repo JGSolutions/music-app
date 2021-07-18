@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { CreatePlaylistAction, PlaylistDataAction } from './playlist.actions';
 import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
@@ -17,6 +18,11 @@ export class PlaylistState {
     return state.loadingPlaylist;
   }
 
+  @Selector()
+  static playlist(state: IPlayerlistState) {
+    return state.playlistData;
+  }
+
   @Action(CreatePlaylistAction)
   _createPlaylist(ctx: StateContext<IPlayerlistState>, { data }: CreatePlaylistAction) {
     this.playlistService.create(data);
@@ -24,10 +30,13 @@ export class PlaylistState {
 
   @Action(PlaylistDataAction)
   _playlistData(ctx: StateContext<IPlayerlistState>, { uid }: PlaylistDataAction) {
-    // this.playlistService.create(data);
-    // ctx.patchState({
-    //   loadingPlayer: loadingValue
-    // });
+    return this.playlistService.getPlaylists(uid).pipe(
+      tap(data => {
+        ctx.patchState({
+          playlistData: data
+        });
+      })
+    );
   }
 
 }

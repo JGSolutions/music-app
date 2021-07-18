@@ -3,6 +3,8 @@
   <div style="height: 100%; display: flex; align-items: center; justify-content: center">
     No Playlists yet! Create one!
   </div>
+
+  <div *ngFor="let item of (playlist$ | async)">{{ item.playlistName }}</div>
 </mat-dialog-content>
 <!-- <mat-dialog-actions> -->
   <!-- <button mat-button mat-dialog-close>Close</button> -->
