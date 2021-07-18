@@ -12,8 +12,8 @@ export class PlaylistService {
     return this.afs.collection('playlist').doc().set(data);
   }
 
-  public addToPlaylist(data: any): Promise<void> {
-    return this.afs.collection('playlist').doc().set(data);
+  public addToPlaylist(data: any, id: string): Promise<void> {
+    return this.afs.collection('playlist').doc(id).collection("list").doc().set(data);
   }
 
   public getPlaylists(uid: string): Observable<IPlaylist[]> {
@@ -25,7 +25,8 @@ export class PlaylistService {
         map((exercises) => {
           const data = exercises.map((a) => {
             return { id: a.payload.doc.id, ...a.payload.doc.data() };
-          })
+          });
+
           return data;
         })
       );

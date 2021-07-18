@@ -9,6 +9,7 @@ export const playerlistStateDefault: IPlayerlistState = {
 };
 
 export interface IPlaylist {
+  id?: string;
   uid: string;
   createdDate: Date;
   playlistName: string;

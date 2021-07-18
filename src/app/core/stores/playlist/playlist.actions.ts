@@ -5,6 +5,11 @@ export class CreatePlaylistAction {
   constructor(public data: IPlaylist) { }
 }
 
+export class AddToPlaylistAction {
+  static readonly type = '[Playerlist] Add To Playlist';
+  constructor(public data: any, public id: string) { }
+}
+
 export class PlaylistDataAction {
   static readonly type = '[Playerlist] Playlist Data';
   constructor(public uid: string) { }

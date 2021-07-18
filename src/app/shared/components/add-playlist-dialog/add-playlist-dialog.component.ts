@@ -5,7 +5,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { CreatePlaylistAction, PlaylistDataAction } from 'src/app/core/stores/playlist/playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction } from 'src/app/core/stores/playlist/playlist.actions';
 import { PlaylistState } from 'src/app/core/stores/playlist/playlist.state';
 import { IPlaylist } from 'src/app/core/stores/playlist/playlist.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
@@ -48,6 +48,13 @@ export class AddPlaylistDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  public selectionChange(event: any) {
+    this.store.dispatch(new AddToPlaylistAction(
+      { id: 'dkdkkd', name: "song" },
+      event.options[0].value
+    ));
+  }
+
   public createPlayList() {
     if (this.createForm.invalid) {
       return;
@@ -61,7 +68,7 @@ export class AddPlaylistDialogComponent implements OnInit {
         uid: user.uid!,
         createdDate: new Date()
       }));
-
+      this.createForm.controls['playlistName'].reset();
       this.accordion.closeAll();
     })
   }

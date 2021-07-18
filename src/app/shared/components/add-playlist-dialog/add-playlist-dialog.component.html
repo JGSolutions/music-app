@@ -1,10 +1,14 @@
-<h2 mat-dialog-title>Save to...</h2>
+<div mat-dialog-title>Save to...</div>
 <mat-dialog-content>
   <div class="no-list" *ngIf="(playlist$ | async)?.length! === 0">
     No Playlists yet! Create one!
   </div>
 
-  <div *ngFor="let item of (playlist$ | async)">{{ item.playlistName }}</div>
+  <mat-selection-list (selectionChange)="selectionChange($event)">
+    <mat-list-option *ngFor="let item of (playlist$ | async)" [value]="item.id">
+      {{item.playlistName}}
+    </mat-list-option>
+  </mat-selection-list>
 </mat-dialog-content>
 
 <mat-accordion>

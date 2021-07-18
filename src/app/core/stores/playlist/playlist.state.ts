@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { CreatePlaylistAction, PlaylistDataAction } from './playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction } from './playlist.actions';
 import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
 
 @State<IPlayerlistState>({
@@ -43,4 +43,9 @@ export class PlaylistState {
     );
   }
 
+
+  @Action(AddToPlaylistAction)
+  _addToPlaylistData(ctx: StateContext<IPlayerlistState>, { data, id }: AddToPlaylistAction) {
+    return this.playlistService.addToPlaylist(data, id);
+  }
 }

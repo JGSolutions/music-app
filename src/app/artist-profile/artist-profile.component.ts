@@ -120,7 +120,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       maxWidth: '300px',
       panelClass: 'playlist-dialog',
       hasBackdrop: true,
-      disableClose: true
     });
   }
 }
