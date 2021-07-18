@@ -2,6 +2,7 @@ mat-dialog-content {
   width: 300px;
   height: 400px;
   max-height: 400px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .no-list {
@@ -15,11 +16,17 @@ mat-dialog-content {
   box-shadow: none;
 }
 
-.mat-expansion-panel-header-title, .mat-expansion-panel-header-description {
+.mat-expansion-panel-header {
+  padding: 0;
+}
+
+.mat-expansion-panel-header-title {
   align-items: center;
 }
 
-.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled='true']):hover {   background: white; }
+.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:not([aria-disabled='true']):hover {
+  background: transparent;
+}
 .mat-expansion-panel-header:not([aria-disabled='true']):focus {
   background: transparent;
 }
