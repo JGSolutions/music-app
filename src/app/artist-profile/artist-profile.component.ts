@@ -116,15 +116,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   public addToPlayList(): void {
-    console.log("dkddk");
     const dialogRef = this.dialog.open(AddPlaylistDialogComponent, {
-      maxWidth: '600px',
-      panelClass: 'stop-watch-dialog',
+      maxWidth: '300px',
       hasBackdrop: true,
-      disableClose: true,
-      // data: {
-      //   seconds: exercise.restMinutes
-      // },
+      disableClose: true
     });
   }
 }

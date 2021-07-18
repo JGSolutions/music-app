@@ -1,1 +1,33 @@
-<mat-dialog-content></mat-dialog-content>
+<h2 mat-dialog-title>Save to...</h2>
+<mat-dialog-content>
+  <div style="height: 100%; display: flex; align-items: center; justify-content: center">
+    No Playlists yet! Create one!
+  </div>
+</mat-dialog-content>
+<!-- <mat-dialog-actions> -->
+  <!-- <button mat-button mat-dialog-close>Close</button> -->
+  <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+<!-- </mat-dialog-actions> -->
+
+<mat-accordion>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Create Playlist
+      </mat-panel-title>
+      <!-- <mat-panel-description>
+        This is a summary of the content
+      </mat-panel-description> -->
+
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <mat-label>Playlist name</mat-label>
+      <input matInput>
+    </mat-form-field>
+
+    <mat-action-row>
+      <button mat-button>Create</button>
+      <!-- <button mat-button color="primary" (click)="nextStep()">Next</button> -->
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
