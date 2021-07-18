@@ -15,6 +15,11 @@ service cloud.firestore {
       allow write: if true;
     }
 
+    match /playlist/{document=**} {
+      allow read
+      allow write: if true;
+    }
+
     match /history/{document=**} {
         allow read
       allow write: if true;
