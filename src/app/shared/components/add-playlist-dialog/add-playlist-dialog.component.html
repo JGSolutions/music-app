@@ -15,6 +15,7 @@
   <mat-expansion-panel hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
+        <mat-icon>add</mat-icon>
         Create Playlist
       </mat-panel-title>
       <!-- <mat-panel-description>
@@ -24,7 +25,7 @@
     </mat-expansion-panel-header>
     <mat-form-field>
       <mat-label>Playlist name</mat-label>
-      <input matInput [formControl]="playlistName">
+      <input matInput [formControl]="playlistName" autocomplete="off">
     </mat-form-field>
 
     <mat-action-row>
