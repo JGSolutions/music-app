@@ -3,3 +3,10 @@ mat-dialog-content {
   height: 400px;
   max-height: 400px;
 }
+
+.no-list {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

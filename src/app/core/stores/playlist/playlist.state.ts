@@ -30,10 +30,14 @@ export class PlaylistState {
 
   @Action(PlaylistDataAction)
   _playlistData(ctx: StateContext<IPlayerlistState>, { uid }: PlaylistDataAction) {
+    ctx.patchState({
+      loadingPlaylist: true
+    });
     return this.playlistService.getPlaylists(uid).pipe(
       tap(data => {
         ctx.patchState({
-          playlistData: data
+          playlistData: data,
+          loadingPlaylist: false
         });
       })
     );
