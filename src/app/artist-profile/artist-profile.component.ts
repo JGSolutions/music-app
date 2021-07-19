@@ -115,11 +115,14 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  public addToPlayList(): void {
+  public addToPlayList(song: ISelectedSong): void {
     this.dialog.open(AddPlaylistDialogComponent, {
       maxWidth: '300px',
       panelClass: 'playlist-dialog',
       hasBackdrop: true,
+      data: {
+        song
+      }
     });
   }
 }

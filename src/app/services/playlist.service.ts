@@ -13,7 +13,7 @@ export class PlaylistService {
   }
 
   public addToPlaylist(data: any, id: string): Promise<void> {
-    return this.afs.collection('playlist').doc(id).collection("list").doc().set(data);
+    return this.afs.collection('playlist').doc(id).set(data);
   }
 
   public getPlaylists(uid: string): Observable<IPlaylist[]> {
