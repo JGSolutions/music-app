@@ -5,7 +5,7 @@
   </div>
 
   <mat-selection-list (selectionChange)="selectionChange($event)">
-    <mat-list-option *ngFor="let item of (playlist$ | async)" [value]="item.id">
+  <mat-list-option *ngFor="let item of (playlist$ | async)" [value]="item.id" [selected]="(playlistTrackIds$ | async)?.includes(item.id!)">
       {{item.playlistName}}
     </mat-list-option>
   </mat-selection-list>
@@ -26,7 +26,6 @@
 
     <mat-action-row>
       <button mat-button (click)="createPlayList()">Create</button>
-      <!-- <button mat-button color="primary" (click)="nextStep()">Next</button> -->
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>

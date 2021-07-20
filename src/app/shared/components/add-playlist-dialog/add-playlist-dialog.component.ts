@@ -20,6 +20,7 @@ import { ISelectedSong } from 'src/app/typings/selected-song.types';
 export class AddPlaylistDialogComponent implements OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlaylistState.playlist) playlist$!: Observable<IPlaylist[]>;
+  @Select(PlaylistState.playlistTrackIds) playlistTrackIds$!: Observable<string[]>;
 
   public createForm: FormGroup;
   public playlistName = new FormControl("", [Validators.required]);
@@ -53,6 +54,7 @@ export class AddPlaylistDialogComponent implements OnInit {
   }
 
   public selectionChange(event: any) {
+    console.log(event.options[0].selected);
     this.user$.pipe(take(1)).subscribe(user => {
       const selectedSong = {
         id: this.data.id,

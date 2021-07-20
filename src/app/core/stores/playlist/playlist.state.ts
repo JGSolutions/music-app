@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistTrackDataAction } from './playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from './playlist.actions';
 import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 
@@ -22,6 +22,11 @@ export class PlaylistState {
   @Selector()
   static playlist(state: IPlayerlistState) {
     return state.playlistData;
+  }
+
+  @Selector()
+  static playlistTrackIds(state: IPlayerlistState) {
+    return state.playlistTrack.playlists;
   }
 
   @Action(CreatePlaylistAction)
@@ -46,6 +51,19 @@ export class PlaylistState {
 
   @Action(AddToPlaylistAction)
   _addToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedSong, selectedPlaylist, uid }: AddToPlaylistAction) {
+    let clonedState = _cloneDeep(getState().playlistTrack);
+    const playlistTrackData = (_isUndefined(clonedState)) ? selectedSong : clonedState
+
+    const playlistsIDs = new Set(playlistTrackData?.playlists);
+
+    playlistsIDs.add(selectedPlaylist);
+    playlistTrackData.playlists = [...playlistsIDs];
+
+    return this.playlistService.addToPlaylist(playlistTrackData, uid);
+  }
+
+  @Action(RemoveToPlaylistAction)
+  _removeToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedSong, selectedPlaylist, uid }: RemoveToPlaylistAction) {
     let clonedState = _cloneDeep(getState().playlistTrack);
     const playlistTrackData = (_isUndefined(clonedState)) ? selectedSong : clonedState
 
