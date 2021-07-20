@@ -12,8 +12,8 @@ export class PlaylistService {
     return this.afs.collection('playlist').doc().set(data);
   }
 
-  public addToPlaylist(data: any, id: string): Promise<void> {
-    return this.afs.collection('playlist').doc(id).set(data);
+  public addToPlaylist(data: any, uid: string): Promise<void> {
+    return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(data.id).set(data, { merge: true });
   }
 
   public getPlaylists(uid: string): Observable<IPlaylist[]> {

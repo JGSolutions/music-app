@@ -43,9 +43,8 @@ export class PlaylistState {
     );
   }
 
-
   @Action(AddToPlaylistAction)
-  _addToPlaylistData(ctx: StateContext<IPlayerlistState>, { data, id }: AddToPlaylistAction) {
-    return this.playlistService.addToPlaylist(data, id);
+  _addToPlaylistData(ctx: StateContext<IPlayerlistState>, { data, uid }: AddToPlaylistAction) {
+    return this.playlistService.addToPlaylist(data, uid);
   }
 }

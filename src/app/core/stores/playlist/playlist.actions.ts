@@ -7,7 +7,7 @@ export class CreatePlaylistAction {
 
 export class AddToPlaylistAction {
   static readonly type = '[Playerlist] Add To Playlist';
-  constructor(public data: any, public id: string) { }
+  constructor(public data: any, public uid: string) { }
 }
 
 export class PlaylistDataAction {

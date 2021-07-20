@@ -10,6 +10,7 @@ import { PlaylistState } from 'src/app/core/stores/playlist/playlist.state';
 import { IPlaylist } from 'src/app/core/stores/playlist/playlist.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
+import { ISelectedSong } from 'src/app/typings/selected-song.types';
 
 @Component({
   selector: "app-add-playlist-dialog",
@@ -28,7 +29,7 @@ export class AddPlaylistDialogComponent implements OnInit {
   constructor(
     fb: FormBuilder,
     private store: Store,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: ISelectedSong,
     public dialogRef: MatDialogRef<AddPlaylistDialogComponent>
   ) {
     this.createForm = fb.group({
@@ -49,10 +50,19 @@ export class AddPlaylistDialogComponent implements OnInit {
   }
 
   public selectionChange(event: any) {
-    this.store.dispatch(new AddToPlaylistAction(
-      { id: 'dkdkkd', name: "song" },
-      event.options[0].value
-    ));
+    this.user$.pipe(take(1)).subscribe(user => {
+      const data = {
+        id: this.data.id,
+        name: this.data.songName,
+        song: this.data.platform,
+        playlists: [event.options[0].value]
+      };
+
+      this.store.dispatch(new AddToPlaylistAction(
+        data,
+        user.uid!
+      ));
+    })
   }
 
   public createPlayList() {
