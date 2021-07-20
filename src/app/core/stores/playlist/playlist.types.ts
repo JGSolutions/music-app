@@ -1,11 +1,13 @@
 export interface IPlayerlistState {
   loadingPlaylist: boolean;
   playlistData: IPlaylist[];
+  playlistTrack: any;
 }
 
 export const playerlistStateDefault: IPlayerlistState = {
   loadingPlaylist: false,
-  playlistData: []
+  playlistData: [],
+  playlistTrack: {}
 };
 
 export interface IPlaylist {

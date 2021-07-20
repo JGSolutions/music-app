@@ -7,10 +7,15 @@ export class CreatePlaylistAction {
 
 export class AddToPlaylistAction {
   static readonly type = '[Playerlist] Add To Playlist';
-  constructor(public data: any, public uid: string) { }
+  constructor(public selectedSong: any, public selectedPlaylist: string, public uid: string) { }
 }
 
 export class PlaylistDataAction {
   static readonly type = '[Playerlist] Playlist Data';
   constructor(public uid: string) { }
+}
+
+export class PlaylistTrackDataAction {
+  static readonly type = '[Playerlist] Playlist Track Data';
+  constructor(public uid: string, public songid: string) { }
 }

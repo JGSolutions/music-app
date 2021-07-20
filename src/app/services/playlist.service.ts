@@ -16,6 +16,10 @@ export class PlaylistService {
     return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(data.id).set(data, { merge: true });
   }
 
+  public getPlaylistTrack(uid: string, songid: string) {
+    return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(songid).valueChanges();
+  }
+
   public getPlaylists(uid: string): Observable<IPlaylist[]> {
     return this.afs
       .collection<IPlaylist>("playlist", (ref) =>

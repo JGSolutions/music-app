@@ -5,7 +5,7 @@ import { MatAccordion } from '@angular/material/expansion';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction } from 'src/app/core/stores/playlist/playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistTrackDataAction } from 'src/app/core/stores/playlist/playlist.actions';
 import { PlaylistState } from 'src/app/core/stores/playlist/playlist.state';
 import { IPlaylist } from 'src/app/core/stores/playlist/playlist.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
@@ -41,7 +41,10 @@ export class AddPlaylistDialogComponent implements OnInit {
     this.user$.pipe(
 
     ).subscribe((user) => {
-      this.store.dispatch(new PlaylistDataAction(user.uid!));
+      this.store.dispatch([
+        new PlaylistDataAction(user.uid!),
+        new PlaylistTrackDataAction(user.uid!, this.data.id)
+      ]);
     })
   }
 
@@ -51,15 +54,15 @@ export class AddPlaylistDialogComponent implements OnInit {
 
   public selectionChange(event: any) {
     this.user$.pipe(take(1)).subscribe(user => {
-      const data = {
+      const selectedSong = {
         id: this.data.id,
         name: this.data.songName,
-        song: this.data.platform,
-        playlists: [event.options[0].value]
+        song: this.data.platform
       };
 
       this.store.dispatch(new AddToPlaylistAction(
-        data,
+        selectedSong,
+        event.options[0].value,
         user.uid!
       ));
     })
