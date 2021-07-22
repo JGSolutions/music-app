@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from 'src/app/core/stores/playlist/playlist.actions';
 import { PlaylistState } from 'src/app/core/stores/playlist/playlist.state';
 import { IPlaylist, ISelectedPlaylist } from 'src/app/core/stores/playlist/playlist.types';
@@ -38,7 +38,7 @@ export class AddPlaylistDialogComponent implements OnInit {
 
   ngOnInit() {
     this.user$.pipe(
-
+      takeUntil(this.dialogRef.afterClosed())
     ).subscribe((user) => {
       this.store.dispatch([
         new PlaylistDataAction(user.uid!),

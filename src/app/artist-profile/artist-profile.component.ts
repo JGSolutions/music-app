@@ -134,6 +134,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         name: data?.name!,
         platform: data?.platform!,
         playlists: [],
+        duration: data?.duration,
+        durationType: data?.durationType!,
         trackType: data?.trackType!,
         picture: data?.pictures!
       };

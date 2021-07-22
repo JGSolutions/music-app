@@ -1,14 +1,13 @@
 import { IPlatformTypes } from "models/artist.types";
 import { IAvatar } from "models/avatar.types";
-import { ISongTrackType } from "models/song.types";
+import { IDurationType, ISongTrackType } from "models/song.types";
 
 export interface ISelectedPlaylist {
   id?: string;
   playlists: string[]
   name: string;
-  playlistName?: string;
   duration?: number;
-  durationType?: number;
+  durationType?: IDurationType;
   platform: IPlatformTypes
   trackType: ISongTrackType;
   picture: IAvatar
