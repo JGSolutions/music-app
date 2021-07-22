@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IPlaylist } from '../core/stores/playlist/playlist.types';
+import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 
 @Injectable()
 export class PlaylistService {
@@ -12,7 +12,7 @@ export class PlaylistService {
     return this.afs.collection('playlist').doc().set(data);
   }
 
-  public addToPlaylist(data: any, uid: string): Promise<void> {
+  public updateSelectedPlaylist(data: ISelectedPlaylist, uid: string): Promise<void> {
     return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(data.id).set(data, { merge: true });
   }
 

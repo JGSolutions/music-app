@@ -59,20 +59,19 @@ export class PlaylistState {
     playlistsIDs.add(selectedPlaylist);
     playlistTrackData.playlists = [...playlistsIDs];
 
-    return this.playlistService.addToPlaylist(playlistTrackData, uid);
+    return this.playlistService.updateSelectedPlaylist(playlistTrackData, uid);
   }
 
   @Action(RemoveToPlaylistAction)
-  _removeToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedSong, selectedPlaylist, uid }: RemoveToPlaylistAction) {
-    let clonedState = _cloneDeep(getState().playlistTrack);
-    const playlistTrackData = (_isUndefined(clonedState)) ? selectedSong : clonedState
+  _removeToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedPlaylist, uid }: RemoveToPlaylistAction) {
+    let playlistTrackData = _cloneDeep(getState().playlistTrack);
 
     const playlistsIDs = new Set(playlistTrackData?.playlists);
 
-    playlistsIDs.add(selectedPlaylist);
+    playlistsIDs.delete(selectedPlaylist);
     playlistTrackData.playlists = [...playlistsIDs];
 
-    return this.playlistService.addToPlaylist(playlistTrackData, uid);
+    return this.playlistService.updateSelectedPlaylist(playlistTrackData, uid);
   }
 
   @Action(PlaylistTrackDataAction)
