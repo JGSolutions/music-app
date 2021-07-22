@@ -1,5 +1,4 @@
-import { ISelectedSong } from "src/app/typings/selected-song.types";
-import { IPlaylist } from "./playlist.types";
+import { IPlaylist, ISelectedPlaylist } from "./playlist.types";
 
 export class CreatePlaylistAction {
   static readonly type = '[Playerlist] Create Playlist';
@@ -8,7 +7,7 @@ export class CreatePlaylistAction {
 
 export class AddToPlaylistAction {
   static readonly type = '[Playerlist] Add To Playlist';
-  constructor(public selectedSong: ISelectedSong, public selectedPlaylist: string, public uid: string) { }
+  constructor(public selectedSong: ISelectedPlaylist, public selectedPlaylist: string, public uid: string) { }
 }
 
 export class RemoveToPlaylistAction {

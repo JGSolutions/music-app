@@ -3,7 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
 import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from './playlist.actions';
-import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
+import { IPlayerlistState, ISelectedPlaylist, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 
 @State<IPlayerlistState>({
@@ -79,7 +79,7 @@ export class PlaylistState {
     return this.playlistService.getPlaylistTrack(uid, songid).pipe(
       tap(data => {
         ctx.patchState({
-          playlistTrack: data
+          playlistTrack: data as ISelectedPlaylist
         });
       })
     );

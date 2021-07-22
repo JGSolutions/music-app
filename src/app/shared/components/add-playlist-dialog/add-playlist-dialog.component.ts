@@ -7,11 +7,9 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from 'src/app/core/stores/playlist/playlist.actions';
 import { PlaylistState } from 'src/app/core/stores/playlist/playlist.state';
-import { IPlaylist } from 'src/app/core/stores/playlist/playlist.types';
+import { IPlaylist, ISelectedPlaylist } from 'src/app/core/stores/playlist/playlist.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
-import { ISelectedSong } from 'src/app/typings/selected-song.types';
-
 @Component({
   selector: "app-add-playlist-dialog",
   templateUrl: "./add-playlist-dialog.component.html",
@@ -30,7 +28,7 @@ export class AddPlaylistDialogComponent implements OnInit {
   constructor(
     fb: FormBuilder,
     private store: Store,
-    @Inject(MAT_DIALOG_DATA) public data: ISelectedSong,
+    @Inject(MAT_DIALOG_DATA) public data: ISelectedPlaylist,
     public dialogRef: MatDialogRef<AddPlaylistDialogComponent>
   ) {
     this.createForm = fb.group({
@@ -44,7 +42,7 @@ export class AddPlaylistDialogComponent implements OnInit {
     ).subscribe((user) => {
       this.store.dispatch([
         new PlaylistDataAction(user.uid!),
-        new PlaylistTrackDataAction(user.uid!, this.data.id)
+        new PlaylistTrackDataAction(user.uid!, this.data.id!)
       ]);
     })
   }

@@ -12,11 +12,11 @@ import { ConnectedServicesState } from '../core/stores/connected-services/connec
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISong, ISongTrackType } from 'models/song.types';
-import { ISelectedSong } from '../typings/selected-song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
+import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 
 @Component({
   selector: 'app-artist-profile',
@@ -107,20 +107,43 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this._connectServiceType$.next(evt);
   }
 
-  public selectedSong(selectedSong: ISelectedSong): void {
-    if (selectedSong?.trackType !== ISongTrackType.track) {
-      this.router.navigate(['artist-album', selectedSong?.platform, selectedSong?.id]);
-    } else {
-      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong.id)]);
-    }
+  public selectedSong(selectedSong: string): void {
+    this.songDetailById$.pipe(
+      take(1),
+      map(fn => fn(selectedSong))
+    ).subscribe((data: ISong | undefined) => {
+      if (data?.trackType !== ISongTrackType.track) {
+        this.router.navigate(['artist-album', data?.platform, data?.id]);
+      } else {
+        this.store.dispatch([
+          new LoadingPlayerAction(true),
+          new SetCurrentSelectedSongAction(data.id)
+        ]);
+      }
+    });
   }
 
-  public addToPlayList(selectedSong: ISelectedSong): void {
-    this.dialog.open(AddPlaylistDialogComponent, {
-      maxWidth: '300px',
-      panelClass: 'playlist-dialog',
-      hasBackdrop: true,
-      data: selectedSong
+  public addToPlayList(selectedSong: string): void {
+    this.songDetailById$.pipe(
+      take(1),
+      map(fn => fn(selectedSong))
+    ).subscribe((data: (ISong | undefined)) => {
+
+      const song: ISelectedPlaylist = {
+        id: data?.id,
+        name: data?.name!,
+        platform: data?.platform!,
+        playlists: [],
+        trackType: data?.trackType!,
+        picture: data?.pictures!
+      };
+
+      this.dialog.open(AddPlaylistDialogComponent, {
+        maxWidth: '300px',
+        panelClass: 'playlist-dialog',
+        hasBackdrop: true,
+        data: song
+      });
     });
   }
 }
