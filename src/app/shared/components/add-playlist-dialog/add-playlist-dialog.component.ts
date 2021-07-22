@@ -47,11 +47,7 @@ export class AddPlaylistDialogComponent implements OnInit {
     })
   }
 
-  public closeHandler(evt: any) {
-    this.dialogRef.close();
-  }
-
-  public selectionChange(event: any) {
+  public selectionChange(event: any): void {
     this.user$.pipe(take(1)).subscribe(user => {
       if (event.options[0].selected) {
         this.store.dispatch(new AddToPlaylistAction(

@@ -108,9 +108,10 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   public selectedSong(selectedSong: string): void {
-    this.songDetailById$.pipe(
+    combineLatest([this.songDetailById$, this.currentTrack$]).pipe(
       take(1),
-      map(fn => fn(selectedSong))
+      filter(([songDetailById, currentTrack]) => currentTrack.id !== selectedSong),
+      map(([songDetailById]) => songDetailById(selectedSong))
     ).subscribe((data: ISong | undefined) => {
       if (data?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', data?.platform, data?.id]);

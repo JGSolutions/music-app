@@ -10,7 +10,6 @@ import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAlbumInfo, ISong } from 'models/song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
-import { ISelectedSong } from '../typings/selected-song.types';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 
 @Component({
@@ -52,12 +51,12 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  public selectedSong(selectedSong: ISelectedSong): void {
+  public selectedSong(selectedSong: string): void {
     this.currentTrack$.pipe(
       take(1),
-      filter((currentTrack) => currentTrack.id !== selectedSong.id)
+      filter((currentTrack) => currentTrack.id !== selectedSong)
     ).subscribe(() => {
-      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong.id)]);
+      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong)]);
     })
   }
 }
