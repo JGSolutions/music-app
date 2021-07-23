@@ -1,18 +1,22 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 @Component({
   selector: "app-track-mat-menu",
   templateUrl: "./track-mat-menu.component.html",
   styleUrls: ["./track-mat-menu.component.scss"],
 })
-export class TrackMatMenuComponent implements OnInit {
+export class TrackMatMenuComponent {
 
   @Output() addToPlaylist = new EventEmitter<void>();
-  constructor() {
+  @Output() addFavorite = new EventEmitter<void>();
+  @Output() listenLater = new EventEmitter<void>();
 
+
+  public addFavoriteHandler() {
+    this.addFavorite.emit();
   }
 
-  ngOnInit() {
-
+  public listenLaterHandler() {
+    this.listenLater.emit();
   }
 
   public addToPlaylistHandler() {

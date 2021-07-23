@@ -3,11 +3,11 @@
 </button>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
+  <button mat-menu-item (click)="addFavoriteHandler()">
     <mat-icon>favorite</mat-icon>
     <span>Add To Favorites</span>
   </button>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="listenLaterHandler()">
     <mat-icon>headphones</mat-icon>
     <span>Listen Later</span>
   </button>
