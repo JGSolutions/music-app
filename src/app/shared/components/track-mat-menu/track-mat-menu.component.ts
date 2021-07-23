@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 @Component({
   selector: "app-track-mat-menu",
   templateUrl: "./track-mat-menu.component.html",
@@ -6,11 +6,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TrackMatMenuComponent implements OnInit {
 
+  @Output() addToPlaylist = new EventEmitter<void>();
   constructor() {
 
   }
 
   ngOnInit() {
 
+  }
+
+  public addToPlaylistHandler() {
+    this.addToPlaylist.emit();
   }
 }

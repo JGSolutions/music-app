@@ -5,6 +5,7 @@ import { AngularMaterialModule } from 'src/angular-material.module';
 import { DateAgoPipe } from 'src/app/core/pipes/date-ago.pipe';
 import { MinuteSecondsModule } from 'src/app/core/pipes/minute-seconds.module';
 import { EqualizerIconModule } from '../equalizer-icon/equalizer-icon.module';
+import { TrackMatMenuModule } from '../track-mat-menu/track-mat-menu.module';
 
 @NgModule({
   declarations: [SongItemComponent, DateAgoPipe],
@@ -12,7 +13,8 @@ import { EqualizerIconModule } from '../equalizer-icon/equalizer-icon.module';
     CommonModule,
     MinuteSecondsModule,
     AngularMaterialModule,
-    EqualizerIconModule
+    EqualizerIconModule,
+    TrackMatMenuModule
   ],
   exports: [
     SongItemComponent

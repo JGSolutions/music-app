@@ -24,23 +24,6 @@
     </span>
   </div>
   <div class="options">
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
+    <app-track-mat-menu (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
   </div>
 </div>
-
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="addToFavorites()">
-    <mat-icon>favorite</mat-icon>
-    <span>Add To Favorites</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>headphones</mat-icon>
-    <span>Listen Later</span>
-  </button>
-  <button mat-menu-item (click)="addToPlaylist()">
-    <mat-icon>playlist_add</mat-icon>
-    <span>Add To Playlist</span>
-  </button>
-</mat-menu>
