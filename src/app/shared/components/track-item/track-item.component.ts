@@ -3,8 +3,6 @@ import { IPlatformTypes } from 'models/artist.types';
 import { IAvatar } from 'models/avatar.types';
 import { IDurationType, ISongTrackType } from 'models/song.types';
 import { Observable } from 'rxjs';
-import { ISelectedSong } from 'src/app/typings/selected-song.types';
-
 @Component({
   selector: 'app-track-item',
   templateUrl: './track-item.component.html',
@@ -45,14 +43,19 @@ export class TrackItemComponent {
   @Input()
   externalUrl!: string;
 
-  @Output() selectedSong = new EventEmitter<ISelectedSong>();
+  @Output() selectedSong = new EventEmitter<string>();
+  @Output() addToPlaylistEvent = new EventEmitter<string>();
 
   public avatar$!: Observable<IAvatar>;
   public platforms$!: Observable<string[]>;
   public trackTypes = ISongTrackType;
 
   public selectedItem(): void {
-    this.selectedSong.emit({ id: this.id, platform: this.platform, trackType: this.trackType });
+    this.selectedSong.emit(this.id);
+  }
+
+  public addToPlaylist(): void {
+    this.addToPlaylistEvent.emit(this.id);
   }
 }
 

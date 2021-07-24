@@ -60,3 +60,7 @@ body {
 .platform-sections {
   background-color: $app-backgorund-color;
 }
+
+.playlist-dialog .mat-dialog-container {
+  padding: 24px 24px 0 24px !important;
+}

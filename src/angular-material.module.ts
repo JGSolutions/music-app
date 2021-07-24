@@ -11,11 +11,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDividerModule } from '@angular/material/divider';
-// import { MatExpansionModule } from '@angular/material/expansion';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-// import { MatListModule } from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 // import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -34,21 +34,23 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 // import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const materialModules = [
   // CdkTreeModule,
   // MatAutocompleteModule,
   MatButtonModule,
+  MatDialogModule,
   MatSlideToggleModule,
   MatSliderModule,
   MatCardModule,
   // MatCheckboxModule,
   MatChipsModule,
   MatDividerModule,
-  // MatExpansionModule,
+  MatExpansionModule,
   MatIconModule,
   MatInputModule,
-  // MatListModule,
+  MatListModule,
   MatMenuModule,
   MatProgressSpinnerModule,
   // MatPaginatorModule,

@@ -5,4 +5,5 @@ export interface ISelectedSong {
   id: string;
   platform: IPlatformTypes;
   trackType: ISongTrackType;
+  songName?: string;
 }

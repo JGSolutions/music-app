@@ -12,9 +12,11 @@ import { ConnectedServicesState } from '../core/stores/connected-services/connec
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISong, ISongTrackType } from 'models/song.types';
-import { ISelectedSong } from '../typings/selected-song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
+import { MatDialog } from '@angular/material/dialog';
+import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
+import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 
 @Component({
   selector: 'app-artist-profile',
@@ -39,7 +41,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
   private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
-  constructor(private route: ActivatedRoute, private store: Store, private router: Router) { }
+  constructor(private route: ActivatedRoute, private store: Store, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.store.dispatch(new ArtistClearSongs());
@@ -105,11 +107,46 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this._connectServiceType$.next(evt);
   }
 
-  public selectedSong(selectedSong: ISelectedSong): void {
-    if (selectedSong?.trackType !== ISongTrackType.track) {
-      this.router.navigate(['artist-album', selectedSong?.platform, selectedSong?.id]);
-    } else {
-      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong.id)]);
-    }
+  public selectedSong(selectedSong: string): void {
+    combineLatest([this.songDetailById$, this.currentTrack$]).pipe(
+      take(1),
+      filter(([songDetailById, currentTrack]) => currentTrack.id !== selectedSong),
+      map(([songDetailById]) => songDetailById(selectedSong))
+    ).subscribe((data: ISong | undefined) => {
+      if (data?.trackType !== ISongTrackType.track) {
+        this.router.navigate(['artist-album', data?.platform, data?.id]);
+      } else {
+        this.store.dispatch([
+          new LoadingPlayerAction(true),
+          new SetCurrentSelectedSongAction(data.id)
+        ]);
+      }
+    });
+  }
+
+  public addToPlayList(selectedSong: string): void {
+    this.songDetailById$.pipe(
+      take(1),
+      map(fn => fn(selectedSong))
+    ).subscribe((data: (ISong | undefined)) => {
+
+      const song: ISelectedPlaylist = {
+        id: data?.id,
+        name: data?.name!,
+        platform: data?.platform!,
+        playlists: [],
+        duration: data?.duration,
+        durationType: data?.durationType!,
+        trackType: data?.trackType!,
+        picture: data?.pictures!
+      };
+
+      this.dialog.open(AddPlaylistDialogComponent, {
+        maxWidth: '300px',
+        panelClass: 'playlist-dialog',
+        hasBackdrop: true,
+        data: song
+      });
+    });
   }
 }

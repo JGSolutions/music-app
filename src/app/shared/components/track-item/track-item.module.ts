@@ -4,6 +4,7 @@ import { TrackItemComponent } from './track-item.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
 import { MinuteSecondsModule } from 'src/app/core/pipes/minute-seconds.module';
 import { EqualizerIconModule } from '../equalizer-icon/equalizer-icon.module';
+import { TrackMatMenuModule } from '../track-mat-menu/track-mat-menu.module';
 
 @NgModule({
   declarations: [TrackItemComponent],
@@ -11,7 +12,8 @@ import { EqualizerIconModule } from '../equalizer-icon/equalizer-icon.module';
     CommonModule,
     AngularMaterialModule,
     MinuteSecondsModule,
-    EqualizerIconModule
+    EqualizerIconModule,
+    TrackMatMenuModule
   ],
   exports: [
     TrackItemComponent

@@ -1,5 +1,5 @@
-<div (click)="selectedItem()" class="track-item-wrapper" [ngClass]="{'selected': currentTrackId === id}">
-  <div class="info">
+<section class="track-item-wrapper" [ngClass]="{'selected': currentTrackId === id}">
+  <div class="info" (click)="selectedItem()">
     <div *ngIf="avatar" class="avatar-wrapper">
       <div class="play-button-wrapper">
         <div class="play-button">
@@ -17,8 +17,6 @@
 
   <div class="options" >
     <span class="track-time">{{length | minuteSeconds: durationType}}</span>
-    <button mat-icon-button>
-      <mat-icon>more_horiz</mat-icon>
-    </button>
+    <app-track-mat-menu (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
   </div>
-</div>
+</section>

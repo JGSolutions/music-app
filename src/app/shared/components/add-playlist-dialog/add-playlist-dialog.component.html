@@ -1,0 +1,31 @@
+<div mat-dialog-title>Save to...</div>
+<mat-dialog-content>
+  <div class="no-list" *ngIf="(playlist$ | async)?.length! === 0">
+    No Playlists yet! Create one!
+  </div>
+
+  <mat-selection-list (selectionChange)="selectionChange($event)">
+  <mat-list-option *ngFor="let item of (playlist$ | async)" [value]="item.id" [selected]="(playlistTrackIds$ | async)?.includes(item.id!)">
+      {{item.playlistName}}
+    </mat-list-option>
+  </mat-selection-list>
+</mat-dialog-content>
+
+<mat-accordion>
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>add</mat-icon>
+        Create Playlist
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <mat-label>Playlist name</mat-label>
+      <input matInput [formControl]="playlistName" autocomplete="off">
+    </mat-form-field>
+
+    <mat-action-row>
+      <button mat-button (click)="createPlayList()">Create</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
