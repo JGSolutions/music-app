@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, take, takeUntil } from 'rxjs/operators';
+import { filter, map, take, takeUntil } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { ArtistAlbumSongs, ArtistClearSongs, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
@@ -11,6 +11,9 @@ import { IPlatformTypes } from 'models/artist.types';
 import { IAlbumInfo, ISong } from 'models/song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
+import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
+import { MatDialog } from '@angular/material/dialog';
+import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 
 @Component({
   selector: 'app-artist-album',
@@ -31,7 +34,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<boolean>();
 
-  constructor(private route: ActivatedRoute, private store: Store) { }
+  constructor(private route: ActivatedRoute, private store: Store, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.store.dispatch(new ArtistClearSongs());
@@ -58,5 +61,31 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong)]);
     })
+  }
+
+  public addToPlayList(selectedSong: string): void {
+    this.songDetailById$.pipe(
+      take(1),
+      map(fn => fn(selectedSong))
+    ).subscribe((data: (ISong | undefined)) => {
+
+      const song: ISelectedPlaylist = {
+        id: data?.id,
+        name: data?.name!,
+        platform: data?.platform!,
+        playlists: [],
+        duration: data?.duration,
+        durationType: data?.durationType!,
+        trackType: data?.trackType!,
+        picture: data?.pictures!
+      };
+
+      this.dialog.open(AddPlaylistDialogComponent, {
+        maxWidth: '300px',
+        panelClass: 'playlist-dialog',
+        hasBackdrop: true,
+        data: song
+      });
+    });
   }
 }

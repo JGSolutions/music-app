@@ -28,6 +28,7 @@
             [trackType]="song.trackType"
             [currentTrackId]="(currentTrack$ | async)?.id!"
             [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+            (addToPlaylistEvent)="addToPlayList($event)"
             (selectedSong)="selectedSong($event)">
           </app-track-item>
         </section>
