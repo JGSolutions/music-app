@@ -101,7 +101,7 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
   });
 };
 
-export const albumTracks = (dataApi: any): Promise<IAlbum> => {
+export const albumTracks = (dataApi: any): Promise<ISong[]> => {
   return new Promise((resolve) => {
     const tracks = dataApi.items.map((song: any) => {
       return {
@@ -192,7 +192,7 @@ export const SpotifySDK = {
     return await artistAlbums(resp.data);
   },
 
-  async getAlbumTracks(albumId: string): Promise<IAlbum> {
+  async getAlbumTracks(albumId: string): Promise<ISong[]> {
     const url = `${this.apiDomain}/albums/${albumId}/tracks/`;
     const resp = await axios(url, this.requestHeaders());
     return await albumTracks(resp.data);

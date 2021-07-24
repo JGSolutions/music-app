@@ -4,16 +4,18 @@ import { adminFirebase } from "./fb";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { spotifyKeys } from "../../sdk/api-keys";
-// import { IAuthorizationToken } from "../../../models/spotify.model";
+import { ISong } from "../../../models/song.types";
 
-// const db = adminFirebase.firestore();
+const db = adminFirebase.firestore();
 const auth = adminFirebase.auth();
 
 export const addAlbumPlaylist = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
   const platform = request.query.platform;
   const albumid = request.query.albumid;
-  let res;
+  const playlistid = request.query.playlistid;
+
+  let res: ISong[] | undefined = [];
 
   try {
     await auth.getUser(authorized);
@@ -32,6 +34,10 @@ export const addAlbumPlaylist = async (request: Request, response: Response) => 
 
       break;
   }
+
+  res.forEach((data) => {
+    // db.collection("playlistTracks").doc(authorized).collection("list").doc(data.id).set(data, { merge: true });
+  });
 
   return response.status(200).send(res);
 };
