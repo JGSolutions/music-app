@@ -35,8 +35,17 @@ export const addAlbumPlaylist = async (request: Request, response: Response) => 
       break;
   }
 
-  res.forEach((data) => {
-    // db.collection("playlistTracks").doc(authorized).collection("list").doc(data.id).set(data, { merge: true });
+  res.forEach(async (data) => {
+    const song = {
+      id: data?.id,
+      name: data?.name,
+      platform: data?.platform,
+      playlists: [playlistid],
+      duration: data?.duration,
+      durationType: data?.durationType,
+      trackType: data?.trackType,
+    };
+    await db.collection("playlistTracks").doc(authorized).collection("list").doc(data.id).set(song, { merge: true });
   });
 
   return response.status(200).send(res);
