@@ -24,3 +24,4 @@ app.post("/artist", artist);
 app.post("/mixcloud-audio", mixcloudAudio);
 app.get("/create-spotify-token", createSpotifyToken);
 app.get("/artist-album", artistAlbum);
+// app.get("/add-album-playlist", addAlbumPlaylist);

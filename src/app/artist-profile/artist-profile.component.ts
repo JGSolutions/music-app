@@ -129,24 +129,27 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       take(1),
       map(fn => fn(selectedSong))
     ).subscribe((data: (ISong | undefined)) => {
+      if (data?.trackType !== ISongTrackType.track) {
+        this.router.navigate(['artist-album', data?.platform, data?.id]);
+      } else {
+        const song: ISelectedPlaylist = {
+          id: data?.id,
+          name: data?.name!,
+          platform: data?.platform!,
+          playlists: [],
+          duration: data?.duration,
+          durationType: data?.durationType!,
+          trackType: data?.trackType!,
+          picture: data?.pictures!
+        };
 
-      const song: ISelectedPlaylist = {
-        id: data?.id,
-        name: data?.name!,
-        platform: data?.platform!,
-        playlists: [],
-        duration: data?.duration,
-        durationType: data?.durationType!,
-        trackType: data?.trackType!,
-        picture: data?.pictures!
-      };
-
-      this.dialog.open(AddPlaylistDialogComponent, {
-        maxWidth: '300px',
-        panelClass: 'playlist-dialog',
-        hasBackdrop: true,
-        data: song
-      });
+        this.dialog.open(AddPlaylistDialogComponent, {
+          maxWidth: '300px',
+          panelClass: 'playlist-dialog',
+          hasBackdrop: true,
+          data: song
+        });
+      }
     });
   }
 }

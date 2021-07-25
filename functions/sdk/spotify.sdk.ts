@@ -66,6 +66,7 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         name: song.name,
         id: song.id,
         albumid: dataApi.id,
+        albumName: dataApi.name,
         artistName: dataApi.artists[0].name,
         createdTime: new Date(song.release_date),
         externalUrl: song.external_urls.spotify,
@@ -98,6 +99,23 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
       },
       tracks,
     });
+  });
+};
+
+export const albumTracks = (dataApi: any): Promise<ISong[]> => {
+  return new Promise((resolve) => {
+    const tracks = dataApi.items.map((song: any) => {
+      return {
+        name: song.name,
+        id: song.id,
+        externalUrl: song.external_urls.spotify,
+        duration: song.duration_ms,
+        durationType: IDurationType.milliseconds,
+        trackType: song.type,
+        platform: IPlatformTypes.spotify,
+      };
+    });
+    resolve(tracks);
   });
 };
 
@@ -173,6 +191,12 @@ export const SpotifySDK = {
     const url = `${this.apiDomain}/albums/${albumId}`;
     const resp = await axios(url, this.requestHeaders());
     return await artistAlbums(resp.data);
+  },
+
+  async getAlbumTracks(albumId: string): Promise<ISong[]> {
+    const url = `${this.apiDomain}/albums/${albumId}/tracks/`;
+    const resp = await axios(url, this.requestHeaders());
+    return await albumTracks(resp.data);
   },
 
   requestHeaders() {
