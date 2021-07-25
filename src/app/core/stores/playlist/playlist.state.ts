@@ -71,7 +71,11 @@ export class PlaylistState {
     playlistsIDs.delete(selectedPlaylist);
     playlistTrackData.playlists = [...playlistsIDs];
 
-    return this.playlistService.updateSelectedPlaylist(playlistTrackData, uid);
+    if (playlistTrackData.playlists.length === 0) {
+      return this.playlistService.deleteSelectedPlaylist(playlistTrackData.id!, uid);
+    } else {
+      return this.playlistService.updateSelectedPlaylist(playlistTrackData, uid);
+    }
   }
 
   @Action(PlaylistTrackDataAction)
