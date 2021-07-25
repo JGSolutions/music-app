@@ -4,13 +4,16 @@ import { IDurationType, ISongTrackType } from "models/song.types";
 
 export interface ISelectedPlaylist {
   id?: string;
-  playlists: string[]
+  playlists: string[];
   name: string;
   duration?: number;
+  albumid?: string;
+  artist?: string;
+  albumName?: string;
   durationType?: IDurationType;
   platform: IPlatformTypes
   trackType: ISongTrackType;
-  picture: IAvatar
+  picture: IAvatar;
 }
 
 export interface IPlayerlistState {

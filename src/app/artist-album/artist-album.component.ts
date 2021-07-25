@@ -71,6 +71,8 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
 
       const song: ISelectedPlaylist = {
         id: data?.id,
+        albumid: data?.albumid,
+        albumName: data?.albumName,
         name: data?.name!,
         platform: data?.platform!,
         playlists: [],

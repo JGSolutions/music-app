@@ -20,6 +20,7 @@ export interface ISong {
   trackType: ISongTrackType;
   id: string;
   albumid?: string;
+  albumName?: string;
   duration: number;
   durationType: IDurationType;
   username?: string;
