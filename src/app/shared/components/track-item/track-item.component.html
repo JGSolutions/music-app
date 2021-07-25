@@ -17,6 +17,6 @@
 
   <div class="options" >
     <span class="track-time">{{length | minuteSeconds: durationType}}</span>
-    <app-track-mat-menu (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
+    <app-track-mat-menu [isAlbum]="false" (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
   </div>
 </section>
