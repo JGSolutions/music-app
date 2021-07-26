@@ -44,7 +44,7 @@ export class AddPlaylistDialogComponent implements OnInit {
         new PlaylistDataAction(user.uid!),
         new PlaylistTrackDataAction(user.uid!, this.data.id!)
       ]);
-    })
+    });
   }
 
   public selectionChange(event: any): void {
