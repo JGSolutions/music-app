@@ -1,0 +1,9 @@
+@import '../../theme/variables.scss';
+
+:host {
+  display: block;
+}
+
+.container-fluid {
+  @include fluid-container();
+}
