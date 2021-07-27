@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { PlaylistDataAction } from '../core/stores/playlist/playlist.actions';
+import { PlaylistState } from '../core/stores/playlist/playlist.state';
+import { IPlaylist } from '../core/stores/playlist/playlist.types';
 
 @Component({
   selector: 'app-playlist',
@@ -14,6 +15,7 @@ import { PlaylistDataAction } from '../core/stores/playlist/playlist.actions';
 })
 export class PlaylistComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
+  @Select(PlaylistState.playlist) playlist$!: Observable<IPlaylist[]>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
 

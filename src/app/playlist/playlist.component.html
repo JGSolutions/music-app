@@ -1,2 +1,15 @@
 <mat-divider></mat-divider>
-
+<div class="container-fluid">
+  <div class="row">
+    <div>
+      <div class="mat-headline">Playlists</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let playlist of playlist$ | async">
+      <a [routerLink]="['/', 'artist', playlist.id]" class="item-link">
+        <app-playlist-item [playlistName]="playlist.playlistName"></app-playlist-item>
+      </a>
+    </div>
+  </div>
+</div>
