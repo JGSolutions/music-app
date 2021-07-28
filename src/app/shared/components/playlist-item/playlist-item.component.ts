@@ -11,16 +11,13 @@ export class PlaylistItemComponent implements OnInit {
   @Input()
   playlistName!: string;
 
+  @Input()
+  coverImages!: string[];
+
   public avatar$!: Observable<IAvatar>;
   public platforms$!: Observable<string[]>;
 
   ngOnInit(): void {
-    // this.avatar$ = this._artistDetails$.pipe(
-    //   map((artistDetails: any) => {
-    //     const randomIdx = Math.floor(Math.random() * 1);
-    //     return artistDetails[randomIdx].pictures;
-    //   })
-    // );
 
   }
 }
