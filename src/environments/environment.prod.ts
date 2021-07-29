@@ -19,4 +19,5 @@ export const environment = {
   },
   restapiDomain: "https://music-restapi.web.app/api",
   appDomain: "https://music-app-5c927.firebaseapp.com/",
+  useEmulators: false
 };

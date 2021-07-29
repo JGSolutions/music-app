@@ -24,6 +24,7 @@ export const environment = {
   // restapiDomain: "https://music-restapi.web.app/api",
   restapiDomain: "http://localhost:5000/api",
   appDomain: "http://localhost:4200/",
+  useEmulators: true
 };
 
 /*
