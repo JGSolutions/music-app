@@ -1,11 +1,8 @@
 <mat-card class="example-card">
-  <img mat-card-image [src]="coverImages[0].image" *ngIf="coverImages.length <= 1" class="one-image">
+  <img mat-card-image [src]="coverImages[0].image" *ngIf="coverImages.length < maxImagesGrid" class="one-image">
 
-  <div class="grid" mat-card-image *ngIf="coverImages.length === 4">
-    <div class="player"><img [src]="coverImages[0].image"></div>
-    <div class="player"><img [src]="coverImages[1].image"></div>
-    <div class="player"><img [src]="coverImages[2].image"></div>
-    <div class="player"><img [src]="coverImages[3].image"></div>
+  <div class="grid" mat-card-image *ngIf="coverImages.length === maxImagesGrid">
+    <div class="player" *ngFor="let coverImage of coverImages"><img [src]="coverImage.image"></div>
   </div>
 
   <mat-card-content>

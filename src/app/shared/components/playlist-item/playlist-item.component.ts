@@ -1,6 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { IAvatar } from 'models/avatar.types';
-import { Observable } from 'rxjs';
 import { ICoverImages } from 'src/app/core/stores/playlist/playlist.types';
 
 @Component({
@@ -15,7 +13,7 @@ export class PlaylistItemComponent {
   @Input()
   coverImages!: ICoverImages[];
 
-  public avatar$!: Observable<IAvatar>;
-  public platforms$!: Observable<string[]>;
+  public maxImagesGrid = 4;
+
 }
 
