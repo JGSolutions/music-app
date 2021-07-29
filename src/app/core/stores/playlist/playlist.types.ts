@@ -33,5 +33,5 @@ export interface IPlaylist {
   uid: string;
   createdDate: Date;
   playlistName: string;
-  coverImage?: string[];
+  coverImages?: string[];
 }

@@ -75,6 +75,7 @@ export class AddPlaylistDialogComponent implements OnInit {
       this.store.dispatch(new CreatePlaylistAction({
         playlistName: this.createForm.value.playlistName,
         uid: user.uid!,
+        coverImages: [],
         createdDate: new Date()
       }));
       this.createForm.controls['playlistName'].reset();
