@@ -12,7 +12,7 @@ import { ConnectedServicesState } from '../core/stores/connected-services/connec
 import { ConnectedServices } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { isEqual } from "lodash";
+import { isEqual, isUndefined as _isUndefined } from "lodash";
 import { IPlatformTypes } from 'models/artist.types';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 @Component({
@@ -41,6 +41,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isMixcloudConnected$ = this.connectedServices$.pipe(
+      filter((services) => !_isUndefined(services)),
       map((services) => {
         if (services[IPlatformTypes.mixcloud]) {
           return true;
@@ -52,7 +53,9 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     );
 
     this.isSpotifyConnected$ = this.connectedServices$.pipe(
+      filter((services) => !_isUndefined(services)),
       map((services) => {
+        console.log(services);
         if (services[IPlatformTypes.spotify]) {
           return true;
         }

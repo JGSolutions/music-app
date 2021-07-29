@@ -25,3 +25,19 @@ app.post("/mixcloud-audio", mixcloudAudio);
 app.get("/create-spotify-token", createSpotifyToken);
 app.get("/artist-album", artistAlbum);
 // app.get("/add-album-playlist", addAlbumPlaylist);
+
+exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{uid}/list/{listId}").onCreate((snap, context) => {
+  const data = snap.data();
+  const objectId = snap.id;
+
+  console.log(data);
+  console.log(objectId);
+});
+
+exports.updatePlaylistCoverImage = functions.firestore.document("playlistTracks/{uid}/list/{listId}").onUpdate((snap) => {
+  const data = snap.after.data();
+  const objectId = snap.before.id;
+
+  console.log(data);
+  console.log(objectId);
+});

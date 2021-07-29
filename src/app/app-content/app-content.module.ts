@@ -12,7 +12,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { HttpClientModule } from '@angular/common/http';
 import { UserState } from '../core/stores/user/user.state';
-
+import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/functions';
+import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/firestore';
 @NgModule({
   declarations: [AppContentComponent],
   imports: [
@@ -27,6 +28,9 @@ import { UserState } from '../core/stores/user/user.state';
       developmentMode: !environment.production
     }),
   ],
-  providers: [MusicConnectedService, ApiService],
+  providers: [MusicConnectedService, ApiService,
+    { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
+    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['localhost', 5001] : undefined }
+  ],
 })
 export class AppContentModule { }
