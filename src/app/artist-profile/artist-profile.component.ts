@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { filter, map, shareReplay, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { isUndefined } from 'lodash';
+import { isUndefined as _isUndefined } from 'lodash';
 import { ArtistClearSongs, ArtistSongsAction, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
@@ -49,7 +49,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
 
     const artistDetails$ = this.artistDetails$.pipe(
       map((artist) => artist(this.artist)),
-      filter(data => !isUndefined(data)),
+      filter(data => !_isUndefined(data)),
       shareReplay(1)
     );
 
@@ -58,7 +58,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
      */
     this.profileDetails$ = artistDetails$.pipe(
       map((artists) => artists[0]),
-      filter(data => !isUndefined(data)),
+      filter(data => !_isUndefined(data)),
       shareReplay(1)
     );
 
@@ -110,7 +110,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   public selectedSong(selectedSong: string): void {
     combineLatest([this.songDetailById$, this.currentTrack$]).pipe(
       take(1),
-      filter(([songDetailById, currentTrack]) => currentTrack.id !== selectedSong),
+      filter(([songDetailById, currentTrack]) => currentTrack?.id !== selectedSong),
       map(([songDetailById]) => songDetailById(selectedSong))
     ).subscribe((data: ISong | undefined) => {
       if (data?.trackType !== ISongTrackType.track) {
