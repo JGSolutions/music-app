@@ -3,6 +3,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
+import { auth } from 'functions/sdk/soundcloud.sdk';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -12,7 +13,7 @@ import { ConnectedServicesState } from '../core/stores/connected-services/connec
 import { ConnectedServices } from '../core/stores/connected-services/connected-services.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { isEqual, isUndefined as _isUndefined } from "lodash";
+import { isEqual as _isEqual, isUndefined as _isUndefined } from "lodash";
 import { IPlatformTypes } from 'models/artist.types';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 @Component({
@@ -33,6 +34,11 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private store: Store) {
+    auth.config(
+      environment.soundcloud.clientId,
+      "http://mustagheesbutt.github.io/SC_API/callback.html"
+    );
+
     // auth.config(
     //   "21832d295e3463208d2ed0371ae08791",
     //   "http://mustagheesbutt.github.io/SC_API/callback.html"
@@ -55,7 +61,6 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     this.isSpotifyConnected$ = this.connectedServices$.pipe(
       filter((services) => !_isUndefined(services)),
       map((services) => {
-        console.log(services);
         if (services[IPlatformTypes.spotify]) {
           return true;
         }
@@ -68,7 +73,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     this.connectedServices$.pipe(
       withLatestFrom(this.user$),
       takeUntil(this.destroy$),
-      distinctUntilChanged((oldData, newData) => isEqual(oldData, newData)),
+      distinctUntilChanged((oldData, newData) => _isEqual(oldData, newData)),
       filter(([connectedServices, user]) => user !== null)
     ).subscribe(([connectedServices, user]) => {
       this.store.dispatch(new ArtistsAction(user.uid));
@@ -88,6 +93,10 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     );
 
     this.document.location.href = MixcloudAuthorization.authorizeUrl();
+  }
+
+  public connectToSoundcloud(): void {
+    this.document.location.href = auth.authorizeUrl();
   }
 
   public connectToSpotify(): void {
@@ -116,6 +125,9 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
           break;
         case IPlatformTypes.mixcloud:
           this.connectToMixcloud();
+          break;
+        case IPlatformTypes.soundcloud:
+          this.connectToSoundcloud();
           break;
       }
     } else {

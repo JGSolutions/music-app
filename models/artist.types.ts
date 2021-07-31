@@ -4,6 +4,7 @@ export enum IPlatformTypes {
   mixcloud = "mixcloud",
   spotify = "spotify",
   deezer = "deezer",
+  soundcloud = "soundcloud",
   youtube = "youtube",
   all = "all"
 }
