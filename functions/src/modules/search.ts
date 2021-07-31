@@ -30,7 +30,7 @@ export const search = async (request: Request, response: Response) => {
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key].token, connectedServices[key].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
-        // pData.push(SpotifySDK.following("artist"));
+        SpotifySDK.search(searchValue as string);
         break;
     }
   });
