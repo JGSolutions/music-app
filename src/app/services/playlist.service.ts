@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
-
+import { clone as _clone } from "lodash";
 @Injectable()
 export class PlaylistService {
   constructor(private afs: AngularFirestore) { }
@@ -12,7 +12,11 @@ export class PlaylistService {
     return this.afs.collection('playlist').doc().set(data);
   }
 
-  public updateSelectedPlaylist(data: ISelectedPlaylist, uid: string): Promise<void> {
+  public update(data: any, id: string): Promise<void> {
+    return this.afs.collection('playlist').doc(id).set(data, { merge: true });
+  }
+
+  public updateSelectedPlaylistTracks(data: ISelectedPlaylist, uid: string): Promise<void> {
     return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(data.id).set(data, { merge: true });
   }
 
@@ -38,5 +42,20 @@ export class PlaylistService {
           return data;
         })
       );
+  }
+
+  public removeCoverImage(trackid: string, playlistid: string, uid: string) {
+    this.getPlaylists(uid).pipe(
+      take(1)
+    ).subscribe(data => {
+      const playlist = data.find(e => e.id === playlistid);
+
+      const filteredImages = playlist!.coverImages?.filter(e => e.id !== trackid);
+
+      this.update({
+        coverImages: filteredImages
+      }, playlistid);
+
+    })
   }
 }
