@@ -40,6 +40,7 @@ export class MixcloudCallbackComponent implements OnInit {
     ).subscribe(async (data: any) => {
       const [user, params] = data;
       const res: any = await MixcloudAuthorization.createAccessTokenUrl(params.code);
+
       this.connectedServices.connectService(user.uid, {
         token: res.data.access_token,
       }, IPlatformTypes.mixcloud);

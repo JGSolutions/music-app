@@ -28,9 +28,15 @@ export const playerlistStateDefault: IPlayerlistState = {
   playlistTrack: {} as ISelectedPlaylist
 };
 
+export interface ICoverImages {
+  id: string;
+  image: string;
+}
+
 export interface IPlaylist {
   id?: string;
   uid: string;
   createdDate: Date;
   playlistName: string;
+  coverImages?: ICoverImages[];
 }

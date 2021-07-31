@@ -44,7 +44,7 @@ export class AddPlaylistDialogComponent implements OnInit {
         new PlaylistDataAction(user.uid!),
         new PlaylistTrackDataAction(user.uid!, this.data.id!)
       ]);
-    })
+    });
   }
 
   public selectionChange(event: any): void {
@@ -75,6 +75,7 @@ export class AddPlaylistDialogComponent implements OnInit {
       this.store.dispatch(new CreatePlaylistAction({
         playlistName: this.createForm.value.playlistName,
         uid: user.uid!,
+        coverImages: [],
         createdDate: new Date()
       }));
       this.createForm.controls['playlistName'].reset();

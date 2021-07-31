@@ -59,22 +59,22 @@ export class PlaylistState {
     playlistsIDs.add(selectedPlaylist);
     playlistTrackData.playlists = [...playlistsIDs];
 
-    return this.playlistService.updateSelectedPlaylist(playlistTrackData, uid);
+    return this.playlistService.updateSelectedPlaylistTracks(playlistTrackData, uid);
   }
 
   @Action(RemoveToPlaylistAction)
-  _removeToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedPlaylist, uid }: RemoveToPlaylistAction) {
+  async _removeToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedPlaylist, uid }: RemoveToPlaylistAction) {
     let playlistTrackData = _cloneDeep(getState().playlistTrack);
 
     const playlistsIDs = new Set(playlistTrackData?.playlists);
-
     playlistsIDs.delete(selectedPlaylist);
     playlistTrackData.playlists = [...playlistsIDs];
 
+    this.playlistService.removeCoverImage(playlistTrackData.id!, selectedPlaylist, uid);
     if (playlistTrackData.playlists.length === 0) {
       return this.playlistService.deleteSelectedPlaylist(playlistTrackData.id!, uid);
     } else {
-      return this.playlistService.updateSelectedPlaylist(playlistTrackData, uid);
+      return this.playlistService.updateSelectedPlaylistTracks(playlistTrackData, uid);
     }
   }
 

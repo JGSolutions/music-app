@@ -1,0 +1,13 @@
+@import '../../theme/variables.scss';
+
+:host {
+  display: block;
+}
+
+.container-fluid {
+  @include fluid-container();
+}
+
+a.item-link {
+  text-decoration: none;
+}
