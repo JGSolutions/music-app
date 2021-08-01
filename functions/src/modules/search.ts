@@ -21,6 +21,7 @@ export const search = async (request: Request, response: Response) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const connectedServices = await getConnectServices(authorized);
   const platformKeys = keys(connectedServices);
+  const pData: unknown[] = [];
 
   platformKeys.forEach(async (key) => {
     switch (key) {
@@ -30,10 +31,14 @@ export const search = async (request: Request, response: Response) => {
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key].token, connectedServices[key].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
-        SpotifySDK.search(searchValue as string);
+        pData.push(SpotifySDK.search(searchValue as string));
         break;
     }
   });
 
-  return response.status(200).send(searchValue);
+  Promise.all(pData).then((promiseData) => {
+    return response.status(200).send(promiseData[0]);
+  });
+
+  return;
 };

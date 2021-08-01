@@ -35,6 +35,7 @@ exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{ui
   const objectId = snap.id;
   const db = adminFirebase.firestore();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data.playlists.every(async (playlist: any) => {
     const query = await db.collection("playlist").doc(playlist).get();
     const playlistData = query.data()!;

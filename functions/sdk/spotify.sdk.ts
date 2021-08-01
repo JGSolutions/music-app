@@ -6,6 +6,7 @@ import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.types";
+import { ISearchResults } from "../../models/search.model";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -120,8 +121,7 @@ export const albumTracks = (dataApi: any): Promise<ISong[]> => {
 };
 
 
-export const searchResults = (dataApi: any): Promise<ISong[]> => {
-  console.log(dataApi);
+export const searchResults = (dataApi: any): Promise<ISearchResults> => {
   return new Promise((resolve) => {
     const tracks = dataApi.tracks.items.map((song: any) => {
       return {
@@ -132,20 +132,29 @@ export const searchResults = (dataApi: any): Promise<ISong[]> => {
         durationType: IDurationType.milliseconds,
         trackType: song.type,
         platform: IPlatformTypes.spotify,
+        uri: song.uri,
+        album: {
+          name: song.album.name,
+          uri: song.album.uri,
+          id: song.album.id,
+          releaseDate: song.album.release_date,
+          totalTracks: song.album.total_tracks,
+          externalUrl: song.album.externa_urls,
+        },
       };
     });
 
-    const artists = dataApi.artist.items.map((song: any) => {
-      return {
-        name: song.name,
-        id: song.id,
-        externalUrl: song.external_urls.spotify,
-        platform: IPlatformTypes.spotify,
-      };
-    });
+    // const artists = dataApi.artist.items.map((song: any) => {
+    //   return {
+    //     name: song.name,
+    //     id: song.id,
+    //     externalUrl: song.external_urls.spotify,
+    //     platform: IPlatformTypes.spotify,
+    //   };
+    // });
     resolve({
-      artists,
-      tracks
+      // artists,
+      tracks,
     });
   });
 };
