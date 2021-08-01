@@ -1,6 +1,7 @@
+import { IArtists } from "./artist.types";
 import { ISong } from "./song.types";
 
 export interface ISearchResults {
-  // artists: any[];
+  artists: IArtists[];
   tracks: ISong[];
 }

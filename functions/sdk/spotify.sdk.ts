@@ -59,7 +59,6 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
   });
 };
 
-
 export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
   return new Promise((resolve) => {
     const tracks = dataApi.tracks.items.map((song: any) => {
@@ -120,7 +119,6 @@ export const albumTracks = (dataApi: any): Promise<ISong[]> => {
   });
 };
 
-
 export const searchResults = (dataApi: any): Promise<ISearchResults> => {
   return new Promise((resolve) => {
     const tracks = dataApi.tracks.items.map((song: any) => {
@@ -144,16 +142,29 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
       };
     });
 
-    // const artists = dataApi.artist.items.map((song: any) => {
-    //   return {
-    //     name: song.name,
-    //     id: song.id,
-    //     externalUrl: song.external_urls.spotify,
-    //     platform: IPlatformTypes.spotify,
-    //   };
-    // });
+    const artists = dataApi.artists.items.map((song: any) => {
+      let images = {};
+      if (song.images.length === 0) {
+        images = {};
+      } else {
+        images = {
+          medium: song.images[2].url,
+          large: song.images[1].url,
+          exLarge: song.images[0].url,
+        };
+      }
+      return {
+        name: song.name,
+        genres: song.genres,
+        id: song.uri.split(":")[2],
+        uri: song.uri,
+        username: song.name.toLowerCase(),
+        platform: IPlatformTypes.spotify,
+        pictures: images,
+      };
+    });
     resolve({
-      // artists,
+      artists,
       tracks,
     });
   });
