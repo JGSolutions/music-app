@@ -250,9 +250,8 @@ export const SpotifySDK = {
     return await albumTracks(resp.data);
   },
 
-  async search(query: string | undefined) {
+  async search(query: string | undefined): Promise<ISearchResults> {
     const url = `${this.apiDomain}/search?q=${query}&type=track,artist`;
-    console.log("searching...");
     const resp = await axios(url, this.requestHeaders());
     return await searchResults(resp.data);
   },
