@@ -7,6 +7,7 @@ import { IPlatformTypes } from "../../../models/artist.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { spotifyKeys } from "../../sdk/api-keys";
 import { keys } from "lodash";
+import { ISong } from "../../../models/song.types";
 
 export const search = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
@@ -27,7 +28,7 @@ export const search = async (request: Request, response: Response) => {
     switch (key) {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key].token);
-        // pData.push(MixcloudSDK.following());
+        pData.push(MixcloudSDK.search(searchValue as string));
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key].token, connectedServices[key].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
@@ -36,8 +37,23 @@ export const search = async (request: Request, response: Response) => {
     }
   });
 
-  Promise.all(pData).then((promiseData) => {
-    return response.status(200).send(promiseData[0]);
+  Promise.all(pData).then((promiseData: any[]) => {
+    const tracks: ISong[] = [];
+    // const artists: IArtists[] = [];
+
+    promiseData.forEach((data: any) => {
+      data.tracks.forEach((e: any) => {
+        tracks.push(e);
+      });
+
+      //   data.artists.forEach((e: any) => {
+      //     artists.push(e);
+      //   });
+    });
+
+    return response.status(200).send({
+      tracks,
+    });
   });
 
   return;
