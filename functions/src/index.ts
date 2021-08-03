@@ -9,6 +9,7 @@ import { createSpotifyToken } from "./modules/createSpotifyToken";
 import { artistAlbum } from "./modules/artistAlbum";
 import { adminFirebase } from "./modules/fb";
 import { clone } from "lodash";
+import { search } from "./modules/search";
 
 const app = express();
 const main = express();
@@ -26,6 +27,7 @@ app.post("/artist", artist);
 app.post("/mixcloud-audio", mixcloudAudio);
 app.get("/create-spotify-token", createSpotifyToken);
 app.get("/artist-album", artistAlbum);
+app.get("/search", search);
 // app.get("/add-album-playlist", addAlbumPlaylist);
 
 exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{uid}/list/{listId}").onCreate((snap) => {
@@ -33,6 +35,7 @@ exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{ui
   const objectId = snap.id;
   const db = adminFirebase.firestore();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data.playlists.every(async (playlist: any) => {
     const query = await db.collection("playlist").doc(playlist).get();
     const playlistData = query.data()!;
@@ -64,6 +67,7 @@ exports.updatePlaylistCoverImage = functions.firestore.document("playlistTracks/
 
   const db = adminFirebase.firestore();
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data.playlists.every(async (playlist: any) => {
     const query = await db.collection("playlist").doc(playlist).get();
     const playlistData = query.data()!;
