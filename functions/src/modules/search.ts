@@ -1,9 +1,10 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { getConnectServices } from "../utils/connect-services-firebase";
-import { IPlatformTypes } from "../../../models/artist.types";
+import { IArtists, IPlatformTypes } from "../../../models/artist.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { spotifyKeys } from "../../sdk/api-keys";
 import { keys } from "lodash";
@@ -39,20 +40,21 @@ export const search = async (request: Request, response: Response) => {
 
   Promise.all(pData).then((promiseData: any[]) => {
     const tracks: ISong[] = [];
-    // const artists: IArtists[] = [];
+    const artists: IArtists[] = [];
 
     promiseData.forEach((data: any) => {
       data.tracks.forEach((e: any) => {
         tracks.push(e);
       });
 
-      //   data.artists.forEach((e: any) => {
-      //     artists.push(e);
-      //   });
+      data.artists.forEach((e: any) => {
+        artists.push(e);
+      });
     });
 
     return response.status(200).send({
       tracks,
+      artists,
     });
   });
 

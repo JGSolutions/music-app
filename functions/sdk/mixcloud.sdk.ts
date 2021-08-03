@@ -51,7 +51,7 @@ export const mixcloudArtistSongs = (dataApi: any): Promise<ISong[]> => {
   });
 };
 
-export const searchResults = (dataApi: any): Promise<ISearchResults> => {
+export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
   return new Promise((resolve) => {
     const tracks = dataApi.map((song: any) => {
       return {
@@ -73,33 +73,29 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
       };
     });
 
-    // const artists = dataApi.artists.items.map((song: any) => {
-    //   let images = {};
-    //   if (song.images.length === 0) {
-    //     images = {};
-    //   } else {
-    //     images = {
-    //       medium: song.images[2].url,
-    //       large: song.images[1].url,
-    //       exLarge: song.images[0].url,
-    //     };
-    //   }
-    //   return {
-    //     name: song.name,
-    //     genres: song.genres,
-    //     id: song.uri.split(":")[2],
-    //     uri: song.uri,
-    //     username: song.name.toLowerCase(),
-    //     platform: IPlatformTypes.spotify,
-    //     pictures: images,
-    //   };
-    // });
-    resolve({
-      // artists,
-      tracks,
-    });
+    resolve(tracks);
   });
 };
+
+export const searchResultArtists = (dataApi: any): Promise<any> => {
+  return new Promise((resolve) => {
+    const artists = dataApi.map((song: any) => {
+      return {
+        name: song.name,
+        id: song.key,
+        username: song.name.toLowerCase(),
+        platform: IPlatformTypes.mixcloud,
+        pictures: {
+          medium: song.pictures.medium,
+          large: song.pictures.large,
+          exLarge: song.pictures.extra_large,
+        },
+      };
+    });
+    resolve(artists);
+  });
+};
+
 export const MixcloudAuthorization = {
   url: "",
   clientId: "",
@@ -198,9 +194,14 @@ export const MixcloudSDK = {
   },
 
   async search(query: string | undefined) {
-    const url = `${this.mixcloudApiDomain}/search/?${this.queryParamAccessToken}&q=${query}&type=cloudcast`;
-    const resp = await axios(url);
-    return await searchResults(resp.data.data);
+    const urlTracks = `${this.mixcloudApiDomain}/search/?${this.queryParamAccessToken}&q=${query}&type=cloudcast`;
+    const urlArtists = `${this.mixcloudApiDomain}/search/?${this.queryParamAccessToken}&q=${query}&type=user`;
+    const resTracks = await axios(urlTracks);
+    const resArtists = await axios(urlArtists);
+    return {
+      tracks: await searchResultTracks(resTracks.data.data),
+      artists: await searchResultArtists(resArtists.data.data),
+    };
   },
 
   // async audioStream(): Promise<string | null> {
