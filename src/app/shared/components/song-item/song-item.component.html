@@ -24,6 +24,6 @@
     </span>
   </div>
   <div class="options">
-    <app-track-mat-menu [isAlbum]="trackType !== trackTypes.track" (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
+    <app-track-mat-menu [removeOptionItem]="removeOptionItem" [isAlbum]="trackType !== trackTypes.track" (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
   </div>
 </div>

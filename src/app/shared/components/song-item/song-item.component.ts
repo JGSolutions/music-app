@@ -49,6 +49,9 @@ export class SongItemComponent {
   @Input()
   externalUrl!: string;
 
+  @Input()
+  removeOptionItem = false;
+
   @Output() selectedSong = new EventEmitter<string>();
   @Output() addToPlaylistEvent = new EventEmitter<string>();
 

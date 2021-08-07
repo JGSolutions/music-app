@@ -36,6 +36,7 @@
             [platform]="song.platform"
             [avatar]="song?.picture?.medium!"
             [trackType]="song.trackType"
+            [removeOptionItem]="true"
             (selectedSong)="selectedSong($event)">
           </app-song-item>
       </ng-container>
