@@ -25,6 +25,11 @@ export class PlaylistState {
   }
 
   @Selector()
+  static allPlaylistTracks(state: IPlayerlistState) {
+    return state.allPlaylistTracks;
+  }
+
+  @Selector()
   static playlistDetail(state: IPlayerlistState) {
     return state.playlistDetail;
   }
