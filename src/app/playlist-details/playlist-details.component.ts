@@ -3,8 +3,10 @@ import { Select, Store } from '@ngxs/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { AllPlaylistTracksAction } from '../core/stores/playlist/playlist.actions';
+import { AllPlaylistTracksAction, PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
 import { ActivatedRoute } from '@angular/router';
+import { PlaylistState } from '../core/stores/playlist/playlist.state';
+import { IPlaylist } from '../core/stores/playlist/playlist.types';
 
 @Component({
   selector: 'app-playlist-details',
@@ -13,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  // @Select(PlaylistState.playlist) playlist$!: Observable<IPlaylist[]>;
+  @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlaylist>;
 
   public playlistid!: string;
   private destroy$ = new Subject<boolean>();
@@ -28,6 +30,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe((user) => {
       this.store.dispatch(new AllPlaylistTracksAction(this.playlistid!, user.uid!));
+      this.store.dispatch(new PlaylistDetailAction(this.playlistid!));
     });
   }
 

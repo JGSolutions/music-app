@@ -8,6 +8,10 @@ import { clone as _clone } from "lodash";
 export class PlaylistService {
   constructor(private afs: AngularFirestore) { }
 
+  public playlistDetails(playlist: string) {
+    return this.afs.collection('playlist').doc(playlist).get();
+  }
+
   public create(data: any): Promise<void> {
     return this.afs.collection('playlist').doc().set(data);
   }

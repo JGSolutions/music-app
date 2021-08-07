@@ -19,6 +19,7 @@ export interface ISelectedPlaylist {
 export interface IPlayerlistState {
   loadingPlaylist: boolean;
   playlistData: IPlaylist[];
+  playlistDetail: IPlaylist;
   playlistTrack: ISelectedPlaylist;
   allPlaylistTracks: ISelectedPlaylist[];
 }
@@ -26,6 +27,7 @@ export interface IPlayerlistState {
 export const playerlistStateDefault: IPlayerlistState = {
   loadingPlaylist: false,
   playlistData: [],
+  playlistDetail: {} as IPlaylist,
   playlistTrack: {} as ISelectedPlaylist,
   allPlaylistTracks: []
 };
