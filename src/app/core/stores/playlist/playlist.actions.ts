@@ -24,3 +24,8 @@ export class PlaylistTrackDataAction {
   static readonly type = '[Playerlist] Playlist Track Data';
   constructor(public uid: string, public songid: string) { }
 }
+
+export class AllPlaylistTracksAction {
+  static readonly type = '[Playerlist] All Playlist Track Data';
+  constructor(public playlistid: string, public uid: string) { }
+}

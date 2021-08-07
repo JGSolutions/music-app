@@ -28,6 +28,12 @@ export class PlaylistService {
     return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(songid).valueChanges();
   }
 
+  public getAllPlaylistTrack(playlistid: string, uid: string) {
+    return this.afs.collection('playlistTracks').doc(uid).collection('list', (ref) =>
+      ref.where("playlists", "array-contains", playlistid)
+    ).valueChanges();
+  }
+
   public getPlaylists(uid: string): Observable<IPlaylist[]> {
     return this.afs
       .collection<IPlaylist>("playlist", (ref) =>

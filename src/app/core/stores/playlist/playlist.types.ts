@@ -20,12 +20,14 @@ export interface IPlayerlistState {
   loadingPlaylist: boolean;
   playlistData: IPlaylist[];
   playlistTrack: ISelectedPlaylist;
+  allPlaylistTracks: ISelectedPlaylist[];
 }
 
 export const playerlistStateDefault: IPlayerlistState = {
   loadingPlaylist: false,
   playlistData: [],
-  playlistTrack: {} as ISelectedPlaylist
+  playlistTrack: {} as ISelectedPlaylist,
+  allPlaylistTracks: []
 };
 
 export interface ICoverImages {

@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { filter, Observable, Subject, takeUntil } from 'rxjs';
-import { ArtistsState } from '../core/stores/artists/artists.state';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { PlaylistDataAction } from '../core/stores/playlist/playlist.actions';
-import { PlaylistState } from '../core/stores/playlist/playlist.state';
-import { IPlaylist } from '../core/stores/playlist/playlist.types';
+import { AllPlaylistTracksAction } from '../core/stores/playlist/playlist.actions';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-playlist-details',
@@ -15,20 +13,21 @@ import { IPlaylist } from '../core/stores/playlist/playlist.types';
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(PlaylistState.playlist) playlist$!: Observable<IPlaylist[]>;
+  // @Select(PlaylistState.playlist) playlist$!: Observable<IPlaylist[]>;
 
-  public artistDetails$ = this.store.select(ArtistsState.artistDetails);
-
+  public playlistid!: string;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.playlistid = this.route.snapshot.params.playlistid;
+
     this.user$.pipe(
       filter((user) => user !== null),
       takeUntil(this.destroy$)
     ).subscribe((user) => {
-      this.store.dispatch(new PlaylistDataAction(user.uid!));
+      this.store.dispatch(new AllPlaylistTracksAction(this.playlistid!, user.uid!));
     });
   }
 
