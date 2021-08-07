@@ -1,16 +1,5 @@
 <mat-card class="example-card">
-  <img
-    mat-card-image [src]="coverImages[0].image"
-    *ngIf="coverImages.length < maxImagesGrid && coverImages.length >= 1" class="one-image">
-
-  <img
-    mat-card-image src="../assets/no-music.svg"
-    *ngIf="coverImages.length === 0" class="one-image">
-
-  <div class="grid" mat-card-image *ngIf="coverImages.length === maxImagesGrid">
-    <div class="player" *ngFor="let coverImage of coverImages"><img [src]="coverImage.image"></div>
-  </div>
-
+  <app-image-grid mat-card-image [coverImages]="coverImages!"></app-image-grid>
   <mat-card-content>
     <p class="mat-title">{{playlistName}}</p>
   </mat-card-content>
