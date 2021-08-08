@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { filter, Observable, Subject, takeUntil } from 'rxjs';
+import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { AllPlaylistTracksAction, PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
@@ -9,6 +9,8 @@ import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
 import { ArtistsState } from '../core/stores/artists/artists.state';
+import { LoadingPlayerAction } from '../core/stores/player/player.actions';
+import { SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 
 @Component({
   selector: 'app-playlist-details',
@@ -43,7 +45,12 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  public selectedSong(evt: any): void {
-    console.log(evt);
+  public selectedSong(selectedSong: string): void {
+    this.currentTrack$.pipe(
+      take(1),
+      filter((currentTrack) => currentTrack?.id !== selectedSong)
+    ).subscribe(() => {
+      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong)]);
+    })
   }
 }
