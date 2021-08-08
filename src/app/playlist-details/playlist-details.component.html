@@ -22,8 +22,6 @@
     </div>
     <div class="col-md-7 col-lg-9">
       <ng-container  *ngIf="(allPlaylistTracks$ | async) as allPlaylistTracks">
-        <!-- [externalUrl]="song.externalUrl!" -->
-        <!-- [dateCreated]="song.createdTime" -->
         <app-song-item
             *ngFor="let song of allPlaylistTracks"
             [currentTrackId]="(currentTrack$ | async)?.id!"
@@ -36,6 +34,8 @@
             [platform]="song.platform"
             [avatar]="song?.picture?.medium!"
             [trackType]="song.trackType"
+            [externalUrl]="song.externalUrl!"
+            [dateCreated]="song.createdTime!"
             [removeOptionItem]="true"
             (selectedSong)="selectedSong($event)">
           </app-song-item>

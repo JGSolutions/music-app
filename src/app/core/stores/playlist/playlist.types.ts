@@ -14,6 +14,8 @@ export interface ISelectedPlaylist {
   platform: IPlatformTypes
   trackType: ISongTrackType;
   picture: IAvatar;
+  externalUrl?: string;
+  createdTime: string;
 }
 
 export interface IPlayerlistState {
