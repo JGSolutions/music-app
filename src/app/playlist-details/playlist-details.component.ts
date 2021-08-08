@@ -9,8 +9,8 @@ import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
-import { SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
+import { SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 
 @Component({
   selector: 'app-playlist-details',

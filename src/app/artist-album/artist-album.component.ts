@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
-import { ArtistAlbumSongs, ArtistClearSongs, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
@@ -14,6 +13,7 @@ import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 import { SongsState } from '../core/stores/songs/songs.state';
+import { ArtistAlbumSongs, ClearSongs, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 
 @Component({
   selector: 'app-artist-album',
@@ -37,7 +37,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private store: Store, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new ArtistClearSongs());
+    this.store.dispatch(new ClearSongs());
     this.platform = this.route.snapshot.params.platform;
     this.id = this.route.snapshot.params.id;
 
