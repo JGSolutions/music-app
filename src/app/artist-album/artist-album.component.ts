@@ -60,7 +60,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
       filter((currentTrack) => currentTrack?.id !== selectedSong)
     ).subscribe(() => {
       this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong)]);
-    })
+    });
   }
 
   public addToPlayList(selectedSong: string): void {
