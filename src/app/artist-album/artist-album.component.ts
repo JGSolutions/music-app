@@ -3,17 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
-import { ArtistsState } from '../core/stores/artists/artists.state';
 import { ArtistAlbumSongs, ArtistClearSongs, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAlbumInfo, ISong } from 'models/song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
-import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
+import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
+import { SongsState } from '../core/stores/songs/songs.state';
 
 @Component({
   selector: 'app-artist-album',
@@ -21,12 +21,12 @@ import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-di
   styleUrls: ['./artist-album.component.scss']
 })
 export class ArtistAlbumComponent implements OnInit, OnDestroy {
-  @Select(ArtistsState.artistAlbum) artistAlbum$!: Observable<IAlbumInfo>;
-  @Select(ArtistsState.artistSongs) tracks$!: Observable<ISong[]>;
+  @Select(SongsState.artistAlbum) artistAlbum$!: Observable<IAlbumInfo>;
+  @Select(SongsState.songs) tracks$!: Observable<ISong[]>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
-  public songDetailById$ = this.store.select(ArtistsState.songDetailById);
+  public songDetailById$ = this.store.select(SongsState.songDetailById);
 
   public songs$!: Observable<ISong[]>;
   public id!: string;

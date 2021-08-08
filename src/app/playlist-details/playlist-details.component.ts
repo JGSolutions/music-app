@@ -7,10 +7,10 @@ import { AllPlaylistTracksAction, PlaylistDetailAction } from '../core/stores/pl
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
-import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
-import { ArtistsState } from '../core/stores/artists/artists.state';
+import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
+import { SongsState } from '../core/stores/songs/songs.state';
 
 @Component({
   selector: 'app-playlist-details',
@@ -21,7 +21,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlaylist>;
   @Select(PlaylistState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
-  @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public playlistid!: string;
   private destroy$ = new Subject<boolean>();

@@ -5,14 +5,15 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
-import { ArtistsAction, GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
+import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { PlayerState } from '../core/stores/player/player.state';
 import { isEmpty } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
-import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
-import { ArtistsState } from '../core/stores/artists/artists.state';
+import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
-import { AddHistoryAction, HistoryListAction } from '../core/stores/history/history.actions';
+import { AddHistoryAction } from '../core/stores/history/history.actions';
+import { SongsState } from '../core/stores/songs/songs.state';
+import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 
 @Component({
   selector: 'app-player',
@@ -21,7 +22,7 @@ import { AddHistoryAction, HistoryListAction } from '../core/stores/history/hist
 })
 export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(PlayerState.loadingPlayer) loadingPlayer$!: Observable<boolean>;
 
   public isMobile$: Observable<boolean>;

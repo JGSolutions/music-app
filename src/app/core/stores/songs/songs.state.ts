@@ -29,10 +29,10 @@ export class SongsState {
     return state.songs;
   }
 
-  // @Selector()
-  // static artistAlbum(state: IArtistsState) {
-  //   return state.artistAlbum;
-  // }
+  @Selector()
+  static artistAlbum(state: ISongsState) {
+    return state.artistAlbum;
+  }
 
   @Selector()
   static songsByPlatform(state: ISongsState) {
@@ -48,10 +48,10 @@ export class SongsState {
     };
   }
 
-  // @Selector()
-  // static songDetailById(state: IArtistsState) {
-  //   return (id: string) => state.artistSongs.find((song) => song.id === id);
-  // }
+  @Selector()
+  static songDetailById(state: ISongsState) {
+    return (id: string) => state.songs.find((song) => song.id === id);
+  }
 
   @Selector()
   static currentTrack(state: ISongsState) {
