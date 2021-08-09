@@ -20,7 +20,7 @@ import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/s
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlaylist>;
-  @Select(PlaylistState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
+  @Select(SongsState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public playlistid!: string;

@@ -18,12 +18,10 @@ import { PlaylistService } from 'src/app/services/playlist.service';
 export class SongsState {
   constructor(private apiService: ApiService, private _currentTrack: CurrentTrackService, private playlistService: PlaylistService) { }
 
-  // @Selector()
-  // static artistDetails(state: IArtistsState) {
-  //   return (artist: string) => {
-  //     return state.artists[artist];
-  //   };
-  // }
+  @Selector()
+  static allPlaylistTracks(state: ISongsState) {
+    return state.songs;
+  }
 
   @Selector()
   static songs(state: ISongsState) {
@@ -175,6 +173,7 @@ export class SongsState {
   _allPlaylistTrackDataAction(ctx: StateContext<ISongsState>, { playlistid, uid }: AllPlaylistTracksAction) {
     return this.playlistService.getAllPlaylistTrack(playlistid, uid).pipe(
       tap(data => {
+        console.log(data);
         ctx.patchState({
           songs: data as ISongCommonState[],
         });
