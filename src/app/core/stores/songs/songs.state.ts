@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs } from './songs.actions';
-import { songsStateDefault, ISongsState, ICurrentTrack } from './songs.types';
+import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction } from './songs.actions';
+import { songsStateDefault, ISongsState, ICurrentTrack, ISongCommonState } from './songs.types';
 import { cloneDeep, orderBy as _orderBy } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAlbum } from 'models/song.types';
 import { CurrentTrackService } from 'src/app/services/current-track.service';
+import { PlaylistService } from 'src/app/services/playlist.service';
 
 @State<ISongsState>({
   name: 'songs',
@@ -15,7 +16,7 @@ import { CurrentTrackService } from 'src/app/services/current-track.service';
 })
 @Injectable()
 export class SongsState {
-  constructor(private apiService: ApiService, private _currentTrack: CurrentTrackService) { }
+  constructor(private apiService: ApiService, private _currentTrack: CurrentTrackService, private playlistService: PlaylistService) { }
 
   // @Selector()
   // static artistDetails(state: IArtistsState) {
@@ -169,4 +170,16 @@ export class SongsState {
       currentTrack
     });
   }
+
+  @Action(AllPlaylistTracksAction)
+  _allPlaylistTrackDataAction(ctx: StateContext<ISongsState>, { playlistid, uid }: AllPlaylistTracksAction) {
+    return this.playlistService.getAllPlaylistTrack(playlistid, uid).pipe(
+      tap(data => {
+        ctx.patchState({
+          songs: data as ISongCommonState[],
+        });
+      })
+    );
+  }
 }
+

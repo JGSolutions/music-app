@@ -1,8 +1,10 @@
 import { IPlatformTypes } from "models/artist.types";
 import { IAlbumInfo, IDurationType, ISong, ISongTrackType } from "models/song.types";
+import { ISelectedPlaylist } from "../playlist/playlist.types";
 
+export type ISongCommonState = ISong | ISelectedPlaylist;
 export interface ISongsState {
-  songs: ISong[],
+  songs: ISongCommonState[],
   loading: boolean;
   artistAlbum: IAlbumInfo;
   currentTrack: ICurrentTrack;

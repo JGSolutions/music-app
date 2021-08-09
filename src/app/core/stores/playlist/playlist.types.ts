@@ -8,14 +8,15 @@ export interface ISelectedPlaylist {
   name: string;
   duration?: number;
   albumid?: string;
-  artist?: string;
+  artistName?: string;
   albumName?: string;
   durationType?: IDurationType;
   platform: IPlatformTypes
   trackType: ISongTrackType;
-  picture: IAvatar;
+  pictures: IAvatar;
   externalUrl?: string;
   createdTime: string;
+  totalTracks?: number;
 }
 
 export interface IPlayerlistState {

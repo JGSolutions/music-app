@@ -10,12 +10,11 @@ import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
-import { ISong, ISongTrackType } from 'models/song.types';
+import { ISongTrackType } from 'models/song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
-import { ICurrentTrack } from '../core/stores/songs/songs.types';
+import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
-import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { ArtistSongsAction, ClearSongs, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 
@@ -37,7 +36,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
-  public songs$!: Observable<ISong[]>;
+  public songs$!: Observable<ISongCommonState[]>;
 
   private destroy$ = new Subject<boolean>();
   private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
@@ -113,13 +112,13 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       take(1),
       filter(([songDetailById, currentTrack]) => currentTrack?.id !== selectedSong),
       map(([songDetailById]) => songDetailById(selectedSong))
-    ).subscribe((data: ISong | undefined) => {
+    ).subscribe((data: ISongCommonState | undefined) => {
       if (data?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', data?.platform, data?.id]);
       } else {
         this.store.dispatch([
           new LoadingPlayerAction(true),
-          new SetCurrentSelectedSongAction(data.id)
+          new SetCurrentSelectedSongAction(data.id!)
         ]);
       }
     });
@@ -129,11 +128,11 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.songDetailById$.pipe(
       take(1),
       map(fn => fn(selectedSong))
-    ).subscribe((data: (ISong | undefined)) => {
+    ).subscribe((data: (ISongCommonState | undefined)) => {
       if (data?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', data?.platform, data?.id]);
       } else {
-        const song: ISelectedPlaylist = {
+        const song: ISongCommonState = {
           id: data?.id,
           name: data?.name!,
           platform: data?.platform!,
@@ -141,7 +140,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           duration: data?.duration,
           durationType: data?.durationType!,
           trackType: data?.trackType!,
-          picture: data?.pictures!,
+          pictures: data?.pictures!,
           externalUrl: data?.externalUrl,
           createdTime: data?.createdTime
         };

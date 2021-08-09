@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { clone as _clone } from "lodash";
+
 @Injectable()
 export class PlaylistService {
   constructor(private afs: AngularFirestore) { }

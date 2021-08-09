@@ -8,7 +8,7 @@ import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAlbumInfo, ISong } from 'models/song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
-import { ICurrentTrack } from '../core/stores/songs/songs.types';
+import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
@@ -66,9 +66,8 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
   public addToPlayList(selectedSong: string): void {
     this.songDetailById$.pipe(
       take(1),
-      map(fn => fn(selectedSong))
-    ).subscribe((data: (ISong | undefined)) => {
-
+      map(songDetails => songDetails(selectedSong))
+    ).subscribe((data: (ISongCommonState | undefined)) => {
       const song: ISelectedPlaylist = {
         id: data?.id,
         albumid: data?.albumid,
@@ -79,7 +78,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
         duration: data?.duration,
         durationType: data?.durationType!,
         trackType: data?.trackType!,
-        picture: data?.pictures!,
+        pictures: data?.pictures!,
         createdTime: data?.createdTime!
       };
 

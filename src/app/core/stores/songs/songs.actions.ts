@@ -38,3 +38,8 @@ export class SetCurrentTrackPlayStatusAction {
   static readonly type = '[Songs] Set the current playing status';
   constructor(public isPlaying: boolean) { }
 }
+
+export class AllPlaylistTracksAction {
+  static readonly type = '[Songs] All Playlist Songs Data';
+  constructor(public playlistid: string, public uid: string) { }
+}
