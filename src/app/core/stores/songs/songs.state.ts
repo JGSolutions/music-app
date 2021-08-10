@@ -20,7 +20,7 @@ export class SongsState {
 
   @Selector()
   static allPlaylistTracks(state: ISongsState) {
-    return state.songs;
+    return state.playlistSongs;
   }
 
   @Selector()
@@ -173,9 +173,8 @@ export class SongsState {
   _allPlaylistTrackDataAction(ctx: StateContext<ISongsState>, { playlistid, uid }: AllPlaylistTracksAction) {
     return this.playlistService.getAllPlaylistTrack(playlistid, uid).pipe(
       tap(data => {
-        console.log(data);
         ctx.patchState({
-          songs: data as ISongCommonState[],
+          playlistSongs: data as ISongCommonState[],
         });
       })
     );

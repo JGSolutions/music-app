@@ -5,6 +5,7 @@ import { ISelectedPlaylist } from "../playlist/playlist.types";
 export type ISongCommonState = ISong | ISelectedPlaylist;
 export interface ISongsState {
   songs: ISongCommonState[],
+  playlistSongs: ISongCommonState[],
   loading: boolean;
   artistAlbum: IAlbumInfo;
   currentTrack: ICurrentTrack;
@@ -12,6 +13,7 @@ export interface ISongsState {
 
 export const songsStateDefault: ISongsState = {
   songs: [],
+  playlistSongs: [],
   artistAlbum: {} as IAlbumInfo,
   currentTrack: {} as ICurrentTrack,
   loading: true,
