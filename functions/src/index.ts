@@ -47,7 +47,7 @@ exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{ui
 
     coverImages.push({
       id: objectId,
-      image: data.picture.medium,
+      image: data.pictures.medium,
     });
 
     await db.collection("playlist").doc(playlist).set({
@@ -79,7 +79,7 @@ exports.updatePlaylistCoverImage = functions.firestore.document("playlistTracks/
 
     coverImages.push({
       id: objectId,
-      image: data.picture.large,
+      image: data.pictures.large,
     });
 
     await db.collection("playlist").doc(playlist).set({

@@ -118,7 +118,7 @@ export class SongsState {
       platform: song!.platform,
       name: song!.name,
       trackType: song!.trackType,
-      artist: song?.artistName,
+      artist: song?.artistName || "",
       externalUrl: song?.externalUrl,
       avatar: song?.pictures?.medium,
       duration: song?.duration,
