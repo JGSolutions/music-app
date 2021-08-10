@@ -4,7 +4,7 @@ import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmit
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { isEmpty as _isEmpty } from "lodash";
 import { Select, Store } from '@ngxs/store';
-import { ICurrentTrack } from 'src/app/core/stores/artists/artists-state.types';
+import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -12,8 +12,8 @@ import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap, withLate
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
-import { SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/artists/artists.actions';
 import { IPlatformTypes } from 'models/artist.types';
+import { SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
 
 @Component({
   selector: 'app-spotify-player',

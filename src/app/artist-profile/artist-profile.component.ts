@@ -2,21 +2,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { filter, map, shareReplay, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined as _isUndefined } from 'lodash';
-import { ArtistClearSongs, ArtistSongsAction, SetCurrentSelectedSongAction } from '../core/stores/artists/artists.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
-import { ISong, ISongTrackType } from 'models/song.types';
+import { ISongTrackType } from 'models/song.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
-import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
+import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
-import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
+import { SongsState } from '../core/stores/songs/songs.state';
+import { ArtistSongsAction, ClearSongs, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 
 @Component({
   selector: 'app-artist-profile',
@@ -28,15 +28,15 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.loading) loading$!: Observable<boolean>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
-  @Select(ArtistsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
-  public songDetailById$ = this.store.select(ArtistsState.songDetailById);
-  public songsByPlatform$ = this.store.select(ArtistsState.songsByPlatform);
+  public songDetailById$ = this.store.select(SongsState.songDetailById);
+  public songsByPlatform$ = this.store.select(SongsState.songsByPlatform);
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
-  public songs$!: Observable<ISong[]>;
+  public songs$!: Observable<ISongCommonState[]>;
 
   private destroy$ = new Subject<boolean>();
   private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
@@ -44,7 +44,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private store: Store, private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new ArtistClearSongs());
+    this.store.dispatch(new ClearSongs());
     this.artist = this.route.snapshot.params.artist;
 
     const artistDetails$ = this.artistDetails$.pipe(
@@ -112,13 +112,13 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       take(1),
       filter(([songDetailById, currentTrack]) => currentTrack?.id !== selectedSong),
       map(([songDetailById]) => songDetailById(selectedSong))
-    ).subscribe((data: ISong | undefined) => {
+    ).subscribe((data: ISongCommonState | undefined) => {
       if (data?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', data?.platform, data?.id]);
       } else {
         this.store.dispatch([
           new LoadingPlayerAction(true),
-          new SetCurrentSelectedSongAction(data.id)
+          new SetCurrentSelectedSongAction(data.id!)
         ]);
       }
     });
@@ -128,11 +128,11 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.songDetailById$.pipe(
       take(1),
       map(fn => fn(selectedSong))
-    ).subscribe((data: (ISong | undefined)) => {
+    ).subscribe((data: (ISongCommonState | undefined)) => {
       if (data?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', data?.platform, data?.id]);
       } else {
-        const song: ISelectedPlaylist = {
+        const song: ISongCommonState = {
           id: data?.id,
           name: data?.name!,
           platform: data?.platform!,
@@ -140,7 +140,9 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           duration: data?.duration,
           durationType: data?.durationType!,
           trackType: data?.trackType!,
-          picture: data?.pictures!
+          pictures: data?.pictures!,
+          externalUrl: data?.externalUrl,
+          createdTime: data?.createdTime
         };
 
         this.dialog.open(AddPlaylistDialogComponent, {

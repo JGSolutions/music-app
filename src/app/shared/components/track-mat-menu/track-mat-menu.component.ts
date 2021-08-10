@@ -8,6 +8,9 @@ export class TrackMatMenuComponent {
   @Input()
   isAlbum!: boolean;
 
+  @Input()
+  removeOptionItem = false;
+
   @Output() addToPlaylist = new EventEmitter<void>();
   @Output() addFavorite = new EventEmitter<void>();
   @Output() listenLater = new EventEmitter<void>();

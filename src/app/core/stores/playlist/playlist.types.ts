@@ -8,24 +8,31 @@ export interface ISelectedPlaylist {
   name: string;
   duration?: number;
   albumid?: string;
-  artist?: string;
+  artistName?: string;
   albumName?: string;
   durationType?: IDurationType;
   platform: IPlatformTypes
   trackType: ISongTrackType;
-  picture: IAvatar;
+  pictures: IAvatar;
+  externalUrl?: string;
+  createdTime: string;
+  totalTracks?: number;
 }
 
 export interface IPlayerlistState {
   loadingPlaylist: boolean;
   playlistData: IPlaylist[];
+  playlistDetail: IPlaylist;
   playlistTrack: ISelectedPlaylist;
+  allPlaylistTracks: ISelectedPlaylist[];
 }
 
 export const playerlistStateDefault: IPlayerlistState = {
   loadingPlaylist: false,
   playlistData: [],
-  playlistTrack: {} as ISelectedPlaylist
+  playlistDetail: {} as IPlaylist,
+  playlistTrack: {} as ISelectedPlaylist,
+  allPlaylistTracks: []
 };
 
 export interface ICoverImages {

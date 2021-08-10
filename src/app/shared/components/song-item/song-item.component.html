@@ -9,7 +9,7 @@
     <img [src]="avatar" class="avatar">
   </div>
   <div class="info-wrapper">
-    <span class="mat-caption">Posted {{dateCreated | dateAgo}}</span>
+    <span class="mat-caption" *ngIf="dateCreated">Posted {{dateCreated | dateAgo}}</span>
     <div class="music-info">
       <span class="mat-body-2">{{name}}</span>
       <span>
@@ -24,6 +24,6 @@
     </span>
   </div>
   <div class="options">
-    <app-track-mat-menu [isAlbum]="trackType !== trackTypes.track" (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
+    <app-track-mat-menu [removeOptionItem]="removeOptionItem" [isAlbum]="trackType !== trackTypes.track" (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
   </div>
 </div>

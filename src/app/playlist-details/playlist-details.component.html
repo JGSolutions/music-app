@@ -1,0 +1,45 @@
+<mat-divider></mat-divider>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5 col-lg-3">
+      <section class="sticky-element">
+        <app-image-grid [coverImages]="(playlistDetail$ | async)?.coverImages!"></app-image-grid>
+
+        <div class="artist-info">
+          <span class="mat-headline">
+            {{ (playlistDetail$ | async)?.playlistName }}
+          </span>
+        </div>
+        <mat-divider></mat-divider>
+
+        <div class="track-info">
+          <span class="mat-body-1">
+            {{ ((allPlaylistTracks$ | async)?.length) }} tracks
+          </span>
+        </div>
+      </section>
+    </div>
+    <div class="col-md-7 col-lg-9">
+      <ng-container  *ngIf="(allPlaylistTracks$ | async) as allPlaylistTracks">
+        <app-song-item
+            *ngFor="let song of allPlaylistTracks"
+            [currentTrackId]="(currentTrack$ | async)?.id!"
+            [albumId]="(currentTrack$ | async)?.albumid!"
+            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+            [name]="song.name"
+            [id]="song.id!"
+            [length]="song.duration!"
+            [durationType]="song.durationType!"
+            [platform]="song.platform"
+            [avatar]="song?.pictures?.medium!"
+            [trackType]="song.trackType"
+            [externalUrl]="song.externalUrl!"
+            [dateCreated]="song.createdTime!"
+            [removeOptionItem]="true"
+            (selectedSong)="selectedSong($event)">
+          </app-song-item>
+      </ng-container>
+    </div>
+  </div>
+</div>
