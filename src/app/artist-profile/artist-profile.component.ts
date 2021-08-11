@@ -146,7 +146,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         };
 
         this.dialog.open(AddPlaylistDialogComponent, {
-          maxWidth: '300px',
+          maxWidth: '350px',
           panelClass: 'playlist-dialog',
           hasBackdrop: true,
           data: song

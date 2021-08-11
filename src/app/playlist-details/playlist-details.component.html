@@ -24,9 +24,9 @@
       </section>
     </div>
     <div class="col-md-7 col-lg-9">
-      <ng-container  *ngIf="(allPlaylistTracks$ | async) as allPlaylistTracks">
+      <ng-container>
         <app-song-item
-            *ngFor="let song of allPlaylistTracks"
+            *ngFor="let song of songs$ | async"
             [currentTrackId]="(currentTrack$ | async)?.id!"
             [albumId]="(currentTrack$ | async)?.albumid!"
             [isPlaying]="(currentTrack$ | async)?.isPlaying!"

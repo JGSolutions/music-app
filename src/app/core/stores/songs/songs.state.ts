@@ -48,6 +48,20 @@ export class SongsState {
   }
 
   @Selector()
+  static playlistSongsByPlatform(state: ISongsState) {
+    return (platform: IPlatformTypes) => {
+      const data = _orderBy(state.playlistSongs, ['createdTime'], ['desc']);
+      if (platform === IPlatformTypes.all) {
+        return data;
+      }
+
+      return data.filter((element) => {
+        return element.platform === platform as string;
+      });
+    };
+  }
+
+  @Selector()
   static songDetailById(state: ISongsState) {
     return (id: string) => state.songs.find((song) => song.id === id);
   }
