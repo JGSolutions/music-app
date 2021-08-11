@@ -118,7 +118,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       } else {
         this.store.dispatch([
           new LoadingPlayerAction(true),
-          new SetCurrentSelectedSongAction(data.id!)
+          new SetCurrentSelectedSongAction(data.id!, "songs")
         ]);
       }
     });

@@ -109,10 +109,10 @@ export class SongsState {
   }
 
   @Action(SetCurrentSelectedSongAction)
-  async _setCurrentSelectedSongAction({ getState, patchState }: StateContext<ISongsState>, { id }: SetCurrentSelectedSongAction) {
+  _setCurrentSelectedSongAction({ getState, patchState }: StateContext<ISongsState>, { id, type }: SetCurrentSelectedSongAction) {
     const state = getState();
 
-    const song = state.songs.find((song) => song.id === id);
+    const song = type === "songs" ? state.songs.find((song) => song.id === id) : state.playlistSongs.find((song) => song.id === id);
 
     const currentTrack: ICurrentTrack = {
       platform: song!.platform,

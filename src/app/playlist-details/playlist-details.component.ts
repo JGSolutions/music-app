@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, filter, Observable, Subject, take, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
@@ -11,6 +11,9 @@ import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-playlist-details',
@@ -22,9 +25,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlaylist>;
   @Select(SongsState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
 
   public playlistid!: string;
   private destroy$ = new Subject<boolean>();
+  private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
   constructor(private store: Store, private route: ActivatedRoute) { }
 
@@ -50,7 +55,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       take(1),
       filter((currentTrack) => currentTrack?.id !== selectedSong)
     ).subscribe(() => {
-      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong)]);
+      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong, "playlist")]);
     })
+  }
+
+  public selectedPlatform(evt: any) {
+    this._connectServiceType$.next(evt);
   }
 }

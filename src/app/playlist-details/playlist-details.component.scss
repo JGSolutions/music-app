@@ -15,3 +15,12 @@
 .track-info {
   padding: 10px 0 10px 0;
 }
+
+.platform-wrappers {
+  background-color: white;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: $s-padding-gap;
+}
+
