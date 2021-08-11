@@ -118,7 +118,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       } else {
         this.store.dispatch([
           new LoadingPlayerAction(true),
-          new SetCurrentSelectedSongAction(data.id!)
+          new SetCurrentSelectedSongAction(data.id!, "songs")
         ]);
       }
     });
@@ -146,7 +146,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         };
 
         this.dialog.open(AddPlaylistDialogComponent, {
-          maxWidth: '300px',
+          maxWidth: '350px',
           panelClass: 'playlist-dialog',
           hasBackdrop: true,
           data: song

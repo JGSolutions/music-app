@@ -1,16 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, Observable, shareReplay, Subject, take, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
-import { ICurrentTrack } from '../core/stores/songs/songs.types';
+import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-playlist-details',
@@ -22,9 +25,14 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlaylist>;
   @Select(SongsState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
 
+  public playlistSongsByPlatform$ = this.store.select(SongsState.playlistSongsByPlatform);
   public playlistid!: string;
+  public songs$!: Observable<ISongCommonState[]>;
+
   private destroy$ = new Subject<boolean>();
+  private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
   constructor(private store: Store, private route: ActivatedRoute) { }
 
@@ -38,6 +46,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       this.store.dispatch(new AllPlaylistTracksAction(this.playlistid!, user.uid!));
       this.store.dispatch(new PlaylistDetailAction(this.playlistid!));
     });
+
+    this.songs$ = combineLatest([this._connectServiceType$, this.playlistSongsByPlatform$]).pipe(
+      map(([platform, songsByPlatform]) => songsByPlatform(platform)),
+      shareReplay(1)
+    );
   }
 
   ngOnDestroy() {
@@ -50,7 +63,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       take(1),
       filter((currentTrack) => currentTrack?.id !== selectedSong)
     ).subscribe(() => {
-      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong)]);
+      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong, "playlist")]);
     })
+  }
+
+  public selectedPlatform(evt: any) {
+    this._connectServiceType$.next(evt);
   }
 }

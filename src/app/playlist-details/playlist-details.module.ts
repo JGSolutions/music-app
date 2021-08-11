@@ -7,6 +7,7 @@ import { NgxsModule } from '@ngxs/store';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { ImageGridModule } from '../shared/components/image-grid/image-grid.module';
 import { SongItemModule } from '../shared/components/song-item/song-item.module';
+import { PlatformSelectionModule } from '../shared/components/platform-selection/platform-selection.module';
 @NgModule({
   declarations: [PlaylistDetailsComponent],
   imports: [
@@ -14,6 +15,7 @@ import { SongItemModule } from '../shared/components/song-item/song-item.module'
     AngularMaterialModule,
     ImageGridModule,
     SongItemModule,
+    PlatformSelectionModule,
     NgxsModule.forFeature([PlaylistState]),
     RouterModule.forChild([
       { path: '', component: PlaylistDetailsComponent },

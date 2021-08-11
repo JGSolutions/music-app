@@ -17,7 +17,7 @@ export class SaveCurrentSelectedSongAction {
 
 export class SetCurrentSelectedSongAction {
   static readonly type = '[Songs] Set State Selected Current Track';
-  constructor(public id: string) { }
+  constructor(public id: string, public type: string) { }
 }
 
 export class GetCurrentSelectedTrackAction {
