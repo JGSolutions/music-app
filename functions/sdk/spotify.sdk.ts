@@ -7,6 +7,7 @@ import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/sp
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.types";
 import { ISearchResults } from "../../models/search.model";
+import { isUndefined } from "lodash";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -68,7 +69,7 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         albumid: dataApi.id,
         albumName: dataApi.name,
         artistName: dataApi.artists[0].name,
-        createdTime: new Date(song.release_date),
+        createdTime: isUndefined(song.release_date) ? new Date(dataApi.release_date) : new Date(song.release_date),
         externalUrl: song.external_urls.spotify,
         duration: song.duration_ms,
         durationType: IDurationType.milliseconds,
