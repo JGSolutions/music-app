@@ -54,6 +54,7 @@ export class SongItemComponent {
 
   @Output() selectedSong = new EventEmitter<string>();
   @Output() addToPlaylistEvent = new EventEmitter<string>();
+  @Output() removeToPlaylistEvent = new EventEmitter<string>();
 
   public avatar$!: Observable<IAvatar>;
   public platforms$!: Observable<string[]>;
@@ -69,6 +70,10 @@ export class SongItemComponent {
 
   public addToPlaylist(): void {
     this.addToPlaylistEvent.emit(this.id);
+  }
+
+  public removePlaylist(): void {
+    this.removeToPlaylistEvent.emit(this.id);
   }
 }
 

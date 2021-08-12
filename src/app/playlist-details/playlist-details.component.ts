@@ -67,6 +67,10 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
+  public removeSong(selectedSong: string): void {
+    console.log(selectedSong);
+  }
+
   public selectedPlatform(evt: any) {
     this._connectServiceType$.next(evt);
   }
