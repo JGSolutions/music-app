@@ -3,7 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { BehaviorSubject, combineLatest, filter, map, Observable, shareReplay, Subject, take, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
+import { PlaylistDetailAction, RemovePlaylistTrackAction } from '../core/stores/playlist/playlist.actions';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
@@ -68,7 +68,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   }
 
   public removeSong(selectedSong: string): void {
-    console.log(selectedSong);
+    this.user$.pipe(
+      take(1)
+    ).subscribe(user => {
+      this.store.dispatch(new RemovePlaylistTrackAction(selectedSong, user.uid!))
+    })
   }
 
   public selectedPlatform(evt: any) {

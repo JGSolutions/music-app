@@ -39,6 +39,10 @@ export class PlaylistService {
     ).valueChanges();
   }
 
+  public removePlaylistTrack(playlistid: string, uid: string) {
+    return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(playlistid).delete();
+  }
+
   public getPlaylists(uid: string): Observable<IPlaylist[]> {
     return this.afs
       .collection<IPlaylist>("playlist", (ref) =>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistDetailAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from './playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistDetailAction, PlaylistTrackDataAction, RemovePlaylistTrackAction, RemoveToPlaylistAction } from './playlist.actions';
 import { IPlayerlistState, IPlaylist, ISelectedPlaylist, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 
@@ -103,5 +103,10 @@ export class PlaylistState {
         });
       })
     );
+  }
+
+  @Action(RemovePlaylistTrackAction)
+  _removePlaylistTrackAction(ctx: StateContext<IPlayerlistState>, { playlistid, uid }: RemovePlaylistTrackAction) {
+    return this.playlistService.removePlaylistTrack(playlistid, uid);
   }
 }
