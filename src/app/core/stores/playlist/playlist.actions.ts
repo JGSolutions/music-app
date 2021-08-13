@@ -28,3 +28,8 @@ export class PlaylistDetailAction {
   static readonly type = '[Playlist] Playlist details';
   constructor(public playlistid: string) { }
 }
+
+export class RemovePlaylistTrackAction {
+  static readonly type = '[Playlist] Remove Playlist track';
+  constructor(public playlistid: string, public uid: string) { }
+}
