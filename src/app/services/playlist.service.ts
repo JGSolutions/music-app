@@ -4,9 +4,14 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { clone as _clone } from "lodash";
+
 @Injectable()
 export class PlaylistService {
   constructor(private afs: AngularFirestore) { }
+
+  public playlistDetails(playlist: string) {
+    return this.afs.collection('playlist').doc(playlist).get();
+  }
 
   public create(data: any): Promise<void> {
     return this.afs.collection('playlist').doc().set(data);
@@ -26,6 +31,16 @@ export class PlaylistService {
 
   public getPlaylistTrack(uid: string, songid: string) {
     return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(songid).valueChanges();
+  }
+
+  public getAllPlaylistTrack(playlistid: string, uid: string) {
+    return this.afs.collection('playlistTracks').doc(uid).collection('list', (ref) =>
+      ref.where("playlists", "array-contains", playlistid)
+    ).valueChanges();
+  }
+
+  public removePlaylistTrack(playlistid: string, uid: string) {
+    return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(playlistid).delete();
   }
 
   public getPlaylists(uid: string): Observable<IPlaylist[]> {

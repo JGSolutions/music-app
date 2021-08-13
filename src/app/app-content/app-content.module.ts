@@ -29,8 +29,8 @@ import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/firestore'
     }),
   ],
   providers: [MusicConnectedService, ApiService,
-    { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
-    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['localhost', 5001] : undefined }
+    // { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['localhost', 8080] : undefined },
+    // { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['localhost', 5001] : undefined }
   ],
 })
 export class AppContentModule { }

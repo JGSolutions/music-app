@@ -6,6 +6,8 @@ import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.types";
+import { ISearchResults } from "../../models/search.model";
+import { isUndefined } from "lodash";
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
@@ -58,7 +60,6 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
   });
 };
 
-
 export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
   return new Promise((resolve) => {
     const tracks = dataApi.tracks.items.map((song: any) => {
@@ -68,7 +69,7 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         albumid: dataApi.id,
         albumName: dataApi.name,
         artistName: dataApi.artists[0].name,
-        createdTime: new Date(song.release_date),
+        createdTime: isUndefined(song.release_date) ? new Date(dataApi.release_date) : new Date(song.release_date),
         externalUrl: song.external_urls.spotify,
         duration: song.duration_ms,
         durationType: IDurationType.milliseconds,
@@ -116,6 +117,57 @@ export const albumTracks = (dataApi: any): Promise<ISong[]> => {
       };
     });
     resolve(tracks);
+  });
+};
+
+export const searchResults = (dataApi: any): Promise<ISearchResults> => {
+  return new Promise((resolve) => {
+    const tracks = dataApi.tracks.items.map((song: any) => {
+      return {
+        name: song.name,
+        id: song.id,
+        externalUrl: song.external_urls.spotify,
+        duration: song.duration_ms,
+        durationType: IDurationType.milliseconds,
+        trackType: song.type,
+        platform: IPlatformTypes.spotify,
+        uri: song.uri,
+        album: {
+          name: song.album.name,
+          uri: song.album.uri,
+          id: song.album.id,
+          releaseDate: song.album.release_date,
+          totalTracks: song.album.total_tracks,
+          externalUrl: song.album.externa_urls,
+        },
+      };
+    });
+
+    const artists = dataApi.artists.items.map((song: any) => {
+      let images = {};
+      if (song.images.length === 0) {
+        images = {};
+      } else {
+        images = {
+          medium: song.images[2].url,
+          large: song.images[1].url,
+          exLarge: song.images[0].url,
+        };
+      }
+      return {
+        name: song.name,
+        genres: song.genres,
+        id: song.uri.split(":")[2],
+        uri: song.uri,
+        username: song.name.toLowerCase(),
+        platform: IPlatformTypes.spotify,
+        pictures: images,
+      };
+    });
+    resolve({
+      artists,
+      tracks,
+    });
   });
 };
 
@@ -197,6 +249,12 @@ export const SpotifySDK = {
     const url = `${this.apiDomain}/albums/${albumId}/tracks/`;
     const resp = await axios(url, this.requestHeaders());
     return await albumTracks(resp.data);
+  },
+
+  async search(query: string | undefined): Promise<ISearchResults> {
+    const url = `${this.apiDomain}/search?q=${query}&type=track,artist`;
+    const resp = await axios(url, this.requestHeaders());
+    return await searchResults(resp.data);
   },
 
   requestHeaders() {

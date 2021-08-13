@@ -18,6 +18,7 @@ export interface IArtistBodyRequest {
 export interface IArtists {
   name: string;
   id: string;
+  uri?: string;
   genres?: string[];
   platform: IPlatformTypes;
   username: string;

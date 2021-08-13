@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from './playlist.actions';
-import { IPlayerlistState, ISelectedPlaylist, playerlistStateDefault } from './playlist.types';
+import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistDetailAction, PlaylistTrackDataAction, RemovePlaylistTrackAction, RemoveToPlaylistAction } from './playlist.actions';
+import { IPlayerlistState, IPlaylist, ISelectedPlaylist, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 
 @State<IPlayerlistState>({
@@ -22,6 +22,11 @@ export class PlaylistState {
   @Selector()
   static playlist(state: IPlayerlistState) {
     return state.playlistData;
+  }
+
+  @Selector()
+  static playlistDetail(state: IPlayerlistState) {
+    return state.playlistDetail;
   }
 
   @Selector()
@@ -87,5 +92,21 @@ export class PlaylistState {
         });
       })
     );
+  }
+
+  @Action(PlaylistDetailAction)
+  _playlistDetailAction(ctx: StateContext<IPlayerlistState>, { playlistid }: PlaylistDetailAction) {
+    return this.playlistService.playlistDetails(playlistid).pipe(
+      tap(data => {
+        ctx.patchState({
+          playlistDetail: data.data() as IPlaylist
+        });
+      })
+    );
+  }
+
+  @Action(RemovePlaylistTrackAction)
+  _removePlaylistTrackAction(ctx: StateContext<IPlayerlistState>, { playlistid, uid }: RemovePlaylistTrackAction) {
+    return this.playlistService.removePlaylistTrack(playlistid, uid);
   }
 }

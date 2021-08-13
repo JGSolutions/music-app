@@ -1,0 +1,26 @@
+@import '../../theme/variables.scss';
+
+:host {
+  display: block;
+}
+
+.container-fluid {
+  @include fluid-container();
+}
+
+.artist-info {
+  padding: 0px 0 10px 0;
+}
+
+.track-info {
+  padding: 10px 0 10px 0;
+}
+
+.platform-wrappers {
+  background-color: white;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: $s-padding-gap;
+}
+

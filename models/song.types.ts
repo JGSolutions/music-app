@@ -28,6 +28,8 @@ export interface ISong {
   pictures?: IAvatar;
   totalTracks: number;
   externalUrl?: string;
+  uri?: string;
+  album?: IAlbumInfo;
 }
 
 export interface IAlbumInfo {

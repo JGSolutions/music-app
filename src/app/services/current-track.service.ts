@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { ICurrentTrack } from '../core/stores/artists/artists-state.types';
+import { ICurrentTrack } from '../core/stores/songs/songs.types';
 
 @Injectable()
 export class CurrentTrackService {

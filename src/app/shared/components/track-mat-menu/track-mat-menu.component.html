@@ -11,12 +11,18 @@
     <mat-icon>headphones</mat-icon>
     <span>Listen Later</span>
   </button>
-  <button mat-menu-item (click)="addToPlaylistHandler()" *ngIf="isAlbum === false">
+
+  <button mat-menu-item (click)="removePlaylistHandler()" *ngIf="isAlbum === false && removeOptionItem">
+    <mat-icon>playlist_add</mat-icon>
+    <span>Remove From Playlist</span>
+  </button>
+
+  <button mat-menu-item (click)="addToPlaylistHandler()" *ngIf="isAlbum === false && !removeOptionItem">
     <mat-icon>playlist_add</mat-icon>
     <span>Add To Playlist</span>
   </button>
 
-  <button mat-menu-item (click)="addToPlaylistHandler()" *ngIf="isAlbum === true">
+  <button mat-menu-item (click)="addToPlaylistHandler()" *ngIf="isAlbum === true && !removeOptionItem">
     <mat-icon>list</mat-icon>
     <span>View Track List</span>
   </button>

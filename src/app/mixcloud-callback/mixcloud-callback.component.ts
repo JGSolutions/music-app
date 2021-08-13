@@ -27,7 +27,6 @@ export class MixcloudCallbackComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     MixcloudAuthorization.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,

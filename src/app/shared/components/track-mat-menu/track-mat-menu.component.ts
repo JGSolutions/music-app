@@ -8,7 +8,11 @@ export class TrackMatMenuComponent {
   @Input()
   isAlbum!: boolean;
 
+  @Input()
+  removeOptionItem = false;
+
   @Output() addToPlaylist = new EventEmitter<void>();
+  @Output() removePlaylist = new EventEmitter<void>();
   @Output() addFavorite = new EventEmitter<void>();
   @Output() listenLater = new EventEmitter<void>();
 
@@ -23,5 +27,9 @@ export class TrackMatMenuComponent {
 
   public addToPlaylistHandler() {
     this.addToPlaylist.emit();
+  }
+
+  public removePlaylistHandler() {
+    this.removePlaylist.emit();
   }
 }
