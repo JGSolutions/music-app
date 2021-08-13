@@ -14,6 +14,7 @@ import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/s
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { IPlatformTypes } from 'models/artist.types';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-playlist-details',
@@ -33,8 +34,10 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<boolean>();
   private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
+  private horizontalPosition: MatSnackBarHorizontalPosition = 'start';
+  private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
-  constructor(private store: Store, private route: ActivatedRoute) { }
+  constructor(private store: Store, private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.playlistid = this.route.snapshot.params.playlistid;
@@ -71,8 +74,18 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     this.user$.pipe(
       take(1)
     ).subscribe(user => {
-      this.store.dispatch(new RemovePlaylistTrackAction(selectedSong, user.uid!))
+      this.store.dispatch(new RemovePlaylistTrackAction(selectedSong, user.uid!));
+
+      this.openSnackBar();
     })
+  }
+
+  public openSnackBar() {
+    this._snackBar.open('Playlist track has been removed!', '', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 5 * 1000,
+    });
   }
 
   public selectedPlatform(evt: any) {
