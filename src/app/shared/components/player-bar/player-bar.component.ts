@@ -4,7 +4,6 @@ import { distinctUntilChanged, filter, map, switchMap, takeUntil, withLatestFrom
 import { isEmpty as _isEmpty } from "lodash";
 import { HowlerPlayerService } from './howl-player.service';
 import { Select, Store } from '@ngxs/store';
-import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
@@ -53,7 +52,6 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe(() => {
       this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
-      this.store.dispatch(new LoadingPlayerAction(false));
     });
   }
 

@@ -8,7 +8,6 @@ import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
-import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
@@ -66,7 +65,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       take(1),
       filter((currentTrack) => currentTrack?.id !== selectedSong)
     ).subscribe(() => {
-      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong, "playlist")]);
+      this.store.dispatch([new SetCurrentSelectedSongAction(selectedSong, "playlist")]);
     })
   }
 

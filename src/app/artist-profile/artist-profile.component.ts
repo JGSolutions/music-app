@@ -11,7 +11,6 @@ import { ConnectedServicesState } from '../core/stores/connected-services/connec
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISongTrackType } from 'models/song.types';
-import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
@@ -117,7 +116,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         this.router.navigate(['artist-album', data?.platform, data?.id]);
       } else {
         this.store.dispatch([
-          new LoadingPlayerAction(true),
           new SetCurrentSelectedSongAction(data.id!, "songs")
         ]);
       }

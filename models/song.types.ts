@@ -12,6 +12,9 @@ export enum IDurationType {
   seconds = "seconds",
 }
 
+export interface IStreamUrl {
+  url: string;
+}
 export interface ISong {
   name: string;
   genres?: string[];

@@ -11,7 +11,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
-import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { IPlatformTypes } from 'models/artist.types';
 import { SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
 
@@ -76,7 +75,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         this.currentTrack$.pipe(
           takeUntil(this.destroy$),
           filter((currentTrack) => currentTrack.platform == IPlatformTypes.spotify),
-          tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
           distinctUntilChanged((prev, curr) => prev.id === curr.id),
           tap((currentTrack) => this.trackReady.emit(currentTrack)),
           switchMap(() => this.transferUserPlayback(device_id)),

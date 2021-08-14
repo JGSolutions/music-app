@@ -7,7 +7,6 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAlbumInfo, ISong } from 'models/song.types';
-import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { MatDialog } from '@angular/material/dialog';
@@ -59,7 +58,7 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
       take(1),
       filter((currentTrack) => currentTrack?.id !== selectedSong)
     ).subscribe(() => {
-      this.store.dispatch([new LoadingPlayerAction(true), new SetCurrentSelectedSongAction(selectedSong, "songs")]);
+      this.store.dispatch([new SetCurrentSelectedSongAction(selectedSong, "songs")]);
     });
   }
 
