@@ -157,12 +157,15 @@ export class SongsState {
 
   @Action(AudioFileAction, { cancelUncompleted: true })
   _audioFileAction({ getState, patchState }: StateContext<ISongsState>, { uid, externalUrl }: AudioFileAction) {
+    patchState({
+      loading: true
+    });
     return this.apiService.mixcloudAudioStream(uid!, externalUrl!).pipe(
       tap((audioFile) => {
         const currentTrack = cloneDeep(getState().currentTrack);
         currentTrack.audioFile = audioFile.url;
         patchState({
-          currentTrack
+          currentTrack,
         });
       })
     )
