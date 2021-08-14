@@ -129,7 +129,7 @@ export class SongsState {
       name: song!.name,
       trackType: song!.trackType,
       artist: song?.artistName || "",
-      externalUrl: song?.externalUrl,
+      externalUrl: song?.externalUrl || "",
       avatar: song?.pictures?.medium,
       duration: song?.duration,
       durationType: song?.durationType,

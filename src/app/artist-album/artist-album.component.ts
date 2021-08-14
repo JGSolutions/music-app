@@ -78,7 +78,8 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
         durationType: data?.durationType!,
         trackType: data?.trackType!,
         pictures: data?.pictures!,
-        createdTime: data?.createdTime!
+        createdTime: data?.createdTime!,
+        externalUrl: data?.externalUrl
       };
 
       this.dialog.open(AddPlaylistDialogComponent, {
