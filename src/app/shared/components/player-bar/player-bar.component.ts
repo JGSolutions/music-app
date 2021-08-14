@@ -8,7 +8,7 @@ import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
-import { AudioFileAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
+import { AudioFileAction, LoadingPlayerAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
 
 @Component({
   selector: 'app-player-bar',
@@ -19,8 +19,8 @@ import { AudioFileAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/s
 export class PlayerBarComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.audioFile) audioFile$!: Observable<string>;
+  @Select(SongsState.loading) loading$!: Observable<boolean>;
 
-  @Input() loading$!: Observable<boolean>;
   @Input() currentTrack$!: Observable<ICurrentTrack>;
 
   @Output() trackReady = new EventEmitter<any>();
@@ -45,13 +45,17 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
       withLatestFrom(this.currentTrack$),
     ).subscribe(([audioFile, currentTrack]) => {
       this.howlService.initHowler(audioFile);
+      this.store.dispatch(new LoadingPlayerAction(true));
       this.trackReady.emit(currentTrack);
     });
 
     this.howlService.$onload.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
+      this.store.dispatch([
+        new SetCurrentTrackPlayStatusAction(false),
+        new LoadingPlayerAction(false)
+      ]);
     });
   }
 

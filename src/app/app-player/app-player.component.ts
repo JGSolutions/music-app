@@ -37,7 +37,6 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
-    this.loadingPlayer$.subscribe(e => console.log(e))
     this.user$.pipe(
       takeUntil(this.destroy$),
       filter(user => user !== null)

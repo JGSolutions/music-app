@@ -63,8 +63,7 @@
   <app-player-bar
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
     (trackReady)="trackHistory($event)"
-    [currentTrack$]="currentTrack$!"
-    [loading$]="loadingPlayer$">
+    [currentTrack$]="currentTrack$!">
   </app-player-bar>
   <app-spotify-player
     [loading$]="loadingPlayer$"
