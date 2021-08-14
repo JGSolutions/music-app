@@ -6,11 +6,9 @@ import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
-import { PlayerState } from '../core/stores/player/player.state';
 import { isEmpty } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
-import { LoadingPlayerAction } from '../core/stores/player/player.actions';
 import { AddHistoryAction } from '../core/stores/history/history.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
@@ -23,7 +21,6 @@ import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '..
 export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
-  @Select(PlayerState.loadingPlayer) loadingPlayer$!: Observable<boolean>;
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
@@ -43,7 +40,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       takeUntil(this.destroy$),
       filter(user => user !== null)
     ).subscribe((user) => {
-      this.store.dispatch([new ArtistsAction(user.uid), new LoadingPlayerAction(true), new GetCurrentSelectedTrackAction(user.uid!)]);
+      this.store.dispatch([new ArtistsAction(user!.uid), new GetCurrentSelectedTrackAction(user!.uid!)]);
     });
 
     this.currentTrackSelected$ = this.currentTrack$.pipe(
@@ -61,7 +58,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
     this.user$.pipe(
       take(1)
     ).subscribe((user) => {
-      this.store.dispatch([new SaveCurrentSelectedSongAction(user.uid!), new AddHistoryAction(user.uid!, {
+      this.store.dispatch([new SaveCurrentSelectedSongAction(user!.uid!), new AddHistoryAction(user!.uid!, {
         name: currentTrack.name,
         dateViewed: new Date,
         platform: currentTrack.platform,

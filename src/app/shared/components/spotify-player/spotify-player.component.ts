@@ -11,9 +11,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
-import { LoadingPlayerAction } from 'src/app/core/stores/player/player.actions';
 import { IPlatformTypes } from 'models/artist.types';
-import { SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
+import { LoadingPlayerAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
+import { SongsState } from 'src/app/core/stores/songs/songs.state';
 
 @Component({
   selector: 'app-spotify-player',
@@ -24,8 +24,8 @@ import { SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs
 export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.connectedServices) connectedServices$!: Observable<Record<string, ConnectedServicesList>>;
+  @Select(SongsState.loading) loading$!: Observable<boolean>;
 
-  @Input() loading$!: Observable<boolean>;
   @Input() currentTrack$!: Observable<ICurrentTrack>;
 
   @Output() trackReady = new EventEmitter<any>();

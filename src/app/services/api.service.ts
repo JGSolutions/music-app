@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, retry } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { IStreamUrl } from '../core/stores/player/player.types';
 import { environment } from 'src/environments/environment';
 import { IArtistBodyRequest, IArtists, IPlatformTypes } from 'models/artist.types';
-import { IAlbum, ISong } from 'models/song.types';
+import { IAlbum, ISong, IStreamUrl } from 'models/song.types';
 
 
 @Injectable()

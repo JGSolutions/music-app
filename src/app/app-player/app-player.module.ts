@@ -9,7 +9,6 @@ import { AngularMaterialModule } from 'src/angular-material.module';
 import { NgxsModule } from '@ngxs/store';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { PlayerState } from '../core/stores/player/player.state';
 import { PlayerbarModule } from '../shared/components/player-bar/player-bar.module';
 import { HowlerPlayerService } from '../shared/components/player-bar/howl-player.service';
 import { CurrentTrackService } from '../services/current-track.service';
@@ -27,7 +26,7 @@ import { SongsState } from '../core/stores/songs/songs.state';
     AppPlayerRoutingModule,
     PlayerbarModule,
     SpotifyPlayerModule,
-    NgxsModule.forFeature([ConnectedServicesState, ArtistsState, PlayerState, SongsState]),
+    NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState]),
   ],
   providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService, PlaylistService],
 })

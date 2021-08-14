@@ -16,7 +16,7 @@ export const songsStateDefault: ISongsState = {
   playlistSongs: [],
   artistAlbum: {} as IAlbumInfo,
   currentTrack: {} as ICurrentTrack,
-  loading: true,
+  loading: false,
 };
 
 export interface ICurrentTrack {
