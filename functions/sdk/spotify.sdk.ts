@@ -265,6 +265,12 @@ export const SpotifySDK = {
     return axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
   },
 
+  async devicePlayback(deviceId: string | undefined): Promise<any> {
+    const request = { device_ids: [deviceId], play: false };
+
+    return axios.put(`${this.apiDomain}/me/player`, request, this.requestHeaders());
+  },
+
   requestHeaders() {
     return {
       headers: {

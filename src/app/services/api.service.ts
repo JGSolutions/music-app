@@ -93,7 +93,18 @@ export class ApiService {
       })
     };
 
-    const url = `${this.domainApi}/spotify-play?trackid=${trackid}`;
+    const url = `${this.domainApi}/spotify-playback?trackid=${trackid}`;
+    return this.http.get<string>(url, httpOptions);
+  }
+
+  public devicePlayback(deviceid: string, uid: string): Observable<string> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Authorization": uid
+      })
+    };
+
+    const url = `${this.domainApi}/device-playback?deviceid=${deviceid}`;
     return this.http.get<string>(url, httpOptions);
   }
 }

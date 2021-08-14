@@ -138,32 +138,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     })
   }
 
-  // private initialPlay() {
-  //   const httpOptions = {
-  //     headers: new HttpHeaders({
-  //       'Content-Type': 'application/json',
-  //       "Authorization": `Bearer ${this.token}`
-  //     })
-  //   };
-
-  //   return this.currentTrack$.pipe(
-  //     take(1),
-  //     switchMap((currentTrack) => {
-  //       const request = {
-  //         uris: [`spotify:track:${currentTrack.id}`]
-  //       }
-  //       return this.http.put(`${this.playerUrl}/play`, request, httpOptions);
-  //     })
-  //   );
-  // }
-
   private initialPlay() {
     return this.currentTrack$.pipe(
       take(1),
       withLatestFrom(this.user$),
-      switchMap(([currentTrack, user]) => {
-        return this.apiService.spotifyPlayback(currentTrack.id, user.uid!);
-      })
+      switchMap(([currentTrack, user]) => this.apiService.spotifyPlayback(currentTrack.id, user.uid!))
     );
   }
 
@@ -174,17 +153,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   public transferUserPlayback(deviceId: string) {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${this.token}`
-      })
-    };
-
-    return this.http.put(this.playerUrl, {
-      device_ids: [deviceId],
-      play: false
-    }, httpOptions);
+    return this.user$.pipe(
+      take(1),
+      switchMap((user) => this.apiService.devicePlayback(deviceId, user.uid!))
+    );
   }
 
   async pause(): Promise<void> {
