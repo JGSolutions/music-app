@@ -14,6 +14,7 @@ import { ConnectedServicesList } from 'src/app/core/stores/connected-services/co
 import { IPlatformTypes } from 'models/artist.types';
 import { LoadingPlayerAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-spotify-player',
@@ -43,7 +44,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   private _setIntervalTimer!: any;
   private _seekPosition = 0;
 
-  constructor(private http: HttpClient, private store: Store) {
+  constructor(private http: HttpClient, private store: Store, private apiService: ApiService) {
     this.playerUrl = `https://api.spotify.com/v1/me/player`;
   }
 
@@ -137,21 +138,31 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     })
   }
 
-  private initialPlay() {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${this.token}`
-      })
-    };
+  // private initialPlay() {
+  //   const httpOptions = {
+  //     headers: new HttpHeaders({
+  //       'Content-Type': 'application/json',
+  //       "Authorization": `Bearer ${this.token}`
+  //     })
+  //   };
 
+  //   return this.currentTrack$.pipe(
+  //     take(1),
+  //     switchMap((currentTrack) => {
+  //       const request = {
+  //         uris: [`spotify:track:${currentTrack.id}`]
+  //       }
+  //       return this.http.put(`${this.playerUrl}/play`, request, httpOptions);
+  //     })
+  //   );
+  // }
+
+  private initialPlay() {
     return this.currentTrack$.pipe(
       take(1),
-      switchMap((currentTrack) => {
-        const request = {
-          uris: [`spotify:track:${currentTrack.id}`]
-        }
-        return this.http.put(`${this.playerUrl}/play`, request, httpOptions);
+      withLatestFrom(this.user$),
+      switchMap(([currentTrack, user]) => {
+        return this.apiService.spotifyPlayback(currentTrack.id, user.uid!);
       })
     );
   }

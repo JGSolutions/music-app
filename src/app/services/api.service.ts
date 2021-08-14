@@ -85,4 +85,16 @@ export class ApiService {
 
     return this.http.get<string>(url, httpOptions);
   }
+
+  public spotifyPlayback(trackid: string, uid: string): Observable<string> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Authorization": uid
+      })
+    };
+
+    const url = `${this.domainApi}/spotify-play?trackid=${trackid}`;
+
+    return this.http.get<string>(url, httpOptions);
+  }
 }

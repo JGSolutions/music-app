@@ -257,6 +257,14 @@ export const SpotifySDK = {
     return await searchResults(resp.data);
   },
 
+  async playback(id: string | undefined): Promise<any> {
+    const request = {
+      uris: [`spotify:track:${id}`],
+    };
+
+    return await axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
+  },
+
   requestHeaders() {
     return {
       headers: {
