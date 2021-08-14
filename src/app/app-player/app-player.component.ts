@@ -21,7 +21,6 @@ import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '..
 export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
-  @Select(SongsState.loading) loadingPlayer$!: Observable<boolean>;
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
