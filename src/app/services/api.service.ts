@@ -94,7 +94,6 @@ export class ApiService {
     };
 
     const url = `${this.domainApi}/spotify-play?trackid=${trackid}`;
-
     return this.http.get<string>(url, httpOptions);
   }
 }

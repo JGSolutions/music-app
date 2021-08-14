@@ -262,7 +262,7 @@ export const SpotifySDK = {
       uris: [`spotify:track:${id}`],
     };
 
-    return await axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
+    return axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
   },
 
   requestHeaders() {

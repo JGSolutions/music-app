@@ -17,7 +17,6 @@ export const spotifyPlayback = async (request: Request, response: Response) => {
   const connectedServices = await getConnectServices(authorized);
   // eslint-disable-next-line max-len
   SpotifySDK.initialize(connectedServices["spotify"].token, connectedServices["spotify"].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
-  await SpotifySDK.playback(request.query.trackid as string);
-
-  return response.status(200).send("done");
+  const d = await SpotifySDK.playback(request.query.trackid as string);
+  return response.status(200).send(d.data);
 };
