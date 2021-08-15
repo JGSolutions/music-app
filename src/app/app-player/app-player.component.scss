@@ -39,10 +39,24 @@
 
     .search-container {
       flex-grow: 1;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+
+      .search-field {
+        position: relative;
+        width: 100%;
+        max-width: 450px;
+
+        .search-icon {
+          position: absolute;
+          top: 10px;
+          left: 12px;
+        }
+      }
+
     }
 
-    .search-field {
+    .search-field-input {
       background: rgba(33, 33, 33, 0.08);
       box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
       border-radius: 4px;
@@ -53,6 +67,7 @@
       outline: none;
       font-size: 16px;
       color: #999;
+      padding-left: 44px;
     }
 
     .avatar {

@@ -5,7 +5,10 @@
   <div class="header-wrapper">
     <div>Music App</div>
     <div class="search-container">
-      <input type="text" class="search-field" placeholder="Search for artist or track">
+      <div class="search-field">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input type="text" class="search-field-input" placeholder="Search for artist or track">
+      </div>
     </div>
     <div class="options">
       <img [src]="(user$ | async)?.photoURL" class="avatar">

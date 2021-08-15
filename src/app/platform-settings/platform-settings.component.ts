@@ -55,7 +55,6 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     this.isSpotifyConnected$ = this.connectedServices$.pipe(
       filter((services) => !_isUndefined(services)),
       map((services) => {
-        console.log(services);
         if (services[IPlatformTypes.spotify]) {
           return true;
         }
