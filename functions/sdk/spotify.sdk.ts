@@ -266,12 +266,14 @@ export const SpotifySDK = {
       return axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
     } catch (err) {
       if (err.response?.status === 401) {
-        const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
+        // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
-        await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
-        this.queryParamAccessToken = res.access_token;
-        console.log("error occured will try again...");
-        return await this.playback(id);
+        // await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
+        // this.queryParamAccessToken = res.access_token;
+        // console.log("error occured will try again...");
+        // return await this.playback(id);
+
+        return this.reAuth(() => this.playback(id));
       }
     }
   },
@@ -283,11 +285,11 @@ export const SpotifySDK = {
       return axios.put(`${this.apiDomain}/me/player`, request, this.requestHeaders());
     } catch (err) {
       if (err.response?.status === 401) {
-        const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
+        // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
-        await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
-        this.queryParamAccessToken = res.access_token;
-        console.log("error occured will try again...");
+        // await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
+        // this.queryParamAccessToken = res.access_token;
+        // console.log("error occured will try again...");
         // return await this.devicePlayback(deviceId);
 
         return this.reAuth(() => this.devicePlayback(deviceId));
