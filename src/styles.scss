@@ -57,10 +57,20 @@ body {
   z-index: 2;
 }
 
-.platform-sections {
-  background-color: $app-backgorund-color;
+.sticky-sub-element {
+  position: sticky;
+  top: 50px;
+  z-index: 2;
 }
 
 .playlist-dialog .mat-dialog-container {
   padding: 24px 24px 0 24px !important;
+}
+
+.platform-wrappers {
+  background-color: white;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: $s-padding-gap;
 }
