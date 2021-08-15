@@ -106,7 +106,7 @@ export class PlaylistState {
   }
 
   @Action(RemovePlaylistTrackAction)
-  _removePlaylistTrackAction(ctx: StateContext<IPlayerlistState>, { playlistid, uid }: RemovePlaylistTrackAction) {
-    return this.playlistService.removePlaylistTrack(playlistid, uid);
+  _removePlaylistTrackAction(ctx: StateContext<IPlayerlistState>, { playlistid, trackid, uid }: RemovePlaylistTrackAction) {
+    return this.playlistService.removePlaylistTrack(playlistid, trackid, uid);
   }
 }

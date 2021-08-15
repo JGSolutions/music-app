@@ -69,11 +69,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-  public removeSong(selectedSong: string): void {
+  public removeSong(trackid: string): void {
     this.user$.pipe(
       take(1)
     ).subscribe(user => {
-      this.store.dispatch(new RemovePlaylistTrackAction(selectedSong, user.uid!));
+      this.store.dispatch(new RemovePlaylistTrackAction(this.playlistid, trackid, user.uid!));
 
       this.openSnackBar();
     })
