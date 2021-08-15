@@ -31,5 +31,5 @@ export class PlaylistDetailAction {
 
 export class RemovePlaylistTrackAction {
   static readonly type = '[Playlist] Remove Playlist track';
-  constructor(public playlistid: string, public uid: string) { }
+  constructor(public playlistid: string, public trackid: string, public uid: string) { }
 }

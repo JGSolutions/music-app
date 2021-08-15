@@ -39,8 +39,9 @@ export class PlaylistService {
     ).valueChanges();
   }
 
-  public removePlaylistTrack(playlistid: string, uid: string) {
-    return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(playlistid).delete();
+  public removePlaylistTrack(playlistid: string, trackid: string, uid: string) {
+    this.removeCoverImage(trackid, playlistid, uid);
+    return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(trackid).delete();
   }
 
   public getPlaylists(uid: string): Observable<IPlaylist[]> {
