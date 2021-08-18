@@ -8,6 +8,7 @@ import { IDurationType } from 'models/song.types';
 })
 export class AudioPlayerComponent {
   @Input() loading!: boolean;
+  @Input() playSongLoading!: boolean;
   @Input() avatar!: string;
   @Input() name!: string;
   @Input() artist!: string;
@@ -30,10 +31,6 @@ export class AudioPlayerComponent {
 
   public pauseHandler(): void {
     this.pause.emit();
-  }
-
-  public stop(): void {
-
   }
 
   /**
