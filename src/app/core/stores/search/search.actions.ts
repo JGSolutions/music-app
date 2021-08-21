@@ -1,5 +1,4 @@
 export class SearchAction {
-  static readonly type = '[Search] All Connected Services';
-
-  constructor(public value: string) { }
+  static readonly type = '[Search] Search';
+  constructor(public value: string, public uid: string) { }
 }

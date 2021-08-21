@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { State } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
+import { ApiService } from 'src/app/services/api.service';
+import { SearchAction } from './search.actions';
 import { ISearchState, searchStateDefault } from './search.types';
 
 @State<ISearchState>({
@@ -8,23 +11,24 @@ import { ISearchState, searchStateDefault } from './search.types';
 })
 @Injectable()
 export class SearchState {
-  constructor() {
+  constructor(private apiService: ApiService) {
   }
 
-  // @Selector()
-  // static connectedServices(state: IConnectedServicesState) {
-  //   return state.servicesType;
-  // }
+  @Selector()
+  static searchResults(state: ISearchState) {
+    return state.searchResults;
+  }
 
-  // @Action(ConnectedServicesAction)
-  // _connectedServices(ctx: StateContext<IConnectedServicesState>, { uid }: ConnectedServicesAction) {
-  //   return this.connectedServices.connectedServices(uid).pipe(
-  //     tap((data) => {
-  //       ctx.patchState({
-  //         servicesType: data
-  //       });
-  //     })
-  //   )
-  // }
+  @Action(SearchAction)
+  _search(ctx: StateContext<ISearchState>, { value, uid }: SearchAction) {
+    return this.apiService.search(value, uid).pipe(
+      tap((data) => {
+        console.log(data);
+        ctx.patchState({
+          searchResults: data
+        });
+      })
+    )
+  }
 
 }

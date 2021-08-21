@@ -107,4 +107,15 @@ export class ApiService {
     const url = `${this.domainApi}/device-playback?deviceid=${deviceid}`;
     return this.http.get<string>(url, httpOptions);
   }
+
+  public search(searchTerm: string, uid: string): Observable<string> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Authorization": uid
+      })
+    };
+
+    const url = `${this.domainApi}/search?search=${searchTerm}`;
+    return this.http.get<string>(url, httpOptions);
+  }
 }
