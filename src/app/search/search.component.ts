@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public playlistSongsByPlatform$ = this.store.select(SongsState.playlistSongsByPlatform);
 
   // public songs$!: Observable<ISongCommonState[]>;
-
+  public selectedTab = 0;
   private destroy$ = new Subject<boolean>();
 
   constructor(private store: Store, private _snackBar: MatSnackBar) { }
@@ -41,4 +41,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
+  public selectedTabChange(evt: any) {
+    this.selectedTab = evt;
+  }
 }
