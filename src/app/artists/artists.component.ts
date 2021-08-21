@@ -40,8 +40,8 @@ export class ArtistsComponent implements OnInit {
     this.artistDetails$.pipe(
       take(1),
       map((artist) => artist(key))
-    ).subscribe(e => {
-      this.store.dispatch(new SelectArtistAction(e)).subscribe(() => {
+    ).subscribe(artistDetails => {
+      this.store.dispatch(new SelectArtistAction(artistDetails)).subscribe(() => {
         this.router.navigate(["/", "artist", key]);
       })
     });

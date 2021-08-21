@@ -24,12 +24,12 @@ import { ArtistSongsAction, ClearSongs, SetCurrentSelectedSongAction } from '../
 })
 export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
-  @Select(ArtistsState.selectedArtist) selectedArtist$!: Observable<IArtists[]>;
   @Select(ArtistsState.loading) loading$!: Observable<boolean>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
+  public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public songDetailById$ = this.store.select(SongsState.songDetailById);
   public songsByPlatform$ = this.store.select(SongsState.songsByPlatform);
   public artist!: string;
@@ -46,10 +46,16 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.store.dispatch(new ClearSongs());
     this.artist = this.route.snapshot.params.artist;
 
+
+    const artistDetails$ = this.artistDetails$.pipe(
+      map((artist) => artist(this.artist)),
+      filter(data => !_isUndefined(data)),
+      shareReplay(1)
+    );
     /**
      * Details for artist profile
      */
-    this.profileDetails$ = this.selectedArtist$.pipe(
+    this.profileDetails$ = artistDetails$.pipe(
       map((artists) => artists[0]),
       filter(data => !_isUndefined(data)),
       shareReplay(1)
@@ -58,7 +64,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     /**
      * Gets list of songs for artist
      */
-    this.selectedArtist$.pipe(
+    artistDetails$.pipe(
       take(1),
       map((details) => {
         return details.map((detail) => {
@@ -70,16 +76,13 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         })
       }),
       withLatestFrom(this.user$),
-      filter(([data, user]) => {
-        return !_isEmpty(user)
-      }),
       takeUntil(this.destroy$)
     ).subscribe(([data, user]) => {
       console.log(user)
       this.store.dispatch(new ArtistSongsAction(user.uid, data))
     });
 
-    this.artistGenres$ = this.selectedArtist$.pipe(
+    artistDetails$.pipe(
       map((details) => {
         return details.reduce((acc, value) => {
           if (value.genres) {
