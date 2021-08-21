@@ -205,10 +205,13 @@ export const SpotifySDK = {
     const postHeaders = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+        // "Authorization": "Basic OWU4NWEyMGM2OTE0NDMyNjg5OWM2ZmRhZTY2MTY3ZTc6ZDQxMmUzNTQ0MGM2NGMxYjgwNDEyM2MzZTI5NWY1Zjg=",
+        "Authorization": `Basic ${Buffer.from(`${spotifyKeys.clientId}:${spotifyKeys.secretApi}`).toString("base64")}`,
       },
     };
 
-    const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
+    // const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
+    const params = `grant_type=authorization_code&code=${oAuthCode}&redirect_uri=https://music-app-5c927.firebaseapp.com/spotify-callback`;
     const data = await axios.post(this.accountApi, params, postHeaders);
     return data.data;
   },
