@@ -16,7 +16,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { ArtistSongsAction, ClearSongs, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
-import { SearchAction } from '../core/stores/search/search.actions';
 
 @Component({
   selector: 'app-artist-profile',
@@ -47,14 +46,6 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.store.dispatch(new ClearSongs());
     this.artist = this.route.snapshot.params.artist;
 
-    // this.user$.pipe(
-    //   filter((user) => {
-    //     return !_isEmpty(user)
-    //   }),
-    // ).subscribe(user => {
-    //   this.store.dispatch(new SearchAction(this.artist, user.uid!))
-    //   this.router.navigate(["/", "search"]);
-    // });
     /**
      * Details for artist profile
      */
