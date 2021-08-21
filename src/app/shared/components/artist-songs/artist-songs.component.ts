@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { IDurationType } from 'models/song.types';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-artist-songs',
   templateUrl: './artist-songs.component.html',
@@ -8,7 +9,8 @@ import { IDurationType } from 'models/song.types';
 })
 export class ArtistSongsComponent {
   @Input() loading!: boolean;
-  @Input() playSongLoading!: boolean;
+  @Input() artistGenres$!: Observable<any>;
+  @Input() profileDetails$!: Observable<any>;
 
   @Output() sliderChange = new EventEmitter<number>();
 
