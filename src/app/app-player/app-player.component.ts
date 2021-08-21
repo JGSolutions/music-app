@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { isEmpty } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -12,6 +12,8 @@ import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { AddHistoryAction } from '../core/stores/history/history.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-player',
@@ -25,14 +27,16 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
   public platformTypes = IPlatformTypes;
-
+  public searchControl: FormControl;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private breakpointObserver: BreakpointObserver, private store: Store) {
+  constructor(private breakpointObserver: BreakpointObserver, private store: Store, private router: Router) {
     this.isMobile$ = this.breakpointObserver.observe('(max-width: 576px)').pipe(
       map((result) => result.matches),
       shareReplay(1)
     );
+
+    this.searchControl = new FormControl();
   }
 
   ngOnInit() {
@@ -46,7 +50,19 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
     this.currentTrackSelected$ = this.currentTrack$.pipe(
       map((currentTrack) => !isEmpty(currentTrack)),
       shareReplay(1)
-    )
+    );
+
+    this.searchControl.valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(650),
+        filter(value => value.length >= 2),
+        takeUntil(this.destroy$)
+      ).subscribe((value) => {
+        console.log(value);
+        this.router.navigate(["/", "search"]);
+        // this.store.dispatch(new SearchExercise(value));
+      });
   }
 
   ngOnDestroy() {

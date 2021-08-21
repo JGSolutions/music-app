@@ -17,6 +17,7 @@ import { SpotifyPlayerModule } from '../shared/components/spotify-player/spotify
 import { PlaylistService } from '../services/playlist.service';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { SearchState } from '../core/stores/search/search.state';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -27,6 +28,7 @@ import { SearchState } from '../core/stores/search/search.state';
     AppPlayerRoutingModule,
     PlayerbarModule,
     SpotifyPlayerModule,
+    ReactiveFormsModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState, SearchState]),
   ],
   providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService, PlaylistService],
