@@ -6,61 +6,32 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div>
-      sdsd {{selectedTab}}
+    <div class="col-md">
       <ng-container [ngTemplateOutlet]="songs"
         *ngIf="selectedTab === 0">
       </ng-container>
 
       <ng-container [ngTemplateOutlet]="artists"
-      *ngIf="selectedTab === 1">
-    </ng-container>
+        *ngIf="selectedTab === 1">
+      </ng-container>
     </div>
   </div>
 </div>
 
+
+
+
 <ng-template #songs>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
-  <div>song</div> <br>
+  <div *ngFor="let item of (searchResults$ | async)?.tracks; let index = index">{{item.name}}</div>
 </ng-template>
 
 <ng-template #artists>
-  <div>artist</div>
+  <div *ngFor="let item of (searchResults$ | async)?.artists" class="artist-item" (click)="selectArtist(item)">
+    <img [src]="item.pictures.exLarge" class="artist-image">
+
+    <div class="artist-info">
+      <span class="mat-title">{{item.name}}</span>
+      <img src="../assets/platforms/{{item.platform}}-large.png" class="platform-logo" >
+    </div>
+  </div>
 </ng-template>

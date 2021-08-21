@@ -7,3 +7,28 @@
 .container-fluid {
   @include fluid-container();
 }
+
+.artist-item {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.artist-image {
+  border-radius: 50%;
+  width: 124px;
+  height: 124px;
+}
+
+.platform-logo {
+  width: 70px;
+  height: auto;
+}
+
+.artist-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 16px;
+}

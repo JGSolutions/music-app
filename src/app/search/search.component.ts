@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
+import { IArtists } from 'models/artist.types';
+import { ISearchResults } from 'models/search.model';
 import { Observable, Subject } from 'rxjs';
+import { SearchState } from '../core/stores/search/search.state';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { SongsState } from '../core/stores/songs/songs.state';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -13,26 +14,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SearchComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  // @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlaylist>;
+  @Select(SearchState.searchResults) searchResults$!: Observable<ISearchResults>;
 
-  public playlistSongsByPlatform$ = this.store.select(SongsState.playlistSongsByPlatform);
-
-  // public songs$!: Observable<ISongCommonState[]>;
   public selectedTab = 0;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private store: Store, private _snackBar: MatSnackBar) { }
+  constructor(private store: Store, private router: Router) { }
 
-  ngOnInit(): void {
-    // this.playlistid = this.route.snapshot.params.playlistid;
-
-    // this.user$.pipe(
-    //   filter((user) => user !== null),
-    //   takeUntil(this.destroy$)
-    // ).subscribe((user) => {
-    //   this.store.dispatch(new AllPlaylistTracksAction(this.playlistid!, user.uid!));
-    //   this.store.dispatch(new PlaylistDetailAction(this.playlistid!));
-    // });
+  ngOnInit() {
 
   }
 
@@ -43,5 +32,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   public selectedTabChange(evt: any) {
     this.selectedTab = evt;
+  }
+
+  public selectArtist(item: IArtists) {
+    this.router.navigate(["/", "artist", item.name]);
+    console.log(item.id);
   }
 }
