@@ -1,0 +1,10 @@
+@import '../../../../theme/variables.scss';
+@import '../../../../theme/ghost-animation';
+
+:host {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
