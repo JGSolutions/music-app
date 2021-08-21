@@ -18,9 +18,6 @@
   </div>
 </div>
 
-
-
-
 <ng-template #songs>
   <div *ngFor="let item of (searchResults$ | async)?.tracks; let index = index">{{item.name}}</div>
 </ng-template>

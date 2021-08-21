@@ -11,9 +11,9 @@
   </div>
   <div class="row">
     <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let artistKey of artists | keyvalue">
-      <a [routerLink]="['/', 'artist', artistKey.key]" class="item-link">
+      <div class="item-link" (click)="selectArtist(artistKey.key)">
         <app-artist-item [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
-      </a>
+      </div>
     </div>
   </div>
 </div>

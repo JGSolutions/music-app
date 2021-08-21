@@ -4,7 +4,7 @@ import { Select, Store } from '@ngxs/store';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { isUndefined as _isUndefined } from 'lodash';
+import { isUndefined as _isUndefined, isEmpty as _isEmpty } from 'lodash';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { ArtistSongsAction, ClearSongs, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { SearchAction } from '../core/stores/search/search.actions';
 
 @Component({
   selector: 'app-artist-profile',
@@ -24,12 +25,12 @@ import { ArtistSongsAction, ClearSongs, SetCurrentSelectedSongAction } from '../
 })
 export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
+  @Select(ArtistsState.selectedArtist) selectedArtist$!: Observable<IArtists[]>;
   @Select(ArtistsState.loading) loading$!: Observable<boolean>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
-  public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public songDetailById$ = this.store.select(SongsState.songDetailById);
   public songsByPlatform$ = this.store.select(SongsState.songsByPlatform);
   public artist!: string;
@@ -46,16 +47,18 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     this.store.dispatch(new ClearSongs());
     this.artist = this.route.snapshot.params.artist;
 
-    const artistDetails$ = this.artistDetails$.pipe(
-      map((artist) => artist(this.artist)),
-      filter(data => !_isUndefined(data)),
-      shareReplay(1)
-    );
-
+    // this.user$.pipe(
+    //   filter((user) => {
+    //     return !_isEmpty(user)
+    //   }),
+    // ).subscribe(user => {
+    //   this.store.dispatch(new SearchAction(this.artist, user.uid!))
+    //   this.router.navigate(["/", "search"]);
+    // });
     /**
      * Details for artist profile
      */
-    this.profileDetails$ = artistDetails$.pipe(
+    this.profileDetails$ = this.selectedArtist$.pipe(
       map((artists) => artists[0]),
       filter(data => !_isUndefined(data)),
       shareReplay(1)
@@ -64,7 +67,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
     /**
      * Gets list of songs for artist
      */
-    artistDetails$.pipe(
+    this.selectedArtist$.pipe(
       take(1),
       map((details) => {
         return details.map((detail) => {
@@ -76,12 +79,16 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
         })
       }),
       withLatestFrom(this.user$),
+      filter(([data, user]) => {
+        return !_isEmpty(user)
+      }),
       takeUntil(this.destroy$)
     ).subscribe(([data, user]) => {
+      console.log(user)
       this.store.dispatch(new ArtistSongsAction(user.uid, data))
     });
 
-    this.artistGenres$ = artistDetails$.pipe(
+    this.artistGenres$ = this.selectedArtist$.pipe(
       map((details) => {
         return details.reduce((acc, value) => {
           if (value.genres) {
@@ -91,7 +98,8 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
           return acc;
         }, [] as string[]);
       })
-    )
+    );
+
     this.songs$ = combineLatest([this._connectServiceType$, this.songsByPlatform$]).pipe(
       map(([platform, songsByPlatform]) => songsByPlatform(platform))
     );

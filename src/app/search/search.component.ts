@@ -38,6 +38,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   public selectArtist(item: IArtists) {
     this.store.dispatch(new SelectArtistAction([item])).subscribe(() => {
       this.router.navigate(["/", "artist", item.name]);
-    })
+    });
   }
 }

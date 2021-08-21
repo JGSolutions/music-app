@@ -21,6 +21,11 @@ export class ArtistsState {
   }
 
   @Selector()
+  static selectedArtist(state: IArtistsState) {
+    return state.selectedArtist;
+  }
+
+  @Selector()
   static artistDetails(state: IArtistsState) {
     return (artist: string) => {
       return state.artists[artist];

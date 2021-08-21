@@ -29,6 +29,7 @@ export class SearchState {
     ctx.patchState({
       searchLoading: true
     });
+
     return this.apiService.search(value, uid).pipe(
       tap((data) => {
         ctx.patchState({
