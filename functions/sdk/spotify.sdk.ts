@@ -211,7 +211,7 @@ export const SpotifySDK = {
     };
 
     // const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
-    const params = `grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
+    const params = `grant_type=authorization_code&code=${oAuthCode}&redirect_uri=https://music-app-5c927.firebaseapp.com/spotify-callback`;
     const data = await axios.post(this.accountApi, params, postHeaders);
     return data.data;
   },
