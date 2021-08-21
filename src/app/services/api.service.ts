@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IArtistBodyRequest, IArtists, IPlatformTypes } from 'models/artist.types';
 import { IAlbum, ISong, IStreamUrl } from 'models/song.types';
+import { ISearchResults } from 'models/search.model';
 
 
 @Injectable()
@@ -108,7 +109,7 @@ export class ApiService {
     return this.http.get<string>(url, httpOptions);
   }
 
-  public search(searchTerm: string, uid: string): Observable<string> {
+  public search(searchTerm: string, uid: string): Observable<ISearchResults> {
     const httpOptions = {
       headers: new HttpHeaders({
         "Authorization": uid
@@ -116,6 +117,6 @@ export class ApiService {
     };
 
     const url = `${this.domainApi}/search?search=${searchTerm}`;
-    return this.http.get<string>(url, httpOptions);
+    return this.http.get<ISearchResults>(url, httpOptions);
   }
 }

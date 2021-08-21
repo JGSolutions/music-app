@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { debounceTime, distinctUntilChanged, filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { isEmpty } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -14,6 +14,7 @@ import { SongsState } from '../core/stores/songs/songs.state';
 import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SearchAction } from '../core/stores/search/search.actions';
 
 @Component({
   selector: 'app-player',
@@ -54,14 +55,16 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
 
     this.searchControl.valueChanges
       .pipe(
+        takeUntil(this.destroy$),
         distinctUntilChanged(),
         debounceTime(650),
         filter(value => value.length >= 2),
-        takeUntil(this.destroy$)
-      ).subscribe((value) => {
-        console.log(value);
+        withLatestFrom(this.user$),
+        switchMap(([searchValue, user]) => {
+          return this.store.dispatch(new SearchAction(searchValue, user.uid!))
+        })
+      ).subscribe(() => {
         this.router.navigate(["/", "search"]);
-        // this.store.dispatch(new SearchExercise(value));
       });
   }
 

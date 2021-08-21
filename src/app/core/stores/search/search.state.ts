@@ -15,17 +15,25 @@ export class SearchState {
   }
 
   @Selector()
+  static searchLoading(state: ISearchState) {
+    return state.searchLoading;
+  }
+
+  @Selector()
   static searchResults(state: ISearchState) {
     return state.searchResults;
   }
 
   @Action(SearchAction)
   _search(ctx: StateContext<ISearchState>, { value, uid }: SearchAction) {
+    ctx.patchState({
+      searchLoading: true
+    });
     return this.apiService.search(value, uid).pipe(
       tap((data) => {
-        console.log(data);
         ctx.patchState({
-          searchResults: data
+          searchResults: data,
+          searchLoading: false
         });
       })
     )
