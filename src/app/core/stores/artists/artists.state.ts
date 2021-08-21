@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistsAction } from './artists.actions';
+import { ArtistsAction, SelectArtistAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState } from './artists-state.types';
 import { reduce, orderBy as _orderBy } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
@@ -62,5 +62,12 @@ export class ArtistsState {
         });
       })
     )
+  }
+
+  @Action(SelectArtistAction)
+  _selectArtist(ctx: StateContext<IArtistsState>, { artist }: SelectArtistAction) {
+    ctx.patchState({
+      selectedArtist: artist,
+    });
   }
 }
