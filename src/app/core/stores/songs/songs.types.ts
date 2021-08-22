@@ -7,6 +7,7 @@ export interface ISongsState {
   songs: ISongCommonState[],
   playlistSongs: ISongCommonState[],
   loading: boolean;
+  songsLoading: boolean;
   artistAlbum: IAlbumInfo;
   currentTrack: ICurrentTrack;
 }
@@ -17,6 +18,7 @@ export const songsStateDefault: ISongsState = {
   artistAlbum: {} as IAlbumInfo,
   currentTrack: {} as ICurrentTrack,
   loading: false,
+  songsLoading: false
 };
 
 export interface ICurrentTrack {

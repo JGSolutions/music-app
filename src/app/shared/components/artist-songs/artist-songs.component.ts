@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
@@ -6,7 +6,6 @@ import { IPlatformTypes } from 'models/artist.types';
 import { ISongTrackType } from 'models/song.types';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
-import { ArtistsState } from 'src/app/core/stores/artists/artists.state';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 import { SetCurrentSelectedSongAction } from 'src/app/core/stores/songs/songs.actions';
@@ -22,9 +21,8 @@ import { AddPlaylistDialogComponent } from '../add-playlist-dialog/add-playlist-
 export class ArtistSongsComponent implements OnInit {
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
-  @Select(ArtistsState.loading) loading$!: Observable<boolean>;
+  @Select(SongsState.songsLoading) songsLoading$!: Observable<boolean>;
 
-  @Input() loading!: boolean;
   @Input() artistGenres$!: Observable<any>;
   @Input() profileDetails$!: Observable<any>;
 

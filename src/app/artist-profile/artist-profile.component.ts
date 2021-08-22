@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, shareReplay, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined as _isUndefined, isEmpty as _isEmpty } from 'lodash';
 import { UserState } from '../core/stores/user/user.state';
