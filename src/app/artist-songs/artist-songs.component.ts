@@ -12,11 +12,11 @@ import { ArtistSongsAction, ClearSongs } from '../core/stores/songs/songs.action
 import { SongsState } from '../core/stores/songs/songs.state';
 
 @Component({
-  selector: 'app-artist-songs',
+  selector: 'app-artist-songs-view',
   templateUrl: './artist-songs.component.html',
   styleUrls: ['./artist-songs.component.scss']
 })
-export class ArtistSongsComponent implements OnInit, OnDestroy {
+export class ArtistSongsViewComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
