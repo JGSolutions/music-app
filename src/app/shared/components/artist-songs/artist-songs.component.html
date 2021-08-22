@@ -33,7 +33,7 @@
             >
           </app-song-item>
         </section>
-        {{(songsLoading$ | async)}}
+
         <app-empty-results
           [message]="'No tracks or albums'"
           *ngIf="songs?.length === 0 && (songsLoading$ | async) === false">

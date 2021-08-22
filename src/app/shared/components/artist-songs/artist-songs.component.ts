@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { IPlatformTypes } from 'models/artist.types';
 import { ISongTrackType } from 'models/song.types';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { filter, map, shareReplay, take } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 import { SetCurrentSelectedSongAction } from 'src/app/core/stores/songs/songs.actions';
@@ -36,7 +36,8 @@ export class ArtistSongsComponent implements OnInit {
 
   ngOnInit() {
     this.songs$ = combineLatest([this._connectServiceType$, this.songsByPlatform$]).pipe(
-      map(([platform, songsByPlatform]) => songsByPlatform(platform))
+      map(([platform, songsByPlatform]) => songsByPlatform(platform)),
+      shareReplay(1)
     );
   }
 

@@ -4,3 +4,12 @@
 :host {
   display: block;
 }
+
+.song-list {
+  margin-top: $s-padding-gap;
+  height: 100%;
+}
+
+.container-fluid {
+  @include fluid-container();
+}
