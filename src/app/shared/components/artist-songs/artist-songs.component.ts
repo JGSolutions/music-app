@@ -2,7 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { IPlatformTypes } from 'models/artist.types';
+import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISongTrackType } from 'models/song.types';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, take } from 'rxjs/operators';
@@ -23,10 +23,10 @@ export class ArtistSongsComponent implements OnInit {
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(SongsState.songsLoading) songsLoading$!: Observable<boolean>;
 
-  @Input() artistGenres$!: Observable<any>;
-  @Input() profileDetails$!: Observable<any>;
+  @Input() artistGenres$!: Observable<string[]>;
+  @Input() profileDetails$!: Observable<IArtists>;
+  @Input() songsByPlatform$!: Observable<(platform: IPlatformTypes) => ISongCommonState[]>;
 
-  public songsByPlatform$ = this.store.select(SongsState.songsByPlatform);
   public songs$!: Observable<ISongCommonState[]>;
   public songDetailById$ = this.store.select(SongsState.songDetailById);
 

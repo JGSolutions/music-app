@@ -9,6 +9,7 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { IArtists } from 'models/artist.types';
 import { ArtistSongsAction, ClearSongs } from '../core/stores/songs/songs.actions';
+import { SongsState } from '../core/stores/songs/songs.state';
 
 @Component({
   selector: 'app-artist-profile',
@@ -22,6 +23,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
+  public songsByPlatform$ = this.store.select(SongsState.songsByPlatform);
 
   private destroy$ = new Subject<boolean>();
 
