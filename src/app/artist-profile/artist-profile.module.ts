@@ -3,11 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ArtistProfileComponent } from './artist-profile.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
-import { PlatformSelectionModule } from '../shared/components/platform-selection/platform-selection.module';
-import { SongItemModule } from '../shared/components/song-item/song-item.module';
-import { ArtistAvatarModule } from '../shared/components/artist-avatar/artist-avatar.module';
-import { EmptyResultsModule } from '../shared/components/empty-results/empty-results.module';
-import { AddPlaylistModule } from '../shared/components/add-playlist-dialog/add-playlist-dialog.module';
 import { ArtistSongsModule } from '../shared/components/artist-songs/artist-songs.module';
 
 @NgModule({
@@ -15,11 +10,6 @@ import { ArtistSongsModule } from '../shared/components/artist-songs/artist-song
   imports: [
     CommonModule,
     AngularMaterialModule,
-    PlatformSelectionModule,
-    SongItemModule,
-    ArtistAvatarModule,
-    EmptyResultsModule,
-    AddPlaylistModule,
     ArtistSongsModule,
     RouterModule.forChild([
       { path: '', component: ArtistProfileComponent },
