@@ -49,7 +49,9 @@ export const artist = async (request: Request, response: Response) => {
         tracks.push(e);
       });
 
-      artists.push(data.artist);
+      data.artists.forEach((e: any) => {
+        artists.push(e);
+      });
     });
 
     return response.status(200).send({

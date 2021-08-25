@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { IArtists } from 'models/artist.types';
@@ -12,7 +12,7 @@ import { IUserType } from '../core/stores/user/user.types';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SearchState.searchResults) searchResults$!: Observable<ISearchResults>;
 
@@ -20,10 +20,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<boolean>();
 
   constructor(private router: Router) { }
-
-  ngOnInit() {
-
-  }
 
   ngOnDestroy() {
     this.destroy$.next(true);

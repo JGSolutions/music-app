@@ -5,14 +5,15 @@ import { updateConnectedService } from "../src/utils/connect-services-firebase";
 import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
-import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.types";
+import { IAlbum, ISong, ISongTrackType, IDurationType, IArtistTracks } from "../../models/song.types";
 import { ISearchResults } from "../../models/search.model";
 import { isUndefined } from "lodash";
+import { IAvatar } from "../../models/avatar.types";
 
-const artistDataModel = (artist: any) => {
-  let images = {};
+const artistDataModel = (artist: any): IArtists => {
+  let images = {} as IAvatar;
   if (artist.images.length === 0) {
-    images = {};
+    images = {} as IAvatar;
   } else {
     images = {
       medium: artist.images[2].url,
@@ -37,7 +38,7 @@ export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   });
 };
 
-export const artistSongs = (dataApi: any, artistData: any): Promise<any> => {
+export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTracks> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
@@ -61,7 +62,7 @@ export const artistSongs = (dataApi: any, artistData: any): Promise<any> => {
 
     resolve({
       tracks: data,
-      artist: artistDataModel(artistData),
+      artists: [artistDataModel(artistData)],
     });
   });
 };
@@ -241,14 +242,7 @@ export const SpotifySDK = {
     }
   },
 
-  // async artistDetails(artistid: string): Promise<IArtists[]> {
-  //   const url = `${this.apiDomain}/artists/${artistid}`;
-  //   const resp = await axios(url, this.requestHeaders());
-
-  //   return await artistsData([resp.data]);
-  // },
-
-  async artistSongs(artistid: string): Promise<ISong[]> {
+  async artistSongs(artistid: string): Promise<IArtistTracks> {
     const url = `${this.apiDomain}/artists/${artistid}/albums/`;
     const resp = await axios(url, this.requestHeaders());
 
