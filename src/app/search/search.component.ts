@@ -35,7 +35,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public selectArtist(item: IArtists) {
-    console.log(item);
     this.router.navigate(["/", "artist-songs"], {
       queryParams: {
         platform: item.platform,

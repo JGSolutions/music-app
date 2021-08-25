@@ -1,12 +1,12 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
-import { flatten as _flatten } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { spotifyKeys } from "../../sdk/api-keys";
 import { getConnectServices } from "../utils/connect-services-firebase";
-import { IArtistBodyRequest, IPlatformTypes } from "../../../models/artist.types";
+import { IArtistBodyRequest, IArtists, IPlatformTypes } from "../../../models/artist.types";
+import { ISong } from "../../../models/song.types";
 
 export const artist = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
@@ -41,8 +41,21 @@ export const artist = async (request: Request, response: Response) => {
   });
 
   Promise.all(platformPromiseData).then((promiseData) => {
-    const allPlatformData = promiseData.map((data) => data);
-    return response.status(200).send(_flatten(allPlatformData));
+    const tracks: ISong[] = [];
+    const artists: IArtists[] = [];
+
+    promiseData.forEach((data: any) => {
+      data.tracks.forEach((e: any) => {
+        tracks.push(e);
+      });
+
+      artists.push(data.artist);
+    });
+
+    return response.status(200).send({
+      tracks,
+      artists,
+    });
   });
 
   return;
