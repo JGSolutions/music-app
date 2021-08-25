@@ -31,7 +31,7 @@ export const artist = async (request: Request, response: Response) => {
     switch (key.type) {
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key.type].token);
-        platformPromiseData.push(MixcloudSDK.artistSongs(key.username));
+        platformPromiseData.push(MixcloudSDK.artistSongs(key.id));
         break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key.type].token, connectedServices[key.type].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);

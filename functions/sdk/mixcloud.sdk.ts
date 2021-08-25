@@ -6,26 +6,30 @@ import { IDurationType, ISong, ISongTrackType } from "../../models/song.types";
 import { isUndefined } from "lodash";
 import { ISearchResults } from "../../models/search.model";
 
+const artistDataModel = (artist: any) => {
+  return {
+    name: artist.name,
+    id: artist.key,
+    username: artist.username,
+    platform: IPlatformTypes.mixcloud,
+    pictures: {
+      medium: artist.pictures?.medium,
+      large: artist.pictures?.large,
+      exLarge: artist.pictures?.extra_large,
+    },
+  };
+};
+
 export const mixcloudArtistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
     const data = artistApi.map((artist: any) => {
-      return {
-        name: artist.name,
-        id: artist.key,
-        username: artist.username,
-        platform: IPlatformTypes.mixcloud,
-        pictures: {
-          medium: artist.pictures.medium,
-          large: artist.pictures.large,
-          exLarge: artist.pictures.extra_large,
-        },
-      };
+      return artistDataModel(artist);
     });
     resolve(data);
   });
 };
 
-export const mixcloudArtistSongs = (dataApi: any): Promise<ISong[]> => {
+export const mixcloudArtistSongs = (dataApi: any, artistData: any): Promise<any> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
@@ -47,7 +51,10 @@ export const mixcloudArtistSongs = (dataApi: any): Promise<ISong[]> => {
         },
       };
     });
-    resolve(data);
+    resolve({
+      tracks: data,
+      artist: artistDataModel(artistData),
+    });
   });
 };
 
@@ -153,10 +160,10 @@ export const MixcloudSDK = {
   },
 
   async artistSongs(artist: string, limit = 20): Promise<ISong[]> {
-    const url = `${this.mixcloudApiDomain}/${artist}/cloudcasts/?${this.queryParamAccessToken}&limit=${limit}`;
-    const resp = await axios(url);
+    const trackResp = await axios(`${this.mixcloudApiDomain}${artist}cloudcasts/?${this.queryParamAccessToken}&limit=${limit}`);
+    const artistResp = await axios(`${this.mixcloudApiDomain}${artist}?${this.queryParamAccessToken}`);
 
-    return await mixcloudArtistSongs(resp.data.data);
+    return await mixcloudArtistSongs(trackResp.data.data, artistResp.data);
   },
 
   async playlists(): Promise<any> {
@@ -203,38 +210,4 @@ export const MixcloudSDK = {
       artists: await searchResultArtists(resArtists.data.data),
     };
   },
-
-  // async audioStream(): Promise<string | null> {
-  //   const url = `${this.mixcloudApiDomain}/${this.queryParamAccessToken}embed-json/?access_token=${this.queryParamAccessToken}`;
-  //   const url = "https://api.mixcloud.com/spartacus/party-time/embed-json/";
-
-  //   const res: any = await axios(url);
-  //   const { data } = await res;
-
-  //   return await this._scrapStreamUrl(data.html);
-  // },
-
-  // async _scrapStreamUrl(iframe: string) {
-  //   const $ = cheerio.load(iframe);
-  //   const src = $("iframe").attr("src") as string;
-
-  //   const browser = await puppeteer.launch({
-  //     headless: true,
-  //   });
-  //   const page = await browser.newPage();
-
-  //   await page.goto(src);
-
-  //   const allResultsSelector = ".widget-play-button";
-  //   await page.waitForSelector(allResultsSelector);
-  //   await page.click(allResultsSelector);
-
-  //   const textContent = await page.evaluate(() => {
-  //     return document.querySelector("source")!.getAttribute("src");
-  //   });
-
-  //   browser.close();
-
-  //   return textContent;
-  // },
 };
