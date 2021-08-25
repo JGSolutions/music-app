@@ -29,6 +29,11 @@ export class SongsState {
   }
 
   @Selector()
+  static artistInfo(state: ISongsState) {
+    return state.artist;
+  }
+
+  @Selector()
   static artistAlbum(state: ISongsState) {
     return state.artistAlbum;
   }

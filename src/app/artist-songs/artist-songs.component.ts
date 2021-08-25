@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subject } from 'rxjs';
-import { filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
-import { ArtistsState } from '../core/stores/artists/artists.state';
+import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { isUndefined as _isUndefined, isEmpty as _isEmpty } from 'lodash';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
@@ -18,8 +17,8 @@ import { SongsState } from '../core/stores/songs/songs.state';
 })
 export class ArtistSongsViewComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
+  @Select(SongsState.artistInfo) artist$!: Observable<IArtists>;
 
-  public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
@@ -31,9 +30,10 @@ export class ArtistSongsViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const queryParams = this.route.snapshot.queryParams;
-    // this.store.dispatch(new ClearSongs());
+    this.store.dispatch(new ClearSongs());
 
     this.user$.pipe(
+      takeUntil(this.destroy$),
       filter(user => user !== null)
     ).subscribe(user => {
       this.store.dispatch(new ArtistSongsAction(user.uid, [{
@@ -42,49 +42,19 @@ export class ArtistSongsViewComponent implements OnInit, OnDestroy {
         username: queryParams.username
       }]))
     });
-    // const artistDetails$ = this.artistDetails$.pipe(
-    //   map((artist) => artist(this.artist)),
-    //   filter(data => !_isUndefined(data)),
-    //   shareReplay(1)
-    // );
 
-    // this.profileDetails$ = artistDetails$.pipe(
-    //   map((artists) => artists[0]),
-    //   filter(data => !_isUndefined(data)),
-    //   shareReplay(1)
-    // );
+    this.artistGenres$ = this.artist$.pipe(
+      filter(details => !_isEmpty(details)),
+      map((details) => {
 
-    /**
-     * Gets list of songs for artist
-     */
-    // artistDetails$.pipe(
-    //   take(1),
-    //   map((details) => {
-    //     return details.map((detail) => {
-    //       return {
-    //         type: detail.platform,
-    //         id: detail.id,
-    //         username: detail.username
-    //       }
-    //     })
-    //   }),
-    //   withLatestFrom(this.user$),
-    //   takeUntil(this.destroy$)
-    // ).subscribe(([data, user]) => {
-    //   this.store.dispatch(new ArtistSongsAction(user.uid, data))
-    // });
+        if (details.genres) {
+          return details.genres
+        }
 
-    // this.artistGenres$ = artistDetails$.pipe(
-    //   map((details) => {
-    //     return details.reduce((acc, value) => {
-    //       if (value.genres) {
-    //         acc = value.genres.map(genre => genre);
-    //       }
-
-    //       return acc;
-    //     }, [] as string[]);
-    //   })
-    // );
+        return [];
+      }),
+      shareReplay(1)
+    );
   }
 
   ngOnDestroy() {

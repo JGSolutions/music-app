@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { IArtists } from 'models/artist.types';
 import { ISearchResults } from 'models/search.model';
 import { Observable, Subject } from 'rxjs';
@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public selectedTab = 0;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private store: Store, private router: Router) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
 
