@@ -4,7 +4,6 @@ import { Select, Store } from '@ngxs/store';
 import { IArtists } from 'models/artist.types';
 import { ISearchResults } from 'models/search.model';
 import { Observable, Subject } from 'rxjs';
-import { SelectArtistAction } from '../core/stores/artists/artists.actions';
 import { SearchState } from '../core/stores/search/search.state';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
@@ -36,8 +35,12 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   public selectArtist(item: IArtists) {
-    this.store.dispatch(new SelectArtistAction([item])).subscribe(() => {
-      this.router.navigate(["/", "artist", item.name]);
+    this.router.navigate(["/", "artist-songs"], {
+      queryParams: {
+        platform: item.platform,
+        id: item.id,
+        username: item.username
+      }
     });
   }
 }
