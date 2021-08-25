@@ -1,10 +1,11 @@
-import { IPlatformTypes } from "models/artist.types";
+import { IArtists, IPlatformTypes } from "models/artist.types";
 import { IAlbumInfo, IDurationType, ISong, ISongTrackType } from "models/song.types";
 import { ISelectedPlaylist } from "../playlist/playlist.types";
 
 export type ISongCommonState = ISong | ISelectedPlaylist;
 export interface ISongsState {
   songs: ISongCommonState[],
+  artist: IArtists,
   playlistSongs: ISongCommonState[],
   loading: boolean;
   songsLoading: boolean;
@@ -14,6 +15,7 @@ export interface ISongsState {
 
 export const songsStateDefault: ISongsState = {
   songs: [],
+  artist: {} as IArtists,
   playlistSongs: [],
   artistAlbum: {} as IAlbumInfo,
   currentTrack: {} as ICurrentTrack,

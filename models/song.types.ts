@@ -1,4 +1,4 @@
-import { IPlatformTypes } from "./artist.types";
+import { IArtists, IPlatformTypes } from "./artist.types";
 import { IAvatar } from "./avatar.types";
 
 export enum ISongTrackType {
@@ -50,5 +50,10 @@ export interface IAlbumInfo {
 
 export interface IAlbum {
   album: IAlbumInfo;
+  tracks: ISong[]
+}
+
+export interface IArtistTracks {
+  artists: IArtists[];
   tracks: ISong[]
 }

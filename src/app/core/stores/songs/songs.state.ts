@@ -91,7 +91,8 @@ export class SongsState {
     return this.apiService.artistSongs(uid, artistPlatform).pipe(
       tap((data) => {
         ctx.patchState({
-          songs: data,
+          songs: data.tracks,
+          artist: data.artists[0],
           songsLoading: false
         });
       })
