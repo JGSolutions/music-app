@@ -90,7 +90,7 @@ export const searchResultArtists = (dataApi: any): Promise<any> => {
       return {
         name: song.name,
         id: song.key,
-        username: song.name.toLowerCase(),
+        username: song.username.toLowerCase(),
         platform: IPlatformTypes.mixcloud,
         pictures: {
           medium: song.pictures.medium,
