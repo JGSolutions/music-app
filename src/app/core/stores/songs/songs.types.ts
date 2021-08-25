@@ -20,7 +20,7 @@ export const songsStateDefault: ISongsState = {
   artistAlbum: {} as IAlbumInfo,
   currentTrack: {} as ICurrentTrack,
   loading: false,
-  songsLoading: true
+  songsLoading: false
 };
 
 export interface ICurrentTrack {
