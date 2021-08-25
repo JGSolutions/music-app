@@ -9,33 +9,35 @@ import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.
 import { ISearchResults } from "../../models/search.model";
 import { isUndefined } from "lodash";
 
+const artistDataModel = (artist: any) => {
+  let images = {};
+  if (artist.images.length === 0) {
+    images = {};
+  } else {
+    images = {
+      medium: artist.images[2].url,
+      large: artist.images[1].url,
+      exLarge: artist.images[0].url,
+    };
+  }
+  return {
+    name: artist.name,
+    genres: artist.genres,
+    id: artist.uri.split(":")[2],
+    username: artist.name.toLowerCase(),
+    platform: IPlatformTypes.spotify,
+    pictures: images,
+  };
+};
+
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
-    const data = artistApi.map((artist: any) => {
-      let images = {};
-      if (artist.images.length === 0) {
-        images = {};
-      } else {
-        images = {
-          medium: artist.images[2].url,
-          large: artist.images[1].url,
-          exLarge: artist.images[0].url,
-        };
-      }
-      return {
-        name: artist.name,
-        genres: artist.genres,
-        id: artist.uri.split(":")[2],
-        username: artist.name.toLowerCase(),
-        platform: IPlatformTypes.spotify,
-        pictures: images,
-      };
-    });
+    const data = artistApi.map((artist: any) => artistDataModel(artist));
     resolve(data);
   });
 };
 
-export const artistSongs = (dataApi: any): Promise<ISong[]> => {
+export const artistSongs = (dataApi: any, artistData: any): Promise<any> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
@@ -56,7 +58,11 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
         },
       };
     });
-    resolve(data);
+
+    resolve({
+      tracks: data,
+      artist: artistDataModel(artistData),
+    });
   });
 };
 
@@ -235,11 +241,21 @@ export const SpotifySDK = {
     }
   },
 
+  // async artistDetails(artistid: string): Promise<IArtists[]> {
+  //   const url = `${this.apiDomain}/artists/${artistid}`;
+  //   const resp = await axios(url, this.requestHeaders());
+
+  //   return await artistsData([resp.data]);
+  // },
+
   async artistSongs(artistid: string): Promise<ISong[]> {
     const url = `${this.apiDomain}/artists/${artistid}/albums/`;
     const resp = await axios(url, this.requestHeaders());
 
-    return await artistSongs(resp.data.items);
+    const artistUrl = `${this.apiDomain}/artists/${artistid}`;
+    const respArtist = await axios(artistUrl, this.requestHeaders());
+
+    return await artistSongs(resp.data.items, respArtist.data);
   },
 
   async getArtistAlbum(albumId: string): Promise<IAlbum> {
