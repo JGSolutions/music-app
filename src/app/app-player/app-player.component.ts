@@ -15,6 +15,7 @@ import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '..
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SearchAction } from '../core/stores/search/search.actions';
+import { SearchState } from '../core/stores/search/search.state';
 
 @Component({
   selector: 'app-player',
@@ -24,6 +25,7 @@ import { SearchAction } from '../core/stores/search/search.actions';
 export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SearchState.searchLoading) searchLoading$!: Observable<boolean>;
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
@@ -90,5 +92,15 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       })]);
     })
 
+  }
+
+  public submitSearch() {
+    this.user$
+      .pipe(
+        take(1),
+        switchMap((user) => this.store.dispatch(new SearchAction(this.searchControl.value, user.uid!)))
+      ).subscribe(() => {
+        this.router.navigate(["/", "search"]);
+      });
   }
 }

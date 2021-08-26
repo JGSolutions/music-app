@@ -7,7 +7,8 @@
     <div class="search-container">
       <div class="search-field">
         <mat-icon class="search-icon">search</mat-icon>
-        <input type="text" autocomplete="none" class="search-field-input" placeholder="Search for artist or track" [formControl]="searchControl">
+        <input type="text" (keyup.enter)="submitSearch()" autocomplete="none" class="search-field-input" placeholder="Search for artist or track" [formControl]="searchControl">
+        <mat-progress-bar mode="indeterminate" *ngIf="searchLoading$ | async"></mat-progress-bar>
       </div>
     </div>
     <div class="options">
