@@ -10,7 +10,7 @@ import { filter } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 import { SearchTypeAction } from '../core/stores/search/search.actions';
 import { SearchState } from '../core/stores/search/search.state';
-import { SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { SetCurrentSongAction } from '../core/stores/songs/songs.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { UserState } from '../core/stores/user/user.state';
@@ -56,11 +56,26 @@ export class SearchComponent implements OnDestroy {
       filter(([songDetailById, currentTrack]) => currentTrack?.id !== selectedSong),
       map(([songDetailById]) => songDetailById(selectedSong))
     ).subscribe((data: ISongCommonState | undefined) => {
-      console.log(data);
       if (data?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', data?.platform, data?.id]);
       } else {
-        this.store.dispatch(new SetCurrentSelectedSongAction(data.id!, "songs"));
+
+        const currentTrack: ICurrentTrack = {
+          platform: data!.platform,
+          name: data!.name,
+          trackType: data!.trackType,
+          artist: data?.artistName || "",
+          externalUrl: data?.externalUrl || "",
+          avatar: data?.pictures?.medium,
+          duration: data?.duration,
+          durationType: data?.durationType,
+          audioFile: "",
+          isPlaying: false,
+          id: data?.id!,
+          albumid: data?.albumid || ""
+        };
+
+        this.store.dispatch(new SetCurrentSongAction(currentTrack));
       }
     });
   }
