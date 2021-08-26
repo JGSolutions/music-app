@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IUserType, UserStateModel } from './user.types';
@@ -13,8 +13,8 @@ import { ConnectedServicesAction } from '../connected-services/connected-service
 @State<UserStateModel>({
   name: 'user',
   defaults: {
-      user: null,
-      loaded: false,
+    user: null,
+    loaded: false,
   },
 })
 @Injectable()
