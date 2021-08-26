@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { SearchAction } from './search.actions';
+import { SearchAction, SearchTypeAction } from './search.actions';
 import { ISearchState, searchStateDefault } from './search.types';
 
 @State<ISearchState>({
@@ -24,6 +24,11 @@ export class SearchState {
     return state.searchResults;
   }
 
+  @Selector()
+  static searchType(state: ISearchState) {
+    return state.searchType;
+  }
+
   @Action(SearchAction)
   _search(ctx: StateContext<ISearchState>, { value, uid }: SearchAction) {
     ctx.patchState({
@@ -40,4 +45,10 @@ export class SearchState {
     )
   }
 
+  @Action(SearchTypeAction)
+  _searchType(ctx: StateContext<ISearchState>, { selected }: SearchTypeAction) {
+    ctx.patchState({
+      searchType: selected
+    });
+  }
 }

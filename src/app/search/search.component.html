@@ -1,5 +1,5 @@
 <mat-divider></mat-divider>
-<mat-tab-group class="sticky-element" style="background-color: white" [disablePagination]="true" (selectedIndexChange)="selectedTabChange($event)">
+<mat-tab-group class="sticky-element" [disablePagination]="true" (selectedIndexChange)="selectedTabChange($event)">
   <mat-tab label="Songs"> </mat-tab>
   <mat-tab label="Artists"> </mat-tab>
 </mat-tab-group>
@@ -8,11 +8,11 @@
   <div class="row">
     <div class="col-md">
       <ng-container [ngTemplateOutlet]="songs"
-        *ngIf="selectedTab === 0">
+        *ngIf="(searchType$ | async) === 0">
       </ng-container>
 
       <ng-container [ngTemplateOutlet]="artists"
-        *ngIf="selectedTab === 1">
+        *ngIf="(searchType$ | async) === 1">
       </ng-container>
     </div>
   </div>

@@ -1,9 +1,10 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { IArtists } from 'models/artist.types';
 import { ISearchResults } from 'models/search.model';
 import { Observable, Subject } from 'rxjs';
+import { SearchTypeAction } from '../core/stores/search/search.actions';
 import { SearchState } from '../core/stores/search/search.state';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
@@ -15,11 +16,11 @@ import { IUserType } from '../core/stores/user/user.types';
 export class SearchComponent implements OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SearchState.searchResults) searchResults$!: Observable<ISearchResults>;
+  @Select(SearchState.searchType) searchType$!: Observable<number>;
 
-  public selectedTab = 0;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private store: Store) { }
 
   ngOnDestroy() {
     this.destroy$.next(true);
@@ -27,7 +28,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   public selectedTabChange(evt: any) {
-    this.selectedTab = evt;
+    this.store.dispatch(new SearchTypeAction(evt));
   }
 
   public selectArtist(item: IArtists) {
