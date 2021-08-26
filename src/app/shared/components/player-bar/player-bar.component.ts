@@ -24,6 +24,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   @Input() currentTrack$!: Observable<ICurrentTrack>;
 
   @Output() trackReady = new EventEmitter<any>();
+  public playSongLoading$ = new Subject<boolean>();
 
   private destroy$ = new Subject<boolean>();
 
@@ -57,6 +58,13 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
         new LoadingPlayerAction(false)
       ]);
     });
+
+    this.howlService.$isPlaying.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.playSongLoading$.next(false);
+      this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
+    });
   }
 
   ngOnDestroy() {
@@ -67,7 +75,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   }
 
   public play(): void {
-    this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
+    this.playSongLoading$.next(true);
     this.howlService.play();
   }
 

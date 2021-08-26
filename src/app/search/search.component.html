@@ -1,0 +1,34 @@
+<mat-divider></mat-divider>
+<mat-tab-group class="sticky-element" [disablePagination]="true" (selectedIndexChange)="selectedTabChange($event)" [selectedIndex]="(searchType$ | async)">
+  <mat-tab label="Songs"> </mat-tab>
+  <mat-tab label="Artists"> </mat-tab>
+</mat-tab-group>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md">
+      <ng-container [ngTemplateOutlet]="songs"
+        *ngIf="(searchType$ | async) === 0">
+      </ng-container>
+
+      <ng-container [ngTemplateOutlet]="artists"
+        *ngIf="(searchType$ | async) === 1">
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #songs>
+  <div *ngFor="let item of (searchResults$ | async)?.tracks; let index = index">{{item.name}}</div>
+</ng-template>
+
+<ng-template #artists>
+  <div *ngFor="let item of (searchResults$ | async)?.artists" class="artist-item" (click)="selectArtist(item)">
+    <img [src]="item.pictures.exLarge" class="artist-image">
+
+    <div class="artist-info">
+      <span class="mat-title">{{item.name}}</span>
+      <img src="../assets/platforms/{{item.platform}}-large.png" class="platform-logo" >
+    </div>
+  </div>
+</ng-template>

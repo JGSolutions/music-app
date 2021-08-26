@@ -29,6 +29,11 @@ export class SongsState {
   }
 
   @Selector()
+  static artistInfo(state: ISongsState) {
+    return state.artist;
+  }
+
+  @Selector()
   static artistAlbum(state: ISongsState) {
     return state.artistAlbum;
   }
@@ -77,16 +82,26 @@ export class SongsState {
   }
 
   @Selector()
+  static songsLoading(state: ISongsState) {
+    return state.songsLoading;
+  }
+
+  @Selector()
   static loading(state: ISongsState) {
     return state.loading;
   }
 
   @Action(ArtistSongsAction)
   _artistSongs(ctx: StateContext<ISongsState>, { uid, artistPlatform }: ArtistSongsAction) {
+    ctx.patchState({
+      songsLoading: true
+    });
     return this.apiService.artistSongs(uid, artistPlatform).pipe(
       tap((data) => {
         ctx.patchState({
-          songs: data
+          songs: data.tracks,
+          artist: data.artists[0],
+          songsLoading: false
         });
       })
     )
@@ -97,6 +112,7 @@ export class SongsState {
     ctx.patchState({
       songs: [],
       artistAlbum: undefined,
+      artist: undefined,
     });
   }
 

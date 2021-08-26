@@ -5,37 +5,40 @@ import { updateConnectedService } from "../src/utils/connect-services-firebase";
 import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
-import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.types";
+import { IAlbum, ISong, ISongTrackType, IDurationType, IArtistTracks } from "../../models/song.types";
 import { ISearchResults } from "../../models/search.model";
 import { isUndefined } from "lodash";
+import { IAvatar } from "../../models/avatar.types";
+
+const artistDataModel = (artist: any): IArtists => {
+  let images = {} as IAvatar;
+  if (artist.images.length === 0) {
+    images = {} as IAvatar;
+  } else {
+    images = {
+      medium: artist.images[2].url,
+      large: artist.images[1].url,
+      exLarge: artist.images[0].url,
+    };
+  }
+  return {
+    name: artist.name,
+    genres: artist.genres,
+    id: artist.uri.split(":")[2],
+    username: artist.name.toLowerCase(),
+    platform: IPlatformTypes.spotify,
+    pictures: images,
+  };
+};
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
-    const data = artistApi.map((artist: any) => {
-      let images = {};
-      if (artist.images.length === 0) {
-        images = {};
-      } else {
-        images = {
-          medium: artist.images[2].url,
-          large: artist.images[1].url,
-          exLarge: artist.images[0].url,
-        };
-      }
-      return {
-        name: artist.name,
-        genres: artist.genres,
-        id: artist.uri.split(":")[2],
-        username: artist.name.toLowerCase(),
-        platform: IPlatformTypes.spotify,
-        pictures: images,
-      };
-    });
+    const data = artistApi.map((artist: any) => artistDataModel(artist));
     resolve(data);
   });
 };
 
-export const artistSongs = (dataApi: any): Promise<ISong[]> => {
+export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTracks> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
@@ -56,7 +59,11 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
         },
       };
     });
-    resolve(data);
+
+    resolve({
+      tracks: data,
+      artists: [artistDataModel(artistData)],
+    });
   });
 };
 
@@ -235,11 +242,14 @@ export const SpotifySDK = {
     }
   },
 
-  async artistSongs(artistid: string): Promise<ISong[]> {
+  async artistSongs(artistid: string): Promise<IArtistTracks> {
     const url = `${this.apiDomain}/artists/${artistid}/albums/`;
     const resp = await axios(url, this.requestHeaders());
 
-    return await artistSongs(resp.data.items);
+    const artistUrl = `${this.apiDomain}/artists/${artistid}`;
+    const respArtist = await axios(artistUrl, this.requestHeaders());
+
+    return await artistSongs(resp.data.items, respArtist.data);
   },
 
   async getArtistAlbum(albumId: string): Promise<IAlbum> {

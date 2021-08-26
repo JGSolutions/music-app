@@ -4,7 +4,8 @@ import { catchError, map, retry } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IArtistBodyRequest, IArtists, IPlatformTypes } from 'models/artist.types';
-import { IAlbum, ISong, IStreamUrl } from 'models/song.types';
+import { IAlbum, IArtistTracks, IStreamUrl } from 'models/song.types';
+import { ISearchResults } from 'models/search.model';
 
 
 @Injectable()
@@ -27,7 +28,7 @@ export class ApiService {
     );
   }
 
-  public artistSongs(uid: string | undefined, payload: IArtistBodyRequest[]): Observable<ISong[]> {
+  public artistSongs(uid: string | undefined, payload: IArtistBodyRequest[]): Observable<IArtistTracks> {
     const url = `${this.domainApi}/artist`;
 
     const httpOptions = {
@@ -36,7 +37,7 @@ export class ApiService {
       })
     };
 
-    return this.http.post<ISong[]>(url, JSON.stringify(payload), httpOptions);
+    return this.http.post<IArtistTracks>(url, JSON.stringify(payload), httpOptions);
   }
 
   public artistAlbum(uid: string, platform: IPlatformTypes, id: string): Observable<IAlbum> {
@@ -106,5 +107,16 @@ export class ApiService {
 
     const url = `${this.domainApi}/device-playback?deviceid=${deviceid}`;
     return this.http.get<string>(url, httpOptions);
+  }
+
+  public search(searchTerm: string, uid: string): Observable<ISearchResults> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Authorization": uid
+      })
+    };
+
+    const url = `${this.domainApi}/search?search=${searchTerm}`;
+    return this.http.get<ISearchResults>(url, httpOptions);
   }
 }

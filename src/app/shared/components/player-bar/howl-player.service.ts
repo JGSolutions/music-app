@@ -42,8 +42,8 @@ export class HowlerPlayerService {
         this.$onload.next();
       },
       onplay: () => {
-        this._raf = requestAnimationFrame(this._whilePlaying.bind(this));
         this.$isPlaying.next(this._sound.playing());
+        this._raf = requestAnimationFrame(this._whilePlaying.bind(this));
       }
     })
   }

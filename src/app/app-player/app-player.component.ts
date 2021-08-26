@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { filter, map, shareReplay, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { isEmpty } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -12,6 +12,10 @@ import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { AddHistoryAction } from '../core/stores/history/history.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
+import { SearchAction } from '../core/stores/search/search.actions';
+import { SearchState } from '../core/stores/search/search.state';
 
 @Component({
   selector: 'app-player',
@@ -21,18 +25,22 @@ import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '..
 export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SearchState.searchLoading) searchLoading$!: Observable<boolean>;
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
   public platformTypes = IPlatformTypes;
-
+  public searchControl: FormControl;
+  public focusField = false;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private breakpointObserver: BreakpointObserver, private store: Store) {
+  constructor(private breakpointObserver: BreakpointObserver, private store: Store, private router: Router) {
     this.isMobile$ = this.breakpointObserver.observe('(max-width: 576px)').pipe(
       map((result) => result.matches),
       shareReplay(1)
     );
+
+    this.searchControl = new FormControl();
   }
 
   ngOnInit() {
@@ -46,7 +54,21 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
     this.currentTrackSelected$ = this.currentTrack$.pipe(
       map((currentTrack) => !isEmpty(currentTrack)),
       shareReplay(1)
-    )
+    );
+
+    this.searchControl.valueChanges
+      .pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged(),
+        debounceTime(650),
+        filter(value => value.length >= 2),
+        withLatestFrom(this.user$),
+        switchMap(([searchValue, user]) => {
+          return this.store.dispatch(new SearchAction(searchValue, user.uid!))
+        })
+      ).subscribe(() => {
+        this.router.navigate(["/", "search"]);
+      });
   }
 
   ngOnDestroy() {
@@ -71,5 +93,23 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       })]);
     })
 
+  }
+
+  public unFocusSearchField() {
+    this.focusField = false;
+  }
+
+  public focusSearchField() {
+    this.focusField = true;
+  }
+
+  public submitSearch() {
+    this.user$
+      .pipe(
+        take(1),
+        switchMap((user) => this.store.dispatch(new SearchAction(this.searchControl.value, user.uid!)))
+      ).subscribe(() => {
+        this.router.navigate(["/", "search"]);
+      });
   }
 }
