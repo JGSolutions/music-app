@@ -31,6 +31,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   public currentTrackSelected$!: Observable<boolean>;
   public platformTypes = IPlatformTypes;
   public searchControl: FormControl;
+  public focusField = false;
   private destroy$ = new Subject<boolean>();
 
   constructor(private breakpointObserver: BreakpointObserver, private store: Store, private router: Router) {
@@ -92,6 +93,14 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       })]);
     })
 
+  }
+
+  public unFocusSearchField() {
+    this.focusField = false;
+  }
+
+  public focusSearchField() {
+    this.focusField = true;
   }
 
   public submitSearch() {
