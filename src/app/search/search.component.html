@@ -1,5 +1,5 @@
 <mat-divider></mat-divider>
-<mat-tab-group class="sticky-element" [disablePagination]="true" (selectedIndexChange)="selectedTabChange($event)">
+<mat-tab-group class="sticky-element" [disablePagination]="true" (selectedIndexChange)="selectedTabChange($event)" [selectedIndex]="(searchType$ | async)">
   <mat-tab label="Songs"> </mat-tab>
   <mat-tab label="Artists"> </mat-tab>
 </mat-tab-group>
