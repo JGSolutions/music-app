@@ -60,10 +60,14 @@ export class ArtistsState {
 
   @Action(ArtistsAction)
   _artistList(ctx: StateContext<IArtistsState>, { uid }: ArtistsAction) {
+    ctx.patchState({
+      loading: true,
+    });
     return this.apiService.artists(uid!).pipe(
       tap((data) => {
         ctx.patchState({
           artists: data,
+          loading: false,
         });
       })
     )

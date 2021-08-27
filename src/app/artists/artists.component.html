@@ -15,5 +15,7 @@
         <app-artist-item [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
       </div>
     </div>
+
+    <app-empty-results [message]="'Following No Artists'" *ngIf="(artists | keyvalue)?.length === 0 && !(loading$ | async)"></app-empty-results>
   </div>
 </div>
