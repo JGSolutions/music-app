@@ -1,4 +1,26 @@
 import axios from "axios";
+import { IArtists, IPlatformTypes } from "../../models/artist.types";
+
+const artistDataModel = (artist: any): IArtists => {
+  return {
+    name: artist.full_name || artist.username,
+    id: artist.id.toString(),
+    username: artist.username,
+    platform: IPlatformTypes.soundcloud,
+    pictures: {
+      medium: artist.avatar_url,
+      large: artist.avatar_url,
+      exLarge: artist.avatar_url,
+    },
+  };
+};
+
+export const artistListData = (artistApi: any): Promise<IArtists[]> => {
+  return new Promise((resolve) => {
+    const data = artistApi.collection.map((artist: any) => artistDataModel(artist));
+    resolve(data);
+  });
+};
 
 export const auth = {
   url: "",
@@ -37,11 +59,11 @@ export const auth = {
     return await axios.post(apiUrl, params, postHeaders);
   },
 
-  async following() {
-    const url = `${this.soundcloudDomain}/me/followings?limit=2`;
+  async following(): Promise<IArtists[]> {
+    const url = `${this.soundcloudDomain}/me/followings?limit=50`;
     const resp = await axios.get(url, this.requestHeaders());
-    console.log(resp);
-    // return await mixcloudArtistsData(resp.data.data);
+
+    return await artistListData(resp.data);
   },
 
   requestHeaders(): any {

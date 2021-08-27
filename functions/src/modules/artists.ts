@@ -52,7 +52,6 @@ export const artists = async (request: Request, response: Response) => {
 
     const res: Record<string, IArtists[]> = reduce(sortedData, (result: any, value: any) => {
       const artistKeys = keys(result);
-
       const matches = stringSimilarity.findBestMatch(value.name, artistKeys.length > 0 ? artistKeys : allArtistsKeys);
 
       if (matches.bestMatch.rating >= 0.75) {
