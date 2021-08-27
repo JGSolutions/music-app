@@ -1,13 +1,16 @@
 import { throwError } from "rxjs";
+import axios from "axios";
 
 export const auth = {
   url: "",
   clientId: "",
+  clientSecret: "",
   soundcloudDomain: "https://api.soundcloud.com",
   redirectUri: "",
 
-  config(clientId: string, redirectUri: string): void {
+  config(clientId: string, clientSecret: string, redirectUri: string): void {
     this.clientId = clientId;
+    this.clientSecret = clientSecret;
     this.redirectUri = redirectUri;
   },
 
@@ -20,13 +23,17 @@ export const auth = {
     return `${this.soundcloudDomain}/connect${q}`;
   },
 
-  oauthToken(oAuthCode: string): string {
-    if (!this.clientId) {
-      throwError("Api keys are not provided!");
-    }
+  async oauthToken(oAuthCode: string): Promise<string> {
+    const postHeaders = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
 
+    const apiUrl = `${this.soundcloudDomain}/oauth2/token`;
     // eslint-disable-next-line max-len
-    return `${this.soundcloudDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&code=${oAuthCode}`;
+    const params = `grant_type=authorization_code&client_id=${this.clientId}&code=${oAuthCode}&client_secret=${this.clientSecret}&redirect_uri=${this.redirectUri}`;
+    return await axios.post(apiUrl, params, postHeaders);
   },
 
 };

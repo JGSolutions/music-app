@@ -23,7 +23,8 @@ export const environment = {
   },
   soundcloud: {
     clientId: '0379hWbkG6ZgISNxhhJXTlDcjFKjTJCX',
-    secretApi: 'LcyCEu5VtYbPI2KzEhWLruo7ImHEZcIg'
+    secretApi: 'LcyCEu5VtYbPI2KzEhWLruo7ImHEZcIg',
+    uriRedirect: 'https://music-app-5c927.firebaseapp.com/soundcloud-callback'
   },
   // restapiDomain: "https://music-restapi.web.app/api",
   restapiDomain: "http://localhost:5000/api",

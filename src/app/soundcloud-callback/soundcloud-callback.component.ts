@@ -26,15 +26,10 @@ export class SoundCloudCallbackComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // MixcloudAuthorization.config(
-    //   environment.mixcloud.clientId,
-    //   environment.mixcloud.secretApi,
-    //   `${environment.appDomain}mixcloud-callback`
-    // );
-
     auth.config(
       environment.soundcloud.clientId,
-      "https://music-app-5c927.firebaseapp.com/soundcloud-callback"
+      environment.soundcloud.secretApi,
+      environment.soundcloud.uriRedirect,
     );
 
     combineLatest([this.user$, this.route.queryParams]).pipe(
