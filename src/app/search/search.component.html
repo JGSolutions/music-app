@@ -19,7 +19,24 @@
 </div>
 
 <ng-template #songs>
-  <div *ngFor="let item of (searchResults$ | async)?.tracks; let index = index">{{item.name}}</div>
+  <app-song-item
+      *ngFor="let song of (searchResults$ | async)?.tracks"
+      [currentTrackId]="(currentTrack$ | async)?.id!"
+      [albumId]="(currentTrack$ | async)?.albumid!"
+      [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+      [name]="song.name"
+      [id]="song.id!"
+      [length]="song.duration!"
+      [durationType]="song.durationType!"
+      [totalTracks]="song?.totalTracks!"
+      [platform]="song.platform"
+      [avatar]="song?.pictures?.medium!"
+      [externalUrl]="song.externalUrl!"
+      [trackType]="song.trackType"
+      [dateCreated]="song.createdTime"
+      (addToPlaylistEvent)="addToPlayList($event)"
+      (selectedSong)="selectedSong($event)">
+    </app-song-item>
 </ng-template>
 
 <ng-template #artists>

@@ -29,6 +29,11 @@ export class SearchState {
     return state.searchType;
   }
 
+  @Selector()
+  static songDetailById(state: ISearchState) {
+    return (id: string) => state.searchResults.tracks.find((song) => song.id === id);
+  }
+
   @Action(SearchAction)
   _search(ctx: StateContext<ISearchState>, { value, uid }: SearchAction) {
     ctx.patchState({

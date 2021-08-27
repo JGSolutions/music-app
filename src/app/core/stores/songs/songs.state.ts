@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction } from './songs.actions';
+import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction } from './songs.actions';
 import { songsStateDefault, ISongsState, ICurrentTrack, ISongCommonState } from './songs.types';
 import { cloneDeep, orderBy as _orderBy } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -212,6 +212,13 @@ export class SongsState {
   _loadingPlayerAction(ctx: StateContext<ISongsState>, { loading }: LoadingPlayerAction) {
     ctx.patchState({
       loading
+    });
+  }
+
+  @Action(SetCurrentSongAction)
+  _setCurrentSongAction({ patchState }: StateContext<ISongsState>, { currentTrack }: SetCurrentSongAction) {
+    patchState({
+      currentTrack
     });
   }
 }
