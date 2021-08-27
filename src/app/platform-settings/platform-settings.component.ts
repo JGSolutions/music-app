@@ -36,7 +36,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     private store: Store) {
     auth.config(
       environment.soundcloud.clientId,
-      "http://mustagheesbutt.github.io/SC_API/callback.html"
+      "https://music-app-5c927.firebaseapp.com/soundcloud-callback"
     );
 
     // auth.config(

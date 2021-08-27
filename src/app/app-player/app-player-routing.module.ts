@@ -69,6 +69,12 @@ const routes: Routes = [
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../spotify-callback/spotify-callback.module').then(m => m.SpotifyCallbackModule)
+      },
+      {
+        path: 'soundcloud-callback',
+        canActivate: [AngularFireAuthGuard],
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        loadChildren: () => import('../soundcloud-callback/soundcloud-callback.module').then(m => m.SoundcloudCallbackModule)
       }
     ]
   }
