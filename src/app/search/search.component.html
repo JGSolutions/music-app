@@ -19,8 +19,6 @@
 </div>
 
 <ng-template #songs>
-  <!--
-  (addToPlaylistEvent)="addToPlayList($event)" -->
   <app-song-item
       *ngFor="let song of (searchResults$ | async)?.tracks"
       [currentTrackId]="(currentTrack$ | async)?.id!"
@@ -36,6 +34,7 @@
       [externalUrl]="song.externalUrl!"
       [trackType]="song.trackType"
       [dateCreated]="song.createdTime"
+      (addToPlaylistEvent)="addToPlayList($event)"
       (selectedSong)="selectedSong($event)">
     </app-song-item>
 </ng-template>

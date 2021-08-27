@@ -1,4 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { IArtists } from 'models/artist.types';
@@ -15,6 +16,7 @@ import { SongsState } from '../core/stores/songs/songs.state';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
+import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -25,11 +27,10 @@ export class SearchComponent implements OnDestroy {
   @Select(SearchState.searchResults) searchResults$!: Observable<ISearchResults>;
   @Select(SearchState.searchType) searchType$!: Observable<number>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  public songDetailById$ = this.store.select(SearchState.songDetailById);
   private destroy$ = new Subject<boolean>();
 
-  public songDetailById$ = this.store.select(SearchState.songDetailById);
-
-  constructor(private router: Router, private store: Store) { }
+  constructor(private router: Router, private store: Store, private dialog: MatDialog) { }
 
   ngOnDestroy() {
     this.destroy$.next(true);
@@ -76,6 +77,37 @@ export class SearchComponent implements OnDestroy {
         };
 
         this.store.dispatch(new SetCurrentSongAction(currentTrack));
+      }
+    });
+  }
+
+  public addToPlayList(selectedSong: string): void {
+    this.songDetailById$.pipe(
+      take(1),
+      map(fn => fn(selectedSong))
+    ).subscribe((data: (ISongCommonState | undefined)) => {
+      if (data?.trackType !== ISongTrackType.track) {
+        this.router.navigate(['artist-album', data?.platform, data?.id]);
+      } else {
+        const song: ISongCommonState = {
+          id: data?.id,
+          name: data?.name!,
+          platform: data?.platform!,
+          playlists: [],
+          duration: data?.duration,
+          durationType: data?.durationType!,
+          trackType: data?.trackType!,
+          pictures: data?.pictures!,
+          externalUrl: data?.externalUrl,
+          createdTime: data?.createdTime || ''
+        };
+
+        this.dialog.open(AddPlaylistDialogComponent, {
+          maxWidth: '350px',
+          panelClass: 'playlist-dialog',
+          hasBackdrop: true,
+          data: song
+        });
       }
     });
   }
