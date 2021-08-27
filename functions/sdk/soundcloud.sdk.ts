@@ -1,4 +1,3 @@
-import { throwError } from "rxjs";
 import axios from "axios";
 
 export const auth = {
@@ -7,6 +6,7 @@ export const auth = {
   clientSecret: "",
   soundcloudDomain: "https://api.soundcloud.com",
   redirectUri: "",
+  token: "",
 
   config(clientId: string, clientSecret: string, redirectUri: string): void {
     this.clientId = clientId;
@@ -14,10 +14,11 @@ export const auth = {
     this.redirectUri = redirectUri;
   },
 
+  setToken(token: string): void {
+    this.token = token!;
+  },
+
   authorizeUrl(): string {
-    if (!this.clientId) {
-      throwError("Please provide a client id");
-    }
     // eslint-disable-next-line max-len
     const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=code`;
     return `${this.soundcloudDomain}/connect${q}`;
@@ -36,5 +37,19 @@ export const auth = {
     return await axios.post(apiUrl, params, postHeaders);
   },
 
+  async following() {
+    const url = `${this.soundcloudDomain}/me/followings?limit=2`;
+    const resp = await axios.get(url, this.requestHeaders());
+    console.log(resp);
+    // return await mixcloudArtistsData(resp.data.data);
+  },
+
+  requestHeaders(): any {
+    return {
+      headers: {
+        "Authorization": "Bearer " + this.token,
+      },
+    };
+  },
 };
 
