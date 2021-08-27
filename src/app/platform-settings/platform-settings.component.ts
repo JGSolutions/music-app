@@ -27,6 +27,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
 
   public isMixcloudConnected$!: Observable<boolean>;
   public isSpotifyConnected$!: Observable<boolean>;
+  public isSoundcloudConnected$!: Observable<boolean>;
   public connectedServices = IPlatformTypes;
 
   private destroy$ = new Subject<boolean>();
@@ -66,9 +67,22 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
       shareReplay(1)
     );
 
+
+    this.isSoundcloudConnected$ = this.connectedServices$.pipe(
+      filter((services) => !_isUndefined(services)),
+      map((services) => {
+        if (services[IPlatformTypes.soundcloud]) {
+          return true;
+        }
+
+        return false;
+      }),
+      shareReplay(1)
+    );
+
     this.connectedServices$.pipe(
-      withLatestFrom(this.user$),
       takeUntil(this.destroy$),
+      withLatestFrom(this.user$),
       distinctUntilChanged((oldData, newData) => _isEqual(oldData, newData)),
       filter(([connectedServices, user]) => user !== null)
     ).subscribe(([connectedServices, user]) => {

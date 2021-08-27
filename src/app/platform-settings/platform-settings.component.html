@@ -28,8 +28,8 @@
 
       <section class="platform-wrapper">
         <div class="logo">
-          <img src="../../assets/platforms/mixcloud-large.png" class="image">
-          <mat-slide-toggle (change)="settingsToService($event, connectedServices.soundcloud)"></mat-slide-toggle>
+          <img src="../../assets/platforms/soundcloud-large.png" class="image">
+          <mat-slide-toggle [checked]="(isSoundcloudConnected$ | async)" (change)="settingsToService($event, connectedServices.soundcloud)"></mat-slide-toggle>
         </div>
         <p class="mat-body-2">Connect to your soundcloud account all for free. You will be able to view your favorite artists & tracks!</p>
         <mat-divider></mat-divider>
