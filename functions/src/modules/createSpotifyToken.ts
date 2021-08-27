@@ -24,5 +24,5 @@ export const createSpotifyToken = async (request: Request, response: Response) =
     },
   }, { merge: true });
 
-  return response.status(200).send("done");
+  return response.status(200).send(data);
 };

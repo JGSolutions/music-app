@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
@@ -10,7 +10,7 @@ export class PlaylistService {
   constructor(private afs: AngularFirestore) { }
 
   public playlistDetails(playlist: string) {
-    return this.afs.collection('playlist').doc(playlist).get();
+    return this.afs.doc(`playlist/${playlist}`).get();
   }
 
   public create(data: any): Promise<void> {
@@ -39,17 +39,18 @@ export class PlaylistService {
     ).valueChanges();
   }
 
-  public removePlaylistTrack(playlistid: string, uid: string) {
-    return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(playlistid).delete();
+  public removePlaylistTrack(playlistid: string, trackid: string, uid: string) {
+    this.removeCoverImage(trackid, playlistid, uid);
+    return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(trackid).delete();
   }
 
   public getPlaylists(uid: string): Observable<IPlaylist[]> {
     return this.afs
-      .collection<IPlaylist>("playlist", (ref) =>
+      .collection<IPlaylist>("playlist", (ref: any) =>
         ref.where("uid", "==", uid)
       ).snapshotChanges()
       .pipe(
-        map((exercises) => {
+        map((exercises: any[]) => {
           const data = exercises.map((a) => {
             return { id: a.payload.doc.id, ...a.payload.doc.data() };
           });

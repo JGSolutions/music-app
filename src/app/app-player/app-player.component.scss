@@ -39,20 +39,38 @@
 
     .search-container {
       flex-grow: 1;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+
+      .search-field {
+        position: relative;
+        width: 100%;
+        max-width: 450px;
+
+        .search-icon {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+        }
+      }
+
     }
 
-    .search-field {
-      background: rgba(33, 33, 33, 0.08);
-      box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
-      border-radius: 4px;
+    .search-field-input {
+      background: rgba(33, 33, 33, 0.055);
+      border-radius: 8px;
       width: 100%;
       max-width: 500px;
       height: 48px;
       border: 0;
       outline: none;
       font-size: 16px;
-      color: #999;
+      color: rgb(117, 117, 117);
+      padding-left: 44px;
+    }
+
+    input.search-field-input:focus {
+      background-color: white;
     }
 
     .avatar {

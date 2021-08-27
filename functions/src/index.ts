@@ -10,6 +10,7 @@ import { artistAlbum } from "./modules/artistAlbum";
 import { adminFirebase } from "./modules/fb";
 import { clone } from "lodash";
 import { search } from "./modules/search";
+import { devicePlayback, spotifyPlayback } from "./modules/spotifyPlayback";
 
 const app = express();
 const main = express();
@@ -25,6 +26,8 @@ export const api = functions.runWith({ memory: "2GB", timeoutSeconds: 540 }).htt
 app.get("/artists", artists);
 app.post("/artist", artist);
 app.post("/mixcloud-audio", mixcloudAudio);
+app.get("/spotify-playback", spotifyPlayback);
+app.get("/device-playback", devicePlayback);
 app.get("/create-spotify-token", createSpotifyToken);
 app.get("/artist-album", artistAlbum);
 app.get("/search", search);

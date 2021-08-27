@@ -5,37 +5,40 @@ import { updateConnectedService } from "../src/utils/connect-services-firebase";
 import { spotifyKeys } from "./api-keys";
 import { IAuthorizationToken, IRefreshAuthorizationToken } from "../../models/spotify.model";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
-import { IAlbum, ISong, ISongTrackType, IDurationType } from "../../models/song.types";
+import { IAlbum, ISong, ISongTrackType, IDurationType, IArtistTracks } from "../../models/song.types";
 import { ISearchResults } from "../../models/search.model";
 import { isUndefined } from "lodash";
+import { IAvatar } from "../../models/avatar.types";
+
+const artistDataModel = (artist: any): IArtists => {
+  let images = {} as IAvatar;
+  if (artist.images.length === 0) {
+    images = {} as IAvatar;
+  } else {
+    images = {
+      medium: artist.images[2].url,
+      large: artist.images[1].url,
+      exLarge: artist.images[0].url,
+    };
+  }
+  return {
+    name: artist.name,
+    genres: artist.genres,
+    id: artist.uri.split(":")[2],
+    username: artist.name.toLowerCase(),
+    platform: IPlatformTypes.spotify,
+    pictures: images,
+  };
+};
 
 export const artistsData = (artistApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
-    const data = artistApi.map((artist: any) => {
-      let images = {};
-      if (artist.images.length === 0) {
-        images = {};
-      } else {
-        images = {
-          medium: artist.images[2].url,
-          large: artist.images[1].url,
-          exLarge: artist.images[0].url,
-        };
-      }
-      return {
-        name: artist.name,
-        genres: artist.genres,
-        id: artist.uri.split(":")[2],
-        username: artist.name.toLowerCase(),
-        platform: IPlatformTypes.spotify,
-        pictures: images,
-      };
-    });
+    const data = artistApi.map((artist: any) => artistDataModel(artist));
     resolve(data);
   });
 };
 
-export const artistSongs = (dataApi: any): Promise<ISong[]> => {
+export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTracks> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
@@ -56,7 +59,11 @@ export const artistSongs = (dataApi: any): Promise<ISong[]> => {
         },
       };
     });
-    resolve(data);
+
+    resolve({
+      tracks: data,
+      artists: [artistDataModel(artistData)],
+    });
   });
 };
 
@@ -132,6 +139,11 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
         trackType: song.type,
         platform: IPlatformTypes.spotify,
         uri: song.uri,
+        pictures: {
+          medium: song.album.images[2].url,
+          large: song.album.images[1].url,
+          exLarge: song.album.images[0].url,
+        },
         album: {
           name: song.album.name,
           uri: song.album.uri,
@@ -205,10 +217,13 @@ export const SpotifySDK = {
     const postHeaders = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+        // "Authorization": "Basic OWU4NWEyMGM2OTE0NDMyNjg5OWM2ZmRhZTY2MTY3ZTc6ZDQxMmUzNTQ0MGM2NGMxYjgwNDEyM2MzZTI5NWY1Zjg=",
+        "Authorization": `Basic ${Buffer.from(`${spotifyKeys.clientId}:${spotifyKeys.secretApi}`).toString("base64")}`,
       },
     };
 
-    const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
+    // const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
+    const params = `grant_type=authorization_code&code=${oAuthCode}&redirect_uri=https://music-app-5c927.firebaseapp.com/spotify-callback`;
     const data = await axios.post(this.accountApi, params, postHeaders);
     return data.data;
   },
@@ -232,11 +247,14 @@ export const SpotifySDK = {
     }
   },
 
-  async artistSongs(artistid: string): Promise<ISong[]> {
+  async artistSongs(artistid: string): Promise<IArtistTracks> {
     const url = `${this.apiDomain}/artists/${artistid}/albums/`;
     const resp = await axios(url, this.requestHeaders());
 
-    return await artistSongs(resp.data.items);
+    const artistUrl = `${this.apiDomain}/artists/${artistid}`;
+    const respArtist = await axios(artistUrl, this.requestHeaders());
+
+    return await artistSongs(resp.data.items, respArtist.data);
   },
 
   async getArtistAlbum(albumId: string): Promise<IAlbum> {
@@ -255,6 +273,55 @@ export const SpotifySDK = {
     const url = `${this.apiDomain}/search?q=${query}&type=track,artist`;
     const resp = await axios(url, this.requestHeaders());
     return await searchResults(resp.data);
+  },
+
+  async playback(id: string | undefined): Promise<any> {
+    const request = {
+      uris: [`spotify:track:${id}`],
+    };
+
+    try {
+      return axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
+    } catch (err) {
+      if (err.response?.status === 401) {
+        // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
+
+        // await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
+        // this.queryParamAccessToken = res.access_token;
+        // console.log("error occured will try again...");
+        // return await this.playback(id);
+
+        return this.reAuth(() => this.playback(id));
+      }
+    }
+  },
+
+  async devicePlayback(deviceId: string | undefined): Promise<any> {
+    const request = { device_ids: [deviceId], play: false };
+
+    try {
+      return axios.put(`${this.apiDomain}/me/player`, request, this.requestHeaders());
+    } catch (err) {
+      if (err.response?.status === 401) {
+        // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
+
+        // await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
+        // this.queryParamAccessToken = res.access_token;
+        // console.log("error occured will try again...");
+        // return await this.devicePlayback(deviceId);
+
+        return this.reAuth(() => this.devicePlayback(deviceId));
+      }
+    }
+  },
+
+  async reAuth(cb: () => Promise<any>): Promise<any> {
+    const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
+
+    await updateConnectedService(this.authorized, res.access_token, IPlatformTypes.spotify);
+    this.queryParamAccessToken = res.access_token;
+
+    return cb();
   },
 
   requestHeaders() {

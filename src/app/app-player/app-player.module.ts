@@ -9,7 +9,6 @@ import { AngularMaterialModule } from 'src/angular-material.module';
 import { NgxsModule } from '@ngxs/store';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { PlayerState } from '../core/stores/player/player.state';
 import { PlayerbarModule } from '../shared/components/player-bar/player-bar.module';
 import { HowlerPlayerService } from '../shared/components/player-bar/howl-player.service';
 import { CurrentTrackService } from '../services/current-track.service';
@@ -17,6 +16,8 @@ import { HistoryService } from '../services/history.service';
 import { SpotifyPlayerModule } from '../shared/components/spotify-player/spotify-player.module';
 import { PlaylistService } from '../services/playlist.service';
 import { SongsState } from '../core/stores/songs/songs.state';
+import { SearchState } from '../core/stores/search/search.state';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -27,7 +28,8 @@ import { SongsState } from '../core/stores/songs/songs.state';
     AppPlayerRoutingModule,
     PlayerbarModule,
     SpotifyPlayerModule,
-    NgxsModule.forFeature([ConnectedServicesState, ArtistsState, PlayerState, SongsState]),
+    ReactiveFormsModule,
+    NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState, SearchState]),
   ],
   providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService, PlaylistService],
 })

@@ -1,0 +1,51 @@
+<mat-divider></mat-divider>
+<mat-tab-group class="sticky-element" [disablePagination]="true" (selectedIndexChange)="selectedTabChange($event)" [selectedIndex]="(searchType$ | async)">
+  <mat-tab label="Songs"> </mat-tab>
+  <mat-tab label="Artists"> </mat-tab>
+</mat-tab-group>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md">
+      <ng-container [ngTemplateOutlet]="songs"
+        *ngIf="(searchType$ | async) === 0">
+      </ng-container>
+
+      <ng-container [ngTemplateOutlet]="artists"
+        *ngIf="(searchType$ | async) === 1">
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #songs>
+  <app-song-item
+      *ngFor="let song of (searchResults$ | async)?.tracks"
+      [currentTrackId]="(currentTrack$ | async)?.id!"
+      [albumId]="(currentTrack$ | async)?.albumid!"
+      [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+      [name]="song.name"
+      [id]="song.id!"
+      [length]="song.duration!"
+      [durationType]="song.durationType!"
+      [totalTracks]="song?.totalTracks!"
+      [platform]="song.platform"
+      [avatar]="song?.pictures?.medium!"
+      [externalUrl]="song.externalUrl!"
+      [trackType]="song.trackType"
+      [dateCreated]="song.createdTime"
+      (addToPlaylistEvent)="addToPlayList($event)"
+      (selectedSong)="selectedSong($event)">
+    </app-song-item>
+</ng-template>
+
+<ng-template #artists>
+  <div *ngFor="let item of (searchResults$ | async)?.artists" class="artist-item" (click)="selectArtist(item)">
+    <img [src]="item.pictures.exLarge" class="artist-image">
+
+    <div class="artist-info">
+      <span class="mat-title">{{item.name}}</span>
+      <img src="../assets/platforms/{{item.platform}}-large.png" class="platform-logo" >
+    </div>
+  </div>
+</ng-template>

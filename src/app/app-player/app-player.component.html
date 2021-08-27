@@ -3,9 +3,13 @@
     <mat-icon>menu</mat-icon>
   </button>
   <div class="header-wrapper">
-    <div>Music App</div>
+    <div>Logo Go here</div>
     <div class="search-container">
-      <input type="text" class="search-field" placeholder="Search for artist or track">
+      <div class="search-field">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input [class.mat-elevation-z1]="focusField" type="text" (focus)="focusSearchField()" (blur)="unFocusSearchField()" (keyup.enter)="submitSearch()" autocomplete="none" class="search-field-input" placeholder="Search for artists and tracks" [formControl]="searchControl">
+        <mat-progress-bar mode="indeterminate" *ngIf="searchLoading$ | async"></mat-progress-bar>
+      </div>
     </div>
     <div class="options">
       <img [src]="(user$ | async)?.photoURL" class="avatar">
@@ -63,11 +67,9 @@
   <app-player-bar
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
     (trackReady)="trackHistory($event)"
-    [currentTrack$]="currentTrack$!"
-    [loading$]="loadingPlayer$">
+    [currentTrack$]="currentTrack$!">
   </app-player-bar>
   <app-spotify-player
-    [loading$]="loadingPlayer$"
     (trackReady)="trackHistory($event)"
     [currentTrack$]="currentTrack$!"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">

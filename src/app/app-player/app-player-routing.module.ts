@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+import { AngularFireAuthGuard, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
 import { AppPlayerComponent } from './app-player.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
@@ -23,6 +23,12 @@ const routes: Routes = [
         loadChildren: () => import('../artist-profile/artist-profile.module').then(m => m.ArtistProfileModule)
       },
       {
+        path: 'artist-songs',
+        canActivate: [AngularFireAuthGuard],
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        loadChildren: () => import('../artist-songs/artist-songs.module').then(m => m.ArtistSongsViewModule)
+      },
+      {
         path: 'artist-album/:platform/:id',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
@@ -33,6 +39,12 @@ const routes: Routes = [
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../playlist/playlist.module').then(m => m.PlaylistModule)
+      },
+      {
+        path: 'search',
+        canActivate: [AngularFireAuthGuard],
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        loadChildren: () => import('../search/search.module').then(m => m.SearchModule)
       },
       {
         path: 'playlist/:playlistid',

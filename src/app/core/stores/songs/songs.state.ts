@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction } from './songs.actions';
+import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction } from './songs.actions';
 import { songsStateDefault, ISongsState, ICurrentTrack, ISongCommonState } from './songs.types';
 import { cloneDeep, orderBy as _orderBy } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -26,6 +26,11 @@ export class SongsState {
   @Selector()
   static songs(state: ISongsState) {
     return state.songs;
+  }
+
+  @Selector()
+  static artistInfo(state: ISongsState) {
+    return state.artist;
   }
 
   @Selector()
@@ -77,6 +82,11 @@ export class SongsState {
   }
 
   @Selector()
+  static songsLoading(state: ISongsState) {
+    return state.songsLoading;
+  }
+
+  @Selector()
   static loading(state: ISongsState) {
     return state.loading;
   }
@@ -84,13 +94,14 @@ export class SongsState {
   @Action(ArtistSongsAction)
   _artistSongs(ctx: StateContext<ISongsState>, { uid, artistPlatform }: ArtistSongsAction) {
     ctx.patchState({
-      loading: true,
+      songsLoading: true
     });
     return this.apiService.artistSongs(uid, artistPlatform).pipe(
       tap((data) => {
         ctx.patchState({
-          songs: data,
-          loading: false
+          songs: data.tracks,
+          artist: data.artists[0],
+          songsLoading: false
         });
       })
     )
@@ -101,6 +112,7 @@ export class SongsState {
     ctx.patchState({
       songs: [],
       artistAlbum: undefined,
+      artist: undefined,
     });
   }
 
@@ -133,7 +145,7 @@ export class SongsState {
       name: song!.name,
       trackType: song!.trackType,
       artist: song?.artistName || "",
-      externalUrl: song?.externalUrl,
+      externalUrl: song?.externalUrl || "",
       avatar: song?.pictures?.medium,
       duration: song?.duration,
       durationType: song?.durationType,
@@ -148,12 +160,12 @@ export class SongsState {
     });
   }
 
-  @Action(GetCurrentSelectedTrackAction)
+  @Action(GetCurrentSelectedTrackAction, { cancelUncompleted: true })
   _getCurrentSelectedTrackAction({ patchState }: StateContext<ISongsState>, { uid }: GetCurrentSelectedTrackAction) {
     return this._currentTrack.getCurrentTrack(uid).pipe(
       tap((currentTrack) => {
         patchState({
-          currentTrack
+          currentTrack,
         });
       })
     );
@@ -161,13 +173,15 @@ export class SongsState {
 
   @Action(AudioFileAction, { cancelUncompleted: true })
   _audioFileAction({ getState, patchState }: StateContext<ISongsState>, { uid, externalUrl }: AudioFileAction) {
+    patchState({
+      loading: true
+    });
     return this.apiService.mixcloudAudioStream(uid!, externalUrl!).pipe(
       tap((audioFile) => {
         const currentTrack = cloneDeep(getState().currentTrack);
         currentTrack.audioFile = audioFile.url;
-
         patchState({
-          currentTrack
+          currentTrack,
         });
       })
     )
@@ -192,6 +206,20 @@ export class SongsState {
         });
       })
     );
+  }
+
+  @Action(LoadingPlayerAction)
+  _loadingPlayerAction(ctx: StateContext<ISongsState>, { loading }: LoadingPlayerAction) {
+    ctx.patchState({
+      loading
+    });
+  }
+
+  @Action(SetCurrentSongAction)
+  _setCurrentSongAction({ patchState }: StateContext<ISongsState>, { currentTrack }: SetCurrentSongAction) {
+    patchState({
+      currentTrack
+    });
   }
 }
 

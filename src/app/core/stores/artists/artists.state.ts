@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistsAction } from './artists.actions';
+import { ArtistsAction, SelectArtistAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState } from './artists-state.types';
 import { reduce, orderBy as _orderBy } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
@@ -18,6 +18,11 @@ export class ArtistsState {
   @Selector()
   static artists(state: IArtistsState) {
     return state.artists;
+  }
+
+  @Selector()
+  static selectedArtist(state: IArtistsState) {
+    return state.selectedArtist;
   }
 
   @Selector()
@@ -55,12 +60,23 @@ export class ArtistsState {
 
   @Action(ArtistsAction)
   _artistList(ctx: StateContext<IArtistsState>, { uid }: ArtistsAction) {
+    ctx.patchState({
+      loading: true,
+    });
     return this.apiService.artists(uid!).pipe(
       tap((data) => {
         ctx.patchState({
           artists: data,
+          loading: false,
         });
       })
     )
+  }
+
+  @Action(SelectArtistAction)
+  _selectArtist(ctx: StateContext<IArtistsState>, { artist }: SelectArtistAction) {
+    ctx.patchState({
+      selectedArtist: artist,
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { IPlatformTypes } from "./artist.types";
+import { IArtists, IPlatformTypes } from "./artist.types";
 import { IAvatar } from "./avatar.types";
 
 export enum ISongTrackType {
@@ -12,6 +12,9 @@ export enum IDurationType {
   seconds = "seconds",
 }
 
+export interface IStreamUrl {
+  url: string;
+}
 export interface ISong {
   name: string;
   genres?: string[];
@@ -47,5 +50,10 @@ export interface IAlbumInfo {
 
 export interface IAlbum {
   album: IAlbumInfo;
+  tracks: ISong[]
+}
+
+export interface IArtistTracks {
+  artists: IArtists[];
   tracks: ISong[]
 }

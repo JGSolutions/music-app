@@ -1,4 +1,5 @@
 import { IArtistBodyRequest, IPlatformTypes } from "models/artist.types";
+import { ICurrentTrack } from "./songs.types";
 
 export class ArtistSongsAction {
   static readonly type = '[Songs] List of artist songs';
@@ -42,4 +43,15 @@ export class SetCurrentTrackPlayStatusAction {
 export class AllPlaylistTracksAction {
   static readonly type = '[Songs] All Playlist Songs Data';
   constructor(public playlistid: string, public uid: string) { }
+}
+
+export class LoadingPlayerAction {
+  static readonly type = '[Songs] Loading player';
+  constructor(public loading: boolean) { }
+}
+
+
+export class SetCurrentSongAction {
+  static readonly type = '[Songs] Set current track';
+  constructor(public currentTrack: ICurrentTrack) { }
 }

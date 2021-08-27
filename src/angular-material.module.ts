@@ -35,6 +35,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 const materialModules = [
   // CdkTreeModule,
@@ -53,6 +54,7 @@ const materialModules = [
   MatListModule,
   MatMenuModule,
   MatProgressSpinnerModule,
+  MatProgressBarModule,
   // MatPaginatorModule,
   MatRippleModule,
   MatSelectModule,
