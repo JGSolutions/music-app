@@ -1,7 +1,7 @@
 <mat-card class="example-card">
   <img mat-card-image [src]="(avatar$ | async)?.large">
   <mat-card-content>
-    <p class="mat-title">{{artistName}}</p>
+    <p class="mat-title text-ellipsis">{{artistName}}</p>
     <mat-chip-list>
       <mat-chip color="primary" *ngFor="let platform of platforms$ | async" class="chip-label">{{platform}}</mat-chip>
     </mat-chip-list>
