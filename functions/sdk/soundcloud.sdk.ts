@@ -1,5 +1,7 @@
 import axios from "axios";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
+import { ISearchResults } from "../../models/search.model";
+import { IDurationType } from "../../models/song.types";
 
 const artistDataModel = (artist: any): IArtists => {
   return {
@@ -13,6 +15,52 @@ const artistDataModel = (artist: any): IArtists => {
       exLarge: artist.avatar_url,
     },
   };
+};
+
+export const searchResultArtists = (dataApi: any): Promise<any> => {
+  return new Promise((resolve) => {
+    // const artists = dataApi.map((song: any) => {
+    //   return {
+    //     name: song.name,
+    //     id: song.key,
+    //     username: song.username.toLowerCase(),
+    //     platform: IPlatformTypes.mixcloud,
+    //     pictures: {
+    //       medium: song.pictures.medium,
+    //       large: song.pictures.large,
+    //       exLarge: song.pictures.extra_large,
+    //     },
+    //   };
+    // });
+    resolve([]);
+  });
+};
+
+export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
+  return new Promise((resolve) => {
+    const tracks = dataApi.map((song: any) => {
+      return {
+        name: song.title,
+        id: song.id,
+        externalUrl: song.url,
+        duration: song.duration,
+        durationType: IDurationType.seconds,
+        trackType: song.kind,
+        platform: IPlatformTypes.soundcloud,
+        uri: song.uri,
+        streamUrl: song.stream_url,
+        artistName: song.user.username,
+        createdTime: song.created_at,
+        pictures: {
+          medium: song.artwork_url,
+          large: song.artwork_url,
+          exLarge: song.artwork_url,
+        },
+      };
+    });
+
+    resolve(tracks);
+  });
 };
 
 export const artistListData = (artistApi: any): Promise<IArtists[]> => {
@@ -64,6 +112,18 @@ export const auth = {
     const resp = await axios.get(url, this.requestHeaders());
 
     return await artistListData(resp.data);
+  },
+
+  async search(query: string | undefined) {
+    const urlTracks = `${this.soundcloudDomain}/tracks?q=${query}`;
+    // const urlArtists = `${this.soundcloudDomain}/search/?${this.queryParamAccessToken}&q=${query}&type=user`;
+    const resTracks = await axios(urlTracks, this.requestHeaders());
+    // const resArtists = await axios(urlArtists,  this.requestHeaders());
+
+    return {
+      tracks: await searchResultTracks(resTracks.data),
+      artists: await searchResultArtists([]),
+    };
   },
 
   requestHeaders(): any {

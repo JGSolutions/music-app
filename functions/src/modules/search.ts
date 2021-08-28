@@ -9,6 +9,7 @@ import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { spotifyKeys } from "../../sdk/api-keys";
 import { keys } from "lodash";
 import { ISong } from "../../../models/song.types";
+import { auth } from "../../sdk/soundcloud.sdk";
 
 export const search = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
@@ -27,6 +28,10 @@ export const search = async (request: Request, response: Response) => {
 
   platformKeys.forEach(async (key) => {
     switch (key) {
+      case IPlatformTypes.soundcloud:
+        auth.setToken(connectedServices[key].token);
+        pData.push(auth.search(searchValue as string));
+        break;
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key].token);
         pData.push(MixcloudSDK.search(searchValue as string));
