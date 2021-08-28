@@ -17,22 +17,10 @@ const artistDataModel = (artist: any): IArtists => {
   };
 };
 
-export const searchResultArtists = (dataApi: any): Promise<any> => {
+export const searchResultArtists = (dataApi: any): Promise<IArtists[]> => {
   return new Promise((resolve) => {
-    // const artists = dataApi.map((song: any) => {
-    //   return {
-    //     name: song.name,
-    //     id: song.key,
-    //     username: song.username.toLowerCase(),
-    //     platform: IPlatformTypes.mixcloud,
-    //     pictures: {
-    //       medium: song.pictures.medium,
-    //       large: song.pictures.large,
-    //       exLarge: song.pictures.extra_large,
-    //     },
-    //   };
-    // });
-    resolve([]);
+    const artists = dataApi.map((song: any) => artistDataModel(song));
+    resolve(artists);
   });
 };
 
@@ -116,13 +104,13 @@ export const auth = {
 
   async search(query: string | undefined) {
     const urlTracks = `${this.soundcloudDomain}/tracks?q=${query}`;
-    // const urlArtists = `${this.soundcloudDomain}/search/?${this.queryParamAccessToken}&q=${query}&type=user`;
+    const urlArtists = `${this.soundcloudDomain}/users?q=${query}`;
     const resTracks = await axios(urlTracks, this.requestHeaders());
-    // const resArtists = await axios(urlArtists,  this.requestHeaders());
+    const resArtists = await axios(urlArtists, this.requestHeaders());
 
     return {
       tracks: await searchResultTracks(resTracks.data),
-      artists: await searchResultArtists([]),
+      artists: await searchResultArtists(resArtists.data),
     };
   },
 
