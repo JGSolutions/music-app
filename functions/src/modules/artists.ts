@@ -30,7 +30,7 @@ export const artists = async (request: Request, response: Response) => {
   platformKeys.forEach(async (key) => {
     switch (key) {
       case IPlatformTypes.soundcloud:
-        auth.setToken(connectedServices[key].token);
+        auth.setToken(connectedServices[key].token, connectedServices[key].refresh_token);
         pData.push(auth.following());
         break;
       case IPlatformTypes.mixcloud:

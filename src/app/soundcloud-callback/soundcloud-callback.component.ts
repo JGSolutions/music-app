@@ -41,6 +41,7 @@ export class SoundCloudCallbackComponent implements OnInit {
 
       this.connectedServices.connectService(user.uid, {
         token: res.data.access_token,
+        refresh_token: res.data.refresh_token,
       }, IPlatformTypes.soundcloud);
     });
   }

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import axios from "axios";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { ISearchResults } from "../../models/search.model";
@@ -65,6 +66,7 @@ export const auth = {
   soundcloudDomain: "https://api.soundcloud.com",
   redirectUri: "",
   token: "",
+  refreshToken: "",
 
   config(clientId: string, clientSecret: string, redirectUri: string): void {
     this.clientId = clientId;
@@ -72,8 +74,9 @@ export const auth = {
     this.redirectUri = redirectUri;
   },
 
-  setToken(token: string): void {
+  setToken(token: string, refreshToken: string): void {
     this.token = token!;
+    this.refreshToken = refreshToken!;
   },
 
   authorizeUrl(): string {
@@ -112,6 +115,20 @@ export const auth = {
       tracks: await searchResultTracks(resTracks.data),
       artists: await searchResultArtists(resArtists.data),
     };
+  },
+
+  async recreateAccessToken(): Promise<any> {
+    const postHeaders = {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    };
+
+    // eslint-disable-next-line max-len
+    const params = `grant_type=refresh_token&client_id=${this.clientId}&client_secret=${this.clientSecret}&redirect_uri=${this.redirectUri}&refresh_token=${this.refreshToken}`;
+    return await axios.post(`${this.soundcloudDomain}/oauth2/token`, params, postHeaders);
+
+    // return data;
   },
 
   requestHeaders(): any {
