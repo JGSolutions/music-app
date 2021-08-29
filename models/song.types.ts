@@ -31,6 +31,7 @@ export interface ISong {
   pictures?: IAvatar;
   totalTracks: number;
   externalUrl?: string;
+  streamUrl?: string;
   uri?: string;
   album?: IAlbumInfo;
 }

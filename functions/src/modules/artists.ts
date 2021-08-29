@@ -4,8 +4,9 @@ import { Response, Request } from "express";
 import { adminFirebase } from "./fb";
 import { flatten, keys, reduce, orderBy } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
+import { auth } from "../../sdk/soundcloud.sdk";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
-import { spotifyKeys } from "../../sdk/api-keys";
+import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { IArtists, IPlatformTypes } from "../../../models/artist.types";
 
@@ -28,6 +29,10 @@ export const artists = async (request: Request, response: Response) => {
 
   platformKeys.forEach(async (key) => {
     switch (key) {
+      case IPlatformTypes.soundcloud:
+        auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[key].token, connectedServices[key].refresh_token, authorized);
+        pData.push(auth.following());
+        break;
       case IPlatformTypes.mixcloud:
         MixcloudSDK.initialize(connectedServices[key].token);
         pData.push(MixcloudSDK.following());
@@ -47,7 +52,6 @@ export const artists = async (request: Request, response: Response) => {
 
     const res: Record<string, IArtists[]> = reduce(sortedData, (result: any, value: any) => {
       const artistKeys = keys(result);
-
       const matches = stringSimilarity.findBestMatch(value.name, artistKeys.length > 0 ? artistKeys : allArtistsKeys);
 
       if (matches.bestMatch.rating >= 0.75) {
