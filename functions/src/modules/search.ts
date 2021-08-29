@@ -6,7 +6,7 @@ import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { IArtists, IPlatformTypes } from "../../../models/artist.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
-import { spotifyKeys } from "../../sdk/api-keys";
+import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";
 import { keys } from "lodash";
 import { ISong } from "../../../models/song.types";
 import { auth } from "../../sdk/soundcloud.sdk";
@@ -29,7 +29,7 @@ export const search = async (request: Request, response: Response) => {
   platformKeys.forEach(async (key) => {
     switch (key) {
       case IPlatformTypes.soundcloud:
-        auth.setToken(connectedServices[key].token, connectedServices[key].refresh_token);
+        auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[key].token, connectedServices[key].refresh_token, authorized);
         pData.push(auth.search(searchValue as string));
         break;
       case IPlatformTypes.mixcloud:

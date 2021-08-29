@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import axios from "axios";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { ISearchResults } from "../../models/search.model";
 import { IDurationType } from "../../models/song.types";
+import { updateConnectedService } from "../src/utils/connect-services-firebase";
 
 const artistDataModel = (artist: any): IArtists => {
   return {
@@ -67,20 +69,18 @@ export const auth = {
   redirectUri: "",
   token: "",
   refreshToken: "",
+  authorized: "",
 
-  config(clientId: string, clientSecret: string, redirectUri: string): void {
+  config(clientId: string, clientSecret: string, redirectUri: string, token?: string, refreshToken?: string, authorized?: string): void {
     this.clientId = clientId;
     this.clientSecret = clientSecret;
     this.redirectUri = redirectUri;
-  },
-
-  setToken(token: string, refreshToken: string): void {
     this.token = token!;
     this.refreshToken = refreshToken!;
+    this.authorized = authorized!;
   },
 
   authorizeUrl(): string {
-    // eslint-disable-next-line max-len
     const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=code`;
     return `${this.soundcloudDomain}/connect${q}`;
   },
@@ -93,16 +93,22 @@ export const auth = {
     };
 
     const apiUrl = `${this.soundcloudDomain}/oauth2/token`;
-    // eslint-disable-next-line max-len
     const params = `grant_type=authorization_code&client_id=${this.clientId}&code=${oAuthCode}&client_secret=${this.clientSecret}&redirect_uri=${this.redirectUri}`;
     return await axios.post(apiUrl, params, postHeaders);
   },
 
-  async following(): Promise<IArtists[]> {
-    const url = `${this.soundcloudDomain}/me/followings?limit=50`;
-    const resp = await axios.get(url, this.requestHeaders());
-
-    return await artistListData(resp.data);
+  async following(limit = 50): Promise<any> {
+    try {
+      const resp = await axios.get(`${this.soundcloudDomain}/me/followings?limit=${limit}`, this.requestHeaders());
+      return await artistListData(resp.data);
+    } catch (err) {
+      if (err.response?.status === 401) {
+        const res = await this.recreateAccessToken();
+        await updateConnectedService(this.authorized, res.data.access_token, IPlatformTypes.soundcloud);
+        // this.token = res.data.access_token;
+        //   return await this.following();
+      }
+    }
   },
 
   async search(query: string | undefined) {
@@ -124,11 +130,8 @@ export const auth = {
       },
     };
 
-    // eslint-disable-next-line max-len
     const params = `grant_type=refresh_token&client_id=${this.clientId}&client_secret=${this.clientSecret}&redirect_uri=${this.redirectUri}&refresh_token=${this.refreshToken}`;
     return await axios.post(`${this.soundcloudDomain}/oauth2/token`, params, postHeaders);
-
-    // return data;
   },
 
   requestHeaders(): any {

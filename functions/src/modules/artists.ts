@@ -6,7 +6,7 @@ import { flatten, keys, reduce, orderBy } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { auth } from "../../sdk/soundcloud.sdk";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
-import { spotifyKeys } from "../../sdk/api-keys";
+import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { IArtists, IPlatformTypes } from "../../../models/artist.types";
 
@@ -30,7 +30,7 @@ export const artists = async (request: Request, response: Response) => {
   platformKeys.forEach(async (key) => {
     switch (key) {
       case IPlatformTypes.soundcloud:
-        auth.setToken(connectedServices[key].token, connectedServices[key].refresh_token);
+        auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[key].token, connectedServices[key].refresh_token, authorized);
         pData.push(auth.following());
         break;
       case IPlatformTypes.mixcloud:
