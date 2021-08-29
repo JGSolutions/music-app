@@ -3,7 +3,6 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
-import { auth } from 'functions/sdk/soundcloud.sdk';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -16,6 +15,7 @@ import { IUserType } from '../core/stores/user/user.types';
 import { isEqual as _isEqual, isUndefined as _isUndefined } from "lodash";
 import { IPlatformTypes } from 'models/artist.types';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { SoundCloudAuth } from 'functions/sdk/soundcloud-auth';
 @Component({
   selector: 'app-platform-settings',
   templateUrl: './platform-settings.component.html',
@@ -35,7 +35,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private store: Store) {
-    auth.config(
+    SoundCloudAuth.config(
       environment.soundcloud.clientId,
       environment.soundcloud.secretApi,
       environment.soundcloud.uriRedirect,
@@ -106,7 +106,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
   }
 
   public connectToSoundcloud(): void {
-    this.document.location.href = auth.authorizeUrl();
+    this.document.location.href = SoundCloudAuth.authorizeUrl();
   }
 
   public connectToSpotify(): void {

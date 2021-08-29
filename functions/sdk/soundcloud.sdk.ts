@@ -80,23 +80,6 @@ export const auth = {
     this.authorized = authorized!;
   },
 
-  authorizeUrl(): string {
-    const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=code`;
-    return `${this.soundcloudDomain}/connect${q}`;
-  },
-
-  async oauthToken(oAuthCode: string): Promise<string> {
-    const postHeaders = {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    };
-
-    const apiUrl = `${this.soundcloudDomain}/oauth2/token`;
-    const params = `grant_type=authorization_code&client_id=${this.clientId}&code=${oAuthCode}&client_secret=${this.clientSecret}&redirect_uri=${this.redirectUri}`;
-    return await axios.post(apiUrl, params, postHeaders);
-  },
-
   async following(limit = 50): Promise<any> {
     try {
       const resp = await axios.get(`${this.soundcloudDomain}/me/followings?limit=${limit}`, this.requestHeaders());
