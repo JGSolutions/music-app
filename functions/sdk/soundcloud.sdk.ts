@@ -88,8 +88,8 @@ export const auth = {
       if (err.response?.status === 401) {
         const res = await this.recreateAccessToken();
         await updateConnectedService(this.authorized, res.data.access_token, IPlatformTypes.soundcloud);
-        // this.token = res.data.access_token;
-        //   return await this.following();
+        this.token = res.data.access_token;
+        return await this.following();
       }
     }
   },
