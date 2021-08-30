@@ -4,7 +4,7 @@ import axios from "axios";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { ISearchResults } from "../../models/search.model";
 import { IDurationType } from "../../models/song.types";
-import { updateConnectedService } from "../src/utils/connect-services-firebase";
+import { updateConnectedSoundcloudService } from "../src/utils/connect-services-firebase";
 
 const artistDataModel = (artist: any): IArtists => {
   return {
@@ -87,7 +87,7 @@ export const auth = {
     } catch (err) {
       if (err.response?.status === 401) {
         const res = await this.recreateAccessToken();
-        await updateConnectedService(this.authorized, res.data.access_token, IPlatformTypes.soundcloud);
+        await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
         this.token = res.data.access_token;
         return await this.following();
       }

@@ -16,3 +16,12 @@ export const updateConnectedService = async (uid: string, token: string, platfor
     },
   }, { merge: true });
 };
+
+export const updateConnectedSoundcloudService = async (uid: string, token: string, refreshToken: string): Promise<FirebaseFirestore.WriteResult> => {
+  return await db.collection("connectedServices").doc(uid).set({
+    "soundcloud": {
+      token: token,
+      refresh_token: refreshToken,
+    },
+  }, { merge: true });
+};
