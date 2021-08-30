@@ -83,9 +83,9 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         trackType: song.type,
         platform: IPlatformTypes.spotify,
         pictures: {
-          medium: dataApi.images[2].url,
-          large: dataApi.images[1].url,
-          exLarge: dataApi.images[0].url,
+          medium: dataApi.images[2]?.url || "",
+          large: dataApi.images[1]?.url || "",
+          exLarge: dataApi.images[0]?.url || "",
         },
       };
     });
@@ -100,9 +100,9 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         totalTracks: dataApi.total_tracks,
         platform: IPlatformTypes.spotify,
         pictures: {
-          medium: dataApi.images[2].url,
-          large: dataApi.images[1].url,
-          exLarge: dataApi.images[0].url,
+          medium: dataApi.images[2]?.url || "",
+          large: dataApi.images[1]?.url || "",
+          exLarge: dataApi.images[0]?.url || "",
         },
       },
       tracks,
@@ -140,9 +140,9 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
         platform: IPlatformTypes.spotify,
         uri: song.uri,
         pictures: {
-          medium: song.album.images[2].url,
-          large: song.album.images[1].url,
-          exLarge: song.album.images[0].url,
+          medium: song.album.images[2]?.url || "",
+          large: song.album.images[1]?.url || "",
+          exLarge: song.album.images[0]?.url || "",
         },
         album: {
           name: song.album.name,
