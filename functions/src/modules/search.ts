@@ -7,7 +7,7 @@ import { getConnectServices } from "../utils/connect-services-firebase";
 import { IArtists, IPlatformTypes } from "../../../models/artist.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";
-import { keys } from "lodash";
+import { keys, sortBy as _sortBy } from "lodash";
 import { ISong } from "../../../models/song.types";
 import { auth } from "../../sdk/soundcloud.sdk";
 
@@ -58,7 +58,7 @@ export const search = async (request: Request, response: Response) => {
     });
 
     return response.status(200).send({
-      tracks,
+      tracks: _sortBy(tracks, [(o) => o.name]),
       artists,
     });
   });
