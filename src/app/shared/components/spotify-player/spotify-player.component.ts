@@ -7,7 +7,6 @@ import { Select, Store } from '@ngxs/store';
 import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
-import { HttpClient } from '@angular/common/http';
 import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
@@ -37,14 +36,12 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   public currentTimer$ = new BehaviorSubject<number>(0);
 
   private destroy$ = new Subject<boolean>();
-  private playerUrl: string;
   private token!: string;
   private player!: Spotify.Player;
   private _setIntervalTimer!: any;
   private _seekPosition = 0;
 
-  constructor(private http: HttpClient, private store: Store, private apiService: ApiService) {
-    this.playerUrl = `https://api.spotify.com/v1/me/player`;
+  constructor(private store: Store, private apiService: ApiService) {
   }
 
   ngOnInit() {
@@ -67,8 +64,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     });
 
     window.onSpotifyWebPlaybackSDKReady = async () => {
-
-
       this.player = new Spotify.Player({
         name: 'Music App',
         getOAuthToken: (cb: any) => { cb(this.token); },
