@@ -71,7 +71,6 @@
   </app-player-bar>
   <app-spotify-player
     (trackReady)="trackHistory($event)"
-    [currentTrack$]="currentTrack$!"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
   </app-spotify-player>
 </div>

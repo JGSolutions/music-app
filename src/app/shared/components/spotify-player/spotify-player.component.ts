@@ -1,8 +1,8 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 
-import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { isEmpty as _isEmpty } from "lodash";
+import { isEmpty as _isEmpty, isUndefined as _isUndefined } from "lodash";
 import { Select, Store } from '@ngxs/store';
 import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
@@ -26,8 +26,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.connectedServices) connectedServices$!: Observable<Record<string, ConnectedServicesList>>;
   @Select(SongsState.loading) loading$!: Observable<boolean>;
-
-  @Input() currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   @Output() trackReady = new EventEmitter<any>();
   @Output() trackEnded = new EventEmitter<void>();
@@ -49,11 +48,35 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    window.onSpotifyWebPlaybackSDKReady = () => {
+
+    window.addEventListener('online', () => {
+      this.currentTimer$.next(0);
+      this.initPlaying$.next(true);
+    });
+
+    window.onSpotifyWebPlaybackSDKReady = async () => {
+      this.currentTrack$.pipe(
+        takeUntil(this.destroy$),
+        filter((currentTrack) => currentTrack.platform == IPlatformTypes.spotify),
+        tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
+        distinctUntilChanged((prev, curr) => prev.id === curr.id),
+        tap((currentTrack) => this.trackReady.emit(currentTrack)),
+        withLatestFrom(this.initPlaying$)
+      ).subscribe(async ([d, initPlaying]) => {
+        if (!initPlaying) {
+          this._seekPosition = 0;
+          this.currentTimer$.next(this._seekPosition);
+          this.initPlaying$.next(true);
+          await this.pause();
+        } else {
+          this.initPlaying$.next(false);
+        }
+      });
+
       this.player = new Spotify.Player({
-        name: 'Music App Playback SDK',
+        name: 'Music App',
         getOAuthToken: (cb: any) => { cb(this.token); },
-        volume: 0.3
+        volume: 0.5
       });
 
       this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
@@ -69,29 +92,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
           this.trackEnded.emit();
         }
-
         this.playbackState$.next(state);
       });
 
       this.player.addListener('ready', ({ device_id }) => {
-        this.currentTrack$.pipe(
-          takeUntil(this.destroy$),
-          filter((currentTrack) => currentTrack.platform == IPlatformTypes.spotify),
-          tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
-          distinctUntilChanged((prev, curr) => prev.id === curr.id),
-          tap((currentTrack) => this.trackReady.emit(currentTrack)),
-          switchMap(() => this.transferUserPlayback(device_id)),
-          withLatestFrom(this.initPlaying$)
-        ).subscribe(async ([d, initPlaying]) => {
-          if (!initPlaying) {
-            this._seekPosition = 0;
-            this.currentTimer$.next(this._seekPosition);
-            this.initPlaying$.next(true);
-            await this.pause();
-          } else {
-            this.initPlaying$.next(false);
-          }
-        });
+        this.transferUserPlayback(device_id).subscribe();
       });
 
       this.player.connect();
@@ -102,7 +107,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       filter((token) => !_isEmpty(token["spotify"]))
     ).subscribe(token => {
       this.token = token["spotify"].token;
-      window.onSpotifyWebPlaybackSDKReady();
+
+      if (_isUndefined(this.player)) {
+        window.onSpotifyWebPlaybackSDKReady();
+      }
     });
 
     this.isPlaying$.pipe(
@@ -156,7 +164,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   public transferUserPlayback(deviceId: string) {
     return this.user$.pipe(
       take(1),
-      switchMap((user) => this.apiService.devicePlayback(deviceId, user.uid!))
+      switchMap((user) => this.apiService.spotifyDevicePlayback(deviceId, user.uid!))
     );
   }
 
