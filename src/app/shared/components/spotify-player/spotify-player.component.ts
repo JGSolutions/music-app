@@ -48,30 +48,26 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-    window.addEventListener('online', () => {
-      this.currentTimer$.next(0);
+    // window.addEventListener('online', () => {
+    //   this.currentTimer$.next(0);
+    //   this.initPlaying$.next(true);
+    // });
+    this.currentTrack$.pipe(
+      takeUntil(this.destroy$),
+      filter((currentTrack) => currentTrack.platform == IPlatformTypes.spotify),
+      tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
+      distinctUntilChanged((prev, curr) => prev.id === curr.id),
+      tap((currentTrack) => this.trackReady.emit(currentTrack)),
+    ).subscribe(() => {
+      this._seekPosition = 0;
+      this.currentTimer$.next(this._seekPosition);
       this.initPlaying$.next(true);
+      this.isPlaying$.next(false);
+      this.pause();
     });
 
     window.onSpotifyWebPlaybackSDKReady = async () => {
-      this.currentTrack$.pipe(
-        takeUntil(this.destroy$),
-        filter((currentTrack) => currentTrack.platform == IPlatformTypes.spotify),
-        tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
-        distinctUntilChanged((prev, curr) => prev.id === curr.id),
-        tap((currentTrack) => this.trackReady.emit(currentTrack)),
-        withLatestFrom(this.initPlaying$)
-      ).subscribe(async ([d, initPlaying]) => {
-        if (!initPlaying) {
-          this._seekPosition = 0;
-          this.currentTimer$.next(this._seekPosition);
-          this.initPlaying$.next(true);
-          await this.pause();
-        } else {
-          this.initPlaying$.next(false);
-        }
-      });
+
 
       this.player = new Spotify.Player({
         name: 'Music App',
@@ -168,11 +164,17 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     );
   }
 
-  async pause(): Promise<void> {
+  public pauseHandler(): void {
     this.isPlaying$.next(false);
+    this.pause();
+  }
+
+  pause(): void {
     clearInterval(this._setIntervalTimer);
     this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
-    return await this.player.pause();
+    if (this.player) {
+      this.player.pause();
+    }
   }
 
   /**
