@@ -80,8 +80,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
       this.player.addListener('player_state_changed', state => {
         if (this.isEndOfTrack(state)) {
+          this._seekPosition = 0;
           this.currentTimer$.next(0);
           this.initPlaying$.next(true);
+          this.isPlaying$.next(false);
+
           this.pause();
 
           this.trackEnded.emit();
@@ -111,7 +114,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       filter((isPlaying) => isPlaying)
     ).subscribe((isPlaying) => {
-      console.log("isPlaying", isPlaying);
       this._setIntervalTimer = setInterval(() => {
         this._seekPosition++;
         this.currentTimer$.next(this._seekPosition * 1000);
@@ -130,7 +132,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       take(1)
     ).subscribe(initPlaying => {
-      console.log(initPlaying);
       if (initPlaying) {
         this.initialPlay().pipe(take(1)).subscribe(() => {
           this.initPlaying$.next(false);
