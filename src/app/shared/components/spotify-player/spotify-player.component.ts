@@ -71,7 +71,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       });
 
       this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
-      this.player.addListener('authentication_error', ({ message }) => { console.error(message); });
+      this.player.addListener('authentication_error', ({ message }) => {
+        console.log("ERROR HAS OCCURED: ", message);
+        console.error(message);
+      });
       this.player.addListener('account_error', ({ message }) => { console.error(message); });
       this.player.addListener('playback_error', ({ message }) => { console.error(message); });
 
@@ -107,7 +110,8 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     this.isPlaying$.pipe(
       takeUntil(this.destroy$),
       filter((isPlaying) => isPlaying)
-    ).subscribe(() => {
+    ).subscribe((isPlaying) => {
+      console.log("isPlaying", isPlaying);
       this._setIntervalTimer = setInterval(() => {
         this._seekPosition++;
         this.currentTimer$.next(this._seekPosition * 1000);
@@ -126,6 +130,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$),
       take(1)
     ).subscribe(initPlaying => {
+      console.log(initPlaying);
       if (initPlaying) {
         this.initialPlay().pipe(take(1)).subscribe(() => {
           this.initPlaying$.next(false);
