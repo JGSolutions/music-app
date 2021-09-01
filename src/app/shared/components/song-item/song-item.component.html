@@ -6,7 +6,8 @@
         <app-equalizer-icon *ngIf="isPlaying && (albumId === id || currentTrackId === id)"></app-equalizer-icon>
       </div>
     </div>
-    <img [src]="avatar" class="avatar">
+    <img [src]="avatar" class="avatar" *ngIf="avatar">
+    <img src="../../../../assets/no-music.svg" class="avatar" *ngIf="!avatar">
   </div>
   <div class="info-wrapper">
     <span class="mat-caption" *ngIf="dateCreated">Posted {{dateCreated | dateAgo}}</span>
