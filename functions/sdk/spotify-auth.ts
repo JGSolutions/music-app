@@ -19,7 +19,7 @@ export const SpotifyAuthorization = {
       throwError("Please provide a client id");
     }
 
-    const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=code&scope=user-read-email,streaming,user-read-private,user-follow-read`;
+    const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&response_type=code&scope=user-read-email,streaming,user-read-private,user-follow-read,web-playback`;
     return `${this.spotifyDomain}/authorize${q}`;
   },
 };
