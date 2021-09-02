@@ -1,7 +1,7 @@
 <mat-slider
 class="slider"
 color="primary"
-[disabled]="loading"
+[disabled]="loading || disabled"
 (change)="sliderChangeHandler($event)"
 (input)="sliderInputHandler($event)"
 [step]="1"

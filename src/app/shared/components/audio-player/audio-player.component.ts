@@ -17,6 +17,7 @@ export class AudioPlayerComponent {
   @Input() durationType!: IDurationType;
   @Input() progress!: number;
   @Input() isPlaying!: boolean;
+  @Input() disabled!: boolean;
 
   @Output() sliderChange = new EventEmitter<number>();
   @Output() sliderInput = new EventEmitter<number>();

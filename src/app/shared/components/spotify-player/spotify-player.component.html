@@ -1,5 +1,6 @@
 <app-audio-player
 [loading]="(loading$ | async)!"
+[disabled]="(initPlaying$ | async)!"
 [progress]="(currentTimer$ | async)!"
 [currentTimer]="(currentTimer$ | async)!"
 [rawDuration]="(currentTrack$ | async)?.duration!"

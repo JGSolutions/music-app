@@ -32,7 +32,6 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
   public isPlaying$ = new BehaviorSubject<boolean>(false);
   public initPlaying$ = new BehaviorSubject<boolean>(true);
-  public playbackState$ = new BehaviorSubject<any>(null);
   public currentTimer$ = new BehaviorSubject<number>(0);
 
   private destroy$ = new Subject<boolean>();
@@ -55,12 +54,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
       distinctUntilChanged((prev, curr) => prev.id === curr.id),
       tap((currentTrack) => this.trackReady.emit(currentTrack)),
-    ).subscribe(() => {
-      this._seekPosition = 0;
-      this.currentTimer$.next(this._seekPosition);
-      this.initPlaying$.next(true);
-      this.isPlaying$.next(false);
+    ).subscribe((currentTrack) => {
+      this.resetDuration();
       this.pause();
+      this.play();
     });
 
     window.onSpotifyWebPlaybackSDKReady = async () => {
@@ -80,16 +77,13 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
 
       this.player.addListener('player_state_changed', state => {
         if (this.isEndOfTrack(state)) {
-          this._seekPosition = 0;
-          this.currentTimer$.next(0);
-          this.initPlaying$.next(true);
-          this.isPlaying$.next(false);
+
+          this.resetDuration();
 
           this.pause();
 
           this.trackEnded.emit();
         }
-        this.playbackState$.next(state);
       });
 
       this.player.addListener('ready', ({ device_id }) => {
@@ -113,7 +107,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     this.isPlaying$.pipe(
       takeUntil(this.destroy$),
       filter((isPlaying) => isPlaying)
-    ).subscribe((isPlaying) => {
+    ).subscribe(() => {
       this._setIntervalTimer = setInterval(() => {
         this._seekPosition++;
         this.currentTimer$.next(this._seekPosition * 1000);
@@ -136,6 +130,13 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         this.initialPlay().pipe(take(1)).subscribe(() => {
           this.initPlaying$.next(false);
           this.isPlaying$.next(true);
+
+          /**
+           * We want to position to specific area
+           */
+          // this.currentTimer$.next(10000);
+          // this._seekPosition = evt / 1000;
+          // this.player.seek(60 * 7000);
         });
       } else {
         this.isPlaying$.next(true);
@@ -195,4 +196,10 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     this.currentTimer$.next(evt);
   }
 
+  private resetDuration(): void {
+    this._seekPosition = 0;
+    this.currentTimer$.next(0);
+    this.initPlaying$.next(true);
+    this.isPlaying$.next(false);
+  }
 }
