@@ -293,6 +293,8 @@ export const SpotifySDK = {
 
         return this.reAuth(() => this.playback(id));
       }
+
+      return;
     }
   },
 
@@ -312,6 +314,8 @@ export const SpotifySDK = {
 
         return this.reAuth(() => this.devicePlayback(deviceId));
       }
+
+      return;
     }
   },
 
