@@ -1,7 +1,7 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { isEmpty as _isEmpty, isUndefined as _isUndefined } from "lodash";
 import { Select, Store } from '@ngxs/store';
 import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
@@ -33,31 +33,28 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   public isPlaying$ = new BehaviorSubject<boolean>(false);
   public initPlaying$ = new BehaviorSubject<boolean>(true);
   public currentTimer$ = new BehaviorSubject<number>(0);
+  public devicePlayback$ = new BehaviorSubject<string>("");
+  public playSongLoading = false;
 
   private destroy$ = new Subject<boolean>();
   private token!: string;
   private player!: Spotify.Player;
   private _setIntervalTimer!: any;
-  private _seekPosition = 0;
+  private _seekPosition!: number;
 
   constructor(private store: Store, private apiService: ApiService) {
   }
 
   ngOnInit() {
-    // window.addEventListener('online', () => {
-    //   this.currentTimer$.next(0);
-    //   this.initPlaying$.next(true);
-    // });
-    this.currentTrack$.pipe(
+    combineLatest([this.currentTrack$, this.devicePlayback$]).pipe(
       takeUntil(this.destroy$),
-      filter((currentTrack) => currentTrack.platform == IPlatformTypes.spotify),
-      tap(() => this.store.dispatch(new LoadingPlayerAction(false))),
-      distinctUntilChanged((prev, curr) => prev.id === curr.id),
-      tap((currentTrack) => this.trackReady.emit(currentTrack)),
-    ).subscribe((currentTrack) => {
+      filter(([currentTrack, devicePlayback]) => currentTrack.platform == IPlatformTypes.spotify && devicePlayback !== ""),
+      distinctUntilChanged(([currentTrackPrevState], [currentTrackNextState]) => currentTrackPrevState.id === currentTrackNextState.id),
+      tap(([currentTrack]) => this.trackReady.emit(currentTrack)),
+      switchMap(([currentTrack, devicePlayback]) => this.transferUserPlayback(devicePlayback))
+    ).subscribe(async () => {
       this.resetDuration();
-      this.pause();
-      this.play();
+      await this.pause();
     });
 
     window.onSpotifyWebPlaybackSDKReady = async () => {
@@ -87,7 +84,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       });
 
       this.player.addListener('ready', ({ device_id }) => {
-        this.transferUserPlayback(device_id).subscribe();
+        this.devicePlayback$.next(device_id);
       });
 
       this.player.connect();
@@ -124,13 +121,14 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   public play(): void {
     this.initPlaying$.pipe(
       takeUntil(this.destroy$),
+      tap(() => this.playSongLoading = true),
       take(1)
-    ).subscribe(initPlaying => {
+    ).subscribe(async (initPlaying) => {
       if (initPlaying) {
         this.initialPlay().pipe(take(1)).subscribe(() => {
           this.initPlaying$.next(false);
           this.isPlaying$.next(true);
-
+          this.playSongLoading = false;
           /**
            * We want to position to specific area
            */
@@ -140,7 +138,9 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
         });
       } else {
         this.isPlaying$.next(true);
-        this.player.resume();
+        await this.player.resume();
+
+        this.playSongLoading = false;
       }
     })
   }
@@ -171,11 +171,11 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
     this.pause();
   }
 
-  pause(): void {
+  async pause() {
     clearInterval(this._setIntervalTimer);
     this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
     if (this.player) {
-      this.player.pause();
+      return await this.player.pause();
     }
   }
 
