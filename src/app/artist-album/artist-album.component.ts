@@ -21,6 +21,7 @@ import { ArtistAlbumSongs, ClearSongs, SetCurrentSelectedSongAction } from '../c
 })
 export class ArtistAlbumComponent implements OnInit, OnDestroy {
   @Select(SongsState.artistAlbum) artistAlbum$!: Observable<IAlbumInfo>;
+  @Select(SongsState.songsLoading) songsLoading$!: Observable<boolean>;
   @Select(SongsState.songs) tracks$!: Observable<ISong[]>;
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;

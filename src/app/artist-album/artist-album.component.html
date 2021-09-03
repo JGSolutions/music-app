@@ -4,6 +4,7 @@
     <div class="col-md-5 col-lg-3">
       <section class="sticky-element">
         <app-album-avatar
+          [loading]="(songsLoading$ | async)!"
           [artist]="(artistAlbum$ | async)?.artist!"
           [platform]="(artistAlbum$ | async)?.platform!"
           [avatar]="(artistAlbum$ | async)?.pictures?.large!"

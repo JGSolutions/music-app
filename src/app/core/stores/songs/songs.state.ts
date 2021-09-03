@@ -118,11 +118,15 @@ export class SongsState {
 
   @Action(ArtistAlbumSongs)
   _artistAlbumSongs(ctx: StateContext<ISongsState>, { uid, platform, id }: ArtistAlbumSongs) {
+    ctx.patchState({
+      songsLoading: true
+    });
     return this.apiService.artistAlbum(uid!, platform, id).pipe(
       tap((data: IAlbum) => {
         ctx.patchState({
           songs: data.tracks,
-          artistAlbum: data.album
+          artistAlbum: data.album,
+          songsLoading: false
         });
       })
     )
