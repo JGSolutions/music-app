@@ -29,6 +29,7 @@ export class HowlerPlayerService {
     }
 
     this._sound = new Howl({
+      format: ['mp3', 'aac'],
       src: [streamUrl],
       html5: true,
       autoplay: false,

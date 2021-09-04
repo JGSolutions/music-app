@@ -75,6 +75,23 @@ export class ApiService {
 
   }
 
+  public soundcloudAudioStream(uid: string, url: string): Observable<any> {
+    const headers = {
+      headers: {
+        "Authorization": uid
+      },
+    };
+
+    const urlApi = `${this.domainApi}/soundcloud-audio?externalUrl=${url}s`;
+
+    return this.http.get(urlApi, headers).pipe(
+      retry(2),
+      catchError((e) => {
+        return of('Error', e);
+      })
+    );
+
+  }
   public createSpotifyToken(code: string, uid: string): Observable<string> {
     const httpOptions = {
       headers: new HttpHeaders({

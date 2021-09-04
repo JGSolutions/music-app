@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { IArtists } from 'models/artist.types';
 import { ISearchResults } from 'models/search.model';
-import { ISongTrackType } from 'models/song.types';
+import { ISong, ISongTrackType } from 'models/song.types';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
@@ -56,11 +56,10 @@ export class SearchComponent implements OnDestroy {
       take(1),
       filter(([songDetailById, currentTrack]) => currentTrack?.id !== selectedSong),
       map(([songDetailById]) => songDetailById(selectedSong))
-    ).subscribe((data: ISongCommonState | undefined) => {
+    ).subscribe((data: ISong | undefined) => {
       if (data?.trackType !== ISongTrackType.track) {
         this.router.navigate(['artist-album', data?.platform, data?.id]);
       } else {
-
         const currentTrack: ICurrentTrack = {
           platform: data!.platform,
           name: data!.name,
@@ -70,7 +69,7 @@ export class SearchComponent implements OnDestroy {
           avatar: data?.pictures?.medium,
           duration: data?.duration,
           durationType: data?.durationType,
-          audioFile: "",
+          audioFile: data?.streamUrl || "",
           isPlaying: false,
           id: data?.id!,
           albumid: data?.albumid || ""
