@@ -46,7 +46,6 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
       withLatestFrom(this.currentTrack$),
     ).subscribe(([audioFile, currentTrack]) => {
       this.howlService.initHowler(audioFile);
-      this.store.dispatch(new LoadingPlayerAction(true));
       this.trackReady.emit(currentTrack);
     });
 

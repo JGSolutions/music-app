@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output, AfterContentInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
@@ -9,6 +9,7 @@ import { IUserType } from 'src/app/core/stores/user/user.types';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
 import { LoadingPlayerAction, SetCurrentTrackPlayStatusAction, SoundcloudAudioFileAction } from 'src/app/core/stores/songs/songs.actions';
 import { HowlerPlayerService } from 'src/app/services/howl-player.service';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-soundcloud-bar',
@@ -16,7 +17,7 @@ import { HowlerPlayerService } from 'src/app/services/howl-player.service';
   styleUrls: ['./soundcloud-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SoundcloudBarComponent implements OnInit, OnDestroy {
+export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.loading) loading$!: Observable<boolean>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
@@ -31,9 +32,10 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
 
   constructor(public howlService: HowlerPlayerService, private store: Store) { }
 
-  ngOnInit() {
+  ngAfterContentInit() {
     this.currentTrack$.pipe(
       takeUntil(this.destroy$),
+      filter((currentTrack) => currentTrack.platform === IPlatformTypes.soundcloud),
       distinctUntilChanged((prev, curr) => prev.audioFile === curr.audioFile),
       tap((currentTrack) => this.trackReady.emit(currentTrack)),
       withLatestFrom(this.user$),
