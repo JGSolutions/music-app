@@ -1,15 +1,14 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
 import { Select, Store } from '@ngxs/store';
-import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
+import { ICurrentTrack, ISoundcloudStreamUrls } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
 import { LoadingPlayerAction, SetCurrentTrackPlayStatusAction, SoundcloudAudioFileAction } from 'src/app/core/stores/songs/songs.actions';
 import { HowlerPlayerService } from 'src/app/services/howl-player.service';
-import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-soundcloud-bar',
@@ -21,6 +20,7 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.loading) loading$!: Observable<boolean>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.soundcloudStreamUrls) soundcloudStreamUrls$!: Observable<ISoundcloudStreamUrls>;
   @Select(SongsState.currentTrackLoading) currentTrackLoading$!: Observable<boolean>;
 
   @Output() trackReady = new EventEmitter<any>();
@@ -29,7 +29,7 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<boolean>();
 
-  constructor(public apiService: ApiService, public howlService: HowlerPlayerService, private store: Store) { }
+  constructor(public howlService: HowlerPlayerService, private store: Store) { }
 
   ngOnInit() {
     this.currentTrack$.pipe(
@@ -37,14 +37,15 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
       distinctUntilChanged((prev, curr) => prev.audioFile === curr.audioFile),
       tap((currentTrack) => this.trackReady.emit(currentTrack)),
       withLatestFrom(this.user$),
-      switchMap(([currentTrack, user]) => {
-        this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!));
-        return this.apiService.soundcloudAudioStream(user.uid!, currentTrack.audioFile!);
-      })
-    ).subscribe((streamUrls) => {
+      switchMap(([currentTrack, user]) => this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!)))
+    ).subscribe();
+
+    this.soundcloudStreamUrls$.pipe(
+      takeUntil(this.destroy$),
+      filter(e => !_isEmpty(e))
+    ).subscribe(streamUrls => {
       this.playSongLoading$.next(true);
       this.howlService.initHowler(streamUrls.http_mp3_128_url!);
-      // this.store.dispatch(new LoadingPlayerAction(true));
     });
 
     this.howlService.$onload.pipe(

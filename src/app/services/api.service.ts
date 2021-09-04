@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { IArtistBodyRequest, IArtists, IPlatformTypes } from 'models/artist.types';
 import { IAlbum, IArtistTracks, IStreamUrl } from 'models/song.types';
 import { ISearchResults } from 'models/search.model';
+import { ISoundcloudStreamUrls } from '../core/stores/songs/songs.types';
 
 
 @Injectable()
@@ -75,7 +76,7 @@ export class ApiService {
 
   }
 
-  public soundcloudAudioStream(uid: string, url: string): Observable<any> {
+  public soundcloudAudioStream(uid: string, url: string): Observable<ISoundcloudStreamUrls> {
     const headers = {
       headers: {
         "Authorization": uid
@@ -84,7 +85,7 @@ export class ApiService {
 
     const urlApi = `${this.domainApi}/soundcloud-audio?externalUrl=${url}s`;
 
-    return this.http.get(urlApi, headers).pipe(
+    return this.http.get<ISoundcloudStreamUrls>(urlApi, headers).pipe(
       retry(2),
       catchError((e) => {
         return of('Error', e);

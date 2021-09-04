@@ -96,6 +96,11 @@ export class SongsState {
     return state.currentTrackLoading;
   }
 
+  @Selector()
+  static soundcloudStreamUrls(state: ISongsState) {
+    return state.soundcloudStreamUrls;
+  }
+
   @Action(ArtistSongsAction)
   _artistSongs(ctx: StateContext<ISongsState>, { uid, artistPlatform }: ArtistSongsAction) {
     ctx.patchState({
@@ -208,13 +213,12 @@ export class SongsState {
     });
     return this.apiService.soundcloudAudioStream(uid!, externalUrl!).pipe(
       tap((urls) => {
-        console.log(urls);
         patchState({
-          // currentTrack,
+          soundcloudStreamUrls: urls,
           loading: false
         });
       })
-    )
+    );
   }
 
   @Action(SetCurrentTrackPlayStatusAction, { cancelUncompleted: true })
