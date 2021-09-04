@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
@@ -7,7 +7,7 @@ import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
-import { AudioFileAction, LoadingPlayerAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
+import { AudioFileAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
 import { HowlerPlayerService } from 'src/app/services/howl-player.service';
 
 @Component({
@@ -20,10 +20,10 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.audioFile) audioFile$!: Observable<string>;
   @Select(SongsState.loading) loading$!: Observable<boolean>;
-
-  @Input() currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   @Output() trackReady = new EventEmitter<any>();
+
   public playSongLoading$ = new Subject<boolean>();
 
   private destroy$ = new Subject<boolean>();
@@ -33,38 +33,34 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentTrack$.pipe(
       takeUntil(this.destroy$),
-      distinctUntilChanged((prev, curr) => prev.externalUrl === curr.externalUrl),
-      filter((streamUrl) => _isEmpty(streamUrl.audioFile)),
-      map((streamUrl) => streamUrl.externalUrl),
-      withLatestFrom(this.user$),
-      switchMap(([url, user]) => this.store.dispatch(new AudioFileAction(user.uid, url))),
-    ).subscribe();
+      distinctUntilChanged((prev, curr) => prev.externalUrl === curr.externalUrl)
+    ).subscribe(e => console.log(e));
 
-    this.audioFile$.pipe(
-      takeUntil(this.destroy$),
-      filter((audioFile) => !_isEmpty(audioFile)),
-      withLatestFrom(this.currentTrack$),
-    ).subscribe(([audioFile, currentTrack]) => {
-      this.howlService.initHowler(audioFile);
-      this.store.dispatch(new LoadingPlayerAction(true));
-      this.trackReady.emit(currentTrack);
-    });
+    // this.audioFile$.pipe(
+    //   takeUntil(this.destroy$),
+    //   filter((audioFile) => !_isEmpty(audioFile)),
+    //   withLatestFrom(this.currentTrack$),
+    // ).subscribe(([audioFile, currentTrack]) => {
+    //   this.howlService.initHowler(audioFile);
+    //   this.store.dispatch(new LoadingPlayerAction(true));
+    //   this.trackReady.emit(currentTrack);
+    // });
 
-    this.howlService.$onload.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.store.dispatch([
-        new SetCurrentTrackPlayStatusAction(false),
-        new LoadingPlayerAction(false)
-      ]);
-    });
+    // this.howlService.$onload.pipe(
+    //   takeUntil(this.destroy$)
+    // ).subscribe(() => {
+    //   this.store.dispatch([
+    //     new SetCurrentTrackPlayStatusAction(false),
+    //     new LoadingPlayerAction(false)
+    //   ]);
+    // });
 
-    this.howlService.$isPlaying.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      this.playSongLoading$.next(false);
-      this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
-    });
+    // this.howlService.$isPlaying.pipe(
+    //   takeUntil(this.destroy$)
+    // ).subscribe(() => {
+    //   this.playSongLoading$.next(false);
+    //   this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
+    // });
   }
 
   ngOnDestroy() {

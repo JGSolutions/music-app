@@ -2,13 +2,13 @@ import { Component, Input, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmit
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
-import { HowlerPlayerService } from './howl-player.service';
 import { Select, Store } from '@ngxs/store';
 import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
 import { AudioFileAction, LoadingPlayerAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
+import { HowlerPlayerService } from 'src/app/services/howl-player.service';
 
 @Component({
   selector: 'app-player-bar',
