@@ -43,10 +43,7 @@
 }
 
 .loading {
-
   .image-wrapper {
-    // position: relative;
-
     width: 100%;
     height: 200px;
     border-radius: 6px;
@@ -54,8 +51,25 @@
     .platform-logo, .album-name, .avatar {
       display: none;
     }
-
     @include ghost-animation();
+  }
+
+  .artist-info {
+    .mat-headline {
+      min-height: 30px;
+      width: 100%;
+      @include ghost-animation();
+    }
+
+    .mat-caption {
+      display: none;
+    }
+
+    .track-info {
+      min-height: 30px;
+      width: 100%;
+      @include ghost-animation();
+    }
   }
 }
 
