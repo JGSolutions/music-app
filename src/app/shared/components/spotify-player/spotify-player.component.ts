@@ -1,6 +1,6 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, EventEmitter, Output, AfterContentInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { isEmpty as _isEmpty, isUndefined as _isUndefined } from "lodash";
 import { Select, Store } from '@ngxs/store';
@@ -21,7 +21,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./spotify-player.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SpotifyPlayerComponent implements OnInit, OnDestroy {
+export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(ConnectedServicesState.connectedServices) connectedServices$!: Observable<Record<string, ConnectedServicesList>>;
   @Select(SongsState.loading) loading$!: Observable<boolean>;
@@ -45,7 +45,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
   constructor(private store: Store, private apiService: ApiService) {
   }
 
-  ngOnInit() {
+  ngAfterContentInit() {
     combineLatest([this.currentTrack$, this.devicePlayback$]).pipe(
       takeUntil(this.destroy$),
       filter(([currentTrack, devicePlayback]) => currentTrack.platform == IPlatformTypes.spotify && devicePlayback !== ""),

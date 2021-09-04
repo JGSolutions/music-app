@@ -3,7 +3,7 @@
 [playSongLoading]="(playSongLoading$ | async)!"
 [progress]="(howlService.$sliderProgress | async)!"
 [rawDuration]="(howlService.$rawDuration | async)!"
-[avatar]="(currentTrack$ | async)?.avatar!"
+[avatar]="(currentTrack$ | async)?.avatar! || '../../../assets/no-music.svg'"
 [name]="(currentTrack$ | async)?.name!"
 [isPlaying]="(howlService.$isPlaying | async)!"
 [artist]="(currentTrack$ | async)?.artist!"
