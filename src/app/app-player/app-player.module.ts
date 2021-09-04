@@ -18,6 +18,7 @@ import { PlaylistService } from '../services/playlist.service';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { SearchState } from '../core/stores/search/search.state';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SoundcloudBarModule } from '../shared/components/soundcloud-bar/soundcloud-bar.module';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -27,6 +28,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     AngularMaterialModule,
     AppPlayerRoutingModule,
     PlayerbarModule,
+    SoundcloudBarModule,
     SpotifyPlayerModule,
     ReactiveFormsModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState, SearchState]),

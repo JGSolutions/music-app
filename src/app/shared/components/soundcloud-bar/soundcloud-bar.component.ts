@@ -11,7 +11,7 @@ import { AudioFileAction, LoadingPlayerAction, SetCurrentTrackPlayStatusAction }
 import { HowlerPlayerService } from 'src/app/services/howl-player.service';
 
 @Component({
-  selector: 'app-player-bar',
+  selector: 'app-soundcloud-bar',
   templateUrl: './soundcloud-bar.component.html',
   styleUrls: ['./soundcloud-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
