@@ -3,6 +3,14 @@ import { IAlbumInfo, IDurationType, ISong, ISongTrackType } from "models/song.ty
 import { ISelectedPlaylist } from "../playlist/playlist.types";
 
 export type ISongCommonState = ISong | ISelectedPlaylist;
+
+export interface ISoundcloudStreamUrls {
+  hls_mp3_128_url: string;
+  hls_opus_64_url: string;
+  http_mp3_128_url: string;
+  preview_mp3_128_url: string;
+}
+
 export interface ISongsState {
   songs: ISongCommonState[],
   artist: IArtists,
@@ -11,6 +19,8 @@ export interface ISongsState {
   songsLoading: boolean;
   artistAlbum: IAlbumInfo;
   currentTrack: ICurrentTrack;
+  currentTrackLoading: boolean,
+  soundcloudStreamUrls: ISoundcloudStreamUrls
 }
 
 export const songsStateDefault: ISongsState = {
@@ -20,7 +30,9 @@ export const songsStateDefault: ISongsState = {
   artistAlbum: {} as IAlbumInfo,
   currentTrack: {} as ICurrentTrack,
   loading: false,
-  songsLoading: false
+  currentTrackLoading: false,
+  songsLoading: false,
+  soundcloudStreamUrls: {} as ISoundcloudStreamUrls
 };
 
 export interface ICurrentTrack {

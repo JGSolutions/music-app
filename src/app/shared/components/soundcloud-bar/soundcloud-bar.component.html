@@ -1,0 +1,14 @@
+<app-audio-player
+[loading]="(currentTrackLoading$ | async)!"
+[playSongLoading]="(playSongLoading$ | async)!"
+[progress]="(howlService.$sliderProgress | async)!"
+[rawDuration]="(howlService.$rawDuration | async)!"
+[avatar]="(currentTrack$ | async)?.avatar! || '../../../assets/no-music.svg'"
+[name]="(currentTrack$ | async)?.name!"
+[isPlaying]="(howlService.$isPlaying | async)!"
+[artist]="(currentTrack$ | async)?.artist!"
+[currentTimer]="(howlService.$currentTimer | async)!"
+(sliderChange)="sliderChange($event)"
+(sliderInput)="sliderInput($event)"
+(play)="play()"
+(pause)="pause()"></app-audio-player>

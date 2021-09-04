@@ -31,6 +31,11 @@ export class AudioFileAction {
   constructor(public uid: string | undefined, public externalUrl: string | undefined) { }
 }
 
+export class SoundcloudAudioFileAction {
+  static readonly type = '[Songs] Soundcloud Audio Stream File';
+  constructor(public uid: string | undefined, public externalUrl: string | undefined) { }
+}
+
 export class ClearSongs {
   static readonly type = '[Songs] Clear Song State';
 }

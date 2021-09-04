@@ -64,13 +64,16 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
-  <app-player-bar
-    *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
+  <app-player-bar *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
     (trackReady)="trackHistory($event)"
     [currentTrack$]="currentTrack$!">
   </app-player-bar>
-  <app-spotify-player
-    (trackReady)="trackHistory($event)"
+
+  <app-spotify-player (trackReady)="trackHistory($event)"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
   </app-spotify-player>
+
+  <app-soundcloud-bar (trackReady)="trackHistory($event)"
+    *ngIf="(currentTrack$ | async)?.platform === platformTypes.soundcloud">
+  </app-soundcloud-bar>
 </div>
