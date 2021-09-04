@@ -11,6 +11,7 @@ export interface ISongsState {
   songsLoading: boolean;
   artistAlbum: IAlbumInfo;
   currentTrack: ICurrentTrack;
+  currentTrackLoading: boolean,
 }
 
 export const songsStateDefault: ISongsState = {
@@ -20,6 +21,7 @@ export const songsStateDefault: ISongsState = {
   artistAlbum: {} as IAlbumInfo,
   currentTrack: {} as ICurrentTrack,
   loading: false,
+  currentTrackLoading: false,
   songsLoading: false
 };
 

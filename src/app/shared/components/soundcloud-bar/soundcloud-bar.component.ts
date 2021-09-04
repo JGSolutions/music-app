@@ -7,7 +7,7 @@ import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
-import { LoadingPlayerAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
+import { LoadingPlayerAction, SetCurrentTrackPlayStatusAction, SoundcloudAudioFileAction } from 'src/app/core/stores/songs/songs.actions';
 import { HowlerPlayerService } from 'src/app/services/howl-player.service';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -19,9 +19,9 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class SoundcloudBarComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(SongsState.audioFile) audioFile$!: Observable<string>;
   @Select(SongsState.loading) loading$!: Observable<boolean>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+  @Select(SongsState.currentTrackLoading) currentTrackLoading$!: Observable<boolean>;
 
   @Output() trackReady = new EventEmitter<any>();
 
@@ -37,10 +37,14 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
       distinctUntilChanged((prev, curr) => prev.audioFile === curr.audioFile),
       tap((currentTrack) => this.trackReady.emit(currentTrack)),
       withLatestFrom(this.user$),
-      switchMap(([currentTrack, user]) => this.apiService.soundcloudAudioStream(user.uid!, currentTrack.audioFile!))
+      switchMap(([currentTrack, user]) => {
+        this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!));
+        return this.apiService.soundcloudAudioStream(user.uid!, currentTrack.audioFile!);
+      })
     ).subscribe((streamUrls) => {
+      this.playSongLoading$.next(true);
       this.howlService.initHowler(streamUrls.http_mp3_128_url!);
-      this.store.dispatch(new LoadingPlayerAction(true));
+      // this.store.dispatch(new LoadingPlayerAction(true));
     });
 
     this.howlService.$onload.pipe(

@@ -1,5 +1,5 @@
 <app-audio-player
-[loading]="(loading$ | async)!"
+[loading]="(currentTrackLoading$ | async)!"
 [playSongLoading]="(playSongLoading$ | async)!"
 [progress]="(howlService.$sliderProgress | async)!"
 [rawDuration]="(howlService.$rawDuration | async)!"

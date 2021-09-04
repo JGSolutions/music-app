@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { take, tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction } from './songs.actions';
+import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction, SoundcloudAudioFileAction } from './songs.actions';
 import { songsStateDefault, ISongsState, ICurrentTrack, ISongCommonState } from './songs.types';
 import { cloneDeep, orderBy as _orderBy } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -91,6 +91,11 @@ export class SongsState {
     return state.loading;
   }
 
+  @Selector()
+  static currentTrackLoading(state: ISongsState) {
+    return state.currentTrackLoading;
+  }
+
   @Action(ArtistSongsAction)
   _artistSongs(ctx: StateContext<ISongsState>, { uid, artistPlatform }: ArtistSongsAction) {
     ctx.patchState({
@@ -166,11 +171,14 @@ export class SongsState {
 
   @Action(GetCurrentSelectedTrackAction, { cancelUncompleted: true })
   _getCurrentSelectedTrackAction({ patchState }: StateContext<ISongsState>, { uid }: GetCurrentSelectedTrackAction) {
+    patchState({
+      currentTrackLoading: true
+    });
     return this._currentTrack.getCurrentTrack(uid).pipe(
-      // take(1),
       tap((currentTrack) => {
         patchState({
           currentTrack,
+          currentTrackLoading: false
         });
       })
     );
@@ -187,6 +195,23 @@ export class SongsState {
         currentTrack.audioFile = audioFile.url;
         patchState({
           currentTrack,
+        });
+      })
+    )
+  }
+
+
+  @Action(SoundcloudAudioFileAction, { cancelUncompleted: true })
+  _soundcloududioFileAction({ patchState }: StateContext<ISongsState>, { uid, externalUrl }: SoundcloudAudioFileAction) {
+    patchState({
+      loading: true
+    });
+    return this.apiService.soundcloudAudioStream(uid!, externalUrl!).pipe(
+      tap((urls) => {
+        console.log(urls);
+        patchState({
+          // currentTrack,
+          loading: false
         });
       })
     )
