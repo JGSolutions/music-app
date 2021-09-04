@@ -15,7 +15,7 @@ min="0"
     <button mat-icon-button class="skip-previous">
       <mat-icon>skip_previous</mat-icon>
     </button>
-    <button (click)="playHandler()" mat-fab color="primary" *ngIf="isPlaying === false || loading" class="play-button" [disabled]="loading || playSongLoading">
+    <button (click)="playHandler()" mat-fab color="primary" *ngIf="!isPlaying || loading" class="play-button" [disabled]="loading || playSongLoading">
       <mat-icon>play_arrow</mat-icon>
     </button>
     <button (click)="pauseHandler()" mat-fab color="primary" *ngIf="isPlaying && !loading" [disabled]="loading">

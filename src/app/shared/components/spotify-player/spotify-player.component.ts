@@ -53,6 +53,7 @@ export class SpotifyPlayerComponent implements OnInit, OnDestroy {
       tap(([currentTrack]) => this.trackReady.emit(currentTrack)),
       switchMap(([currentTrack, devicePlayback]) => this.transferUserPlayback(devicePlayback))
     ).subscribe(async () => {
+      this.store.dispatch(new LoadingPlayerAction(false));
       this.resetDuration();
       await this.pause();
     });

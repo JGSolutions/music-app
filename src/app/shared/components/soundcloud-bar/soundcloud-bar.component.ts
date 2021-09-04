@@ -51,10 +51,8 @@ export class SoundcloudBarComponent implements OnInit, OnDestroy {
     this.howlService.$onload.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      this.store.dispatch([
-        new SetCurrentTrackPlayStatusAction(false),
-        new LoadingPlayerAction(false)
-      ]);
+      this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
+      this.store.dispatch(new LoadingPlayerAction(false));
     });
 
     this.howlService.$isPlaying.pipe(
