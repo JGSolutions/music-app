@@ -117,6 +117,10 @@ export const auth = {
     return await axios.post(`${this.soundcloudDomain}/oauth2/token`, params, postHeaders);
   },
 
+  async audioStream(url: string): Promise<any> {
+    return await axios.get(url, this.requestHeaders());
+  },
+
   requestHeaders(): any {
     return {
       headers: {
