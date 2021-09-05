@@ -63,7 +63,8 @@ export class ArtistSongsComponent implements OnInit {
           trackType: data?.trackType!,
           pictures: data?.pictures!,
           externalUrl: data?.externalUrl,
-          createdTime: data?.createdTime
+          createdTime: data?.createdTime,
+          streamUrl: data?.streamUrl || ""
         };
 
         this.dialog.open(AddPlaylistDialogComponent, {

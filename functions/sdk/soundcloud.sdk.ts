@@ -65,7 +65,7 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
         id: song.id.toString(),
         externalUrl: song.permalink_url,
         duration: (isUndefined(song.duration)) ? 0 : song.duration,
-        durationType: IDurationType.seconds,
+        durationType: IDurationType.milliseconds,
         trackType: song.kind === "track" ? ISongTrackType.track : ISongTrackType.album,
         platform: IPlatformTypes.soundcloud,
         streamUrl: song.stream_url,
@@ -136,7 +136,7 @@ export const auth = {
   },
 
   async artistSongs(user: string): Promise<IArtistTracks> {
-    const trackResp = await axios(`${this.soundcloudDomain}/users/${user}/tracks`, this.requestHeaders());
+    const trackResp = await axios(`${this.soundcloudDomain}/users/${user}/tracks?limit=100`, this.requestHeaders());
     const artistResp = await axios(`${this.soundcloudDomain}/users/${user}`, this.requestHeaders());
 
     return await artistSongs(trackResp.data, artistResp.data);
