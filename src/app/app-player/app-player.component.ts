@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -13,7 +13,7 @@ import { AddHistoryAction } from '../core/stores/history/history.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SearchAction } from '../core/stores/search/search.actions';
 import { SearchState } from '../core/stores/search/search.state';
 
@@ -34,7 +34,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   public focusField = false;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private breakpointObserver: BreakpointObserver, private store: Store, private router: Router) {
+  constructor(private breakpointObserver: BreakpointObserver, private store: Store, private router: Router, private route: ActivatedRoute) {
     this.isMobile$ = this.breakpointObserver.observe('(max-width: 576px)').pipe(
       map((result) => result.matches),
       shareReplay(1)
@@ -44,6 +44,11 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    combineLatest([this.route.queryParams, this.user$]).pipe(
+      takeUntil(this.destroy$),
+      filter(([params, user]) => user !== null),
+    ).subscribe(([params, user]) => this.store.dispatch(new SearchAction(params.q, user.uid!)));
+
     this.user$.pipe(
       takeUntil(this.destroy$),
       filter(user => user !== null)
@@ -60,14 +65,10 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       .pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged(),
-        debounceTime(650),
+        debounceTime(500),
         filter(value => value.length >= 2),
-        withLatestFrom(this.user$),
-        switchMap(([searchValue, user]) => {
-          return this.store.dispatch(new SearchAction(searchValue, user.uid!))
-        })
-      ).subscribe(() => {
-        this.router.navigate(["/", "search"]);
+      ).subscribe((searchValue) => {
+        this.router.navigate(["/", "search"], { relativeTo: this.route, queryParams: { q: searchValue } });
       });
   }
 
