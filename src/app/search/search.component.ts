@@ -6,7 +6,7 @@ import { IArtists } from 'models/artist.types';
 import { ISearchResults } from 'models/search.model';
 import { ISong, ISongTrackType } from 'models/song.types';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 import { SearchTypeAction } from '../core/stores/search/search.actions';
@@ -26,8 +26,13 @@ export class SearchComponent implements OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SearchState.searchResults) searchResults$!: Observable<ISearchResults>;
   @Select(SearchState.searchType) searchType$!: Observable<number>;
-  @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
+
   public songDetailById$ = this.store.select(SearchState.songDetailById);
+  public currentTrack$ = this.store.select(SongsState.currentTrack).pipe(
+    distinctUntilChanged((prev, next) => prev.id === next.id),
+    shareReplay(1)
+  );
+
   private destroy$ = new Subject<boolean>();
 
   constructor(private router: Router, private store: Store, private dialog: MatDialog) { }
