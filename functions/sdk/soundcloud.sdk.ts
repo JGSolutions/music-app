@@ -7,12 +7,26 @@ import { ISearchResults } from "../../models/search.model";
 import { IArtistTracks, IDurationType, ISongTrackType } from "../../models/song.types";
 import { updateConnectedSoundcloudService } from "../src/utils/connect-services-firebase";
 
+const artistDataModel = (artist: any): IArtists => {
+  return {
+    name: artist.full_name || artist.username,
+    id: artist.id.toString(),
+    username: artist.username,
+    platform: IPlatformTypes.soundcloud,
+    pictures: {
+      medium: artist.avatar_url,
+      large: artist.avatar_url,
+      exLarge: artist.avatar_url,
+    },
+  };
+};
+
 export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTracks> => {
   return new Promise((resolve) => {
     const data = dataApi.map((song: any) => {
       return {
         name: song.title,
-        id: song.id,
+        id: song.id.toString(),
         createdTime: new Date(song.created_at),
         username: song.user.username,
         artistName: song.user.username,
@@ -31,33 +45,9 @@ export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTrack
     });
     resolve({
       tracks: data,
-      artists: [{
-        name: artistData.full_name || artistData.username,
-        id: artistData.id.toString(),
-        username: artistData.username,
-        platform: IPlatformTypes.soundcloud,
-        pictures: {
-          medium: artistData.avatar_url,
-          large: artistData.avatar_url,
-          exLarge: artistData.avatar_url,
-        },
-      }],
+      artists: [artistDataModel(artistData)],
     });
   });
-};
-
-const artistDataModel = (artist: any): IArtists => {
-  return {
-    name: artist.full_name || artist.username,
-    id: artist.id.toString(),
-    username: artist.username,
-    platform: IPlatformTypes.soundcloud,
-    pictures: {
-      medium: artist.avatar_url,
-      large: artist.avatar_url,
-      exLarge: artist.avatar_url,
-    },
-  };
 };
 
 export const searchResultArtists = (dataApi: any): Promise<IArtists[]> => {
@@ -72,7 +62,7 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
     const tracks = dataApi.map((song: any) => {
       return {
         name: song.title,
-        id: song.id,
+        id: song.id.toString(),
         externalUrl: song.permalink_url,
         duration: (isUndefined(song.duration)) ? 0 : song.duration,
         durationType: IDurationType.seconds,
