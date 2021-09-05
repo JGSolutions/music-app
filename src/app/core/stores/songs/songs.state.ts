@@ -163,7 +163,7 @@ export class SongsState {
       avatar: song?.pictures?.medium,
       duration: song?.duration,
       durationType: song?.durationType,
-      audioFile: "",
+      audioFile: song?.streamUrl || "",
       isPlaying: false,
       id: song?.id!,
       albumid: song?.albumid || ""

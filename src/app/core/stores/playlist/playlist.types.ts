@@ -17,6 +17,7 @@ export interface ISelectedPlaylist {
   externalUrl?: string;
   createdTime: string;
   totalTracks?: number;
+  streamUrl?: string;
 }
 
 export interface IPlayerlistState {
