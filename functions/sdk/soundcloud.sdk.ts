@@ -1,10 +1,50 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import axios from "axios";
+import { isUndefined } from "lodash";
 import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { ISearchResults } from "../../models/search.model";
-import { IDurationType } from "../../models/song.types";
+import { IArtistTracks, IDurationType, ISongTrackType } from "../../models/song.types";
 import { updateConnectedSoundcloudService } from "../src/utils/connect-services-firebase";
+
+export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTracks> => {
+  return new Promise((resolve) => {
+    const data = dataApi.map((song: any) => {
+      return {
+        name: song.title,
+        id: song.id,
+        createdTime: new Date(song.created_at),
+        username: song.user.username,
+        artistName: song.user.username,
+        duration: (isUndefined(song.duration)) ? 0 : song.duration,
+        durationType: IDurationType.milliseconds,
+        trackType: song.kind === "track" ? ISongTrackType.track : ISongTrackType.album,
+        platform: IPlatformTypes.soundcloud,
+        streamUrl: song.stream_url,
+        externalUrl: song.permalink_url,
+        pictures: {
+          medium: song.artwork_url,
+          large: song.artwork_url,
+          exLarge: song.artwork_url,
+        },
+      };
+    });
+    resolve({
+      tracks: data,
+      artists: [{
+        name: artistData.full_name || artistData.username,
+        id: artistData.id.toString(),
+        username: artistData.username,
+        platform: IPlatformTypes.soundcloud,
+        pictures: {
+          medium: artistData.avatar_url,
+          large: artistData.avatar_url,
+          exLarge: artistData.avatar_url,
+        },
+      }],
+    });
+  });
+};
 
 const artistDataModel = (artist: any): IArtists => {
   return {
@@ -33,15 +73,14 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
       return {
         name: song.title,
         id: song.id,
-        externalUrl: song.url,
-        duration: song.duration,
+        externalUrl: song.permalink_url,
+        duration: (isUndefined(song.duration)) ? 0 : song.duration,
         durationType: IDurationType.seconds,
-        trackType: song.kind,
+        trackType: song.kind === "track" ? ISongTrackType.track : ISongTrackType.album,
         platform: IPlatformTypes.soundcloud,
-        uri: song.uri,
         streamUrl: song.stream_url,
         artistName: song.user.username,
-        createdTime: song.created_at,
+        createdTime: new Date(song.created_at),
         pictures: {
           medium: song.artwork_url,
           large: song.artwork_url,
@@ -104,6 +143,13 @@ export const auth = {
       tracks: await searchResultTracks(resTracks.data),
       artists: await searchResultArtists(resArtists.data),
     };
+  },
+
+  async artistSongs(user: string): Promise<IArtistTracks> {
+    const trackResp = await axios(`${this.soundcloudDomain}/users/${user}/tracks`, this.requestHeaders());
+    const artistResp = await axios(`${this.soundcloudDomain}/users/${user}`, this.requestHeaders());
+
+    return await artistSongs(trackResp.data, artistResp.data);
   },
 
   async recreateAccessToken(): Promise<any> {
