@@ -139,6 +139,9 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
         trackType: song.type,
         platform: IPlatformTypes.spotify,
         uri: song.uri,
+        artist: artists.map((artist: any) => {
+          return { name: artist.name, id: artist.id };
+        }),
         pictures: {
           medium: song.album.images[2]?.url || "",
           large: song.album.images[1]?.url || "",

@@ -70,7 +70,7 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
         trackType: ISongTrackType.track,
         platform: IPlatformTypes.mixcloud,
         uri: song.uri,
-        artistName: song.user.name,
+        artist: [{ name: song.user.name, id: song.user.id }],
         createdTime: song.created_time,
         pictures: {
           medium: song.pictures.medium,

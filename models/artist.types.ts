@@ -14,6 +14,10 @@ export interface IArtistBodyRequest {
   username: string;
   id: string;
 }
+export interface IArtistName {
+  name: string;
+  id: string;
+}
 
 export interface IArtists {
   name: string;

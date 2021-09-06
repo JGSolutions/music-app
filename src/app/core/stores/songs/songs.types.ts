@@ -1,4 +1,4 @@
-import { IArtists, IPlatformTypes } from "models/artist.types";
+import { IArtistName, IArtists, IPlatformTypes } from "models/artist.types";
 import { IAlbumInfo, IDurationType, ISong, ISongTrackType } from "models/song.types";
 import { ISelectedPlaylist } from "../playlist/playlist.types";
 
@@ -42,7 +42,7 @@ export interface ICurrentTrack {
   albumid?: string;
   name: string;
   trackType: ISongTrackType,
-  artist?: string;
+  artist?: IArtistName[];
   externalUrl?: string;
   avatar?: string;
   audioFile?: string;

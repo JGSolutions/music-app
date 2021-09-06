@@ -1,4 +1,4 @@
-import { IArtists, IPlatformTypes } from "./artist.types";
+import { IArtistName, IArtists, IPlatformTypes } from "./artist.types";
 import { IAvatar } from "./avatar.types";
 
 export enum ISongTrackType {
@@ -27,7 +27,7 @@ export interface ISong {
   duration: number;
   durationType: IDurationType;
   username?: string;
-  artistName: string;
+  artist: IArtistName[];
   pictures?: IAvatar;
   totalTracks: number;
   externalUrl?: string;
