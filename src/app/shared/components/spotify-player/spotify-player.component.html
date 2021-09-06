@@ -1,4 +1,5 @@
 <app-audio-player
+[platform]="(currentTrack$ | async)?.platform!"
 [loading]="(loading$ | async)!"
 [playSongLoading]="playSongLoading"
 [disabled]="(initPlaying$ | async)!"

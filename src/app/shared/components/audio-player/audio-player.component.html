@@ -33,11 +33,13 @@ min="0"
     <img [src]=" avatar" class="music-avatar">
     <div class="loading-avatar"></div>
     <div class="music-details">
-      <span class="mat-body-1">{{name}}</span>
-      <span>
-        <img src="../../../assets/platforms/{{platform}}.png" class="platform-logo" >
+      <span class="mat-body-1 text-ellipsis">{{name}}</span>
+      <span class="platform">
+        <img src="../../../assets/platforms/{{platform}}.png" class="platform-logo" width="50">
       </span>
-      <span class="mat-caption">{{artist[0]?.name}}</span>
+      <div class="artists">
+        <a [routerLink]="['artist-songs']" [queryParams]="{platform: platform, id: a.id, username: a.username}" *ngFor="let a of artist" class="artist-links">{{a.name}}</a>
+      </div>
     </div>
   </section>
 </section>

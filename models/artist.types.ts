@@ -17,6 +17,7 @@ export interface IArtistBodyRequest {
 export interface IArtistName {
   name: string;
   id: string;
+  username: string;
 }
 
 export interface IArtists {
