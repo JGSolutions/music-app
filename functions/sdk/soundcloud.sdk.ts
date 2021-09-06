@@ -69,7 +69,7 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
         trackType: song.kind === "track" ? ISongTrackType.track : ISongTrackType.album,
         platform: IPlatformTypes.soundcloud,
         streamUrl: song.stream_url,
-        artist: [{ name: song.user.username, id: song.user.id.toString() }],
+        artist: [{ name: song.user.username, id: song.user.id.toString(), username: song.user.username }],
         createdTime: new Date(song.created_at),
         pictures: {
           medium: song.artwork_url,
