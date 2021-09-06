@@ -75,7 +75,9 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         id: song.id,
         albumid: dataApi.id,
         albumName: dataApi.name,
-        artistName: dataApi.artists[0].name,
+        artist: song.artists.map((artist: any) => {
+          return { name: artist.name, id: artist.id, username: artist.name.toLowerCase() };
+        }),
         createdTime: isUndefined(song.release_date) ? new Date(dataApi.release_date) : new Date(song.release_date),
         externalUrl: song.external_urls.spotify,
         duration: song.duration_ms,

@@ -26,7 +26,6 @@ export interface ISong {
   albumName?: string;
   duration: number;
   durationType: IDurationType;
-  username?: string;
   artist: IArtistName[];
   pictures?: IAvatar;
   totalTracks: number;
