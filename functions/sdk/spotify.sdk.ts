@@ -140,7 +140,7 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
         platform: IPlatformTypes.spotify,
         uri: song.uri,
         artist: song.artists.map((artist: any) => {
-          return { name: artist.name, id: artist.id };
+          return { name: artist.name, id: artist.id, username: artist.name.toLowerCase() };
         }),
         pictures: {
           medium: song.album.images[2]?.url || "",
