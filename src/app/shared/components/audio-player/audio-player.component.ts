@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { IArtistName } from 'models/artist.types';
+import { IArtistName, IPlatformTypes } from 'models/artist.types';
 import { IDurationType } from 'models/song.types';
 @Component({
   selector: 'app-audio-player',
@@ -19,6 +19,7 @@ export class AudioPlayerComponent {
   @Input() progress!: number;
   @Input() isPlaying!: boolean;
   @Input() disabled!: boolean;
+  @Input() platform!: IPlatformTypes;
 
   @Output() sliderChange = new EventEmitter<number>();
   @Output() sliderInput = new EventEmitter<number>();
