@@ -154,7 +154,16 @@ export const auth = {
   },
 
   async audioStream(url: string): Promise<any> {
-    return await axios.get(url, this.requestHeaders());
+    try {
+      return await axios.get(url, this.requestHeaders());
+    } catch (err) {
+      if (err.response?.status === 401) {
+        const res = await this.recreateAccessToken();
+        await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
+        this.token = res.data.access_token;
+        return await this.audioStream(url);
+      }
+    }
   },
 
   requestHeaders(): any {
