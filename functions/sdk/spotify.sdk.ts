@@ -237,7 +237,7 @@ export const SpotifySDK = {
     try {
       const resp = await axios(url, this.requestHeaders());
       return await artistsData(resp.data.artists.items);
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
@@ -285,7 +285,7 @@ export const SpotifySDK = {
 
     try {
       return await axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
@@ -306,7 +306,7 @@ export const SpotifySDK = {
 
     try {
       return await axios.put(`${this.apiDomain}/me/player`, request, this.requestHeaders());
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
