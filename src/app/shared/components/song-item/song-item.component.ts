@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { IPlatformTypes } from 'models/artist.types';
+import { IArtistName, IPlatformTypes } from 'models/artist.types';
 import { IAvatar } from 'models/avatar.types';
 import { IDurationType, ISongTrackType } from 'models/song.types';
 import { Observable } from 'rxjs';
@@ -12,6 +12,9 @@ import { Observable } from 'rxjs';
 export class SongItemComponent {
   @Input()
   isPlaying!: boolean;
+
+  @Input()
+  artists!: IArtistName[];
 
   @Input()
   currentTrackId!: string;
