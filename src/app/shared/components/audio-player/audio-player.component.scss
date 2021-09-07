@@ -55,19 +55,6 @@
       }
     }
 
-    a.artist-links {
-      text-decoration: none;
-      margin-right: 2px;
-    }
-
-    a:not(:last-child)::after {
-      content: ', ';
-    }
-
-    a.artist-links:hover {
-      text-decoration: underline;
-    }
-
     .music-avatar {
       width: 60px;
       height: 60px;
@@ -75,7 +62,6 @@
       display: block;
     }
   }
-
 }
 
 .loading {
@@ -116,15 +102,15 @@
 
     .music-details {
 
-      .artists {
-        width: 120px;
-        height: 12px;
-        a.artist-links {
-          display: none;
-        }
+      // .artists {
+      //   width: 120px;
+      //   height: 12px;
+      //   a.artist-links {
+      //     display: none;
+      //   }
 
-        @include ghost-animation();
-      }
+      //   @include ghost-animation();
+      // }
 
       .mat-body-1 {
         width: 300px;
@@ -142,6 +128,7 @@
         img {
           display: none;
         }
+
         @include ghost-animation();
       }
 

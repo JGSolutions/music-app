@@ -4,6 +4,7 @@ import { AudioPlayerComponent } from './audio-player.component';
 import { AngularMaterialModule } from 'src/angular-material.module';
 import { MinuteSecondsModule } from 'src/app/core/pipes/minute-seconds.module';
 import { RouterModule } from '@angular/router';
+import { ArtistLinksModule } from '../artist-links/artist-links.module';
 
 @NgModule({
   declarations: [AudioPlayerComponent],
@@ -11,7 +12,8 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterModule,
     AngularMaterialModule,
-    MinuteSecondsModule
+    MinuteSecondsModule,
+    ArtistLinksModule
   ],
   exports: [
     AudioPlayerComponent
