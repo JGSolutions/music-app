@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subject } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { isUndefined as _isUndefined, isEmpty as _isEmpty } from 'lodash';
 import { UserState } from '../core/stores/user/user.state';
@@ -32,10 +32,10 @@ export class ArtistSongsViewComponent implements OnInit, OnDestroy {
     const queryParams = this.route.snapshot.queryParams;
     this.store.dispatch(new ClearSongs());
 
-    this.user$.pipe(
+    combineLatest([this.user$, this.route.queryParams]).pipe(
       takeUntil(this.destroy$),
-      filter(user => user !== null)
-    ).subscribe(user => {
+      filter(([user]) => user !== null)
+    ).subscribe(([user, queryParams]) => {
       this.store.dispatch(new ArtistSongsAction(user.uid, [{
         type: queryParams.platform,
         id: queryParams.id,

@@ -4,9 +4,9 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
-import { isEmpty as _isEmpty } from 'lodash';
+import { isEmpty as _isEmpty, isUndefined as _isUndefined } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { AddHistoryAction } from '../core/stores/history/history.actions';
@@ -46,7 +46,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   ngOnInit() {
     combineLatest([this.route.queryParams, this.user$]).pipe(
       takeUntil(this.destroy$),
-      filter(([params, user]) => user !== null && !_isEmpty(params)),
+      filter(([params, user]) => user !== null && !_isUndefined(params.q)),
     ).subscribe(([params, user]) => {
       this.store.dispatch(new SearchAction(params.q, user.uid!));
     });
