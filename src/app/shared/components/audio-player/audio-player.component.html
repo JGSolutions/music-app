@@ -37,7 +37,9 @@ min="0"
       <span class="platform">
         <img src="../../../assets/platforms/{{platform}}.png" class="platform-logo" width="50">
       </span>
-      <app-artist-links [platform]="platform" [artist]="artist"></app-artist-links>
+      <div class="artist">
+        <app-artist-links [platform]="platform" [artist]="artist" *ngIf="!loading"></app-artist-links>
+      </div>
     </div>
   </section>
 </section>

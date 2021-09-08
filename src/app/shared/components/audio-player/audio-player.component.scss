@@ -102,15 +102,12 @@
 
     .music-details {
 
-      // .artists {
-      //   width: 120px;
-      //   height: 12px;
-      //   a.artist-links {
-      //     display: none;
-      //   }
+      .artist {
+        width: 120px;
+        height: 12px;
 
-      //   @include ghost-animation();
-      // }
+        @include ghost-animation();
+      }
 
       .mat-body-1 {
         width: 300px;
