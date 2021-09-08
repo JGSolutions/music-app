@@ -9,6 +9,7 @@ import { IUserType } from 'src/app/core/stores/user/user.types';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
 import { AudioFileAction, LoadingPlayerAction, SetCurrentTrackPlayStatusAction } from 'src/app/core/stores/songs/songs.actions';
 import { HowlerPlayerService } from 'src/app/services/howl-player.service';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-player-bar',
@@ -33,8 +34,8 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentTrack$.pipe(
       takeUntil(this.destroy$),
+      filter((streamUrl) => _isEmpty(streamUrl.audioFile && streamUrl.platform === IPlatformTypes.mixcloud)),
       distinctUntilChanged((prev, curr) => prev.externalUrl === curr.externalUrl),
-      filter((streamUrl) => _isEmpty(streamUrl.audioFile)),
       map((streamUrl) => streamUrl.externalUrl),
       withLatestFrom(this.user$),
       switchMap(([url, user]) => this.store.dispatch(new AudioFileAction(user.uid, url))),

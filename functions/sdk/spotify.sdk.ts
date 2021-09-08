@@ -75,7 +75,9 @@ export const artistAlbums = (dataApi: any): Promise<IAlbum> => {
         id: song.id,
         albumid: dataApi.id,
         albumName: dataApi.name,
-        artistName: dataApi.artists[0].name,
+        artist: song.artists.map((artist: any) => {
+          return { name: artist.name, id: artist.id, username: artist.name.toLowerCase() };
+        }),
         createdTime: isUndefined(song.release_date) ? new Date(dataApi.release_date) : new Date(song.release_date),
         externalUrl: song.external_urls.spotify,
         duration: song.duration_ms,
@@ -139,6 +141,9 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
         trackType: song.type,
         platform: IPlatformTypes.spotify,
         uri: song.uri,
+        artist: song.artists.map((artist: any) => {
+          return { name: artist.name, id: artist.id, username: artist.name.toLowerCase() };
+        }),
         pictures: {
           medium: song.album.images[2]?.url || "",
           large: song.album.images[1]?.url || "",
@@ -234,7 +239,7 @@ export const SpotifySDK = {
     try {
       const resp = await axios(url, this.requestHeaders());
       return await artistsData(resp.data.artists.items);
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
@@ -282,7 +287,7 @@ export const SpotifySDK = {
 
     try {
       return await axios.put(`${this.apiDomain}/me/player/play`, request, this.requestHeaders());
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 
@@ -303,7 +308,7 @@ export const SpotifySDK = {
 
     try {
       return await axios.put(`${this.apiDomain}/me/player`, request, this.requestHeaders());
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         // const res: IRefreshAuthorizationToken = await this.recreateAccessToken();
 

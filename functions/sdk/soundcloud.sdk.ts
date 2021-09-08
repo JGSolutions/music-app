@@ -28,8 +28,7 @@ export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTrack
         name: song.title,
         id: song.id.toString(),
         createdTime: new Date(song.created_at),
-        username: song.user.username,
-        artistName: song.user.username,
+        artist: [{ name: song.user.username, id: song.user.id.toString(), username: song.user.username }],
         duration: (isUndefined(song.duration)) ? 0 : song.duration,
         durationType: IDurationType.milliseconds,
         trackType: song.kind === "track" ? ISongTrackType.track : ISongTrackType.album,
@@ -69,7 +68,7 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
         trackType: song.kind === "track" ? ISongTrackType.track : ISongTrackType.album,
         platform: IPlatformTypes.soundcloud,
         streamUrl: song.stream_url,
-        artistName: song.user.username,
+        artist: [{ name: song.user.username, id: song.user.id.toString(), username: song.user.username }],
         createdTime: new Date(song.created_at),
         pictures: {
           medium: song.artwork_url,
@@ -113,7 +112,7 @@ export const auth = {
     try {
       const resp = await axios.get(`${this.soundcloudDomain}/me/followings?limit=${limit}`, this.requestHeaders());
       return await artistListData(resp.data);
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         const res = await this.recreateAccessToken();
         await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
@@ -156,7 +155,7 @@ export const auth = {
   async audioStream(url: string): Promise<any> {
     try {
       return await axios.get(url, this.requestHeaders());
-    } catch (err) {
+    } catch (err: any) {
       if (err.response?.status === 401) {
         const res = await this.recreateAccessToken();
         await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);

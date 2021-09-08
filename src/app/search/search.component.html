@@ -23,6 +23,7 @@
       *ngFor="let song of (searchResults$ | async)?.tracks"
       [currentTrackId]="(currentTrack$ | async)?.id!"
       [albumId]="(currentTrack$ | async)?.albumid!"
+      [artists]="song?.artist!"
       [isPlaying]="(currentTrack$ | async)?.isPlaying!"
       [name]="song.name"
       [id]="song.id!"

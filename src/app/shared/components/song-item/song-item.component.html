@@ -13,6 +13,7 @@
     <span class="mat-caption" *ngIf="dateCreated">Posted {{dateCreated | dateAgo}}</span>
     <div class="music-info">
       <span class="mat-body-2">{{name}}</span>
+      <app-artist-links [platform]="platform" [artist]="artists"></app-artist-links>
       <span>
         <img src="../assets/platforms/{{platform}}.png" class="platform-logo" >
       </span>

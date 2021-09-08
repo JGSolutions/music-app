@@ -33,8 +33,13 @@ min="0"
     <img [src]=" avatar" class="music-avatar">
     <div class="loading-avatar"></div>
     <div class="music-details">
-      <span class="mat-body-1">{{name}}</span>
-      <span class="mat-caption">{{artist}}</span>
+      <span class="mat-body-1 text-ellipsis">{{name}}</span>
+      <span class="platform">
+        <img src="../../../assets/platforms/{{platform}}.png" class="platform-logo" width="50">
+      </span>
+      <div class="artist">
+        <app-artist-links [platform]="platform" [artist]="artist" *ngIf="!loading"></app-artist-links>
+      </div>
     </div>
   </section>
 </section>

@@ -37,8 +37,7 @@ export const mixcloudArtistSongs = (dataApi: any, artistData: any): Promise<IArt
         id: song.slug,
         tags: song.tags.map((tag: any) => tag.name),
         createdTime: new Date(song.created_time),
-        username: song.user.username,
-        artistName: song.user.name,
+        artist: [{ name: song.user.name, username: song.user.username.toLowerCase(), id: song.key }],
         duration: (isUndefined(song.audio_length)) ? 0 : song.audio_length,
         durationType: IDurationType.seconds,
         trackType: ISongTrackType.track,
@@ -70,7 +69,7 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
         trackType: ISongTrackType.track,
         platform: IPlatformTypes.mixcloud,
         uri: song.uri,
-        artistName: song.user.name,
+        artist: [{ name: song.user.name, username: song.user.username.toLowerCase(), id: song.key }],
         createdTime: song.created_time,
         pictures: {
           medium: song.pictures.medium,

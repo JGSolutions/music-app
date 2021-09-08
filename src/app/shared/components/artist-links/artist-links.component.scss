@@ -1,0 +1,19 @@
+@import '../../../../theme/variables.scss';
+
+:host {
+  display: flex;
+  flex-direction: row;
+}
+
+a.artist-links {
+  text-decoration: none;
+  margin-right: 2px;
+}
+
+a:not(:last-child)::after {
+  content: ', ';
+}
+
+a.artist-links:hover {
+  text-decoration: underline;
+}
