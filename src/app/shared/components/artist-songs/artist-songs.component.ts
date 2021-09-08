@@ -62,6 +62,7 @@ export class ArtistSongsComponent implements OnInit {
           durationType: data?.durationType!,
           trackType: data?.trackType!,
           pictures: data?.pictures!,
+          artist: data?.artist,
           externalUrl: data?.externalUrl,
           createdTime: data?.createdTime,
           streamUrl: data?.streamUrl || ""

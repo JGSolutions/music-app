@@ -95,6 +95,7 @@ export class SearchComponent implements OnDestroy {
       } else {
         const song: ISongCommonState = {
           id: data?.id,
+          artist: data?.artist,
           name: data?.name!,
           platform: data?.platform!,
           playlists: [],
