@@ -34,7 +34,7 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.currentTrack$.pipe(
       takeUntil(this.destroy$),
-      filter((streamUrl) => _isEmpty(streamUrl.audioFile && streamUrl.platform === IPlatformTypes.mixcloud)),
+      filter((streamUrl) => _isEmpty(streamUrl.audioFile) && streamUrl.platform === IPlatformTypes.mixcloud),
       distinctUntilChanged((prev, curr) => prev.externalUrl === curr.externalUrl),
       map((streamUrl) => streamUrl.externalUrl),
       withLatestFrom(this.user$),
