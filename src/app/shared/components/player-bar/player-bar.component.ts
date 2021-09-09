@@ -60,10 +60,10 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
     });
 
     this.howlService.$isPlaying.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
+      takeUntil(this.destroy$),
+    ).subscribe((value) => {
       this.playSongLoading$.next(false);
-      this.store.dispatch(new SetCurrentTrackPlayStatusAction(true));
+      this.store.dispatch(new SetCurrentTrackPlayStatusAction(value));
     });
   }
 
