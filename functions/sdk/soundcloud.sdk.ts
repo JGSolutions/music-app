@@ -123,7 +123,7 @@ export const auth = {
   },
 
   async search(query: string | undefined) {
-    const urlTracks = `${this.soundcloudDomain}/tracks?q=${query}`;
+    const urlTracks = `${this.soundcloudDomain}/tracks?q=${query}&access=playable,preview,blocked`;
     const urlArtists = `${this.soundcloudDomain}/users?q=${query}`;
     const resTracks = await axios(urlTracks, this.requestHeaders());
     const resArtists = await axios(urlArtists, this.requestHeaders());
@@ -135,7 +135,7 @@ export const auth = {
   },
 
   async artistSongs(user: string): Promise<IArtistTracks> {
-    const trackResp = await axios(`${this.soundcloudDomain}/users/${user}/tracks?limit=100`, this.requestHeaders());
+    const trackResp = await axios(`${this.soundcloudDomain}/users/${user}/tracks?limit=100&access=playable,preview,blocked`, this.requestHeaders());
     const artistResp = await axios(`${this.soundcloudDomain}/users/${user}`, this.requestHeaders());
 
     return await artistSongs(trackResp.data, artistResp.data);

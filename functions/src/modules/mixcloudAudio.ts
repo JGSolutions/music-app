@@ -31,6 +31,10 @@ export const mixcloudAudio = async (request: Request, response: Response) => {
 
   MixcloudSDK.initialize(connectedServices[IPlatformTypes.mixcloud].token);
 
-  const { data: result } = await MixcloudSDK.audioStream(requestBody.externalUrl);
-  return response.status(200).send({ url: result.url });
+  try {
+    const { data: result } = await MixcloudSDK.audioStream(requestBody.externalUrl);
+    return response.status(200).send({ url: result.url });
+  } catch (err) {
+    return response.status(500).send({ url: err });
+  }
 };
