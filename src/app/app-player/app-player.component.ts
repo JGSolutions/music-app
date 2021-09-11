@@ -80,21 +80,26 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   public trackHistory(currentTrack: any): void {
+    const historyData = {
+      name: currentTrack.name,
+      dateViewed: new Date,
+      platform: currentTrack.platform,
+      id: currentTrack.id,
+      trackType: currentTrack.trackType,
+      artist: currentTrack.artist,
+      externalUrl: currentTrack.externalUrl,
+      avatar: currentTrack.avatar,
+      audioFile: currentTrack.audioFile || ''
+    };
+
     this.user$.pipe(
       take(1)
     ).subscribe((user) => {
-      this.store.dispatch([new SaveCurrentSelectedSongAction(user!.uid!), new AddHistoryAction(user!.uid!, {
-        name: currentTrack.name,
-        dateViewed: new Date,
-        platform: currentTrack.platform,
-        id: currentTrack.id,
-        trackType: currentTrack.trackType,
-        artist: currentTrack.artist,
-        externalUrl: currentTrack.externalUrl,
-        avatar: currentTrack.avatar,
-        audioFile: currentTrack.audioFile || ''
-      })]);
-    })
+      this.store.dispatch([
+        new SaveCurrentSelectedSongAction(user!.uid!),
+        new AddHistoryAction(user!.uid!, historyData)
+      ]);
+    });
 
   }
 
