@@ -4,7 +4,7 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { isEmpty as _isEmpty, isUndefined as _isUndefined } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -16,6 +16,8 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchAction } from '../core/stores/search/search.actions';
 import { SearchState } from '../core/stores/search/search.state';
+import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
+import { ConnectedServices } from '../core/stores/connected-services/connected-services.types';
 
 @Component({
   selector: 'app-player',
@@ -26,12 +28,14 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(SearchState.searchLoading) searchLoading$!: Observable<boolean>;
+  @Select(ConnectedServicesState.connectedServices) connectedServices$!: Observable<ConnectedServices>;
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
   public platformTypes = IPlatformTypes;
   public searchControl: FormControl;
   public focusField = false;
+  public spotifyProductType$!: Observable<string>;
   private destroy$ = new Subject<boolean>();
 
   constructor(private breakpointObserver: BreakpointObserver, private store: Store, private router: Router, private route: ActivatedRoute) {
@@ -44,6 +48,12 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    this.spotifyProductType$ = this.connectedServices$.pipe(
+      filter(e => !_isEmpty(e)),
+      map(e => e[IPlatformTypes.spotify].product!),
+      shareReplay(1)
+    );
+
     combineLatest([this.route.queryParams, this.user$]).pipe(
       takeUntil(this.destroy$),
       filter(([params, user]) => user !== null && !_isUndefined(params.q)),

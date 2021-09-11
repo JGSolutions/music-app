@@ -69,8 +69,12 @@
     [currentTrack$]="currentTrack$!">
   </app-player-bar>
 
+  <app-spotify-player-free *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'open'"
+    (trackReady)="trackHistory($event)">
+  </app-spotify-player-free>
+
   <app-spotify-player (trackReady)="trackHistory($event)"
-    *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
+    *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'premium'">
   </app-spotify-player>
 
   <app-soundcloud-bar (trackReady)="trackHistory($event)"

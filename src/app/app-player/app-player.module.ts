@@ -20,6 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SoundcloudBarModule } from '../shared/components/soundcloud-bar/soundcloud-bar.module';
 import { HowlerPlayerService } from '../services/howl-player.service';
 import { HistoryState } from '../core/stores/history/history.state';
+import { SpotifyPlayerFreeModule } from '../shared/components/spotify-player-free/spotify-player-free.module';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -31,6 +32,7 @@ import { HistoryState } from '../core/stores/history/history.state';
     PlayerbarModule,
     SoundcloudBarModule,
     SpotifyPlayerModule,
+    SpotifyPlayerFreeModule,
     ReactiveFormsModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState, SearchState, HistoryState]),
   ],

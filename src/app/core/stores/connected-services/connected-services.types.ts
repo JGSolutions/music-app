@@ -11,9 +11,13 @@ export const connectedServicesStateDefault: IConnectedServicesState = {
 };
 
 export type ConnectedServices = Record<string, ConnectedToken>;
+
 export interface ConnectedToken {
   token: string;
+  refresh_token?: string;
+  product?: string;
 }
+
 export interface ConnectedServicesList {
   token: string;
   type: IPlatformTypes;
