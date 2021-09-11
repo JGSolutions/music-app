@@ -16,11 +16,13 @@ export const createSpotifyToken = async (request: Request, response: Response) =
   }
 
   const data: IAuthorizationToken = await SpotifySDK.createAccessTokenUrl(request.query.code);
+  const user = await SpotifySDK.accountInfo();
 
   db.collection("connectedServices").doc(authorized).set({
     "spotify": {
       token: data.access_token,
       refresh_token: data.refresh_token,
+      product: user.product,
     },
   }, { merge: true });
 
