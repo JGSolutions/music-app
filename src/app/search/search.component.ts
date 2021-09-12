@@ -72,7 +72,7 @@ export class SearchComponent implements OnDestroy {
           trackType: data!.trackType,
           artist: data?.artist || [],
           externalUrl: data?.externalUrl || "",
-          avatar: data?.pictures?.medium,
+          avatar: data?.pictures,
           duration: data?.duration,
           durationType: data?.durationType,
           audioFile: data?.streamUrl || "",

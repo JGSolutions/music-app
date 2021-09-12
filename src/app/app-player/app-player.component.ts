@@ -135,10 +135,10 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       duration: currentTrack?.duration,
       durationType: currentTrack?.durationType!,
       trackType: currentTrack?.trackType!,
-      pictures: { medium: currentTrack?.avatar!, large: currentTrack?.avatar!, exLarge: currentTrack?.avatar! },
+      pictures: currentTrack?.avatar!,
       artist: currentTrack?.artist,
       externalUrl: currentTrack?.externalUrl,
-      // createdTime: currentTrack?.createdTime,
+      createdTime: currentTrack?.createdTime,
       streamUrl: currentTrack?.audioFile || ""
     };
 

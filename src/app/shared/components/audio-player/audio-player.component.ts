@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { IArtistName, IPlatformTypes } from 'models/artist.types';
+import { IAvatar } from 'models/avatar.types';
 import { IDurationType } from 'models/song.types';
 @Component({
   selector: 'app-audio-player',
@@ -10,7 +11,7 @@ import { IDurationType } from 'models/song.types';
 export class AudioPlayerComponent {
   @Input() loading!: boolean;
   @Input() playSongLoading!: boolean;
-  @Input() avatar!: string;
+  @Input() avatar!: IAvatar;
   @Input() name!: string;
   @Input() artist!: IArtistName[];
   @Input() currentTimer!: number;

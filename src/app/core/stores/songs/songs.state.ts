@@ -160,11 +160,12 @@ export class SongsState {
       trackType: song!.trackType,
       artist: song?.artist || [],
       externalUrl: song?.externalUrl || "",
-      avatar: song?.pictures?.medium,
+      avatar: song?.pictures,
       duration: song?.duration,
       durationType: song?.durationType,
       audioFile: song?.streamUrl || "",
       isPlaying: false,
+      createdTime: song?.createdTime,
       id: song?.id!,
       albumid: song?.albumid || ""
     };
@@ -190,7 +191,7 @@ export class SongsState {
   }
 
   @Action(CloseCurrentTrackAction, { cancelUncompleted: true })
-  _closeurrentSelectedTrackAction({ patchState }: StateContext<ISongsState>, { uid }: CloseCurrentTrackAction) {
+  _closeCurrentSelectedTrackAction({ patchState }: StateContext<ISongsState>, { uid }: CloseCurrentTrackAction) {
     return this._currentTrack.deleteTrack(uid);
   }
 
@@ -210,9 +211,8 @@ export class SongsState {
     )
   }
 
-
   @Action(SoundcloudAudioFileAction, { cancelUncompleted: true })
-  _soundcloududioFileAction({ patchState }: StateContext<ISongsState>, { uid, externalUrl }: SoundcloudAudioFileAction) {
+  _soundcloudAudioFileAction({ patchState }: StateContext<ISongsState>, { uid, externalUrl }: SoundcloudAudioFileAction) {
     patchState({
       loading: true
     });
