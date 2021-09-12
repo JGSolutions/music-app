@@ -1,27 +1,36 @@
-<section class="wrapper">
+<section class="wrapper" *ngIf="currentTrack$ | async as currentTrack">
   <div class="platform">
-    <img src="../../../assets/platforms/{{(currentTrack$ | async)?.platform}}.png" class="platform-logo" width="120">
+    <img src="../../../assets/platforms/{{currentTrack.platform}}-large.png" class="platform-logo" width="120">
   </div>
   <div class="music-info">
-    <img [src]="(currentTrack$ | async)?.avatar" class="music-avatar">
+    <img [src]="currentTrack.avatar" class="music-avatar">
     <div class="loading-avatar"></div>
     <div class="music-details">
-      <span class="mat-body-1 text-ellipsis">{{(currentTrack$ | async)?.name}}</span>
+      <span class="mat-body-1 text-ellipsis">{{currentTrack.name}}</span>
 
       <div class="artist">
-        <app-artist-links [platform]="(currentTrack$ | async)?.platform!" [artist]="(currentTrack$ | async)?.artist!"></app-artist-links>
+        <app-artist-links [platform]="currentTrack.platform!" [artist]="currentTrack.artist!"></app-artist-links>
       </div>
     </div>
+  </div>
 
-    <div>
-      <button mat-icon-button color="primary">
+  <div class="options-wrapper">
+    <div class="options">
+      <!-- <button mat-icon-button color="primary">
         <mat-icon>library_music</mat-icon>
-      </button>
+      </button> -->
 
       <button mat-icon-button color="primary">
         <mat-icon>playlist_add</mat-icon>
       </button>
+
+      <button mat-icon-button color="primary" (click)="closeHandler(currentTrack.id)">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
-    <a [href]="(currentTrack$ | async)?.externalUrl!" mat-button target="_blank">OPEN IN SPOTIFY</a>
+    <a [href]="currentTrack.externalUrl!" mat-raised-button target="_blank" [color]="'primary'" class="open">
+      <mat-icon>link</mat-icon>
+      OPEN IN {{ currentTrack.platform }}
+    </a>
   </div>
 </section>

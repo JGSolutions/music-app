@@ -113,6 +113,10 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
 
   }
 
+  public closePlayBar(evt: string): void {
+    console.log(evt);
+  }
+
   public unFocusSearchField() {
     this.focusField = false;
   }
