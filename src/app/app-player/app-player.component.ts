@@ -125,8 +125,6 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   public addToPlaylist(currentTrack: ICurrentTrack): void {
-    console.log(currentTrack);
-
     const song: ISongCommonState = {
       id: currentTrack?.id,
       name: currentTrack?.name!,

@@ -3,7 +3,7 @@
     <img src="../../../assets/platforms/{{currentTrack.platform}}-large.png" class="platform-logo" width="120">
   </div>
   <div class="music-info">
-    <img [src]="currentTrack.avatar" class="music-avatar">
+    <img [src]="currentTrack.avatar?.medium!" class="music-avatar">
     <div class="loading-avatar"></div>
     <div class="music-details">
       <span class="mat-body-1 text-ellipsis">{{currentTrack.name}}</span>
@@ -19,7 +19,7 @@
         <mat-icon>library_music</mat-icon>
       </button> -->
 
-      <button mat-icon-button color="primary">
+      <button mat-icon-button color="primary" (click)="addPlaylistHander(currentTrack)">
         <mat-icon>playlist_add</mat-icon>
       </button>
 
