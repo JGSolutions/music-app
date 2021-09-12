@@ -31,12 +31,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 // import { MatGridListModule } from '@angular/material/grid-list';
 // import { MatRadioModule } from '@angular/material/radio';
 // import { MatDatepickerModule } from '@angular/material/datepicker';
-// import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
 const materialModules = [
   // CdkTreeModule,
   // MatAutocompleteModule,
@@ -73,7 +72,7 @@ const materialModules = [
   // MatGridListModule,
   // MatRadioModule,
   // MatDatepickerModule,
-  // MatTooltipModule
+  MatTooltipModule
 ];
 
 @NgModule({
