@@ -7,8 +7,7 @@ import { ISearchResults } from 'models/search.model';
 import { ISong, ISongTrackType } from 'models/song.types';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
-import { filter } from 'rxjs/operators';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { SearchTypeAction } from '../core/stores/search/search.actions';
 import { SearchState } from '../core/stores/search/search.state';
 import { SetCurrentSongAction } from '../core/stores/songs/songs.actions';
@@ -16,6 +15,7 @@ import { SongsState } from '../core/stores/songs/songs.state';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
+import { isEmpty as _isEmpty, isUndefined as _isUndefined } from "lodash";
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 @Component({
   selector: 'app-search',
@@ -29,7 +29,8 @@ export class SearchComponent implements OnDestroy {
 
   public songDetailById$ = this.store.select(SearchState.songDetailById);
   public currentTrack$ = this.store.select(SongsState.currentTrack).pipe(
-    distinctUntilChanged((prev, next) => prev.id === next.id),
+    filter(data => !_isUndefined(data)),
+    distinctUntilChanged((prev, next) => prev?.id === next?.id),
     shareReplay(1)
   );
 

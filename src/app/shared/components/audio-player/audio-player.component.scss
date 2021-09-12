@@ -62,6 +62,20 @@
       display: block;
     }
   }
+
+  .options-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 40%;
+
+    .options {
+      display: flex;
+      align-items: center;
+      width: 100px;
+      justify-content: space-between;
+    }
+  }
 }
 
 .loading {

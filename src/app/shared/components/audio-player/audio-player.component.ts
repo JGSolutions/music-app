@@ -25,6 +25,7 @@ export class AudioPlayerComponent {
   @Output() sliderInput = new EventEmitter<number>();
   @Output() play = new EventEmitter<void>();
   @Output() pause = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
 
   public durationTypes = IDurationType;
 
@@ -34,6 +35,10 @@ export class AudioPlayerComponent {
 
   public pauseHandler(): void {
     this.pause.emit();
+  }
+
+  public closeHandler(): void {
+    this.close.emit();
   }
 
   /**

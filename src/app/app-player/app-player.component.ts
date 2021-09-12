@@ -113,7 +113,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
 
   }
 
-  public closePlayBar(evt: string): void {
+  public closePlayBar(): void {
     this.user$
       .pipe(
         take(1),

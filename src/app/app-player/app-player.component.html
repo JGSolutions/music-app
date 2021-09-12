@@ -70,16 +70,17 @@
   </app-player-bar> -->
 
   <app-spotify-player-free *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
-  (close)="closePlayBar($event)"
+  (close)="closePlayBar()"
   (trackReady)="trackHistory($event)">
   </app-spotify-player-free>
 
   <app-spotify-player-free *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'open'"
-    (close)="closePlayBar($event)"
+    (close)="closePlayBar()"
     (trackReady)="trackHistory($event)">
   </app-spotify-player-free>
 
   <app-spotify-player (trackReady)="trackHistory($event)"
+    (close)="closePlayBar()"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'premium'">
   </app-spotify-player>
 
