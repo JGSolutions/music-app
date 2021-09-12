@@ -11,5 +11,6 @@
 [currentTimer]="(howlService.$currentTimer | async)!"
 (sliderChange)="sliderChange($event)"
 (sliderInput)="sliderInput($event)"
+(close)="closeHandler()"
 (play)="play()"
 (pause)="pause()"></app-audio-player>

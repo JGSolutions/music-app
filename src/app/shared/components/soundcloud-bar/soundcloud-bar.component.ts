@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnDestroy, EventEmitter, Output, AfterContentInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
 import { Select, Store } from '@ngxs/store';
 import { ICurrentTrack, ISoundcloudStreamUrls } from 'src/app/core/stores/songs/songs.types';
@@ -25,6 +25,7 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   @Select(SongsState.currentTrackLoading) currentTrackLoading$!: Observable<boolean>;
 
   @Output() trackReady = new EventEmitter<any>();
+  @Output() close = new EventEmitter<string>();
 
   public playSongLoading$ = new Subject<boolean>();
 
@@ -70,6 +71,14 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
     this.destroy$.complete();
 
     this.stop();
+  }
+
+  public closeHandler(): void {
+    this.currentTrack$.pipe(
+      take(1)
+    ).subscribe((currentTrack) => {
+      this.close.emit(currentTrack.id);
+    });
   }
 
   public play(): void {

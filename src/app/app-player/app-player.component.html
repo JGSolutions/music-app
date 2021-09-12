@@ -85,6 +85,7 @@
   </app-spotify-player>
 
   <app-soundcloud-bar (trackReady)="trackHistory($event)"
+    (close)="closePlayBar()"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.soundcloud">
   </app-soundcloud-bar>
 </div>
