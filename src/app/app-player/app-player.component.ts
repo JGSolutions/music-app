@@ -4,14 +4,14 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { isEmpty as _isEmpty, isUndefined as _isUndefined } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { AddHistoryAction } from '../core/stores/history/history.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
-import { GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { CloseCurrentTrackAction, GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SearchAction } from '../core/stores/search/search.actions';
@@ -114,7 +114,12 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   public closePlayBar(evt: string): void {
-    console.log(evt);
+    this.user$
+      .pipe(
+        take(1),
+      ).subscribe((user) => {
+        this.store.dispatch(new CloseCurrentTrackAction(user.uid!))
+      });
   }
 
   public unFocusSearchField() {

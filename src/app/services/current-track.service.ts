@@ -14,4 +14,8 @@ export class CurrentTrackService {
   public getCurrentTrack(uid: string): Observable<ICurrentTrack | undefined> {
     return this.afs.doc<ICurrentTrack>(`currentTrack/${uid}`).valueChanges();
   }
+
+  public deleteTrack(uid: string) {
+    return this.afs.doc<ICurrentTrack>(`currentTrack/${uid}`).delete();
+  }
 }

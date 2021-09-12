@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { take, tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction, SoundcloudAudioFileAction } from './songs.actions';
+import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction, SoundcloudAudioFileAction, CloseCurrentTrackAction } from './songs.actions';
 import { songsStateDefault, ISongsState, ICurrentTrack, ISongCommonState } from './songs.types';
 import { cloneDeep, orderBy as _orderBy } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -187,6 +187,11 @@ export class SongsState {
         });
       })
     );
+  }
+
+  @Action(CloseCurrentTrackAction, { cancelUncompleted: true })
+  _closeurrentSelectedTrackAction({ patchState }: StateContext<ISongsState>, { uid }: CloseCurrentTrackAction) {
+    return this._currentTrack.deleteTrack(uid);
   }
 
   @Action(AudioFileAction, { cancelUncompleted: true })

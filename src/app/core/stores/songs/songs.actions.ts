@@ -26,6 +26,11 @@ export class GetCurrentSelectedTrackAction {
   constructor(public uid: string) { }
 }
 
+export class CloseCurrentTrackAction {
+  static readonly type = '[Songs] Close selected Current Track';
+  constructor(public uid: string) { }
+}
+
 export class AudioFileAction {
   static readonly type = '[Songs] Audio Stream File';
   constructor(public uid: string | undefined, public externalUrl: string | undefined) { }
