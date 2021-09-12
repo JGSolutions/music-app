@@ -26,6 +26,7 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
 
   @Output() trackReady = new EventEmitter<any>();
   @Output() close = new EventEmitter<string>();
+  @Output() addPlaylist = new EventEmitter<ICurrentTrack>();
 
   public playSongLoading$ = new Subject<boolean>();
 
@@ -78,6 +79,14 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
       take(1)
     ).subscribe((currentTrack) => {
       this.close.emit(currentTrack.id);
+    });
+  }
+
+  public playlistHandler(): void {
+    this.currentTrack$.pipe(
+      take(1)
+    ).subscribe((currentTrack) => {
+      this.addPlaylist.emit(currentTrack);
     });
   }
 

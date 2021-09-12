@@ -122,6 +122,10 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       });
   }
 
+  public addToPlaylist(currentTrack: ICurrentTrack): void {
+    console.log(currentTrack);
+  }
+
   public unFocusSearchField() {
     this.focusField = false;
   }
