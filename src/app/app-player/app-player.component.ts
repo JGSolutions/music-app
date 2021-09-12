@@ -8,7 +8,7 @@ import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap
 import { ArtistsAction } from '../core/stores/artists/artists.actions';
 import { isEmpty as _isEmpty, isUndefined as _isUndefined } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
-import { ICurrentTrack } from '../core/stores/songs/songs.types';
+import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { AddHistoryAction } from '../core/stores/history/history.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { CloseCurrentTrackAction, GetCurrentSelectedTrackAction, SaveCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
@@ -18,6 +18,8 @@ import { SearchAction } from '../core/stores/search/search.actions';
 import { SearchState } from '../core/stores/search/search.state';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServices } from '../core/stores/connected-services/connected-services.types';
+import { MatDialog } from '@angular/material/dialog';
+import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 
 @Component({
   selector: 'app-player',
@@ -38,7 +40,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   public spotifyProductType$!: Observable<string>;
   private destroy$ = new Subject<boolean>();
 
-  constructor(private breakpointObserver: BreakpointObserver, private store: Store, private router: Router, private route: ActivatedRoute) {
+  constructor(private dialog: MatDialog, private breakpointObserver: BreakpointObserver, private store: Store, private router: Router, private route: ActivatedRoute) {
     this.isMobile$ = this.breakpointObserver.observe('(max-width: 576px)').pipe(
       map((result) => result.matches),
       shareReplay(1)
@@ -124,6 +126,28 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
 
   public addToPlaylist(currentTrack: ICurrentTrack): void {
     console.log(currentTrack);
+
+    const song: ISongCommonState = {
+      id: currentTrack?.id,
+      name: currentTrack?.name!,
+      platform: currentTrack?.platform!,
+      playlists: [],
+      duration: currentTrack?.duration,
+      durationType: currentTrack?.durationType!,
+      trackType: currentTrack?.trackType!,
+      pictures: { medium: currentTrack?.avatar!, large: currentTrack?.avatar!, exLarge: currentTrack?.avatar! },
+      artist: currentTrack?.artist,
+      externalUrl: currentTrack?.externalUrl,
+      // createdTime: currentTrack?.createdTime,
+      streamUrl: currentTrack?.audioFile || ""
+    };
+
+    this.dialog.open(AddPlaylistDialogComponent, {
+      maxWidth: '350px',
+      panelClass: 'playlist-dialog',
+      hasBackdrop: true,
+      data: song
+    });
   }
 
   public unFocusSearchField() {
