@@ -38,7 +38,7 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
   public devicePlayback$ = new BehaviorSubject<string>("");
   public playSongLoading = false;
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
   private token!: string;
   private player!: Spotify.Player;
   private _setIntervalTimer!: any;
@@ -49,11 +49,11 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
 
   ngAfterContentInit() {
     combineLatest([this.currentTrack$, this.devicePlayback$]).pipe(
-      takeUntil(this.destroy$),
       filter(([currentTrack, devicePlayback]) => currentTrack?.platform === IPlatformTypes.spotify && devicePlayback !== ""),
       distinctUntilChanged(([currentTrackPrevState], [currentTrackNextState]) => currentTrackPrevState.id === currentTrackNextState.id),
       tap(([currentTrack]) => this.trackReady.emit(currentTrack)),
-      switchMap(([currentTrack, devicePlayback]) => this.transferUserPlayback(devicePlayback))
+      switchMap(([currentTrack, devicePlayback]) => this.transferUserPlayback(devicePlayback)),
+      takeUntil(this.destroy$),
     ).subscribe(async () => {
       this.store.dispatch(new LoadingPlayerAction(false));
       this.resetDuration();
@@ -114,8 +114,7 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
 
   ngOnDestroy() {
     this.player.disconnect();
-    this.destroy$.next(true);
-    this.destroy$.complete();
+    this.destroy$.next();
   }
 
   public closeHandler(): void {

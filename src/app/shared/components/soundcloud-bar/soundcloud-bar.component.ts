@@ -30,18 +30,18 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
 
   public playSongLoading$ = new Subject<boolean>();
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
 
   constructor(public howlService: HowlerPlayerService, private store: Store) { }
 
   ngAfterContentInit() {
     this.currentTrack$.pipe(
-      takeUntil(this.destroy$),
-      filter((currentTrack) => currentTrack.platform === IPlatformTypes.soundcloud),
+      filter((currentTrack) => currentTrack?.platform === IPlatformTypes.soundcloud),
       distinctUntilChanged((prev, curr) => prev.audioFile === curr.audioFile),
       tap((currentTrack) => this.trackReady.emit(currentTrack)),
       withLatestFrom(this.user$),
-      switchMap(([currentTrack, user]) => this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!)))
+      switchMap(([currentTrack, user]) => this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!))),
+      takeUntil(this.destroy$),
     ).subscribe();
 
     this.soundcloudStreamUrls$.pipe(
@@ -68,8 +68,7 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
+    this.destroy$.next();
 
     this.stop();
   }

@@ -29,7 +29,6 @@ export class SearchComponent implements OnDestroy {
 
   public songDetailById$ = this.store.select(SearchState.songDetailById);
   public currentTrack$ = this.store.select(SongsState.currentTrack).pipe(
-    filter(data => !_isUndefined(data)),
     distinctUntilChanged((prev, next) => prev?.id === next?.id),
     shareReplay(1)
   );

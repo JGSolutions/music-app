@@ -5,7 +5,7 @@ import { Select, Store } from '@ngxs/store';
 import { ICurrentTrack } from 'src/app/core/stores/songs/songs.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
 import { IUserType } from 'src/app/core/stores/user/user.types';
-import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, takeUntil, tap } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
 import { LoadingPlayerAction } from 'src/app/core/stores/songs/songs.actions';
@@ -33,24 +33,24 @@ export class SpotifyPlayerFreeComponent implements OnDestroy, AfterContentInit {
   public devicePlayback$ = new BehaviorSubject<string>("");
   public playSongLoading = false;
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
 
   constructor(private store: Store) {
   }
 
   ngAfterContentInit() {
     combineLatest([this.currentTrack$, this.devicePlayback$]).pipe(
-      takeUntil(this.destroy$),
-      distinctUntilChanged(([currentTrackPrevState], [currentTrackNextState]) => currentTrackPrevState.id === currentTrackNextState.id),
+      filter(([currentTrack]) => !_isUndefined(currentTrack)),
+      distinctUntilChanged(([currentTrackPrevState], [currentTrackNextState]) => currentTrackPrevState?.id === currentTrackNextState?.id),
       tap(([currentTrack]) => this.trackReady.emit(currentTrack)),
+      takeUntil(this.destroy$)
     ).subscribe(async () => {
       this.store.dispatch(new LoadingPlayerAction(false));
     });
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
+    this.destroy$.next();
   }
 
   public closeHandler(id: string): void {
