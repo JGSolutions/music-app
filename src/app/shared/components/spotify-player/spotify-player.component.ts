@@ -29,6 +29,8 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
 
   @Output() trackReady = new EventEmitter<any>();
   @Output() trackEnded = new EventEmitter<void>();
+  @Output() close = new EventEmitter<string>();
+  @Output() addPlaylist = new EventEmitter<ICurrentTrack>();
 
   public isPlaying$ = new BehaviorSubject<boolean>(false);
   public initPlaying$ = new BehaviorSubject<boolean>(true);
@@ -36,7 +38,7 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
   public devicePlayback$ = new BehaviorSubject<string>("");
   public playSongLoading = false;
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
   private token!: string;
   private player!: Spotify.Player;
   private _setIntervalTimer!: any;
@@ -47,11 +49,11 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
 
   ngAfterContentInit() {
     combineLatest([this.currentTrack$, this.devicePlayback$]).pipe(
-      takeUntil(this.destroy$),
-      filter(([currentTrack, devicePlayback]) => currentTrack.platform === IPlatformTypes.spotify && devicePlayback !== ""),
+      filter(([currentTrack, devicePlayback]) => currentTrack?.platform === IPlatformTypes.spotify && devicePlayback !== ""),
       distinctUntilChanged(([currentTrackPrevState], [currentTrackNextState]) => currentTrackPrevState.id === currentTrackNextState.id),
       tap(([currentTrack]) => this.trackReady.emit(currentTrack)),
-      switchMap(([currentTrack, devicePlayback]) => this.transferUserPlayback(devicePlayback))
+      switchMap(([currentTrack, devicePlayback]) => this.transferUserPlayback(devicePlayback)),
+      takeUntil(this.destroy$),
     ).subscribe(async () => {
       this.store.dispatch(new LoadingPlayerAction(false));
       this.resetDuration();
@@ -112,8 +114,23 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
 
   ngOnDestroy() {
     this.player.disconnect();
-    this.destroy$.next(true);
-    this.destroy$.complete();
+    this.destroy$.next();
+  }
+
+  public closeHandler(): void {
+    this.currentTrack$.pipe(
+      take(1)
+    ).subscribe((currentTrack) => {
+      this.close.emit(currentTrack.id);
+    });
+  }
+
+  public addPlaylistHander(): void {
+    this.currentTrack$.pipe(
+      take(1)
+    ).subscribe((currentTrack: ICurrentTrack) => {
+      this.addPlaylist.emit(currentTrack);
+    });
   }
 
   public play(): void {

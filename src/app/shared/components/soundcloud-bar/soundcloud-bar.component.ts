@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnDestroy, EventEmitter, Output, AfterContentInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, switchMap, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { isEmpty as _isEmpty } from "lodash";
 import { Select, Store } from '@ngxs/store';
 import { ICurrentTrack, ISoundcloudStreamUrls } from 'src/app/core/stores/songs/songs.types';
@@ -25,21 +25,23 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   @Select(SongsState.currentTrackLoading) currentTrackLoading$!: Observable<boolean>;
 
   @Output() trackReady = new EventEmitter<any>();
+  @Output() close = new EventEmitter<string>();
+  @Output() addPlaylist = new EventEmitter<ICurrentTrack>();
 
   public playSongLoading$ = new Subject<boolean>();
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
 
   constructor(public howlService: HowlerPlayerService, private store: Store) { }
 
   ngAfterContentInit() {
     this.currentTrack$.pipe(
-      takeUntil(this.destroy$),
-      filter((currentTrack) => currentTrack.platform === IPlatformTypes.soundcloud),
+      filter((currentTrack) => currentTrack?.platform === IPlatformTypes.soundcloud),
       distinctUntilChanged((prev, curr) => prev.audioFile === curr.audioFile),
       tap((currentTrack) => this.trackReady.emit(currentTrack)),
       withLatestFrom(this.user$),
-      switchMap(([currentTrack, user]) => this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!)))
+      switchMap(([currentTrack, user]) => this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!))),
+      takeUntil(this.destroy$),
     ).subscribe();
 
     this.soundcloudStreamUrls$.pipe(
@@ -66,10 +68,25 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
+    this.destroy$.next();
 
     this.stop();
+  }
+
+  public closeHandler(): void {
+    this.currentTrack$.pipe(
+      take(1)
+    ).subscribe((currentTrack) => {
+      this.close.emit(currentTrack.id);
+    });
+  }
+
+  public playlistHandler(): void {
+    this.currentTrack$.pipe(
+      take(1)
+    ).subscribe((currentTrack) => {
+      this.addPlaylist.emit(currentTrack);
+    });
   }
 
   public play(): void {

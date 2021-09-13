@@ -15,7 +15,7 @@ export interface ISelectedPlaylist {
   trackType: ISongTrackType;
   pictures: IAvatar;
   externalUrl?: string;
-  createdTime: string;
+  createdTime?: string;
   totalTracks?: number;
   streamUrl?: string;
 }

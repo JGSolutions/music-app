@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { IArtistName, IPlatformTypes } from 'models/artist.types';
+import { IAvatar } from 'models/avatar.types';
 import { IDurationType } from 'models/song.types';
 @Component({
   selector: 'app-audio-player',
@@ -10,7 +11,7 @@ import { IDurationType } from 'models/song.types';
 export class AudioPlayerComponent {
   @Input() loading!: boolean;
   @Input() playSongLoading!: boolean;
-  @Input() avatar!: string;
+  @Input() avatar!: IAvatar;
   @Input() name!: string;
   @Input() artist!: IArtistName[];
   @Input() currentTimer!: number;
@@ -25,6 +26,8 @@ export class AudioPlayerComponent {
   @Output() sliderInput = new EventEmitter<number>();
   @Output() play = new EventEmitter<void>();
   @Output() pause = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
+  @Output() addPlaylist = new EventEmitter<void>();
 
   public durationTypes = IDurationType;
 
@@ -34,6 +37,14 @@ export class AudioPlayerComponent {
 
   public pauseHandler(): void {
     this.pause.emit();
+  }
+
+  public closeHandler(): void {
+    this.close.emit();
+  }
+
+  public playlistHandler(): void {
+    this.addPlaylist.emit();
   }
 
   /**

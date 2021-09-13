@@ -64,16 +64,32 @@
   </mat-sidenav-content>
 </mat-sidenav-container>
 <div *ngIf="currentTrackSelected$ | async" class="player-bar-container">
-  <app-player-bar *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
+  <!-- <app-player-bar *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
     (trackReady)="trackHistory($event)"
     [currentTrack$]="currentTrack$!">
-  </app-player-bar>
+  </app-player-bar> -->
+
+  <app-spotify-player-free *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
+  (close)="closePlayBar()"
+  (addPlaylist)="addToPlaylist($event)"
+  (trackReady)="trackHistory($event)">
+  </app-spotify-player-free>
+
+  <app-spotify-player-free *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'open'"
+    (close)="closePlayBar()"
+    (addPlaylist)="addToPlaylist($event)"
+    (trackReady)="trackHistory($event)">
+  </app-spotify-player-free>
 
   <app-spotify-player (trackReady)="trackHistory($event)"
-    *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify">
+    (close)="closePlayBar()"
+    (addPlaylist)="addToPlaylist($event)"
+    *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'premium'">
   </app-spotify-player>
 
   <app-soundcloud-bar (trackReady)="trackHistory($event)"
+    (close)="closePlayBar()"
+    (addPlaylist)="addToPlaylist($event)"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.soundcloud">
   </app-soundcloud-bar>
 </div>

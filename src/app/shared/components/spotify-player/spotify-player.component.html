@@ -13,5 +13,7 @@
 [artist]="(currentTrack$ | async)?.artist!"
 (sliderChange)="sliderChange($event)"
 (sliderInput)="sliderInput($event)"
+(close)="closeHandler()"
+(addPlaylist)="addPlaylistHander()"
 (play)="play()"
 (pause)="pauseHandler()"></app-audio-player>
