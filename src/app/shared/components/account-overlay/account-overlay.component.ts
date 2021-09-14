@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IUserType } from 'src/app/core/stores/user/user.types';
 
 @Component({
   selector: 'app-account-overlay',
@@ -7,7 +9,20 @@ import { Component, Input } from '@angular/core';
 })
 export class AccountOverlayComponent {
   @Input()
-  name!: string;
+  user$!: Observable<IUserType>;
 
+  public overlayIsOpen = false;
+
+  public backdropClicked(): void {
+    this.overlayIsOpen = false;
+  }
+
+  public overlayDetached(): void {
+    this.overlayIsOpen = false;
+  }
+
+  public clickHandler(): void {
+    this.overlayIsOpen = true;
+  }
 }
 

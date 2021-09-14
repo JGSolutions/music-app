@@ -1,0 +1,12 @@
+<img [src]="(user$ | async)?.photoURL" class="avatar" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="clickHandler()">
+
+<ng-template cdkConnectedOverlay
+    [cdkConnectedOverlayHasBackdrop]="true"
+    [cdkConnectedOverlayBackdropClass]="'backdrop'"
+    (backdropClick)="backdropClicked()"
+    (detach)="overlayDetached()"
+    [cdkConnectedOverlayOrigin]="trigger"
+    [cdkConnectedOverlayOpen]="overlayIsOpen">
+
+    <section style="width: 300px; height: 250px; background-color: #fff; border-radius: 6px;"></section>
+</ng-template>
