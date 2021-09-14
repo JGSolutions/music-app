@@ -21,6 +21,7 @@ import { SoundcloudBarModule } from '../shared/components/soundcloud-bar/soundcl
 import { HowlerPlayerService } from '../services/howl-player.service';
 import { HistoryState } from '../core/stores/history/history.state';
 import { SpotifyPlayerFreeModule } from '../shared/components/spotify-player-free/spotify-player-free.module';
+import { AccountOverlayModule } from '../shared/components/account-overlay/account-overlay.module';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -34,6 +35,7 @@ import { SpotifyPlayerFreeModule } from '../shared/components/spotify-player-fre
     SpotifyPlayerModule,
     SpotifyPlayerFreeModule,
     ReactiveFormsModule,
+    AccountOverlayModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState, SearchState, HistoryState]),
   ],
   providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService, PlaylistService],

@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="options">
-      <img [src]="(user$ | async)?.photoURL" class="avatar">
+      <app-account-overlay [user$]="user$!"></app-account-overlay>
     </div>
   </div>
 </mat-toolbar>
