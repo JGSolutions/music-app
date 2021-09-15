@@ -33,8 +33,8 @@ export class ArtistSongsViewComponent implements OnInit, OnDestroy {
     this.store.dispatch(new ClearSongs());
 
     combineLatest([this.user$, this.route.queryParams]).pipe(
-      takeUntil(this.destroy$),
-      filter(([user]) => user !== null)
+      filter(([user]) => user !== null),
+      takeUntil(this.destroy$)
     ).subscribe(([user, queryParams]) => {
       this.store.dispatch(new ArtistSongsAction(user.uid, [{
         type: queryParams.platform,

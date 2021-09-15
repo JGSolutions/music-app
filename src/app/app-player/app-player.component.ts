@@ -64,8 +64,8 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
     });
 
     this.user$.pipe(
-      takeUntil(this.destroy$),
-      filter(user => user !== null)
+      filter(user => user !== null),
+      takeUntil(this.destroy$)
     ).subscribe((user) => {
       this.store.dispatch([new ArtistsAction(user!.uid), new GetCurrentSelectedTrackAction(user!.uid!)]);
     });
@@ -77,10 +77,10 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
 
     this.searchControl.valueChanges
       .pipe(
-        takeUntil(this.destroy$),
         distinctUntilChanged(),
         debounceTime(500),
         filter(value => value.length >= 2),
+        takeUntil(this.destroy$)
       ).subscribe((searchValue) => {
         this.router.navigate(["/", "search"], { relativeTo: this.route, queryParams: { q: searchValue } });
       });

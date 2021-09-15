@@ -42,8 +42,8 @@ export class ArtistAlbumComponent implements OnInit, OnDestroy {
     this.id = this.route.snapshot.params.id;
 
     this.user$.pipe(
-      takeUntil(this.destroy$),
-      filter(user => user !== null)
+      filter(user => user !== null),
+      takeUntil(this.destroy$)
     ).subscribe((user) => {
       this.store.dispatch(new ArtistAlbumSongs(user.uid, this.platform as IPlatformTypes, this.id));
     });

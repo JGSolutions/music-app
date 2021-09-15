@@ -81,10 +81,10 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
     );
 
     this.connectedServices$.pipe(
-      takeUntil(this.destroy$),
       withLatestFrom(this.user$),
       distinctUntilChanged((oldData, newData) => _isEqual(oldData, newData)),
-      filter(([connectedServices, user]) => user !== null)
+      filter(([connectedServices, user]) => user !== null),
+      takeUntil(this.destroy$)
     ).subscribe(([connectedServices, user]) => {
       this.store.dispatch(new ArtistsAction(user.uid));
     });

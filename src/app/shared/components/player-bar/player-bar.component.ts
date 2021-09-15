@@ -33,18 +33,18 @@ export class PlayerBarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.currentTrack$.pipe(
-      takeUntil(this.destroy$),
       filter((streamUrl) => _isEmpty(streamUrl.audioFile) && streamUrl.platform === IPlatformTypes.mixcloud),
       distinctUntilChanged((prev, curr) => prev.externalUrl === curr.externalUrl),
       map((streamUrl) => streamUrl.externalUrl),
       withLatestFrom(this.user$),
       switchMap(([url, user]) => this.store.dispatch(new AudioFileAction(user.uid, url))),
+      takeUntil(this.destroy$)
     ).subscribe();
 
     this.audioFile$.pipe(
-      takeUntil(this.destroy$),
       filter((audioFile) => !_isEmpty(audioFile)),
       withLatestFrom(this.currentTrack$),
+      takeUntil(this.destroy$)
     ).subscribe(([audioFile, currentTrack]) => {
       this.howlService.initHowler(audioFile);
       this.trackReady.emit(currentTrack);
