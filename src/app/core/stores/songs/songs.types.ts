@@ -16,10 +16,10 @@ export interface ISongsState {
   songs: ISongCommonState[],
   artist: IArtists,
   playlistSongs: ISongCommonState[],
-  loading: boolean;
-  songsLoading: boolean;
   artistAlbum: IAlbumInfo;
   currentTrack: ICurrentTrack;
+  loading: boolean;
+  songsLoading: boolean;
   currentTrackLoading: boolean,
   soundcloudStreamUrls: ISoundcloudStreamUrls
 }

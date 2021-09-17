@@ -1,6 +1,6 @@
 <app-audio-player
 [platform]="(currentTrack$ | async)?.platform!"
-[loading]="(currentTrackLoading$ | async)!"
+[loading]="(currentTrackLoading$ | async)! && (loading$ | async)!"
 [playSongLoading]="(playSongLoading$ | async)!"
 [progress]="(howlService.$sliderProgress | async)!"
 [rawDuration]="(howlService.$rawDuration | async)!"

@@ -19,10 +19,10 @@ import { IPlatformTypes } from 'models/artist.types';
 })
 export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(SongsState.loading) loading$!: Observable<boolean>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(SongsState.soundcloudStreamUrls) soundcloudStreamUrls$!: Observable<ISoundcloudStreamUrls>;
   @Select(SongsState.currentTrackLoading) currentTrackLoading$!: Observable<boolean>;
+  @Select(SongsState.loading) loading$!: Observable<boolean>;
 
   @Output() trackReady = new EventEmitter<any>();
   @Output() close = new EventEmitter<string>();
@@ -37,7 +37,7 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   ngAfterContentInit() {
     this.currentTrack$.pipe(
       filter((currentTrack) => currentTrack?.platform === IPlatformTypes.soundcloud),
-      distinctUntilChanged((prev, curr) => prev.audioFile === curr.audioFile),
+      distinctUntilChanged((prev, curr) => prev.id === curr.id),
       tap((currentTrack) => this.trackReady.emit(currentTrack)),
       withLatestFrom(this.user$),
       switchMap(([currentTrack, user]) => this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile!))),
@@ -55,8 +55,7 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
     this.howlService.$onload.pipe(
       takeUntil(this.destroy$)
     ).subscribe(() => {
-      this.store.dispatch(new SetCurrentTrackPlayStatusAction(false));
-      this.store.dispatch(new LoadingPlayerAction(false));
+      this.store.dispatch([new SetCurrentTrackPlayStatusAction(false), new LoadingPlayerAction(false)]);
     });
 
     this.howlService.$isPlaying.pipe(
@@ -69,7 +68,6 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroy$.next();
-
     this.stop();
   }
 
