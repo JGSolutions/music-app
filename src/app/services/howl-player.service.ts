@@ -45,6 +45,12 @@ export class HowlerPlayerService {
       onplay: () => {
         this.$isPlaying.next(this._sound.playing());
         this._raf = requestAnimationFrame(this._whilePlaying.bind(this));
+      },
+      onplayerror: (err) => {
+        console.log("onplay error", err);
+      },
+      onloaderror: (err) => {
+        console.log("onload error", err);
       }
     })
   }
