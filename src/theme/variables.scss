@@ -1,13 +1,8 @@
-@use 'sass:map';
-@use '~@angular/material' as mat;
-
 $xs-padding-gap: 5px;
 $s-padding-gap: 10px;
 $padding-gap: 16px;
 $xl-padding-gap: 24px;
 $line-height: 24px;
-
-$app-backgorund-color: #F4F7FC;
 
 @mixin fluid-container() {
   width: 100%;
