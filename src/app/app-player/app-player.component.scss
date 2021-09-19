@@ -1,6 +1,10 @@
 @import '../../theme/breakpoints.scss';
 @import '../../theme/variables.scss';
 
+:host {
+  display: block;
+}
+
 .side-menu-nav {
   position: absolute;
   top: 56px;
@@ -27,6 +31,7 @@
   left: 0;
   right: 0;
   background-color: white;
+  // border-bottom: 1px solid #ccc;
 
   .header-wrapper {
     width: 100%;

@@ -13,13 +13,13 @@ const routes: Routes = [
       {
         path: 'artists',
         canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        data: { authGuardPipe: redirectUnauthorizedToLogin, connectedServices: true },
         loadChildren: () => import('../artists/artists.module').then(m => m.ArtistsModule)
       },
       {
         path: 'artist/:artist',
         canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        data: { authGuardPipe: redirectUnauthorizedToLogin, connectedServices: 'false' },
         loadChildren: () => import('../artist-profile/artist-profile.module').then(m => m.ArtistProfileModule)
       },
       {
@@ -37,7 +37,7 @@ const routes: Routes = [
       {
         path: 'playlist',
         canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin },
+        data: { authGuardPipe: redirectUnauthorizedToLogin, connectedServices: false },
         loadChildren: () => import('../playlist/playlist.module').then(m => m.PlaylistModule)
       },
       {

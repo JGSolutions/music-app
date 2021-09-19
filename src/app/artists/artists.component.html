@@ -1,8 +1,3 @@
-<mat-divider></mat-divider>
-<section class="platform-wrappers sticky-element">
-  <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
-</section>
-<mat-divider></mat-divider>
 <div class="container-fluid" *ngIf="(artistsByPlatform$ | async) as artists">
   <div class="row">
     <div>

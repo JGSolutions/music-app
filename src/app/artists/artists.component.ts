@@ -4,8 +4,6 @@ import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
-import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { isUndefined as _isUndefined } from 'lodash';
 import { SelectArtistAction } from '../core/stores/artists/artists.actions';
 import { Router } from '@angular/router';
@@ -16,27 +14,26 @@ import { Router } from '@angular/router';
 })
 export class ArtistsComponent implements OnInit {
   @Select(ArtistsState.artists) artists$!: Observable<Record<string, IArtists[]>>;
-  @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
   @Select(ArtistsState.loading) loading$!: Observable<boolean>;
 
   public artistsFiltered$ = this.store.select(ArtistsState.artistsByPlatform);
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public artistsByPlatform$!: Observable<Record<string, IArtists[]>>;
 
-  private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
+  // private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
 
   constructor(private store: Store, private router: Router) { }
 
   ngOnInit(): void {
-    this.artistsByPlatform$ = combineLatest([this._connectServiceType$, this.artistsFiltered$]).pipe(
-      map(([platform, artistsFiltered]) => artistsFiltered(platform)),
-      shareReplay(1)
-    );
+    // this.artistsByPlatform$ = combineLatest([this._connectServiceType$, this.artistsFiltered$]).pipe(
+    //   map(([platform, artistsFiltered]) => artistsFiltered(platform)),
+    //   shareReplay(1)
+    // );
   }
 
-  public selectedPlatform(evt: any) {
-    this._connectServiceType$.next(evt);
-  }
+  // public selectedPlatform(evt: any) {
+  //   this._connectServiceType$.next(evt);
+  // }
 
   public selectArtist(key: string): void {
     this.artistDetails$.pipe(

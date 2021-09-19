@@ -17,7 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SearchAction } from '../core/stores/search/search.actions';
 import { SearchState } from '../core/stores/search/search.state';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
-import { ConnectedServices } from '../core/stores/connected-services/connected-services.types';
+import { ConnectedServices, ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
 import { MatDialog } from '@angular/material/dialog';
 import { AddPlaylistDialogComponent } from '../shared/components/add-playlist-dialog/add-playlist-dialog.component';
 
@@ -31,6 +31,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(SearchState.searchLoading) searchLoading$!: Observable<boolean>;
   @Select(ConnectedServicesState.connectedServices) connectedServices$!: Observable<ConnectedServices>;
+  @Select(ConnectedServicesState.servicesList) connectedServicesList$!: Observable<ConnectedServicesList[]>;
 
   public isMobile$: Observable<boolean>;
   public currentTrackSelected$!: Observable<boolean>;
@@ -38,6 +39,7 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   public searchControl: FormControl;
   public focusField = false;
   public spotifyProductType$!: Observable<string>;
+  public renderConnectedFilters$!: Observable<boolean>;
   private destroy$ = new Subject<boolean>();
 
   constructor(private dialog: MatDialog, private breakpointObserver: BreakpointObserver, private store: Store, private router: Router, private route: ActivatedRoute) {
@@ -50,6 +52,10 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit() {
+    this.renderConnectedFilters$ = this.route.children[0].data.pipe(
+      map(data => data.connectedServices)
+    );
+
     this.spotifyProductType$ = this.connectedServices$.pipe(
       filter(e => !_isEmpty(e)),
       map(e => e[IPlatformTypes.spotify].product!),
@@ -164,5 +170,9 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
       ).subscribe(() => {
         this.router.navigate(["/", "search"]);
       });
+  }
+
+  public selectedPlatform(evt: any) {
+    // this._connectServiceType$.next(evt);
   }
 }

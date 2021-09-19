@@ -56,6 +56,10 @@
 
   <mat-sidenav-content>
     <main class="main-container">
+      <section class="platform-wrappers" *ngIf="(renderConnectedFilters$ | async) === true">
+        <app-platform-selection [connectedServices$]="connectedServicesList$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
+      </section>
+      <mat-divider></mat-divider>
       <div id="app-content">
         <router-outlet #outlet="outlet"></router-outlet>
       </div>
