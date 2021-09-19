@@ -15,10 +15,10 @@ min="0"
     <button mat-icon-button class="skip-previous">
       <mat-icon>skip_previous</mat-icon>
     </button>
-    <button (click)="playHandler()" mat-fab color="primary" *ngIf="!isPlaying || loading" class="play-button" [disabled]="loading || playSongLoading">
+    <button (click)="playHandler()" mat-fab color="accent" *ngIf="!isPlaying || loading" class="play-button" [disabled]="loading || playSongLoading">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button (click)="pauseHandler()" mat-fab color="primary" *ngIf="isPlaying && !loading" [disabled]="loading">
+    <button (click)="pauseHandler()" mat-fab color="accent" *ngIf="isPlaying && !loading" [disabled]="loading">
       <mat-icon>pause</mat-icon>
     </button>
     <button mat-icon-button class="skip-next">
@@ -49,11 +49,11 @@ min="0"
         <mat-icon>library_music</mat-icon>
       </button> -->
 
-      <button mat-icon-button color="primary" (click)="playlistHandler()" matTooltip="Add to Playlist">
+      <button mat-icon-button color="accent" (click)="playlistHandler()" matTooltip="Add to Playlist">
         <mat-icon>playlist_add</mat-icon>
       </button>
 
-      <button mat-icon-button color="primary" (click)="closeHandler()" matTooltip="Close">
+      <button mat-icon-button color="accent" (click)="closeHandler()" matTooltip="Close">
         <mat-icon>close</mat-icon>
       </button>
     </div>
