@@ -5,7 +5,7 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { debounceTime, distinctUntilChanged, filter, map, shareReplay, switchMap, take, takeUntil } from 'rxjs/operators';
-import { ArtistsAction } from '../core/stores/artists/artists.actions';
+import { ArtistsAction, FilterArtistsByPlatformAction } from '../core/stores/artists/artists.actions';
 import { isEmpty as _isEmpty, isUndefined as _isUndefined } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
@@ -173,6 +173,6 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
   }
 
   public selectedPlatform(evt: any) {
-    // this._connectServiceType$.next(evt);
+    this.store.dispatch(new FilterArtistsByPlatformAction(evt));
   }
 }
