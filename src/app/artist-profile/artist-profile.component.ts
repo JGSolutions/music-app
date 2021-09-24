@@ -10,6 +10,7 @@ import { IUserType } from '../core/stores/user/user.types';
 import { IArtists } from 'models/artist.types';
 import { ArtistSongsAction, ClearSongs } from '../core/stores/songs/songs.actions';
 import { SongsState } from '../core/stores/songs/songs.state';
+import { ISongCommonState } from '../core/stores/songs/songs.types';
 
 @Component({
   selector: 'app-artist-profile',
@@ -18,14 +19,14 @@ import { SongsState } from '../core/stores/songs/songs.state';
 })
 export class ArtistProfileComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
+  @Select(SongsState.songsByPlatform) songsByPlatform$!: Observable<ISongCommonState[]>;
 
   public artistDetails$ = this.store.select(ArtistsState.artistDetails);
   public artist!: string;
   public profileDetails$!: Observable<IArtists>;
   public artistGenres$!: Observable<string[]>;
-  public songsByPlatform$ = this.store.select(SongsState.songsByPlatform);
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
 
   constructor(private route: ActivatedRoute, private store: Store) { }
 
@@ -81,7 +82,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
+    this.destroy$.next();
     this.destroy$.unsubscribe();
   }
 

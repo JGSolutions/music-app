@@ -116,6 +116,9 @@ body {
   background-color: white;
   height: 48px;
   display: flex;
-  align-items: center;
-  padding-left: $s-padding-gap;
+  flex-direction: column;
+
+  .component {
+    padding: $s-padding-gap;
+  }
 }

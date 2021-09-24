@@ -13,13 +13,13 @@ const routes: Routes = [
       {
         path: 'artists',
         canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin, connectedServices: true },
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../artists/artists.module').then(m => m.ArtistsModule)
       },
       {
         path: 'artist/:artist',
         canActivate: [AngularFireAuthGuard],
-        data: { authGuardPipe: redirectUnauthorizedToLogin, connectedServices: 'false' },
+        data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../artist-profile/artist-profile.module').then(m => m.ArtistProfileModule)
       },
       {
