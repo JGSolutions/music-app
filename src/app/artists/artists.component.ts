@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { IArtists } from 'models/artist.types';
+import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { ArtistsState } from '../core/stores/artists/artists.state';
 import { isUndefined as _isUndefined } from 'lodash';
-import { SelectArtistAction } from '../core/stores/artists/artists.actions';
+import { FilterArtistsByPlatformAction, SelectArtistAction } from '../core/stores/artists/artists.actions';
 import { Router } from '@angular/router';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from '../core/stores/connected-services/connected-services.types';
@@ -35,7 +35,7 @@ export class ArtistsComponent {
     });
   }
 
-  public selectedPlatform(evt: any) {
-    // this.store.dispatch(new FilterArtistsByPlatformAction(evt));
+  public selectedPlatform(platform: IPlatformTypes): void {
+    this.store.dispatch(new FilterArtistsByPlatformAction(platform));
   }
 }
