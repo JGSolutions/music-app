@@ -171,8 +171,4 @@ export class AppPlayerComponent implements OnDestroy, OnInit {
         this.router.navigate(["/", "search"]);
       });
   }
-
-  public selectedPlatform(evt: any) {
-    this.store.dispatch(new FilterArtistsByPlatformAction(evt));
-  }
 }

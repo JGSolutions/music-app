@@ -1,5 +1,7 @@
 <section class="platform-wrappers sticky-element">
-  <app-platform-selection [connectedServices$]="connectedServicesList$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
+  <div class="component">
+    <app-platform-selection [connectedServices$]="connectedServicesList$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
+  </div>
   <mat-divider></mat-divider>
 </section>
 <div class="container-fluid">
@@ -10,7 +12,7 @@
       </section>
     </div>
     <div class="col-md-7 col-lg-9">
-      <ng-container  *ngIf="(songs$ | async) as songs">
+      <ng-container  *ngIf="(songsByPlatform$ | async) as songs">
         <section class="song-list" *ngIf="songs?.length! > 0">
           <app-song-item
             *ngFor="let song of songs"

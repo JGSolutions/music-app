@@ -2,13 +2,13 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
-import { IArtists } from 'models/artist.types';
+import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISongTrackType } from 'models/song.types';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
-import { SetCurrentSelectedSongAction } from 'src/app/core/stores/songs/songs.actions';
+import { FilterSongsByPlatformAction, SetCurrentSelectedSongAction } from 'src/app/core/stores/songs/songs.actions';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
 import { ICurrentTrack, ISongCommonState } from 'src/app/core/stores/songs/songs.types';
 import { AddPlaylistDialogComponent } from '../add-playlist-dialog/add-playlist-dialog.component';
@@ -79,7 +79,7 @@ export class ArtistSongsComponent {
     });
   }
 
-  public selectedPlatform(evt: any) {
-    // this.store.dispatch(new FilterArtistsByPlatformAction(evt));
+  public selectedPlatform(evt: IPlatformTypes) {
+    this.store.dispatch(new FilterSongsByPlatformAction(evt));
   }
 }
