@@ -60,8 +60,12 @@ export class LoadingPlayerAction {
   constructor(public loading: boolean) { }
 }
 
-
 export class SetCurrentSongAction {
   static readonly type = '[Songs] Set current track';
   constructor(public currentTrack: ICurrentTrack) { }
+}
+
+export class FilterSongsByPlatformAction {
+  static readonly type = '[Songs] Filter songs by platform';
+  constructor(public platform: IPlatformTypes) { }
 }

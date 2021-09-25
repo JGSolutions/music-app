@@ -22,6 +22,7 @@ import { HowlerPlayerService } from '../services/howl-player.service';
 import { HistoryState } from '../core/stores/history/history.state';
 import { SpotifyPlayerFreeModule } from '../shared/components/spotify-player-free/spotify-player-free.module';
 import { AccountOverlayModule } from '../shared/components/account-overlay/account-overlay.module';
+import { PlatformSelectionModule } from '../shared/components/platform-selection/platform-selection.module';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -36,6 +37,7 @@ import { AccountOverlayModule } from '../shared/components/account-overlay/accou
     SpotifyPlayerFreeModule,
     ReactiveFormsModule,
     AccountOverlayModule,
+    PlatformSelectionModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState, SearchState, HistoryState]),
   ],
   providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService, PlaylistService],

@@ -1,14 +1,14 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
 import { ISongTrackType } from 'models/song.types';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { filter, map, shareReplay, take } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
 import { ConnectedServicesState } from 'src/app/core/stores/connected-services/connected-services.state';
 import { ConnectedServicesList } from 'src/app/core/stores/connected-services/connected-services.types';
-import { SetCurrentSelectedSongAction } from 'src/app/core/stores/songs/songs.actions';
+import { FilterSongsByPlatformAction, SetCurrentSelectedSongAction } from 'src/app/core/stores/songs/songs.actions';
 import { SongsState } from 'src/app/core/stores/songs/songs.state';
 import { ICurrentTrack, ISongCommonState } from 'src/app/core/stores/songs/songs.types';
 import { AddPlaylistDialogComponent } from '../add-playlist-dialog/add-playlist-dialog.component';
@@ -18,32 +18,19 @@ import { AddPlaylistDialogComponent } from '../add-playlist-dialog/add-playlist-
   styleUrls: ['./artist-songs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ArtistSongsComponent implements OnInit {
-  @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
+export class ArtistSongsComponent {
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(SongsState.songsLoading) songsLoading$!: Observable<boolean>;
+  @Select(ConnectedServicesState.servicesList) connectedServicesList$!: Observable<ConnectedServicesList[]>;
 
   @Input() artistGenres$!: Observable<string[]>;
   @Input() profileDetails$!: Observable<IArtists>;
-  @Input() songsByPlatform$!: Observable<(platform: IPlatformTypes) => ISongCommonState[]>;
+  @Input() songsByPlatform$!: Observable<ISongCommonState[]>;
 
   public songs$!: Observable<ISongCommonState[]>;
   public songDetailById$ = this.store.select(SongsState.songDetailById);
 
-  private _connectServiceType$ = new BehaviorSubject<IPlatformTypes>(IPlatformTypes.all);
-
   constructor(private store: Store, private dialog: MatDialog, private router: Router) { }
-
-  ngOnInit() {
-    this.songs$ = combineLatest([this._connectServiceType$, this.songsByPlatform$]).pipe(
-      map(([platform, songsByPlatform]) => songsByPlatform(platform)),
-      shareReplay(1)
-    );
-  }
-
-  public selectedPlatform(evt: any) {
-    this._connectServiceType$.next(evt);
-  }
 
   public addToPlayList(selectedSong: string): void {
     this.songDetailById$.pipe(
@@ -90,5 +77,9 @@ export class ArtistSongsComponent implements OnInit {
         this.store.dispatch(new SetCurrentSelectedSongAction(data.id!, "songs"));
       }
     });
+  }
+
+  public selectedPlatform(evt: IPlatformTypes) {
+    this.store.dispatch(new FilterSongsByPlatformAction(evt));
   }
 }

@@ -21,11 +21,13 @@ export interface ISongsState {
   loading: boolean;
   songsLoading: boolean;
   currentTrackLoading: boolean,
+  platform: IPlatformTypes,
   soundcloudStreamUrls: ISoundcloudStreamUrls
 }
 
 export const songsStateDefault: ISongsState = {
   songs: [],
+  platform: IPlatformTypes.all,
   artist: {} as IArtists,
   playlistSongs: [],
   artistAlbum: {} as IAlbumInfo,

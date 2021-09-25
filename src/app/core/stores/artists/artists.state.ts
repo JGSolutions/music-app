@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistsAction, SelectArtistAction } from './artists.actions';
+import { ArtistsAction, FilterArtistsByPlatformAction, SelectArtistAction } from './artists.actions';
 import { artistsStateDefault, IArtistsState } from './artists-state.types';
 import { reduce, orderBy as _orderBy } from 'lodash';
 import { IArtists, IPlatformTypes } from 'models/artist.types';
@@ -34,23 +34,23 @@ export class ArtistsState {
 
   @Selector()
   static artistsByPlatform(state: IArtistsState) {
-    return (platform: IPlatformTypes) => {
-      if (platform === IPlatformTypes.all) {
-        return state.artists;
+    const platform = state.platform;
+
+    if (platform === IPlatformTypes.all) {
+      return state.artists;
+    }
+
+    return reduce(state.artists, (acc: any, value, key) => {
+      const foundArtist = value.filter((element) => {
+        return element.platform === platform as string;
+      });
+
+      if (foundArtist.length > 0) {
+        acc[key] = foundArtist;
       }
 
-      return reduce(state.artists, (acc: any, value, key) => {
-        const foundArtist = value.filter((element) => {
-          return element.platform === platform as string;
-        });
-
-        if (foundArtist.length > 0) {
-          acc[key] = foundArtist;
-        }
-
-        return acc;
-      }, {} as Record<string, IArtists[]>);
-    };
+      return acc;
+    }, {} as Record<string, IArtists[]>);
   }
 
   @Selector()
@@ -77,6 +77,13 @@ export class ArtistsState {
   _selectArtist(ctx: StateContext<IArtistsState>, { artist }: SelectArtistAction) {
     ctx.patchState({
       selectedArtist: artist,
+    });
+  }
+
+  @Action(FilterArtistsByPlatformAction)
+  _ilterArtistsByPlatformAction(ctx: StateContext<IArtistsState>, { platform }: FilterArtistsByPlatformAction) {
+    ctx.patchState({
+      platform,
     });
   }
 }

@@ -1,26 +1,41 @@
 @use 'sass:map';
 @use '~@angular/material' as mat;
 
+
+
 @mixin highlighted-color($theme) {
   // Get the color config from the theme.
   $color-config: mat.get-color-config($theme);
 
   // Get the primary color palette from the color-config.
-  $primary-palette: map.get($color-config, 'primary');
-  $foreground: map.get($color-config, 'foreground');
+  $accent-palette: map.get($theme, 'accent');
+  $foreground: map.get($theme, 'foreground');
 
-  .active-link {
-    color: mat.get-color-from-palette($primary-palette, 500) !important;
+  .active-link, a.link:hover {
+    color: mat.get-color-from-palette($accent-palette, 500) !important;
   }
 
   a.link {
     color: mat.get-color-from-palette($foreground, 'secondary-text');
+  }
+
+  a.link:hover {
+    background-color: transparent;
+  }
+}
+
+@mixin content-container($theme) {
+  $background: map.get($theme, 'background');
+
+  .main-container {
+    background-color: mat.get-color-from-palette($background, background);
   }
 }
 
 @mixin theme($theme) {
   $color-config: mat.get-color-config($theme);
   @if $color-config != null {
+    @include content-container($theme);
     @include highlighted-color($theme);
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction, SoundcloudAudioFileAction, CloseCurrentTrackAction } from './songs.actions';
+import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction, SoundcloudAudioFileAction, CloseCurrentTrackAction, FilterSongsByPlatformAction } from './songs.actions';
 import { songsStateDefault, ISongsState, ICurrentTrack, ISongCommonState } from './songs.types';
 import { cloneDeep, orderBy as _orderBy } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
@@ -40,16 +40,16 @@ export class SongsState {
 
   @Selector()
   static songsByPlatform(state: ISongsState) {
-    return (platform: IPlatformTypes) => {
-      const data = _orderBy(state.songs, ['createdTime'], ['desc']);
-      if (platform === IPlatformTypes.all) {
-        return data;
-      }
+    const platform = state.platform;
 
-      return data.filter((element) => {
-        return element.platform === platform as string;
-      });
-    };
+    const data = _orderBy(state.songs, ['createdTime'], ['desc']);
+    if (platform === IPlatformTypes.all) {
+      return data;
+    }
+
+    return data.filter((element) => {
+      return element.platform === platform as string;
+    });
   }
 
   @Selector()
@@ -258,6 +258,13 @@ export class SongsState {
   _setCurrentSongAction({ patchState }: StateContext<ISongsState>, { currentTrack }: SetCurrentSongAction) {
     patchState({
       currentTrack
+    });
+  }
+
+  @Action(FilterSongsByPlatformAction)
+  _filterSongsByPlatformAction(ctx: StateContext<ISongsState>, { platform }: FilterSongsByPlatformAction) {
+    ctx.patchState({
+      platform,
     });
   }
 }
