@@ -52,9 +52,10 @@ exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{ui
 
     coverImages.push({
       id: objectId,
-      image: data.pictures.medium,
+      image: data.pictures.exLarge,
     });
 
+    console.log("add: ", coverImages);
     await db.collection("playlist").doc(playlist).set({
       coverImages,
       updatedDate: new Date(),
@@ -84,9 +85,10 @@ exports.updatePlaylistCoverImage = functions.firestore.document("playlistTracks/
 
     coverImages.push({
       id: objectId,
-      image: data.pictures.large,
+      image: data.pictures.exLarge,
     });
 
+    console.log("update: ", coverImages);
     await db.collection("playlist").doc(playlist).set({
       coverImages,
       updatedDate: new Date(),
