@@ -1,6 +1,5 @@
 :host {
   display: block;
-  margin-bottom: 16px;
 }
 
 .one-image {
@@ -8,6 +7,7 @@
   max-height: 250px;
   height: 250px;
   width: 100%;
+  border-radius: 6px 6px 0 0;
   object-fit: cover;
 }
 

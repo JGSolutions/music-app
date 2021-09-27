@@ -1,6 +1,7 @@
-<mat-card class="example-card">
+<div class="wrapper" [class.mat-elevation-z1]="true">
   <app-image-grid [coverImages]="coverImages!"></app-image-grid>
-  <mat-card-content>
-    <p class="mat-title">{{playlistName}}</p>
-  </mat-card-content>
-</mat-card>
+
+  <div class="content">
+    <span class="mat-title">{{playlistName}}</span>
+  </div>
+</div>
