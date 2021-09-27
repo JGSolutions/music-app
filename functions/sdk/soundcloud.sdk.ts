@@ -36,8 +36,8 @@ export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTrack
         streamUrl: song.stream_url,
         externalUrl: song.permalink_url,
         pictures: {
-          medium: song.artwork_url !== null ? song.artwork_url.replace("-large", "-t400x400") : null,
-          large: song.artwork_url !== null ? song.artwork_url.replace("-large", "-t500x500") : null,
+          medium: song.artwork_url,
+          large: song.artwork_url !== null ? song.artwork_url.replace("-large", "-original") : null,
           exLarge: song.artwork_url !== null ? song.artwork_url.replace("-large", "-original") : null,
         },
       };
