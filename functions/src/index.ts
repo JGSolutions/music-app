@@ -39,11 +39,13 @@ exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{ui
   const data = snap.data();
   const objectId = snap.id;
   const db = adminFirebase.firestore();
-
+  const playlistRef = db.collection("playlist");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data.playlists.every(async (playlist: any) => {
-    const query = await db.collection("playlist").doc(playlist).get();
+  console.log(data.playlists);
+  data.playlists.forEach(async (playlist: string) => {
+    const query = await playlistRef.doc(playlist).get();
     const playlistData = query.data()!;
+
     const coverImages = clone(playlistData.coverImages);
 
     if (coverImages.length >= 4) {
@@ -55,41 +57,7 @@ exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{ui
       image: data.pictures.exLarge,
     });
 
-    console.log("add: ", coverImages);
-    await db.collection("playlist").doc(playlist).set({
-      coverImages,
-      updatedDate: new Date(),
-    }, { merge: true });
-
-    return true;
-  });
-
-  return true;
-});
-
-exports.updatePlaylistCoverImage = functions.firestore.document("playlistTracks/{uid}/list/{listId}").onUpdate((snap) => {
-  const data = snap.after.data();
-  const objectId = snap.before.id;
-
-  const db = adminFirebase.firestore();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data.playlists.every(async (playlist: any) => {
-    const query = await db.collection("playlist").doc(playlist).get();
-    const playlistData = query.data()!;
-    const coverImages = clone(playlistData.coverImages);
-
-    if (coverImages.length >= 4) {
-      return false;
-    }
-
-    coverImages.push({
-      id: objectId,
-      image: data.pictures.exLarge,
-    });
-
-    console.log("update: ", coverImages);
-    await db.collection("playlist").doc(playlist).set({
+    await playlistRef.doc(playlist).set({
       coverImages,
       updatedDate: new Date(),
     }, { merge: true });

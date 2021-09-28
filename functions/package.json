@@ -5,6 +5,7 @@
     "build": "tsc",
     "serve": "npm run build && firebase emulators:start --only functions,hosting",
     "serveall": "npm run build && firebase emulators:start --only functions,hosting,firestore",
+    "servefirestore": "npm run build && firebase emulators:start --only firestore",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
