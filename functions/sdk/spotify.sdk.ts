@@ -213,9 +213,9 @@ export const SpotifySDK = {
     };
 
     const params = `grant_type=refresh_token&refresh_token=${this.refreshToken}&client_id=${this.clientId}&client_secret=${this.clientSecret}`;
-    const { data } = await axios.post(this.accountApi, params, postHeaders);
+    const data: any = await axios.post(this.accountApi, params, postHeaders);
 
-    return data;
+    return data.data;
   },
 
   async createAccessTokenUrl(oAuthCode: any): Promise<IAuthorizationToken> {
@@ -229,7 +229,7 @@ export const SpotifySDK = {
     // const params = `client_id=${spotifyKeys.clientId}&client_secret=${spotifyKeys.secretApi}&grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
     const params = `grant_type=authorization_code&code=${oAuthCode}&redirect_uri=https://music-app-5c927.firebaseapp.com/spotify-callback`;
     // const params = `grant_type=authorization_code&code=${oAuthCode}&redirect_uri=http://localhost:4200/spotify-callback`;
-    const data = await axios.post(this.accountApi, params, postHeaders);
+    const data: any = await axios.post(this.accountApi, params, postHeaders);
     this.queryParamAccessToken = data.data.access_token;
     return data.data;
   },
@@ -244,7 +244,7 @@ export const SpotifySDK = {
     const url = `${this.apiDomain}/me/following?type=${type}`;
 
     try {
-      const resp = await axios(url, this.requestHeaders());
+      const resp: any = await axios(url, this.requestHeaders());
       return await artistsData(resp.data.artists.items);
     } catch (err: any) {
       if (err.response?.status === 401) {
@@ -261,7 +261,7 @@ export const SpotifySDK = {
 
   async artistSongs(artistid: string): Promise<IArtistTracks> {
     const url = `${this.apiDomain}/artists/${artistid}/albums/`;
-    const resp = await axios(url, this.requestHeaders());
+    const resp: any = await axios(url, this.requestHeaders());
 
     const artistUrl = `${this.apiDomain}/artists/${artistid}`;
     const respArtist = await axios(artistUrl, this.requestHeaders());

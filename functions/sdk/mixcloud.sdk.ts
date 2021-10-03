@@ -139,7 +139,7 @@ export const MixcloudSDK = {
 
   async getUsername(): Promise<string> {
     const url = `${this.mixcloudApiDomain}/me/?${this.queryParamAccessToken}`;
-    const res = await axios(url);
+    const res: any = await axios(url);
 
     return await res.data.username;
   },
@@ -153,13 +153,13 @@ export const MixcloudSDK = {
 
   async following(): Promise<IArtists[]> {
     const url = `${this.mixcloudApiDomain}/me/following/?${this.queryParamAccessToken}`;
-    const resp = await axios(url);
+    const resp: any = await axios(url);
 
     return await mixcloudArtistsData(resp.data.data);
   },
 
   async artistSongs(username: string, limit = 20): Promise<IArtistTracks> {
-    const trackResp = await axios(`${this.mixcloudApiDomain}/${username}/cloudcasts/?${this.queryParamAccessToken}&limit=${limit}`);
+    const trackResp: any = await axios(`${this.mixcloudApiDomain}/${username}/cloudcasts/?${this.queryParamAccessToken}&limit=${limit}`);
     const artistResp = await axios(`${this.mixcloudApiDomain}/${username}/?${this.queryParamAccessToken}`);
 
     return await mixcloudArtistSongs(trackResp.data.data, artistResp.data);
@@ -202,8 +202,8 @@ export const MixcloudSDK = {
   async search(query: string | undefined) {
     const urlTracks = `${this.mixcloudApiDomain}/search/?${this.queryParamAccessToken}&q=${query}&type=cloudcast`;
     const urlArtists = `${this.mixcloudApiDomain}/search/?${this.queryParamAccessToken}&q=${query}&type=user`;
-    const resTracks = await axios(urlTracks);
-    const resArtists = await axios(urlArtists);
+    const resTracks: any = await axios(urlTracks);
+    const resArtists: any = await axios(urlArtists);
     return {
       tracks: await searchResultTracks(resTracks.data.data),
       artists: await searchResultArtists(resArtists.data.data),
