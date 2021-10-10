@@ -65,7 +65,7 @@ export class ArtistProfileComponent implements OnInit, OnDestroy {
       withLatestFrom(this.user$),
       takeUntil(this.destroy$)
     ).subscribe(([data, user]) => {
-      this.store.dispatch(new ArtistSongsAction(user.uid, data))
+      this.store.dispatch(new ArtistSongsAction(user.uid, data));
     });
 
     this.artistGenres$ = artistDetails$.pipe(
