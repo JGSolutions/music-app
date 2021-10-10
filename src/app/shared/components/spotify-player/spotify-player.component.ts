@@ -64,16 +64,16 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
       this.player = new Spotify.Player({
         name: 'Music App',
         getOAuthToken: (cb: any) => { cb(this.token); },
-        volume: 0.5
+        volume: 1
       });
 
-      this.player.addListener('initialization_error', ({ message }) => { console.error(message); });
+      this.player.addListener('initialization_error', ({ message }) => { console.error("init error: ", message); });
       this.player.addListener('authentication_error', ({ message }) => {
         console.log("ERROR HAS OCCURED: ", message);
         console.error(message);
       });
-      this.player.addListener('account_error', ({ message }) => { console.error(message); });
-      this.player.addListener('playback_error', ({ message }) => { console.error(message); });
+      this.player.addListener('account_error', ({ message }) => { console.error("account error: ", message); });
+      this.player.addListener('playback_error', ({ message }) => { console.error("playback error: ", message); });
 
       this.player.addListener('player_state_changed', state => {
         if (this.isEndOfTrack(state)) {

@@ -64,6 +64,13 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
       this.playSongLoading$.next(false);
       this.store.dispatch(new SetCurrentTrackPlayStatusAction(value));
     });
+
+    this.howlService.$onPlayError.pipe(
+      withLatestFrom(this.user$, this.currentTrack$),
+      takeUntil(this.destroy$)
+    ).subscribe(([playError, user, currentTrack]) => {
+      this.store.dispatch(new SoundcloudAudioFileAction(user.uid!, currentTrack.audioFile));
+    });
   }
 
   ngOnDestroy() {

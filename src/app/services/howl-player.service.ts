@@ -6,6 +6,7 @@ import { ReplaySubject, Subject } from 'rxjs';
 export class HowlerPlayerService {
   public howler = Howler;
   public $onload: Subject<void>;
+  public $onPlayError: Subject<void>;
   public $sliderProgress: ReplaySubject<number>;
   public $currentTimer: ReplaySubject<number>;
   public $rawDuration: ReplaySubject<number>;
@@ -16,6 +17,7 @@ export class HowlerPlayerService {
 
   constructor() {
     this.$onload = new Subject();
+    this.$onPlayError = new Subject();
     this.$sliderProgress = new ReplaySubject(1);
     this.$currentTimer = new ReplaySubject(1);
     this.$rawDuration = new ReplaySubject(1);
@@ -47,10 +49,10 @@ export class HowlerPlayerService {
         this._raf = requestAnimationFrame(this._whilePlaying.bind(this));
       },
       onplayerror: (err) => {
-        console.log("onplay error", err);
+        this.$onPlayError.next();
       },
       onloaderror: (err) => {
-        console.log("onload error", err);
+        this.$onPlayError.next();
       }
     })
   }
