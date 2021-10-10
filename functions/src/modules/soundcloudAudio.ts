@@ -13,11 +13,14 @@ export const soundcloudAudio = async (request: Request, response: Response) => {
   } catch (err) {
     return response.status(401).send(err);
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const connectedServices = await getConnectServices(authorized);
-
   auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices["soundcloud"].token, connectedServices["soundcloud"].refresh_token, authorized);
-  const { data: result } = await auth.audioStream(request.query.externalUrl as string);
 
-  return response.status(200).send(result);
+  try {
+    const { data: result } = await auth.audioStream(request.query.externalUrl as string);
+    return response.status(200).send(result);
+  } catch (err) {
+    return response.status(500).send(err);
+  }
 };

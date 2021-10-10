@@ -66,5 +66,7 @@ export const artists = async (request: Request, response: Response) => {
     }, {});
 
     response.status(200).send(res);
+  }).catch((err) => {
+    response.status(500).send(err);
   });
 };
