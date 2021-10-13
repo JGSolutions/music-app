@@ -7,6 +7,7 @@ import { IArtistBodyRequest, IArtists, IPlatformTypes } from 'models/artist.type
 import { IAlbum, IArtistTracks, IStreamUrl } from 'models/song.types';
 import { ISearchResults } from 'models/search.model';
 import { ISoundcloudStreamUrls } from '../core/stores/songs/songs.types';
+import { deburr as _deburr } from 'lodash'
 
 
 @Injectable()
@@ -93,6 +94,7 @@ export class ApiService {
     );
 
   }
+
   public createSpotifyToken(code: string, uid: string): Observable<string> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -133,7 +135,7 @@ export class ApiService {
       })
     };
 
-    const url = `${this.domainApi}/search?search=${searchTerm}`;
+    const url = `${this.domainApi}/search?search=${_deburr(searchTerm)}`;
     return this.http.get<ISearchResults>(url, httpOptions);
   }
 }
