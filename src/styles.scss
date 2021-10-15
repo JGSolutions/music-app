@@ -4,8 +4,7 @@
 @use 'sass:map';
 @use '~@angular/material' as mat;
 @use '../src/app/app-player/side-nav-theme.scss' as sideNav;
-@use '../src/app/shared/components/track-item/track-item.theme.scss' as trackItem;
-@use '../src/app/shared/components/song-item/song-item.theme' as songItem;
+@use '../src/theme/track-item.theme' as trackItem;
 
 @import './theme/custom-theme.scss';
 @import './theme/variables.scss';
@@ -83,7 +82,6 @@ $music-app-theme-new: map.merge($music-app-theme, (background: $my-background, f
 @include mat.all-component-themes($music-app-theme-new);
 @include sideNav.theme($music-app-theme-new);
 @include trackItem.theme($music-app-theme-new);
-@include songItem.theme($music-app-theme-new);
 
 
 /* You can add global styles to this file, and also import other style files */
