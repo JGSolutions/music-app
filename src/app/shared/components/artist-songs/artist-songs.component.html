@@ -11,8 +11,14 @@
         <app-artist-avatar [genres]="(artistGenres$ | async)!" [avatar]="(profileDetails$ | async)?.pictures?.large!" [artistName]="(profileDetails$ | async)?.name!"></app-artist-avatar>
       </section>
     </div>
-    <div class="col-md-7 col-lg-9">
-      <ng-container  *ngIf="(songsByPlatform$ | async) as songs">
+    <div class="col-md-7 col-lg-9 cont">
+
+      <div class="row">
+        <div class="col-lg-3" *ngFor="let song of (songsByPlatform$ | async) as songs">
+          <a href="#" class="item"><img src="{{ song?.pictures?.medium! }}"></a>
+        </div>
+      </div>
+      <!-- <ng-container  *ngIf="(songsByPlatform$ | async) as songs">
         <section class="song-list" *ngIf="songs?.length! > 0">
           <app-song-item
             *ngFor="let song of songs"
@@ -39,7 +45,7 @@
           [message]="'No tracks or albums'"
           *ngIf="songs?.length === 0 && (songsLoading$ | async) === false">
         </app-empty-results>
-      </ng-container>
+      </ng-container> -->
 
     </div>
   </div>
