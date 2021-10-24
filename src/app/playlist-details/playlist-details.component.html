@@ -25,26 +25,27 @@
       </section>
     </div>
     <div class="col-md-7 col-lg-9">
-      <ng-container>
-        <app-song-item
-            *ngFor="let song of songs$ | async"
-            [currentTrackId]="(currentTrack$ | async)?.id!"
-            [albumId]="(currentTrack$ | async)?.albumid!"
-            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
-            [name]="song.name"
-            [id]="song.id!"
-            [length]="song.duration!"
-            [durationType]="song.durationType!"
-            [platform]="song.platform"
-            [avatar]="song?.pictures?.medium!"
-            [trackType]="song.trackType"
-            [externalUrl]="song.externalUrl!"
-            [dateCreated]="song.createdTime!"
-            [removeOptionItem]="true"
-            (removeToPlaylistEvent)="removeSong($event)"
-            (selectedSong)="selectedSong($event)">
-          </app-song-item>
-      </ng-container>
+      <div class="row">
+        <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of songs$ | async">
+          <app-song-item
+              [currentTrackId]="(currentTrack$ | async)?.id!"
+              [albumId]="(currentTrack$ | async)?.albumid!"
+              [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+              [name]="song.name"
+              [id]="song.id!"
+              [length]="song.duration!"
+              [durationType]="song.durationType!"
+              [platform]="song.platform"
+              [avatar]="song?.pictures?.medium!"
+              [trackType]="song.trackType"
+              [externalUrl]="song.externalUrl!"
+              [dateCreated]="song.createdTime!"
+              [removeOptionItem]="true"
+              (removeToPlaylistEvent)="removeSong($event)"
+              (selectedSong)="selectedSong($event)">
+            </app-song-item>
+        </div>
+      </div>
     </div>
   </div>
 </div>

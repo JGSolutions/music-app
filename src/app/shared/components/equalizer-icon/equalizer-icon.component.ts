@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-equalizer-icon',
@@ -6,7 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./equalizer-icon.component.scss']
 })
 export class EqualizerIconComponent {
-  // @Input()
-  // artistName!: string;
 }
 

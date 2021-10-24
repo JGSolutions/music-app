@@ -5,7 +5,6 @@ import { AngularMaterialModule } from 'src/angular-material.module';
 import { DateAgoPipe } from 'src/app/core/pipes/date-ago.pipe';
 import { MinuteSecondsModule } from 'src/app/core/pipes/minute-seconds.module';
 import { EqualizerIconModule } from '../equalizer-icon/equalizer-icon.module';
-import { TrackMatMenuModule } from '../track-mat-menu/track-mat-menu.module';
 import { ArtistLinksModule } from '../artist-links/artist-links.module';
 import { RouterModule } from '@angular/router';
 
@@ -17,8 +16,7 @@ import { RouterModule } from '@angular/router';
     AngularMaterialModule,
     RouterModule,
     EqualizerIconModule,
-    ArtistLinksModule,
-    TrackMatMenuModule
+    ArtistLinksModule
   ],
   exports: [
     SongItemComponent

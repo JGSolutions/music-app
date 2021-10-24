@@ -29,7 +29,7 @@ export class SearchComponent implements OnDestroy {
 
   public songDetailById$ = this.store.select(SearchState.songDetailById);
   public currentTrack$ = this.store.select(SongsState.currentTrack).pipe(
-    distinctUntilChanged((prev, next) => prev?.id === next?.id),
+    distinctUntilChanged((prev, next) => prev?.id === next?.id && prev?.isPlaying === next?.isPlaying),
     shareReplay(1)
   );
 
@@ -115,5 +115,9 @@ export class SearchComponent implements OnDestroy {
         });
       }
     });
+  }
+
+  public identify(index: number, item: ISong): string {
+    return item.id;
   }
 }

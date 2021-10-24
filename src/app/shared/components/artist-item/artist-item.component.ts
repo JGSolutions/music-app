@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { IArtists } from 'models/artist.types';
 import { IAvatar } from 'models/avatar.types';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -6,7 +6,8 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-artist-item',
   templateUrl: './artist-item.component.html',
-  styleUrls: ['./artist-item.component.scss']
+  styleUrls: ['./artist-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArtistItemComponent implements OnInit {
   @Input()

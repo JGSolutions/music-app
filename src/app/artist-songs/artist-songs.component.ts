@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { combineLatest, Observable, Subject } from 'rxjs';
@@ -13,7 +13,8 @@ import { SongsState } from '../core/stores/songs/songs.state';
 @Component({
   selector: 'app-artist-songs-view',
   templateUrl: './artist-songs.component.html',
-  styleUrls: ['./artist-songs.component.scss']
+  styleUrls: ['./artist-songs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ArtistSongsViewComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
@@ -24,7 +25,7 @@ export class ArtistSongsViewComponent implements OnInit, OnDestroy {
   public artistGenres$!: Observable<string[]>;
   public songsByPlatform$ = this.store.select(SongsState.songsByPlatform);
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
 
   constructor(private route: ActivatedRoute, private store: Store) { }
 
@@ -58,8 +59,7 @@ export class ArtistSongsViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
   }
 
 }

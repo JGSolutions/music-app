@@ -1,4 +1,4 @@
-<div class="track-item-wrapper" [ngClass]="{'selected': (albumId === id || currentTrackId === id)}">
+<!-- <div class="track-item-wrapper" [ngClass]="{'selected': (albumId === id || currentTrackId === id)}">
   <div class="avatar-wrapper" (click)="selectedItem()">
     <div class="play-button-wrapper">
       <div class="play-button">
@@ -28,4 +28,46 @@
   <div class="options">
     <app-track-mat-menu [removeOptionItem]="removeOptionItem" [isAlbum]="trackType !== trackTypes.track" (removePlaylist)="removePlaylist()" (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
   </div>
-</div>
+</div> -->
+
+<section>
+  <figure>
+    <img class="background" src="{{ avatar }}" *ngIf="avatar">
+    <img src="../../../../assets/no-music.svg" class="avatar background" *ngIf="!avatar">
+    <div class="overlay">
+      <div *ngIf="dateCreated">Posted: {{dateCreated | dateAgo}}</div>
+      <div class="options">
+        <button mat-icon-button color="primary" (click)="addToPlaylist()">
+          <mat-icon>playlist_add</mat-icon>
+        </button>
+
+        <button mat-icon-button color="primary"  (click)="selectedItem()">
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+      </div>
+      <div class="type">
+        <div>{{trackTypes[trackType]}}</div>
+        <div class="duration">
+          <span class="time" *ngIf="trackType === trackTypes.track">
+            <mat-icon>timelapse</mat-icon>
+            <span *ngIf="length > 0">{{length | minuteSeconds: durationType}}</span>
+          </span>
+          <span class="type" *ngIf="trackType !== 'track'">{{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
+        </div>
+      </div>
+    </div>
+  </figure>
+  <div class="content-container">
+    <div class="mat-body-1 artist-name">{{name}}</div>
+    <app-artist-links [platform]="platform" [artist]="artists"></app-artist-links>
+
+    <div class="platform">
+      <img src="../assets/platforms/{{platform}}.png" class="platform-logo">
+
+      <span *ngIf="isPlaying && (albumId === id || currentTrackId === id)" class="now-playing">
+        <app-equalizer-icon></app-equalizer-icon>
+        Now Playing
+      </span>
+    </div>
+  </div>
+</section>
