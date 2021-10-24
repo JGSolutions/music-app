@@ -11,59 +11,36 @@
         <app-artist-avatar [genres]="(artistGenres$ | async)!" [avatar]="(profileDetails$ | async)?.pictures?.large!" [artistName]="(profileDetails$ | async)?.name!"></app-artist-avatar>
       </section>
     </div>
-    <div class="col-md-7 col-lg-9 cont">
+    <div class="col-md-7 col-lg-9">
 
-      <div class="row">
-        <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of (songsByPlatform$ | async) as songs">
-          <app-song-item
-            [currentTrackId]="(currentTrack$ | async)?.id!"
-            [albumId]="(currentTrack$ | async)?.albumid!"
-            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
-            [name]="song.name"
-            [id]="song.id!"
-            [length]="song.duration!"
-            [durationType]="song.durationType!"
-            [totalTracks]="song?.totalTracks!"
-            [platform]="song.platform"
-            [avatar]="song?.pictures?.large!"
-            [externalUrl]="song.externalUrl!"
-            [trackType]="song.trackType"
-            [dateCreated]="song.createdTime"
-            (selectedSong)="selectedSong($event)"
-            (addToPlaylistEvent)="addToPlayList($event)"
-            >
-          </app-song-item>
+      <ng-container  *ngIf="(songsByPlatform$ | async) as songs">
+        <div class="row" *ngIf="songs?.length! > 0">
+          <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of songs">
+            <app-song-item
+              [currentTrackId]="(currentTrack$ | async)?.id!"
+              [albumId]="(currentTrack$ | async)?.albumid!"
+              [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+              [name]="song.name"
+              [id]="song.id!"
+              [length]="song.duration!"
+              [durationType]="song.durationType!"
+              [totalTracks]="song?.totalTracks!"
+              [platform]="song.platform"
+              [avatar]="song?.pictures?.large!"
+              [externalUrl]="song.externalUrl!"
+              [trackType]="song.trackType"
+              [dateCreated]="song.createdTime"
+              (selectedSong)="selectedSong($event)"
+              (addToPlaylistEvent)="addToPlayList($event)"
+              >
+            </app-song-item>
+          </div>
         </div>
-      </div>
-      <!-- <ng-container  *ngIf="(songsByPlatform$ | async) as songs">
-        <section class="song-list" *ngIf="songs?.length! > 0">
-          <app-song-item
-            *ngFor="let song of songs"
-            [currentTrackId]="(currentTrack$ | async)?.id!"
-            [albumId]="(currentTrack$ | async)?.albumid!"
-            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
-            [name]="song.name"
-            [id]="song.id!"
-            [length]="song.duration!"
-            [durationType]="song.durationType!"
-            [totalTracks]="song?.totalTracks!"
-            [platform]="song.platform"
-            [avatar]="song?.pictures?.medium!"
-            [externalUrl]="song.externalUrl!"
-            [trackType]="song.trackType"
-            [dateCreated]="song.createdTime"
-            (selectedSong)="selectedSong($event)"
-            (addToPlaylistEvent)="addToPlayList($event)"
-            >
-          </app-song-item>
-        </section>
 
-        <app-empty-results
-          [message]="'No tracks or albums'"
+        <app-empty-results [message]="'No tracks or albums'"
           *ngIf="songs?.length === 0 && (songsLoading$ | async) === false">
         </app-empty-results>
-      </ng-container> -->
-
+      </ng-container>
     </div>
   </div>
 </div>
