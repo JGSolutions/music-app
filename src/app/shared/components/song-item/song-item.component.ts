@@ -67,10 +67,6 @@ export class SongItemComponent {
     this.selectedSong.emit(this.id);
   }
 
-  public addToFavorites(): void {
-
-  }
-
   public addToPlaylist(): void {
     this.addToPlaylistEvent.emit(this.id);
   }

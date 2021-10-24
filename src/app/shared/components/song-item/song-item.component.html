@@ -39,7 +39,7 @@
       <app-equalizer-icon *ngIf="isPlaying && (albumId === id || currentTrackId === id)"></app-equalizer-icon>
       <div *ngIf="dateCreated">Posted: {{dateCreated | dateAgo}}</div>
       <div class="options">
-        <button mat-icon-button color="primary">
+        <button mat-icon-button color="primary" (click)="addToPlaylist()">
           <mat-icon>playlist_add</mat-icon>
         </button>
 
@@ -54,7 +54,6 @@
             <mat-icon>timelapse</mat-icon>
             <span *ngIf="length > 0">{{length | minuteSeconds: durationType}}</span>
           </span>
-
           <span class="type" *ngIf="trackType !== 'track'">{{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
         </div>
       </div>
