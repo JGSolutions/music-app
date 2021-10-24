@@ -6,13 +6,13 @@
   height: auto;
 }
 
-//   .platform-logo {
-//     width: auto;
-//     height: auto;
-//     max-height: 15px;
-//   }
+.platform-logo {
+  width: auto;
+  height: auto;
+  max-height: 15px;
+}
 
-img {
+img.background {
 	width: 100%;
   max-height: 200px;
 	display: block;
@@ -25,6 +25,7 @@ img {
 figure {
 	position: relative;
 	overflow: hidden;
+  margin: 0 0 0rem;
 }
 
 figure::after {
@@ -39,21 +40,6 @@ figure::after {
 	opacity: 0;
 	transform: scale(2);
 	transition: opacity 300ms;
-}
-
-.artist {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-  background-color: black;
-	display: flex;
-	justify-content: center;
-  flex-direction: column;
-	padding: 0.5rem;
-	color: white;
-	font-size: 12px;
-	z-index: 1;
-  border-radius: 4px;
 }
 
 .overlay {
@@ -127,7 +113,41 @@ section:is(:hover, :focus) .overlay {
 		transition: opacity 600ms 400ms, transform 600ms 400ms;
 	}
 
-	section:is(:hover, :focus) img {
+	figure:is(:hover, :focus) img {
 		transform: scale(1.2);
 	}
+}
+
+.content-container {
+  padding: 10px;
+  background-color: white;
+}
+
+.platform {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 25px;
+}
+
+.artist-name {
+  max-height: 4rem;
+  overflow: hidden;
+  display: block;
+  -webkit-line-clamp: 2;
+  display: box;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.now-playing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  app-equalizer-icon {
+    margin-right: 5px;
+  }
 }

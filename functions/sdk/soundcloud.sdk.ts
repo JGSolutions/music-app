@@ -37,8 +37,8 @@ export const artistSongs = (dataApi: any, artistData: any): Promise<IArtistTrack
         externalUrl: song.permalink_url,
         pictures: {
           medium: song.artwork_url,
-          large: song.artwork_url !== null ? song.artwork_url.replace("-large", "-original") : null,
-          exLarge: song.artwork_url !== null ? song.artwork_url.replace("-large", "-original") : null,
+          large: song.artwork_url !== null ? song.artwork_url.replace("-large", "-t500x500") : null,
+          exLarge: song.artwork_url !== null ? song.artwork_url.replace("-large", "-t500x500") : null,
         },
       };
     });

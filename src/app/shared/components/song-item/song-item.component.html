@@ -32,11 +32,9 @@
 
 <section>
   <figure>
-    <img src="{{ avatar }}" *ngIf="avatar">
-    <img src="../../../../assets/no-music.svg" class="avatar" *ngIf="!avatar">
-    <div class="artist">{{name}}</div>
+    <img class="background" src="{{ avatar }}" *ngIf="avatar">
+    <img src="../../../../assets/no-music.svg" class="avatar background" *ngIf="!avatar">
     <div class="overlay">
-      <app-equalizer-icon *ngIf="isPlaying && (albumId === id || currentTrackId === id)"></app-equalizer-icon>
       <div *ngIf="dateCreated">Posted: {{dateCreated | dateAgo}}</div>
       <div class="options">
         <button mat-icon-button color="primary" (click)="addToPlaylist()">
@@ -59,4 +57,17 @@
       </div>
     </div>
   </figure>
+  <div class="content-container">
+    <div class="mat-body-1 artist-name">{{name}}</div>
+    <app-artist-links [platform]="platform" [artist]="artists"></app-artist-links>
+
+    <div class="platform">
+      <img src="../assets/platforms/{{platform}}.png" class="platform-logo">
+
+      <span *ngIf="isPlaying && (albumId === id || currentTrackId === id)" class="now-playing">
+        <app-equalizer-icon></app-equalizer-icon>
+        Now Playing
+      </span>
+    </div>
+  </div>
 </section>
