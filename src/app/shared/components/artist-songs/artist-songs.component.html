@@ -14,8 +14,25 @@
     <div class="col-md-7 col-lg-9 cont">
 
       <div class="row">
-        <div class="col-lg-3" *ngFor="let song of (songsByPlatform$ | async) as songs">
-          <a href="#" class="item"><img src="{{ song?.pictures?.medium! }}"></a>
+        <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of (songsByPlatform$ | async) as songs">
+          <app-song-item
+            [currentTrackId]="(currentTrack$ | async)?.id!"
+            [albumId]="(currentTrack$ | async)?.albumid!"
+            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
+            [name]="song.name"
+            [id]="song.id!"
+            [length]="song.duration!"
+            [durationType]="song.durationType!"
+            [totalTracks]="song?.totalTracks!"
+            [platform]="song.platform"
+            [avatar]="song?.pictures?.medium!"
+            [externalUrl]="song.externalUrl!"
+            [trackType]="song.trackType"
+            [dateCreated]="song.createdTime"
+            (selectedSong)="selectedSong($event)"
+            (addToPlaylistEvent)="addToPlayList($event)"
+            >
+          </app-song-item>
         </div>
       </div>
       <!-- <ng-container  *ngIf="(songsByPlatform$ | async) as songs">

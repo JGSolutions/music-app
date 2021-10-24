@@ -1,3 +1,5 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
 @import '../../../../theme/variables.scss';
 @import '../../../../theme/ghost-animation';
 
@@ -14,44 +16,4 @@
   @include fluid-container();
 }
 
-.cont {
-  display: flex;
-}
 
-.item {
-  position: relative;
-  display: block;
-  flex: 1 1 0px;
-  transition: transform 500ms;
-  // transition-duration: .5s;
-}
-
-.container:focus-within .item,
-.container:hover .item {
-  // transition-delay: .5s;
-  // transform: translateX(-25%);
-}
-
-.item:focus ~ .item,
-.item:hover ~ .item {
-  // transform: translateX(25%);
-}
-
-.item:focus,
-.item:hover {
-  transform: scale(1.75);
-  // transition-delay: .5s;
-  // width:500px;
-  // height: 250px;
-  z-index: 10000;
-}
-
-body {
-  overflow: hidden;
-}
-
-.item img {
-  display: block;
-  width: 100%;
-  height: 175px;
-}
