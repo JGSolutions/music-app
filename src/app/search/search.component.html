@@ -16,7 +16,7 @@
 </div>
 
 <ng-template #songs>
-  <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of (searchResults$ | async)?.tracks">
+  <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of (searchResults$ | async)?.tracks; trackBy:identify">
     <app-song-item
         [currentTrackId]="(currentTrack$ | async)?.id!"
         [albumId]="(currentTrack$ | async)?.albumid!"
