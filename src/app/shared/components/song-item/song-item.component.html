@@ -54,6 +54,8 @@
             <mat-icon>timelapse</mat-icon>
             <span *ngIf="length > 0">{{length | minuteSeconds: durationType}}</span>
           </span>
+
+          <span class="type" *ngIf="trackType !== 'track'">{{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
         </div>
       </div>
     </div>
