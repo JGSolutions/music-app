@@ -72,8 +72,8 @@ export const searchResultTracks = (dataApi: any): Promise<ISearchResults> => {
         createdTime: new Date(song.created_at),
         pictures: {
           medium: song.artwork_url,
-          large: song.artwork_url !== null ? song.artwork_url.replace("-large", "-original") : null,
-          exLarge: song.artwork_url !== null ? song.artwork_url.replace("-large", "-original") : null,
+          large: song.artwork_url !== null ? song.artwork_url.replace("-large", "-t500x500") : null,
+          exLarge: song.artwork_url !== null ? song.artwork_url.replace("-large", "-t500x500") : null,
         },
       };
     });
