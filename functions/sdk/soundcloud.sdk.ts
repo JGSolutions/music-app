@@ -98,10 +98,9 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
         id: item.id.toString(),
         externalUrl: item.permalink_url,
         lastModified: new Date(item.last_modified),
-        trackType: item.trackType === "track" ? ISongTrackType.track : ISongTrackType.album,
         platform: IPlatformTypes.soundcloud,
         likes: item.likes_count,
-        pictures: item.artwork_url === null ? "" : item.artwork_url,
+        pictures: item.artwork_url === null ? dataApi[0].tracks[0].artwork_url : item.artwork_url,
       };
     });
 

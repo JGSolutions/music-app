@@ -29,10 +29,6 @@ export const playlists = async (request: Request, response: Response) => {
         auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[key].token, connectedServices[key].refresh_token, authorized);
         pData.push(auth.playlists());
         break;
-      // case IPlatformTypes.mixcloud:
-      // MixcloudSDK.initialize(connectedServices[key].token);
-      // pData.push(MixcloudSDK.following());
-      // break;
       case IPlatformTypes.spotify:
         SpotifySDK.initialize(connectedServices[key].token, connectedServices[key].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
         pData.push(SpotifySDK.getPlaylists());

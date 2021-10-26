@@ -196,10 +196,7 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
         name: item.name,
         id: item.id,
         externalUrl: item.external_urls.spotify,
-        // lastModified: new Date(item.last_modified),
-        // trackType: item.trackType === "track" ? ISongTrackType.track : ISongTrackType.album,
         platform: IPlatformTypes.spotify,
-        // likes: item.likes_count,
         pictures: item.images[0].url === null ? "" : item.images[0].url,
       };
     });
