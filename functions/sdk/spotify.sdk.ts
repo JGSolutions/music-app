@@ -9,6 +9,7 @@ import { IAlbum, ISong, ISongTrackType, IDurationType, IArtistTracks } from "../
 import { ISearchResults } from "../../models/search.model";
 import { isUndefined } from "lodash";
 import { IAvatar } from "../../models/avatar.types";
+import { IPlayLists } from "../../models/playlist.types";
 
 const artistDataModel = (artist: any): IArtists => {
   let images = {} as IAvatar;
@@ -188,6 +189,25 @@ export const searchResults = (dataApi: any): Promise<ISearchResults> => {
   });
 };
 
+export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
+  return new Promise((resolve) => {
+    const data = dataApi.items.map((item: any) => {
+      return {
+        name: item.name,
+        id: item.id,
+        externalUrl: item.external_urls.spotify,
+        // lastModified: new Date(item.last_modified),
+        // trackType: item.trackType === "track" ? ISongTrackType.track : ISongTrackType.album,
+        platform: IPlatformTypes.spotify,
+        // likes: item.likes_count,
+        pictures: item.images[0].url === null ? "" : item.images[0].url,
+      };
+    });
+
+    resolve(data);
+  });
+};
+
 export const SpotifySDK = {
   queryParamAccessToken: "",
   refreshToken: "",
@@ -338,6 +358,12 @@ export const SpotifySDK = {
     this.queryParamAccessToken = res.access_token;
 
     return cb();
+  },
+
+  async getPlaylists(): Promise<any> {
+    const url = `${this.apiDomain}/me/playlists`;
+    const resp = await axios(url, this.requestHeaders());
+    return await playListData(resp.data);
   },
 
   requestHeaders() {

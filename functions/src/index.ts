@@ -12,6 +12,7 @@ import { clone } from "lodash";
 import { search } from "./modules/search";
 import { devicePlayback, spotifyPlayback } from "./modules/spotifyPlayback";
 import { soundcloudAudio } from "./modules/soundcloudAudio";
+import { playlists } from "./modules/playlists";
 
 const app = express();
 const main = express();
@@ -33,6 +34,7 @@ app.get("/device-playback", devicePlayback);
 app.get("/create-spotify-token", createSpotifyToken);
 app.get("/artist-album", artistAlbum);
 app.get("/search", search);
+app.get("/playlists", playlists);
 // app.get("/add-album-playlist", addAlbumPlaylist);
 
 exports.addPlaylistCoverImage = functions.firestore.document("playlistTracks/{uid}/list/{listId}").onCreate((snap) => {
