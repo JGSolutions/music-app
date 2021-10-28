@@ -1,5 +1,6 @@
 import { IArtistName, IPlatformTypes } from "models/artist.types";
 import { IAvatar } from "models/avatar.types";
+import { IPlayLists } from "models/playlist.types";
 import { IDurationType, ISongTrackType } from "models/song.types";
 
 export interface ISelectedPlaylist {
@@ -22,7 +23,7 @@ export interface ISelectedPlaylist {
 
 export interface IPlayerlistState {
   loadingPlaylist: boolean;
-  playlistData: IPlaylist[];
+  playlistData: IPlayLists[];
   playlistDetail: IPlaylist;
   playlistTrack: ISelectedPlaylist;
   allPlaylistTracks: ISelectedPlaylist[];

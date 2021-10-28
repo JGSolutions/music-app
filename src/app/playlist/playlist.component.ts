@@ -17,9 +17,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlaylistState.playlist) playlist$!: Observable<IPlaylist[]>;
 
-  public artistDetails$ = this.store.select(ArtistsState.artistDetails);
-
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
 
   constructor(private store: Store) { }
 
@@ -33,7 +31,6 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
   }
 }

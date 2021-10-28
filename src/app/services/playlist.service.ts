@@ -4,10 +4,15 @@ import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { clone as _clone } from "lodash";
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { IPlayLists } from 'models/playlist.types';
 
 @Injectable()
 export class PlaylistService {
-  constructor(private afs: AngularFirestore) { }
+  private domainApi = environment.restapiDomain;
+
+  constructor(private afs: AngularFirestore, private http: HttpClient) { }
 
   public playlistDetails(playlist: string) {
     return this.afs.doc(`playlist/${playlist}`).get();
@@ -73,5 +78,17 @@ export class PlaylistService {
       }, playlistid);
 
     })
+  }
+
+  public playlists(uid: string): Observable<IPlayLists[]> {
+    const url = `${this.domainApi}/playlists`;
+
+    const headers = {
+      headers: {
+        "Authorization": uid
+      },
+    };
+
+    return this.http.get<IPlayLists[]>(url, headers);
   }
 }

@@ -44,7 +44,7 @@ export class PlaylistState {
     ctx.patchState({
       loadingPlaylist: true
     });
-    return this.playlistService.getPlaylists(uid).pipe(
+    return this.playlistService.playlists(uid).pipe(
       tap(data => {
         ctx.patchState({
           playlistData: data,
