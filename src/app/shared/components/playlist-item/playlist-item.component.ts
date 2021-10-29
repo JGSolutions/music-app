@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ICoverImages } from 'src/app/core/stores/playlist/playlist.types';
 
 @Component({
   selector: 'app-playlist-item',
@@ -12,7 +11,7 @@ export class PlaylistItemComponent {
   playlistName!: string;
 
   @Input()
-  coverImages!: ICoverImages[];
+  coverImage!: string;
 
   public maxImagesGrid = 4;
 

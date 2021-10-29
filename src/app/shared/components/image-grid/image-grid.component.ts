@@ -8,8 +8,6 @@ import { ICoverImages } from 'src/app/core/stores/playlist/playlist.types';
 })
 export class ImageGridComponent {
   @Input()
-  coverImages!: ICoverImages[];
-
-  public maxImagesGrid = 4;
+  coverImages!: string;
 }
 
