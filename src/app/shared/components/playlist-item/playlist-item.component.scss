@@ -47,24 +47,18 @@ figure::after {
 	z-index: 2;
 	opacity: 0;
 	transition: opacity 600ms, transform 600ms;
+}
 
-  .options {
-    display: flex;
-    flex-grow: 1;
-    justify-content:
-    center; align-items: center;
-  }
+.options {
+  display: flex;
+  flex-grow: 1;
+  justify-content:
+  center; align-items: center;
+}
 
-  .duration {
-    display: flex;
-    align-items: center;
-  }
-
-  .time {
-    margin-left: 6px;
-    display: flex;
-    align-items: center;
-  }
+.bottom {
+  display: flex;
+  align-items: center;
 }
 
 section:is(:hover, :focus) figure::after {
