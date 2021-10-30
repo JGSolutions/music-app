@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
-import { ICoverImages } from 'src/app/core/stores/playlist/playlist.types';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-image-grid',
   templateUrl: './image-grid.component.html',
-  styleUrls: ['./image-grid.component.scss']
+  styleUrls: ['./image-grid.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageGridComponent {
   @Input()
