@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaylistItemComponent } from './playlist-item.component';
-import { ImageGridModule } from '../image-grid/image-grid.module';
-
+import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [PlaylistItemComponent],
   imports: [
     CommonModule,
-    ImageGridModule
+    MatIconModule
   ],
   exports: [
     PlaylistItemComponent

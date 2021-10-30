@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-playlist-item',
@@ -13,7 +14,9 @@ export class PlaylistItemComponent {
   @Input()
   coverImage!: string;
 
-  public maxImagesGrid = 4;
+  @Input()
+  platform!: IPlatformTypes;
+
 
 }
 
