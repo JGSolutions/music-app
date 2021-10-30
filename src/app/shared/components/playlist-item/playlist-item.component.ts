@@ -17,6 +17,14 @@ export class PlaylistItemComponent {
   @Input()
   platform!: IPlatformTypes;
 
+  @Input()
+  totalTracks!: number;
+
+  @Input()
+  externalUrl!: string;
+
+  @Input()
+  playlistid!: string;
 
 }
 

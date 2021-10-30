@@ -3,25 +3,20 @@
     <img class="background" src="{{ coverImage }}" *ngIf="coverImage">
     <img src="../../../../assets/no-music.svg" class="avatar background" *ngIf="!coverImage">
     <div class="overlay">
-      <!-- <div *ngIf="dateCreated">Posted: {{dateCreated | dateAgo}}</div> -->
       <div class="options">
-        <!-- <button mat-icon-button color="primary" (click)="addToPlaylist()">
-          <mat-icon>playlist_add</mat-icon>
-        </button>
+        <a [routerLink]="['/', 'playlist', playlistid, platform]" mat-icon-button color="primary">
+          <mat-icon>visibility</mat-icon>
+        </a>
 
-        <button mat-icon-button color="primary"  (click)="selectedItem()">
-          <mat-icon>play_arrow</mat-icon>
-        </button> -->
+        <a [href]="externalUrl" mat-icon-button color="primary" target="_blank">
+          <mat-icon>link</mat-icon>
+        </a>
       </div>
       <div class="type">
-        <!-- <div>{{trackTypes[trackType]}}</div> -->
-        <!-- <div class="duration">
-          <span class="time" *ngIf="trackType === trackTypes.track">
-            <mat-icon>timelapse</mat-icon>
-            <span *ngIf="length > 0">{{length | minuteSeconds: durationType}}</span>
-          </span>
-          <span class="type" *ngIf="trackType !== 'track'">{{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
-        </div> -->
+        <div></div>
+        <div class="duration">
+          <span class="type">{{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
+        </div>
       </div>
     </div>
   </figure>

@@ -5,7 +5,7 @@ import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { PlaylistDataAction } from '../core/stores/playlist/playlist.actions';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
-import { IPlayLists } from 'models/playlist.types';
+import { IPlayLists } from '../../../models/playlist.types';
 
 @Component({
   selector: 'app-playlist',
@@ -21,6 +21,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   constructor(private store: Store) { }
 
   ngOnInit(): void {
+
     this.user$.pipe(
       filter((user) => user !== null),
       takeUntil(this.destroy$)
