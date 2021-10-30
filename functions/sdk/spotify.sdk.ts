@@ -197,7 +197,7 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
         id: item.id,
         externalUrl: item.external_urls.spotify,
         platform: IPlatformTypes.spotify,
-        pictures: item.images[0].url === null ? "" : item.images[0].url,
+        coverImage: item.images[0].url === null ? "" : item.images[0].url,
       };
     });
 
