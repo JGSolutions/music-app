@@ -6,7 +6,7 @@
 
   <mat-selection-list (selectionChange)="selectionChange($event)">
   <mat-list-option *ngFor="let item of (playlist$ | async)" [value]="item.id" [selected]="(playlistTrackIds$ | async)?.includes(item.id!)">
-      {{item.playlistName}}
+      {{item.name}}
     </mat-list-option>
   </mat-selection-list>
 </mat-dialog-content>

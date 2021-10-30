@@ -6,8 +6,9 @@ export interface IPlayLists {
   name: string;
   externalUrl: string;
   platform: IPlatformTypes;
-  image: string;
+  coverImage: string;
   trackType?: ISongTrackType;
   lastModified?: Date;
   likes?: number;
+  totalTracks?: number;
 }

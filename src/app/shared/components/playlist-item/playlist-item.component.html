@@ -1,7 +1,29 @@
-<div class="wrapper" [class.mat-elevation-z1]="true">
-  <app-image-grid [coverImages]="coverImages!"></app-image-grid>
+<section>
+  <figure>
+    <img class="background" src="{{ coverImage }}" *ngIf="coverImage">
+    <img src="../../../../assets/no-music.svg" class="avatar background" *ngIf="!coverImage">
+    <div class="overlay">
+      <div class="options">
+        <a [routerLink]="['/', 'playlist', playlistid, platform]" mat-icon-button color="primary">
+          <mat-icon>visibility</mat-icon>
+        </a>
+        <a [href]="externalUrl" mat-icon-button color="primary" target="_blank">
+          <mat-icon>link</mat-icon>
+        </a>
+      </div>
+      <div class="type">
+        <div></div>
+        <div class="bottom">
+          <span class="type">{{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
+        </div>
+      </div>
+    </div>
+  </figure>
+  <div class="content-container">
+    <div class="mat-body-2">{{playlistName}}</div>
 
-  <div class="content">
-    <span class="mat-title">{{playlistName}}</span>
+    <div class="platform">
+      <img src="../assets/platforms/{{platform}}.png" class="platform-logo">
+    </div>
   </div>
-</div>
+</section>

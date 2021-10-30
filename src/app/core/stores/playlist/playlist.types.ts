@@ -1,5 +1,6 @@
 import { IArtistName, IPlatformTypes } from "models/artist.types";
 import { IAvatar } from "models/avatar.types";
+import { IPlayLists } from "../../../../../models/playlist.types";
 import { IDurationType, ISongTrackType } from "models/song.types";
 
 export interface ISelectedPlaylist {
@@ -22,8 +23,8 @@ export interface ISelectedPlaylist {
 
 export interface IPlayerlistState {
   loadingPlaylist: boolean;
-  playlistData: IPlaylist[];
-  playlistDetail: IPlaylist;
+  playlistData: IPlayLists[];
+  playlistDetail: IPlayLists;
   playlistTrack: ISelectedPlaylist;
   allPlaylistTracks: ISelectedPlaylist[];
 }
@@ -31,7 +32,7 @@ export interface IPlayerlistState {
 export const playerlistStateDefault: IPlayerlistState = {
   loadingPlaylist: false,
   playlistData: [],
-  playlistDetail: {} as IPlaylist,
+  playlistDetail: {} as IPlayLists,
   playlistTrack: {} as ISelectedPlaylist,
   allPlaylistTracks: []
 };
@@ -39,12 +40,4 @@ export const playerlistStateDefault: IPlayerlistState = {
 export interface ICoverImages {
   id: string;
   image: string;
-}
-
-export interface IPlaylist {
-  id?: string;
-  uid: string;
-  createdDate: Date;
-  playlistName: string;
-  coverImages?: ICoverImages[];
 }

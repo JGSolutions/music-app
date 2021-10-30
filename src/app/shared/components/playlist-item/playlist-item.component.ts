@@ -1,19 +1,30 @@
-import { Component, Input } from '@angular/core';
-import { ICoverImages } from 'src/app/core/stores/playlist/playlist.types';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
   selector: 'app-playlist-item',
   templateUrl: './playlist-item.component.html',
-  styleUrls: ['./playlist-item.component.scss']
+  styleUrls: ['./playlist-item.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlaylistItemComponent {
   @Input()
   playlistName!: string;
 
   @Input()
-  coverImages!: ICoverImages[];
+  coverImage!: string;
 
-  public maxImagesGrid = 4;
+  @Input()
+  platform!: IPlatformTypes;
+
+  @Input()
+  totalTracks!: number;
+
+  @Input()
+  externalUrl!: string;
+
+  @Input()
+  playlistid!: string;
 
 }
 

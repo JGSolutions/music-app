@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaylistItemComponent } from './playlist-item.component';
-import { AngularMaterialModule } from 'src/angular-material.module';
-import { ImageGridModule } from '../image-grid/image-grid.module';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [PlaylistItemComponent],
   imports: [
     CommonModule,
-    AngularMaterialModule,
-    ImageGridModule
+    MatIconModule,
+    MatButtonModule,
+    RouterModule
   ],
   exports: [
     PlaylistItemComponent

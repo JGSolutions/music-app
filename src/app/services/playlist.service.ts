@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
-import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
+import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { clone as _clone } from "lodash";
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { IPlayLists } from '../../../models/playlist.types';
 
 @Injectable()
 export class PlaylistService {
-  constructor(private afs: AngularFirestore) { }
+  private domainApi = environment.restapiDomain;
+
+  constructor(private afs: AngularFirestore, private http: HttpClient) { }
 
   public playlistDetails(playlist: string) {
     return this.afs.doc(`playlist/${playlist}`).get();
@@ -33,45 +37,41 @@ export class PlaylistService {
     return this.afs.collection('playlistTracks').doc(uid).collection('list').doc(songid).valueChanges();
   }
 
-  public getAllPlaylistTrack(playlistid: string, uid: string) {
-    return this.afs.collection('playlistTracks').doc(uid).collection('list', (ref) =>
-      ref.where("playlists", "array-contains", playlistid)
-    ).valueChanges();
-  }
+  // public getAllPlaylistTrack(playlistid: string, uid: string) {
+  //   return this.afs.collection('playlistTracks').doc(uid).collection('list', (ref) =>
+  //     ref.where("playlists", "array-contains", playlistid)
+  //   ).valueChanges();
+  // }
 
-  public removePlaylistTrack(playlistid: string, trackid: string, uid: string) {
-    this.removeCoverImage(trackid, playlistid, uid);
-    return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(trackid).delete();
-  }
+  // public removePlaylistTrack(playlistid: string, trackid: string, uid: string) {
+  //   return this.afs.collection('playlistTracks').doc(uid).collection("list").doc(trackid).delete();
+  // }
 
-  public getPlaylists(uid: string): Observable<IPlaylist[]> {
-    return this.afs
-      .collection<IPlaylist>("playlist", (ref: any) =>
-        ref.where("uid", "==", uid)
-      ).snapshotChanges()
-      .pipe(
-        map((exercises: any[]) => {
-          const data = exercises.map((a) => {
-            return { id: a.payload.doc.id, ...a.payload.doc.data() };
-          });
+  // public getPlaylists(uid: string): Observable<IPlaylist[]> {
+  //   return this.afs
+  //     .collection<IPlaylist>("playlist", (ref: any) =>
+  //       ref.where("uid", "==", uid)
+  //     ).snapshotChanges()
+  //     .pipe(
+  //       map((exercises: any[]) => {
+  //         const data = exercises.map((a) => {
+  //           return { id: a.payload.doc.id, ...a.payload.doc.data() };
+  //         });
 
-          return data;
-        })
-      );
-  }
+  //         return data;
+  //       })
+  //     );
+  // }
 
-  public removeCoverImage(trackid: string, playlistid: string, uid: string) {
-    this.getPlaylists(uid).pipe(
-      take(1)
-    ).subscribe(data => {
-      const playlist = data.find(e => e.id === playlistid);
+  public playlists(uid: string): Observable<IPlayLists[]> {
+    const url = `${this.domainApi}/playlists`;
 
-      const filteredImages = playlist!.coverImages?.filter(e => e.id !== trackid);
+    const headers = {
+      headers: {
+        "Authorization": uid
+      },
+    };
 
-      this.update({
-        coverImages: filteredImages
-      }, playlistid);
-
-    })
+    return this.http.get<IPlayLists[]>(url, headers);
   }
 }

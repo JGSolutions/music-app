@@ -135,7 +135,7 @@ section:is(:hover, :focus) .overlay {
   overflow: hidden;
   display: block;
   -webkit-line-clamp: 2;
-  display: box;
+  display: flex;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;

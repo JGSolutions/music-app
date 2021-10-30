@@ -5,10 +5,15 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let playlist of playlist$ | async">
-      <a [routerLink]="['/', 'playlist', playlist.id]" class="item-link">
-        <app-playlist-item [playlistName]="playlist.playlistName" [coverImages]="playlist.coverImages!"></app-playlist-item>
-      </a>
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3" *ngFor="let playlist of playlist$ | async">
+        <app-playlist-item
+          [playlistid]="playlist?.id!"
+          [externalUrl]="playlist?.externalUrl!"
+          [totalTracks]="playlist?.totalTracks!"
+          [platform]="playlist.platform"
+          [playlistName]="playlist.name"
+          [coverImage]="playlist.coverImage!">
+        </app-playlist-item>
     </div>
   </div>
 </div>
