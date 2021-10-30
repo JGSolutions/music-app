@@ -3,10 +3,10 @@ import { Select, Store } from '@ngxs/store';
 import { BehaviorSubject, combineLatest, filter, map, Observable, shareReplay, Subject, take, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { PlaylistDetailAction, RemovePlaylistTrackAction } from '../core/stores/playlist/playlist.actions';
+import { PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
-import { IPlaylist, ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
+import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { ICurrentTrack, ISongCommonState } from '../core/stores/songs/songs.types';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
@@ -14,6 +14,7 @@ import { ConnectedServicesList } from '../core/stores/connected-services/connect
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { IPlatformTypes } from 'models/artist.types';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { IPlayLists } from 'models/playlist.types';
 
 @Component({
   selector: 'app-playlist-details',
@@ -22,7 +23,7 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlaylist>;
+  @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlayLists>;
   @Select(SongsState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
   @Select(ConnectedServicesState.servicesList) connectedServices$!: Observable<ConnectedServicesList[]>;
@@ -73,8 +74,6 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     this.user$.pipe(
       take(1)
     ).subscribe(user => {
-      this.store.dispatch(new RemovePlaylistTrackAction(this.playlistid, trackid, user.uid!));
-
       this.openSnackBar();
     })
   }

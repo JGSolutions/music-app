@@ -238,13 +238,7 @@ export class SongsState {
 
   @Action(AllPlaylistTracksAction)
   _allPlaylistTrackDataAction(ctx: StateContext<ISongsState>, { playlistid, uid }: AllPlaylistTracksAction) {
-    return this.playlistService.getAllPlaylistTrack(playlistid, uid).pipe(
-      tap(data => {
-        ctx.patchState({
-          playlistSongs: data as ISongCommonState[],
-        });
-      })
-    );
+
   }
 
   @Action(LoadingPlayerAction)

@@ -1,8 +1,9 @@
-import { IPlaylist, ISelectedPlaylist } from "./playlist.types";
+import { IPlayLists } from "models/playlist.types";
+import { ISelectedPlaylist } from "./playlist.types";
 
 export class CreatePlaylistAction {
   static readonly type = '[Playlist] Create Playlist';
-  constructor(public data: IPlaylist) { }
+  constructor(public data: IPlayLists) { }
 }
 
 export class AddToPlaylistAction {
@@ -29,7 +30,3 @@ export class PlaylistDetailAction {
   constructor(public playlistid: string) { }
 }
 
-export class RemovePlaylistTrackAction {
-  static readonly type = '[Playlist] Remove Playlist track';
-  constructor(public playlistid: string, public trackid: string, public uid: string) { }
-}
