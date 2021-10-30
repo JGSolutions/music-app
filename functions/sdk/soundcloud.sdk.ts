@@ -100,6 +100,7 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
         lastModified: new Date(item.last_modified),
         platform: IPlatformTypes.soundcloud,
         likes: item.likes_count,
+        tracks: item.tracks.length,
         coverImage: item.artwork_url === null ? dataApi[0].tracks[0].artwork_url : item.artwork_url,
       };
     });

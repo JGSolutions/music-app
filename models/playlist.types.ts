@@ -10,4 +10,5 @@ export interface IPlayLists {
   trackType?: ISongTrackType;
   lastModified?: Date;
   likes?: number;
+  totalTracks?: number;
 }
