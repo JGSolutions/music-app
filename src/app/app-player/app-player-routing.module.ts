@@ -47,7 +47,7 @@ const routes: Routes = [
         loadChildren: () => import('../search/search.module').then(m => m.SearchModule)
       },
       {
-        path: 'playlist/:playlistid',
+        path: 'playlist/:playlistid/:platform',
         canActivate: [AngularFireAuthGuard],
         data: { authGuardPipe: redirectUnauthorizedToLogin },
         loadChildren: () => import('../playlist-details/playlist-details.module').then(m => m.PlaylistDetailsModule)
