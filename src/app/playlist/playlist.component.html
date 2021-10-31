@@ -4,8 +4,8 @@
       <div class="mat-headline">Playlists</div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3" *ngFor="let playlist of playlist$ | async">
+  <div class="row g-2 gy-3">
+    <div class="col-sm-6 col-md-4 col-lg-3 col-xxl-2" *ngFor="let playlist of playlist$ | async">
         <app-playlist-item
           [playlistid]="playlist?.id!"
           [externalUrl]="playlist?.externalUrl!"

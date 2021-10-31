@@ -10,8 +10,8 @@
       <div class="mat-headline">Artists</div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6 col-md-4 col-lg-3" *ngFor="let artistKey of artists | keyvalue">
+  <div class="row g-3">
+    <div class="col-sm-6 col-lg-4 col-xl-3 col-xxl-2" *ngFor="let artistKey of artists | keyvalue">
       <div class="item-link" (click)="selectArtist(artistKey.key)">
         <app-artist-item [artistName]="artistKey.key" [artistDetails]="artistKey.value"></app-artist-item>
       </div>
