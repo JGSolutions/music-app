@@ -1,32 +1,33 @@
-<section class="platform-wrappers sticky-element">
+<!-- <section class="platform-wrappers sticky-element">
   <div class="component">
     <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
   </div>
   <mat-divider></mat-divider>
-</section>
+</section> -->
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-5 col-lg-3">
-      <section class="sticky-sub-element">
+      <!-- <section class="sticky-sub-element"> -->
         <!-- <app-image-grid [coverImages]="(playlistDetail$ | async)?.coverImages!"></app-image-grid> -->
 
-        <div class="artist-info">
+        <!-- <div class="artist-info">
           <span class="mat-headline">
             {{ (playlistDetail$ | async) }}
           </span>
         </div>
-        <mat-divider></mat-divider>
+        <mat-divider></mat-divider> -->
 
-        <div class="track-info">
+        <!-- <div class="track-info">
           <span class="mat-body-1">
             {{ ((allPlaylistTracks$ | async)?.length) }} tracks
           </span>
-        </div>
-      </section>
+        </div> -->
+      <!-- </section> -->
     </div>
     <div class="col-md-7 col-lg-9">
       <div class="row">
-        <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of songs$ | async">
+        <!-- <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of songs$ | async">
           <app-song-item
               [currentTrackId]="(currentTrack$ | async)?.id!"
               [albumId]="(currentTrack$ | async)?.albumid!"
@@ -44,7 +45,7 @@
               (removeToPlaylistEvent)="removeSong($event)"
               (selectedSong)="selectedSong($event)">
             </app-song-item>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
