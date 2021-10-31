@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Action, Selector, State, StateContext, Store } from '@ngxs/store';
 import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
 import { IUserType, UserStateModel } from './user.types';
 import { LoginWithGoogleAction, LogoutAction, SetUserAction } from './user.actions';
 import { ConnectedServicesAction } from '../connected-services/connected-services.actions';
@@ -53,12 +53,13 @@ export class UserState {
   }
 
   ngxsOnInit(ctx: StateContext<UserStateModel>) {
-    this.angularFireAuth.getRedirectResult().then((result) => {
-      if (result.credential) {
-        setTimeout(() => this.updateUserAccount(result), 100);
-        sessionStorage.clear();
-        this.router.navigate(['/', 'platform-settings']);
-      }
+    this.angularFireAuth.credential.pipe(
+      take(1),
+      filter(credential => credential !== null)
+    ).subscribe((e) => {
+      setTimeout(() => this.updateUserAccount(e), 100);
+      sessionStorage.clear();
+      this.router.navigate(['/', 'platform-settings']);
     });
 
     this.angularFireAuth.user.pipe(
