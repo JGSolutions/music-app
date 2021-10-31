@@ -5,13 +5,5 @@
 }
 
 .container-fluid {
-  @include fluid-container();
-}
-
-.artist-info {
-  padding: 10px 0 10px 0;
-}
-
-.track-info {
-  padding: 10px 0 10px 0;
+  @include fluid-container-no-padding();
 }

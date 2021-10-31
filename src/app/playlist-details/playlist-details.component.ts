@@ -26,7 +26,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
 
   public playlistid!: string;
 
-  private destroy$ = new Subject<boolean>();
+  private destroy$ = new Subject<void>();
   private horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
@@ -46,8 +46,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+    this.destroy$.next();
   }
 
   public selectedSong(selectedSong: string): void {
