@@ -27,7 +27,7 @@ export const environment = {
     uriRedirect: 'https://music-app-5c927.firebaseapp.com/soundcloud-callback'
   },
   // restapiDomain: "https://music-restapi.web.app/api",
-  restapiDomain: "http://localhost:5000/api",
+  restapiDomain: "http://localhost:5002/api",
   appDomain: "http://localhost:4200/",
   useEmulators: true
 };
