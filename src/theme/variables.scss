@@ -6,9 +6,11 @@ $line-height: 24px;
 
 @mixin fluid-container() {
   width: 100%;
-  // padding-right: 0;
   padding-left: $padding-gap;
-  // margin-right: auto;
-  // margin-left: auto;
   padding-top: $padding-gap;
+}
+
+@mixin fluid-container-no-padding() {
+  width: 100%;
+  padding-left: $padding-gap;
 }
