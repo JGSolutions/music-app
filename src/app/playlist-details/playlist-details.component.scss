@@ -31,18 +31,20 @@
   padding-left: 10px;
 }
 
-::ng-deep .mat-list-item-content {
-  padding: 0!important;
-  width: 100%;
-}
+::ng-deep mat-selection-list {
+  .mat-list-item-content {
+    padding: 0!important;
+    width: 100%;
+  }
 
-::ng-deep .mat-list-text {
-  flex-direction: row !important;
-  align-items: center;
-}
+  .mat-list-text {
+    flex-direction: row !important;
+    align-items: center;
+  }
 
-::ng-deep .mat-pseudo-checkbox {
-  display: none !important;
+  .mat-pseudo-checkbox {
+    display: none !important;
+  }
 }
 
 .mat-list-option {
