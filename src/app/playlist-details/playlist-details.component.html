@@ -1,6 +1,76 @@
-<div class="container-fluid" style="height: 100%;">
-  <div class="row" style="height: 100%;">
-    <div class="col-10">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-10 col-md-9">
+      <div class="row" style="padding-bottom: 24px; padding-top: 24px; border-bottom: 1px solid #ccc;">
+        <div class="col-3">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" class="cover-image">
+        </div>
+        <div class="col-9">
+          <section class="playlist-info">
+
+            <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;">
+              <span class="mat-display-1">
+                sdfdsfds
+              </span>
+
+              <span class="mat-body-2">
+                21 tracks - 1:45
+              </span>
+            </div>
+
+              <div style="width: 50%; display: flex; justify-content: space-around;">
+                <button mat-button color="accent">
+                  <mat-icon>share</mat-icon>
+                  <span class="button-icon-padding">Share</span>
+                </button>
+                <button mat-button color="accent"><mat-icon>edit</mat-icon><span class="button-icon-padding">Edit</span></button>
+                <button mat-button color="accent"><mat-icon>delete</mat-icon><span class="button-icon-padding">Delete</span></button>
+              </div>
+          </section>
+        </div>
+      </div>
+
+      <div class="row">
+        <mat-selection-list>
+          <mat-list-option>
+            <div class="index">1</div>
+            <div class="image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg">
+            </div>
+            <p class="song">
+              <span> Song Name </span>
+              <span class="mat-caption">Artist Name</span>
+            </p>
+
+            <p class="album">
+              Album
+            </p>
+
+            <div class="duration">
+              <mat-icon>timelapse</mat-icon>3:34
+            </div>
+          </mat-list-option>
+
+          <mat-list-option>
+            <div class="index">2</div>
+            <div class="image">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg">
+            </div>
+            <p class="song">
+              <span> Song Name </span>
+              <span class="mat-caption">Artist Name</span>
+            </p>
+
+            <p class="album">
+              Album
+            </p>
+
+            <div class="duration">
+              <mat-icon>timelapse</mat-icon>3:34
+            </div>
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
       <!-- <section class="sticky-sub-element"> -->
         <!-- <app-image-grid [coverImages]="(playlistDetail$ | async)?.coverImages!"></app-image-grid> -->
 
@@ -11,14 +81,9 @@
         </div>
          -->
 
-        <!-- <div class="track-info">
-          <span class="mat-body-1">
-            {{ ((allPlaylistTracks$ | async)?.length) }} tracks
-          </span>
-        </div> -->
       <!-- </section> -->
     </div>
-    <div class="col-2" style="border-left: 1px solid #ccc;">
+    <div class="col-2 col-md-3" style="border-left: 1px solid #ccc;">
 
       <!-- <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of songs$ | async">
         <app-song-item
