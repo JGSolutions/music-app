@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { AppPlayerRoutingModule } from './app-player-routing.module';
 import { MusicConnectedService } from '../services/music-connected.service';
 import { ApiService } from '../services/api.service';
-import { AngularMaterialModule } from 'src/angular-material.module';
 import { NgxsModule } from '@ngxs/store';
 import { ConnectedServicesState } from '../core/stores/connected-services/connected-services.state';
 import { ArtistsState } from '../core/stores/artists/artists.state';
@@ -23,13 +22,24 @@ import { HistoryState } from '../core/stores/history/history.state';
 import { SpotifyPlayerFreeModule } from '../shared/components/spotify-player-free/spotify-player-free.module';
 import { AccountOverlayModule } from '../shared/components/account-overlay/account-overlay.module';
 import { PlatformSelectionModule } from '../shared/components/platform-selection/platform-selection.module';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [AppPlayerComponent],
   imports: [
     CommonModule,
     RouterModule,
-    AngularMaterialModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatDividerModule,
+    MatIconModule,
+    MatProgressBarModule,
+    MatButtonModule,
     AppPlayerRoutingModule,
     PlayerbarModule,
     SoundcloudBarModule,
