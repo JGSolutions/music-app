@@ -5,22 +5,17 @@ import { Observable, Subject } from 'rxjs';
 import { LogoutAction } from '../core/stores/user/user.actions';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-// import { PwaService } from '../shared/services/pwa.service';
 
 @Component({
   selector: 'app-content',
   templateUrl: 'app-content.component.html',
   styleUrls: ['app-content.component.scss'],
 })
-export class AppContentComponent implements OnInit, OnDestroy {
+export class AppContentComponent implements OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
 
   private destroy$ = new Subject<boolean>();
   constructor(private store: Store, private router: Router) {
-  }
-
-  ngOnInit() {
-
   }
 
   ngOnDestroy() {

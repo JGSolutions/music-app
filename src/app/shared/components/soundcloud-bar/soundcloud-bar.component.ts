@@ -25,7 +25,7 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
   @Select(SongsState.loading) loading$!: Observable<boolean>;
 
   @Output() trackReady = new EventEmitter<any>();
-  @Output() close = new EventEmitter<string>();
+  @Output() closeEvent = new EventEmitter<string>();
   @Output() addPlaylist = new EventEmitter<ICurrentTrack>();
 
   public playSongLoading$ = new Subject<boolean>();
@@ -82,7 +82,7 @@ export class SoundcloudBarComponent implements AfterContentInit, OnDestroy {
     this.currentTrack$.pipe(
       take(1)
     ).subscribe((currentTrack) => {
-      this.close.emit(currentTrack.id);
+      this.closeEvent.emit(currentTrack.id);
     });
   }
 
