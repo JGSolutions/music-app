@@ -125,9 +125,21 @@
         "deploy": {
           "builder": "@angular/fire:deploy",
           "options": {}
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "music-app"
+  "defaultProject": "music-app",
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
+  }
 }
