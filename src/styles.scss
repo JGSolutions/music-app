@@ -2,7 +2,7 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use 'sass:map';
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @use '../src/app/app-player/side-nav-theme.scss' as sideNav;
 @use '../src/theme/track-item.theme' as trackItem;
 
