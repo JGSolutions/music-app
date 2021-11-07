@@ -71,25 +71,25 @@
   </app-player-bar> -->
 
   <app-spotify-player-free *ngIf="(currentTrack$ | async)?.platform === platformTypes.mixcloud"
-  (close)="closePlayBar()"
+  (closeEvent)="closePlayBar()"
   (addPlaylist)="addToPlaylist($event)"
   (trackReady)="trackHistory($event)">
   </app-spotify-player-free>
 
   <app-spotify-player-free *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'open'"
-    (close)="closePlayBar()"
+    (closeEvent)="closePlayBar()"
     (addPlaylist)="addToPlaylist($event)"
     (trackReady)="trackHistory($event)">
   </app-spotify-player-free>
 
   <app-spotify-player (trackReady)="trackHistory($event)"
-    (close)="closePlayBar()"
+    (closeEvent)="closePlayBar()"
     (addPlaylist)="addToPlaylist($event)"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.spotify && (spotifyProductType$ | async) === 'premium'">
   </app-spotify-player>
 
   <app-soundcloud-bar (trackReady)="trackHistory($event)"
-    (close)="closePlayBar()"
+    (closeEvent)="closePlayBar()"
     (addPlaylist)="addToPlaylist($event)"
     *ngIf="(currentTrack$ | async)?.platform === platformTypes.soundcloud && (currentTrack$ | async)?.audioFile !== ''">
   </app-soundcloud-bar>

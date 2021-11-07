@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { LoginWithGoogleAction } from '../core/stores/user/user.actions';
 
@@ -7,25 +7,24 @@ import { LoginWithGoogleAction } from '../core/stores/user/user.actions';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  // public sessionData: string;
+export class LoginComponent {
 
   constructor(private store: Store) {
 
   }
 
-  ngOnInit(): void {
-    // this.sessionData = sessionStorage.getItem('logging');
+  // ngOnInit(): void {
+  // this.sessionData = sessionStorage.getItem('logging');
 
-    // if (this.sessionData === 'true') {
-      // this.dialogRef = this.dialog.open(ProcessDialogComponent, {
-      //   height: '120px',
-      //   data: {
-      //     message: 'Please wait!'
-      //   }
-      // });
-    // }
-  }
+  // if (this.sessionData === 'true') {
+  // this.dialogRef = this.dialog.open(ProcessDialogComponent, {
+  //   height: '120px',
+  //   data: {
+  //     message: 'Please wait!'
+  //   }
+  // });
+  // }
+  // }
 
   login() {
     sessionStorage.setItem('logging', 'true');

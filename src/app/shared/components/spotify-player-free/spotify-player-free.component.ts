@@ -24,7 +24,7 @@ export class SpotifyPlayerFreeComponent implements OnDestroy, AfterContentInit {
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   @Output() trackReady = new EventEmitter<any>();
-  @Output() close = new EventEmitter<string>();
+  @Output() closeEvent = new EventEmitter<string>();
   @Output() addPlaylist = new EventEmitter<ICurrentTrack>();
 
   public isPlaying$ = new BehaviorSubject<boolean>(false);
@@ -54,7 +54,7 @@ export class SpotifyPlayerFreeComponent implements OnDestroy, AfterContentInit {
   }
 
   public closeHandler(id: string): void {
-    this.close.emit(id);
+    this.closeEvent.emit(id);
   }
 
   public addPlaylistHander(currentTrack: ICurrentTrack): void {

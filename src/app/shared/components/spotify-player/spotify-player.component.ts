@@ -29,7 +29,7 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
 
   @Output() trackReady = new EventEmitter<any>();
   @Output() trackEnded = new EventEmitter<void>();
-  @Output() close = new EventEmitter<string>();
+  @Output() closeEvent = new EventEmitter<string>();
   @Output() addPlaylist = new EventEmitter<ICurrentTrack>();
 
   public isPlaying$ = new BehaviorSubject<boolean>(false);
@@ -121,7 +121,7 @@ export class SpotifyPlayerComponent implements OnDestroy, AfterContentInit {
     this.currentTrack$.pipe(
       take(1)
     ).subscribe((currentTrack) => {
-      this.close.emit(currentTrack.id);
+      this.closeEvent.emit(currentTrack.id);
     });
   }
 
