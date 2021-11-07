@@ -17,6 +17,6 @@
       </div>
     </div>
 
-    <app-empty-results [message]="'Following No Artists'" *ngIf="(artists | keyvalue)?.length === 0 && !(loading$ | async)"></app-empty-results>
+    <app-empty-results [message]="'Following No Artists'" *ngIf="(artists | keyvalue)?.length === 0 && (loading$ | async) !== false"></app-empty-results>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
@@ -15,7 +15,7 @@ import { MusicConnectedService } from '../services/music-connected.service';
   templateUrl: './mixcloud-callback.component.html',
   styleUrls: ['./mixcloud-callback.component.scss']
 })
-export class MixcloudCallbackComponent implements OnInit {
+export class MixcloudCallbackComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$: Observable<IUserType> | undefined;
 
   public platformTypes = IPlatformTypes;

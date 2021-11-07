@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { SoundCloudAuth } from 'functions/sdk/soundcloud-auth';
@@ -14,7 +14,7 @@ import { MusicConnectedService } from '../services/music-connected.service';
   templateUrl: './soundcloud-callback.component.html',
   styleUrls: ['./soundcloud-callback.component.scss']
 })
-export class SoundCloudCallbackComponent implements OnInit {
+export class SoundCloudCallbackComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$: Observable<IUserType> | undefined;
 
   public platformTypes = IPlatformTypes;

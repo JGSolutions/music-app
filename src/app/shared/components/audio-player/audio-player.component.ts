@@ -24,23 +24,23 @@ export class AudioPlayerComponent {
 
   @Output() sliderChange = new EventEmitter<number>();
   @Output() sliderInput = new EventEmitter<number>();
-  @Output() play = new EventEmitter<void>();
-  @Output() pause = new EventEmitter<void>();
-  @Output() close = new EventEmitter<void>();
+  @Output() playEvent = new EventEmitter<void>();
+  @Output() pauseEvent = new EventEmitter<void>();
+  @Output() closeEvent = new EventEmitter<void>();
   @Output() addPlaylist = new EventEmitter<void>();
 
   public durationTypes = IDurationType;
 
   public playHandler(): void {
-    this.play.emit();
+    this.playEvent.emit();
   }
 
   public pauseHandler(): void {
-    this.pause.emit();
+    this.pauseEvent.emit();
   }
 
   public closeHandler(): void {
-    this.close.emit();
+    this.closeEvent.emit();
   }
 
   public playlistHandler(): void {
