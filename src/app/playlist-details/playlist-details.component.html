@@ -1,234 +1,165 @@
+<section class="platform-wrappers sticky-element">
+  <div class="component">
+    <button mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+</section>
+
 <div class="container-fluid">
   <div class="row">
-    <div class="col-10 col-md-9">
-      <div class="row" style="padding-bottom: 24px; padding-top: 24px; border-bottom: 1px solid #ccc;">
-        <div class="col-3">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" class="cover-image">
-        </div>
-        <div class="col-9">
-          <section class="playlist-info">
+    <div class="col-3">
+      <section class="sticky-sub-element">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" class="cover-image">
 
-            <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;">
-              <span class="mat-display-1">
-                sdfdsfds
-              </span>
+          <div class="artist-info">
+            <span class="mat-headline">
+              dfgdfgdf
+            </span>
+          </div>
 
-              <span class="mat-body-2">
-                21 tracks - 1:45
-              </span>
-            </div>
-
-              <div class="playlist-options-wrapper">
-                <button mat-button color="accent">
-                  <mat-icon>share</mat-icon>
-                  <span class="button-icon-padding">Share</span>
-                </button>
-                <button mat-button color="accent"><mat-icon>edit</mat-icon><span class="button-icon-padding">Edit</span></button>
-                <button mat-button color="accent"><mat-icon>delete</mat-icon><span class="button-icon-padding">Delete</span></button>
-              </div>
-          </section>
-        </div>
-      </div>
-
-      <div class="row">
-        <mat-selection-list style="margin-top: 20px">
-          <mat-list-option>
-            <div class="index">1</div>
-            <div class="image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg">
-            </div>
-            <p class="song">
-              <span> Song Name </span>
-              <span class="mat-caption">Artist Name</span>
-            </p>
-
-            <p class="album">
-              Album
-            </p>
-
-            <div class="duration">
-              <mat-icon>timelapse</mat-icon>3:34
-            </div>
-          </mat-list-option>
-
-          <mat-list-option>
-            <div class="index">2</div>
-            <div class="image">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg">
-            </div>
-            <p class="song">
-              <span> Song Name </span>
-              <span class="mat-caption">Artist Name</span>
-            </p>
-
-            <p class="album">
-              Album
-            </p>
-
-            <div class="duration">
-              <mat-icon>timelapse</mat-icon>3:34
-            </div>
-          </mat-list-option>
-        </mat-selection-list>
-      </div>
-      <!-- <section class="sticky-sub-element"> -->
-        <!-- <app-image-grid [coverImages]="(playlistDetail$ | async)?.coverImages!"></app-image-grid> -->
-
-        <!-- <div class="artist-info">
-          <span class="mat-headline">
-            {{ (playlistDetail$ | async) }}
-          </span>
-        </div>
-        -->
-
-      <!-- </section> -->
+        </section>
     </div>
-    <div class="col-2 col-md-3">
-      <div class="wrapper">
+    <div class="col-6">
+      <mat-selection-list>
+        <mat-list-option>
+          <div class="index">1</div>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg">
+          </div>
+          <p class="song">
+            <span> Song Name </span>
+            <span class="mat-caption">Artist Name</span>
+          </p>
+
+          <p class="album">
+            Album
+          </p>
+
+          <div class="duration">
+            <mat-icon>timelapse</mat-icon>3:34
+          </div>
+        </mat-list-option>
+
+        <mat-list-option>
+          <div class="index">2</div>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg">
+          </div>
+          <p class="song">
+            <span> Song Name </span>
+            <span class="mat-caption">Artist Name</span>
+          </p>
+
+          <p class="album">
+            Album
+          </p>
+
+          <div class="duration">
+            <mat-icon>timelapse</mat-icon>3:34
+          </div>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
+    <div class="col-3">
+      <div class="wrapper sticky-sub-element">
         <mat-toolbar class="toolbar-header" color="primary">
           <div>Playlists</div>
         </mat-toolbar>
         <mat-nav-list>
           <mat-list-item>
-            <div mat-line class="mat-caption">spotify</div>
-            <a mat-line href="...">fghfgh</a>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
           </mat-list-item>
 
-         <mat-list-item>
-            <div mat-line class="mat-caption">spotify</div>
-            <a mat-line href="...">fghfgh</a>
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
           </mat-list-item>
 
-        <mat-list-item>
-            <div mat-line class="mat-caption">spotify</div>
-            <a mat-line href="...">fghfgh</a>
-        </mat-list-item>
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
 
-        <mat-list-item>
-          <div mat-line class="mat-caption">spotify</div>
-          <a mat-line href="...">fghfgh</a>
-        </mat-list-item>
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
 
-       <mat-list-item>
-          <div mat-line class="mat-caption">spotify</div>
-          <a mat-line href="...">fghfgh</a>
-        </mat-list-item>
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
 
-      <mat-list-item>
-          <div mat-line class="mat-caption">spotify</div>
-          <a mat-line href="...">fghfgh</a>
-      </mat-list-item>
-
-      <mat-list-item>
-        <div mat-line class="mat-caption">spotify</div>
-        <a mat-line href="...">fghfgh</a>
-      </mat-list-item>
-
-     <mat-list-item>
-        <div mat-line class="mat-caption">spotify</div>
-        <a mat-line href="...">fghfgh</a>
-      </mat-list-item>
-
-    <mat-list-item>
-        <div mat-line class="mat-caption">spotify</div>
-        <a mat-line href="...">fghfgh</a>
-    </mat-list-item>
-
-    <mat-list-item>
-      <div mat-line class="mat-caption">spotify</div>
-      <a mat-line href="...">fghfgh</a>
-    </mat-list-item>
-
-   <mat-list-item>
-      <div mat-line class="mat-caption">spotify</div>
-      <a mat-line href="...">fghfgh</a>
-    </mat-list-item>
-
-  <mat-list-item>
-      <div mat-line class="mat-caption">spotify</div>
-      <a mat-line href="...">fghfgh</a>
-  </mat-list-item>
-
-  <mat-list-item>
-    <div mat-line class="mat-caption">spotify</div>
-    <a mat-line href="...">fghfgh</a>
-  </mat-list-item>
-
- <mat-list-item>
-    <div mat-line class="mat-caption">spotify</div>
-    <a mat-line href="...">fghfgh</a>
-  </mat-list-item>
-
-<mat-list-item>
-    <div mat-line class="mat-caption">spotify</div>
-    <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-
-<mat-list-item>
-  <div mat-line class="mat-caption">spotify</div>
-  <a mat-line href="...">fghfgh</a>
-</mat-list-item>
-       </mat-nav-list>
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
+        </mat-nav-list>
       </div>
-      <!-- <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of songs$ | async">
-        <app-song-item
-            [currentTrackId]="(currentTrack$ | async)?.id!"
-            [albumId]="(currentTrack$ | async)?.albumid!"
-            [isPlaying]="(currentTrack$ | async)?.isPlaying!"
-            [name]="song.name"
-            [id]="song.id!"
-            [length]="song.duration!"
-            [durationType]="song.durationType!"
-            [platform]="song.platform"
-            [avatar]="song?.pictures?.medium!"
-            [trackType]="song.trackType"
-            [externalUrl]="song.externalUrl!"
-            [dateCreated]="song.createdTime!"
-            [removeOptionItem]="true"
-            (removeToPlaylistEvent)="removeSong($event)"
-            (selectedSong)="selectedSong($event)">
-          </app-song-item>
-      </div> -->
     </div>
   </div>
 </div>
