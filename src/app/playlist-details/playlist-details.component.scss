@@ -36,9 +36,24 @@
   margin: 0 !important;
 }
 
+.options-toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  height: 56px;
+  align-items: center;
+}
+
+.playlist-info-section {
+  margin-top: $padding-gap;
+}
+
 ::ng-deep mat-selection-list {
+  padding: 0 !important;
+
   .mat-list-item-content {
-    padding: 0 10px!important;
+    padding: 0 $s-padding-gap!important;
     width: 100%;
   }
 
@@ -56,6 +71,7 @@
       .mat-body-2 {
         display: none;
       }
+
       .more-options {
         display: block;
       }

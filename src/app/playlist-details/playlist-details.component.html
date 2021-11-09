@@ -11,7 +11,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-3">
-      <section class="sticky-sub-element">
+      <section class="sticky-sub-element playlist-info-section">
         <div class="cover-image-wrapper">
           <button mat-fab color="primary" class="float-fab">
             <mat-icon>play_circle</mat-icon>
@@ -34,7 +34,24 @@
         </div>
         </section>
     </div>
-    <div class="col-6">
+    <div class="col-9">
+      <!-- <section class="options-toolbar">
+        <div class="mat-body-2">Selected (2)</div>
+        <div>
+          <button mat-icon-button>
+            <mat-icon>swap_horiz</mat-icon>
+          </button>
+
+          <button mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </section> -->
+
+      <section class="options-toolbar">
+        <div class="mat-body-2">Tracks</div>
+      </section>
+      <mat-divider></mat-divider>
       <mat-selection-list>
         <mat-list-option>
           <div class="index">
@@ -65,10 +82,10 @@
         <mat-divider></mat-divider>
       </mat-selection-list>
     </div>
-    <div class="col-3">
+    <!-- <div class="col-3">
       <div class="wrapper sticky-sub-element">
         <mat-toolbar class="toolbar-header" color="primary">
-          <div>Playlists</div>
+          <div>Recent Viewed Playlists</div>
         </mat-toolbar>
         <mat-nav-list>
           <mat-list-item>
@@ -147,14 +164,14 @@
           </mat-list-item>
         </mat-nav-list>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 
 <mat-menu #menu="matMenu">
   <button mat-menu-item>
     <mat-icon>search</mat-icon>
-    <span>Search More</span>
+    <span>Search On Other Platforms</span>
   </button>
   <button mat-menu-item>
     <mat-icon>play_arrow</mat-icon>
