@@ -8,21 +8,31 @@
   @include fluid-container();
 }
 
-.cover-image {
-  object-fit: cover;
-  max-height: 270px;
-  height: 100%;
-  width: 100%;
-  border-radius: 6px;
+.cover-image-wrapper {
+  position: relative;
+
+  .cover-image {
+    object-fit: cover;
+    max-height: 270px;
+    height: auto;
+    width: 100%;
+    border-radius: 6px;
+  }
+
+  .float-fab {
+    position: absolute;
+    bottom: -20px;
+    right: 10px;
+  }
 }
 
-.mat-display-1 {
+.mat-headline {
   margin: 0 !important;
 }
 
 ::ng-deep mat-selection-list {
   .mat-list-item-content {
-    padding: 0!important;
+    padding: 0 10px!important;
     width: 100%;
   }
 
@@ -31,9 +41,9 @@
     align-items: center;
   }
 
-  .mat-pseudo-checkbox {
-    display: none !important;
-  }
+  // .mat-pseudo-checkbox {
+  //   display: none !important;
+  // }
 }
 
 .mat-list-option {
@@ -79,7 +89,7 @@
 
 }
 
-.mat-caption {
+.mat-caption-platform {
   font-size: 11px !important;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -124,4 +134,10 @@
     width: 0;
     background: transparent;
   }
+}
+
+.playlist-info {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
 }

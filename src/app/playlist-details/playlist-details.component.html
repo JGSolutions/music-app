@@ -1,8 +1,8 @@
 <section class="platform-wrappers sticky-element">
   <div class="component">
-    <button mat-icon-button>
+    <a mat-icon-button [routerLink]="['/', 'playlist']">
       <mat-icon>arrow_back</mat-icon>
-    </button>
+    </a>
   </div>
 
   <mat-divider></mat-divider>
@@ -12,18 +12,42 @@
   <div class="row">
     <div class="col-3">
       <section class="sticky-sub-element">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" class="cover-image">
+        <div class="cover-image-wrapper">
+          <button mat-fab color="primary" class="float-fab">
+            <mat-icon>play_circle</mat-icon>
+          </button>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" class="cover-image">
+        </div>
 
-          <div class="artist-info">
-            <span class="mat-headline">
-              dfgdfgdf
-            </span>
-          </div>
+        <div class="playlist-info">
+          <span class="mat-headline">
+            Playlist Name
+          </span>
 
+          <span class="mat-caption">21 tracks - 1:45</span>
+        </div>
         </section>
     </div>
     <div class="col-6">
       <mat-selection-list>
+        <mat-list-option>
+          <div class="index">1</div>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56">
+          </div>
+          <p class="song">
+            <span> Song Name </span>
+            <span class="mat-caption">Artist Name</span>
+          </p>
+
+          <p class="album">
+            Album
+          </p>
+
+          <div class="duration">
+            <mat-icon>timelapse</mat-icon>3:34
+          </div>
+        </mat-list-option>
         <mat-list-option>
           <div class="index">1</div>
           <div class="image">
@@ -56,112 +80,7 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
               </div>
               <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
+                <div mat-line class="mat-caption-platform">Spotify</div>
                 <a mat-line href="">Playlist Name (22)</a>
               </div>
             </div>
