@@ -1,51 +1,195 @@
 <section class="platform-wrappers sticky-element">
   <div class="component">
-    <app-platform-selection [connectedServices$]="connectedServices$" (selectedPlatform)="selectedPlatform($event)"></app-platform-selection>
+    <a mat-icon-button [routerLink]="['/', 'playlist']">
+      <mat-icon>arrow_back</mat-icon>
+    </a>
   </div>
+
   <mat-divider></mat-divider>
 </section>
+
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-5 col-lg-3">
-      <section class="sticky-sub-element">
-        <!-- <app-image-grid [coverImages]="(playlistDetail$ | async)?.coverImages!"></app-image-grid> -->
+    <div class="col-3">
+      <section class="sticky-sub-element playlist-info-section">
+        <div class="cover-image-wrapper">
+          <button mat-fab color="primary" class="float-fab">
+            <mat-icon>play_circle</mat-icon>
+          </button>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" class="cover-image">
+        </div>
 
-        <div class="artist-info">
+        <div class="playlist-info">
           <span class="mat-headline">
-            {{ (playlistDetail$ | async) }}
+            Playlist Name
           </span>
-        </div>
-        <mat-divider></mat-divider>
 
-        <div class="track-info">
-          <span class="mat-body-1">
-            {{ ((allPlaylistTracks$ | async)?.length) }} tracks
-          </span>
+          <div class="playlist-options">
+            <span class="mat-caption">21 tracks - 1:45</span>
+
+            <button mat-icon-button [matMenuTriggerFor]="playlistMenu">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </div>
         </div>
+        </section>
+    </div>
+    <div class="col-9">
+      <!-- <section class="options-toolbar">
+        <div class="mat-body-2">Selected (2)</div>
+        <div>
+          <button mat-icon-button>
+            <mat-icon>swap_horiz</mat-icon>
+          </button>
+
+          <button mat-icon-button>
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </section> -->
+
+      <section class="options-toolbar">
+        <div class="mat-body-2">Tracks</div>
       </section>
+      <mat-divider></mat-divider>
+      <mat-selection-list>
+        <mat-list-option>
+          <div class="index">
+            <div class="mat-body-2">1</div>
+            <div class="more-options">
+              <button mat-icon-button (click)="stop($event)" [matMenuTriggerFor]="menu">
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="image">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56">
+          </div>
+          <div class="song">
+            <span class="mat-body-1">Song Name</span>
+          </div>
+
+          <div class="album">
+            <p class="mat-body-1">Album Name</p>
+            <p class="mat-caption">Artist Name</p>
+          </div>
+
+          <div class="duration">
+            <mat-icon>timelapse</mat-icon>
+            <span class="mat-caption">3:34</span>
+          </div>
+        </mat-list-option>
+        <mat-divider></mat-divider>
+      </mat-selection-list>
     </div>
-    <div class="col-md-7 col-lg-9">
-      <div class="row">
-        <div class="col-md-12 col-lg-4 col-xl-3" *ngFor="let song of songs$ | async">
-          <app-song-item
-              [currentTrackId]="(currentTrack$ | async)?.id!"
-              [albumId]="(currentTrack$ | async)?.albumid!"
-              [isPlaying]="(currentTrack$ | async)?.isPlaying!"
-              [name]="song.name"
-              [id]="song.id!"
-              [length]="song.duration!"
-              [durationType]="song.durationType!"
-              [platform]="song.platform"
-              [avatar]="song?.pictures?.medium!"
-              [trackType]="song.trackType"
-              [externalUrl]="song.externalUrl!"
-              [dateCreated]="song.createdTime!"
-              [removeOptionItem]="true"
-              (removeToPlaylistEvent)="removeSong($event)"
-              (selectedSong)="selectedSong($event)">
-            </app-song-item>
-        </div>
+    <!-- <div class="col-3">
+      <div class="wrapper sticky-sub-element">
+        <mat-toolbar class="toolbar-header" color="primary">
+          <div>Recent Viewed Playlists</div>
+        </mat-toolbar>
+        <mat-nav-list>
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption-platform">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
+
+          <mat-list-item>
+            <div class="item-row">
+              <div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
+              </div>
+              <div class="info">
+                <div mat-line class="mat-caption">Spotify</div>
+                <a mat-line href="">Playlist Name (22)</a>
+              </div>
+            </div>
+            <div>
+              <mat-divider class="divider"></mat-divider>
+            </div>
+          </mat-list-item>
+        </mat-nav-list>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>search</mat-icon>
+    <span>Search On Other Platforms</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>play_arrow</mat-icon>
+    <span>Play Song</span>
+  </button>
+</mat-menu>
+
+<mat-menu #playlistMenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>edit</mat-icon>
+    <span>Edit</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>delete</mat-icon>
+    <span>Delete</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>share</mat-icon>
+    <span>Share</span>
+  </button>
+</mat-menu>

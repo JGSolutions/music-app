@@ -6,9 +6,7 @@
 </section>
 <div class="container-fluid" *ngIf="(artistsByPlatform$ | async) as artists">
   <div class="row">
-    <div>
-      <div class="mat-headline">Artists</div>
-    </div>
+    <div class="mat-headline page-header">Artists</div>
   </div>
   <div class="row g-3">
     <div class="col-sm-6 col-lg-4 col-xl-3 col-xxl-2" *ngFor="let artistKey of artists | keyvalue">

@@ -97,7 +97,7 @@ body {
 .sticky-element {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 4;
 }
 
 .sticky-sub-element {
@@ -107,16 +107,22 @@ body {
 }
 
 .playlist-dialog .mat-dialog-container {
-  padding: 24px 24px 0 24px !important;
+  padding: $xl-padding-gap $xl-padding-gap 0 $xl-padding-gap !important;
 }
 
 .platform-wrappers {
   background-color: white;
-  height: 48px;
+  height: 56px;
   display: flex;
   flex-direction: column;
 
   .component {
-    padding: $s-padding-gap;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
+}
+
+.page-header {
+  padding-top: $padding-gap;
 }
