@@ -24,14 +24,27 @@
             Playlist Name
           </span>
 
-          <span class="mat-caption">21 tracks - 1:45</span>
+          <div class="playlist-options">
+            <span class="mat-caption">21 tracks - 1:45</span>
+
+            <button mat-icon-button [matMenuTriggerFor]="playlistMenu">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </div>
         </div>
         </section>
     </div>
     <div class="col-6">
       <mat-selection-list>
         <mat-list-option>
-          <div class="index mat-body-2">1</div>
+          <div class="index">
+            <div class="mat-body-2">1</div>
+            <div class="more-options">
+              <button mat-icon-button (click)="stop($event)" [matMenuTriggerFor]="menu">
+                <mat-icon>more_horiz</mat-icon>
+              </button>
+            </div>
+          </div>
           <div class="image">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56">
           </div>
@@ -50,25 +63,6 @@
           </div>
         </mat-list-option>
         <mat-divider></mat-divider>
-        <mat-list-option>
-          <div class="index mat-body-2">1</div>
-          <div class="image">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56">
-          </div>
-          <div class="song">
-            <span class="mat-body-1">Song Name</span>
-          </div>
-
-          <div class="album">
-            <p class="mat-body-1">Album Name</p>
-            <p class="mat-caption">Artist Name</p>
-          </div>
-
-          <div class="duration">
-            <mat-icon>timelapse</mat-icon>
-            <span class="mat-caption">3:34</span>
-          </div>
-        </mat-list-option>
       </mat-selection-list>
     </div>
     <div class="col-3">
@@ -156,3 +150,29 @@
     </div>
   </div>
 </div>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>search</mat-icon>
+    <span>Search More</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>play_arrow</mat-icon>
+    <span>Play Song</span>
+  </button>
+</mat-menu>
+
+<mat-menu #playlistMenu="matMenu">
+  <button mat-menu-item>
+    <mat-icon>edit</mat-icon>
+    <span>Edit</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>delete</mat-icon>
+    <span>Delete</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>share</mat-icon>
+    <span>Share</span>
+  </button>
+</mat-menu>

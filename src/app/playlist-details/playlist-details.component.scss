@@ -8,6 +8,12 @@
   @include fluid-container();
 }
 
+.playlist-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .cover-image-wrapper {
   position: relative;
 
@@ -45,8 +51,24 @@
 .mat-list-option {
   height: 60px !important;
 
+  &:hover {
+    .index {
+      .mat-body-2 {
+        display: none;
+      }
+      .more-options {
+        display: block;
+      }
+    }
+  }
+
   .index {
-    width: 30px;
+    width: 40px;
+    text-align: center;
+
+    .more-options {
+      display: none;
+    }
   }
 
   .image {

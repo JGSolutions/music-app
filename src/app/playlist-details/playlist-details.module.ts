@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [PlaylistDetailsComponent],
   imports: [
@@ -20,6 +21,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatDividerModule,
     MatListModule,
     MatToolbarModule,
+    MatMenuModule,
     NgxsModule.forFeature([PlaylistState]),
     RouterModule.forChild([
       { path: '', component: PlaylistDetailsComponent },

@@ -1,35 +1,3 @@
-<!-- <div class="track-item-wrapper" [ngClass]="{'selected': (albumId === id || currentTrackId === id)}">
-  <div class="avatar-wrapper" (click)="selectedItem()">
-    <div class="play-button-wrapper">
-      <div class="play-button">
-        <mat-icon *ngIf="!isPlaying || (albumId !== id && currentTrackId !== id)">play_arrow</mat-icon>
-        <app-equalizer-icon *ngIf="isPlaying && (albumId === id || currentTrackId === id)"></app-equalizer-icon>
-      </div>
-    </div>
-    <img [src]="avatar" class="avatar" *ngIf="avatar">
-    <img src="../../../../assets/no-music.svg" class="avatar" *ngIf="!avatar">
-  </div>
-  <div class="info-wrapper">
-    <span class="mat-caption" *ngIf="dateCreated">Posted {{dateCreated | dateAgo}}</span>
-    <div class="music-info">
-      <span class="mat-body-2">{{name}}</span>
-      <app-artist-links [platform]="platform" [artist]="artists"></app-artist-links>
-      <span>
-        <img src="../assets/platforms/{{platform}}.png" class="platform-logo" >
-      </span>
-    </div>
-    <span class="mat-caption">
-      <span class="type" *ngIf="trackType === trackTypes.track">
-        {{trackTypes[trackType]}} <span *ngIf="length > 0">- {{length | minuteSeconds: durationType}}</span>
-      </span>
-      <span class="type" *ngIf="trackType !== 'track'">{{trackTypes[trackType]}} - {{totalTracks > 1 ? totalTracks + ' tracks' : totalTracks + ' track'}}</span>
-    </span>
-  </div>
-  <div class="options">
-    <app-track-mat-menu [removeOptionItem]="removeOptionItem" [isAlbum]="trackType !== trackTypes.track" (removePlaylist)="removePlaylist()" (addToPlaylist)="addToPlaylist()"></app-track-mat-menu>
-  </div>
-</div> -->
-
 <section>
   <figure>
     <img class="background" src="{{ avatar }}" *ngIf="avatar">

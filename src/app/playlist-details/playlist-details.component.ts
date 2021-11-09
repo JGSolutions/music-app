@@ -49,6 +49,10 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
+  public stop(evt: MouseEvent) {
+    evt.stopPropagation()
+  }
+
   public selectedSong(selectedSong: string): void {
     this.currentTrack$.pipe(
       take(1),
