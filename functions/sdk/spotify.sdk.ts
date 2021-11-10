@@ -364,6 +364,12 @@ export const SpotifySDK = {
     return await playListData(resp.data);
   },
 
+  async getPlaylistDetails(playlistId: string): Promise<any[]> {
+    const url = `${this.apiDomain}playlists/${playlistId}`;
+    const resp = await axios(url, this.requestHeaders());
+    return await albumTracks(resp.data);
+  },
+
   requestHeaders() {
     return {
       headers: {

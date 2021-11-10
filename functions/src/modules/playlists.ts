@@ -39,7 +39,42 @@ export const playlists = async (request: Request, response: Response) => {
   Promise.all(pData).then((promiseData) => {
     const allPlatformData = promiseData.map((data) => data);
     const flattenData = flatten(allPlatformData);
-    // const sortedData = orderBy(flattenData, (o: any) => o.name);
+
+    response.status(200).send(flattenData);
+  }).catch((err) => {
+    response.status(500).send(err);
+  });
+};
+
+export const playlistDetails = async (request: Request, response: Response) => {
+  const authorized = request.headers["authorization"]!;
+  const playlistId = request.query.playlistid as string;
+  const platform = request.query.platform;
+  const pData: unknown[] = [];
+
+  try {
+    await adminFirebase.auth().getUser(authorized);
+  } catch (err) {
+    response.status(401).send(err);
+    return;
+  }
+
+  const connectedServices = await getConnectServices(authorized);
+
+  switch (platform) {
+    case IPlatformTypes.soundcloud:
+      // auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[key].token, connectedServices[key].refresh_token, authorized);
+      // pData.push(auth.playlists());
+      break;
+    case IPlatformTypes.spotify:
+      SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
+      pData.push(SpotifySDK.getPlaylistDetails(playlistId));
+      break;
+  }
+
+  Promise.all(pData).then((promiseData) => {
+    const allPlatformData = promiseData.map((data) => data);
+    const flattenData = flatten(allPlatformData);
 
     response.status(200).send(flattenData);
   }).catch((err) => {
