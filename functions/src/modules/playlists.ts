@@ -60,7 +60,6 @@ export const playlistDetails = async (request: Request, response: Response) => {
   }
 
   const connectedServices = await getConnectServices(authorized);
-
   switch (platform) {
     case IPlatformTypes.soundcloud:
       // auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[key].token, connectedServices[key].refresh_token, authorized);
