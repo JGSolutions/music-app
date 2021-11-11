@@ -1,5 +1,6 @@
 import { IPlatformTypes } from "./artist.types";
-import { ISongTrackType } from "./song.types";
+import { IAvatar } from "./avatar.types";
+import { IDurationType, ISongTrackType } from "./song.types";
 
 export interface IPlayLists {
   id: string;
@@ -11,4 +12,27 @@ export interface IPlayLists {
   lastModified?: Date;
   likes?: number;
   totalTracks?: number;
+}
+
+export interface IPlaylistTracks {
+  dateAdded?: string;
+  id: string;
+  name: string;
+  album?:  [{id: string, name: string, externalUrl?: string}];
+  externalUrl: string;
+  artists: [{id: string, name: string}];
+  duration: number;
+  durationType: IDurationType;
+  previewUrl?: string;
+  images: IAvatar
+}
+export interface IPlayListDetails {
+  id: string;
+  name: string;
+  externalUrl: string;
+  platform: IPlatformTypes;
+  coverImage: string;
+  likes?: number;
+  totalTracks?: number;
+  tracks: IPlaylistTracks[];
 }

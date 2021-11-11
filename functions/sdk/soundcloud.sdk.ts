@@ -6,7 +6,39 @@ import { IArtists, IPlatformTypes } from "../../models/artist.types";
 import { ISearchResults } from "../../models/search.model";
 import { IArtistTracks, IDurationType, ISongTrackType } from "../../models/song.types";
 import { updateConnectedSoundcloudService } from "../src/utils/connect-services-firebase";
-import { IPlayLists } from "../../models/playlist.types";
+import { IPlayListDetails, IPlayLists } from "../../models/playlist.types";
+
+export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
+  return new Promise((resolve) => {
+    const tracks = dataApi.tracks.map((item: any) => {
+      return {
+        externalUrl: item.permalink_url,
+        album: null,
+        artists: {id: item.user.id, name: item.user.username },
+        duration: item.duration,
+        durationType: IDurationType.seconds,
+        name: item.title,
+        id: item.id,
+        pictures: {
+          medium: item.artwork_url,
+          large: item.artwork_url,
+          exLarge: item.artwork_url,
+        },
+      };
+    });
+
+    resolve({
+      name: dataApi.title,
+      id: dataApi.id,
+      externalUrl: dataApi.permalink_url,
+      platform: IPlatformTypes.soundcloud,
+      coverImage: dataApi.artwork_url,
+      totalTracks: dataApi.track_count,
+      likes: dataApi.likes_count,
+      tracks,
+    });
+  });
+};
 
 const artistDataModel = (artist: any): IArtists => {
   return {
@@ -147,6 +179,13 @@ export const auth = {
     const resPlaylists = await axios(urlTracks, this.requestHeaders());
 
     return await playListData(resPlaylists.data);
+  },
+
+  async getplayListDetails(playlistId: string): Promise<IPlayListDetails> {
+    const apiUrl = `${this.soundcloudDomain}/playlists/${playlistId}?access=playable,preview,blocked`;
+    const res = await axios(apiUrl, this.requestHeaders());
+
+    return await playListDetails(res.data);
   },
 
   async search(query: string | undefined) {

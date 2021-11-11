@@ -39,11 +39,11 @@ export interface IAlbumInfo {
   id: string;
   genres?: string[];
   name: string;
-  artist: string;
-  artistid: string;
+  artist?: string;
+  artistid?: string;
   releaseDate: string;
   totalTracks: number;
-  platform: IPlatformTypes;
+  platform?: IPlatformTypes;
   externalUrl?: string;
   pictures?: IAvatar;
 }
