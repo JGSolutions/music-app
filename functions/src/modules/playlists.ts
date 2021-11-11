@@ -73,9 +73,8 @@ export const playlistDetails = async (request: Request, response: Response) => {
 
   Promise.all(pData).then((promiseData) => {
     const allPlatformData = promiseData.map((data) => data);
-    const flattenData = flatten(allPlatformData);
 
-    response.status(200).send(flattenData);
+    response.status(200).send(allPlatformData);
   }).catch((err) => {
     response.status(500).send(err);
   });

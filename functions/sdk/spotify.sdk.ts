@@ -211,14 +211,25 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
     const tracks = dataApi.tracks.items.map((item: any) => {
       return {
         dateAdded: item.added_at,
-        album: item.track.album,
+        album: {
+          id: item.track.album.id,
+          name: item.track.album.name,
+          externalUrl: item.track.album.external_urls.spotify,
+        },
         externalUrl: item.track.external_urls.spotify,
-        artists: item.track.artists,
+        artists: item.track.artists.map((artist: any) => {
+          return {id: artist.id, name: artist.name};
+        }),
         duration: item.track.duration_ms,
         durationType: IDurationType.milliseconds,
         name: item.track.name,
         id: item.track.id,
         previewUrl: item.track.preview_url,
+        pictures: {
+          medium: item.track.album.images[2].url,
+          large: item.track.album.images[1].url,
+          exLarge: item.track.album.images[0].url,
+        },
       };
     });
 

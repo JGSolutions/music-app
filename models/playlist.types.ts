@@ -1,4 +1,5 @@
 import { IPlatformTypes } from "./artist.types";
+import { IAvatar } from "./avatar.types";
 import { IDurationType, ISongTrackType } from "./song.types";
 
 export interface IPlayLists {
@@ -15,13 +16,14 @@ export interface IPlayLists {
 
 export interface IPlaylistTracks {
   id: string;
-  album: any;
+  name: string;
+  album:  [{id: string, name: string, externalUrl: string}];
   externalUrl: string;
-  artists: any[] | any;
+  artists: [{id: string, name: string}];
   duration: number;
   durationType: IDurationType;
   previewUrl: string;
-  name: string;
+  images: IAvatar
 }
 export interface IPlayListDetails {
   id: string;
