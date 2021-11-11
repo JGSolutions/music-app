@@ -9,7 +9,7 @@ import { IAlbum, ISong, ISongTrackType, IDurationType, IArtistTracks } from "../
 import { ISearchResults } from "../../models/search.model";
 import { isUndefined } from "lodash";
 import { IAvatar } from "../../models/avatar.types";
-import { IPlayLists } from "../../models/playlist.types";
+import { IPlayListDetails, IPlayLists } from "../../models/playlist.types";
 
 const artistDataModel = (artist: any): IArtists => {
   let images = {} as IAvatar;
@@ -206,6 +206,35 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
   });
 };
 
+export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
+  return new Promise((resolve) => {
+    const tracks = dataApi.tracks.items.map((item: any) => {
+      return {
+        dateAdded: item.added_at,
+        album: item.track.album,
+        externalUrl: item.track.external_urls.spotify,
+        artists: item.track.artists,
+        duration: item.track.duration_ms,
+        durationType: IDurationType.milliseconds,
+        name: item.track.name,
+        id: item.track.id,
+        previewUrl: item.track.preview_url,
+      };
+    });
+
+    resolve({
+      name: dataApi.name,
+      id: dataApi.id,
+      externalUrl: dataApi.external_urls.spotify,
+      platform: IPlatformTypes.spotify,
+      coverImage: dataApi.images[0].url === null ? "" : dataApi.images[0].url,
+      totalTracks: dataApi.tracks.items.length,
+      likes: dataApi.followers.total,
+      tracks,
+    });
+  });
+};
+
 export const SpotifySDK = {
   queryParamAccessToken: "",
   refreshToken: "",
@@ -358,16 +387,16 @@ export const SpotifySDK = {
     return cb();
   },
 
-  async getPlaylists(): Promise<any> {
+  async getPlaylists(): Promise<IPlayLists[]> {
     const url = `${this.apiDomain}/me/playlists`;
     const resp = await axios(url, this.requestHeaders());
     return await playListData(resp.data);
   },
 
-  async getPlaylistDetails(playlistId: string): Promise<any[]> {
+  async getPlaylistDetails(playlistId: string): Promise<IPlayListDetails> {
     const url = `${this.apiDomain}/playlists/${playlistId}`;
     const resp = await axios(url, this.requestHeaders());
-    return await albumTracks(resp.data);
+    return await playListDetails(resp.data);
   },
 
   requestHeaders() {
