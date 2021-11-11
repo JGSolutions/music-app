@@ -62,8 +62,8 @@ export const playlistDetails = async (request: Request, response: Response) => {
   const connectedServices = await getConnectServices(authorized);
   switch (platform) {
     case IPlatformTypes.soundcloud:
-      // auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[key].token, connectedServices[key].refresh_token, authorized);
-      // pData.push(auth.playlists());
+      auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
+      pData.push(auth.getplayListDetails(playlistId));
       break;
     case IPlatformTypes.spotify:
       SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);

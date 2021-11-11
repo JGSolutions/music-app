@@ -15,14 +15,15 @@ export interface IPlayLists {
 }
 
 export interface IPlaylistTracks {
+  dateAdded?: string;
   id: string;
   name: string;
-  album:  [{id: string, name: string, externalUrl: string}];
+  album?:  [{id: string, name: string, externalUrl?: string}];
   externalUrl: string;
   artists: [{id: string, name: string}];
   duration: number;
   durationType: IDurationType;
-  previewUrl: string;
+  previewUrl?: string;
   images: IAvatar
 }
 export interface IPlayListDetails {
