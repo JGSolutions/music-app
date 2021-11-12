@@ -73,7 +73,7 @@ export class PlaylistService {
   }
 
   public playlistDetails(uid: string, playlistId: string, platform: IPlatformTypes): Observable<IPlayListDetails[]> {
-    const url = `${this.domainApi}/playlistDetails`;
+    const url = `${this.domainApi}/playlistDetails?playlistid=${playlistId}&platform=${platform}`;
 
     const headers = {
       headers: {

@@ -26,6 +26,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public playlistid!: string;
+  public platform!: IPlatformTypes;
 
   private destroy$ = new Subject<void>();
   private horizontalPosition: MatSnackBarHorizontalPosition = 'start';
@@ -35,12 +36,13 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.playlistid = this.route.snapshot.params.playlistid;
+    this.platform = this.route.snapshot.params.platform;
 
     this.user$.pipe(
       filter((user) => user !== null),
       takeUntil(this.destroy$)
     ).subscribe((user) => {
-      this.store.dispatch(new PlaylistDetailAction(user.uid!, this.playlistid!, IPlatformTypes.spotify));
+      this.store.dispatch(new PlaylistDetailAction(user.uid!, this.playlistid!, this.platform));
     });
 
   }
