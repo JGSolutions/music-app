@@ -1,3 +1,4 @@
+import { IPlatformTypes } from "models/artist.types";
 import { IPlayLists } from "models/playlist.types";
 import { ISelectedPlaylist } from "./playlist.types";
 
@@ -27,6 +28,6 @@ export class PlaylistTrackDataAction {
 }
 export class PlaylistDetailAction {
   static readonly type = '[Playlist] Playlist details';
-  constructor(public playlistid: string) { }
+  constructor(public uid: string, public playlistid: string, public platform: IPlatformTypes) { }
 }
 

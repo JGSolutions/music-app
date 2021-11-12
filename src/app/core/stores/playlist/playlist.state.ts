@@ -95,12 +95,12 @@ export class PlaylistState {
   }
 
   @Action(PlaylistDetailAction)
-  _playlistDetailAction(ctx: StateContext<IPlayerlistState>, { playlistid }: PlaylistDetailAction) {
-    return this.playlistService.playlistDetails(playlistid).pipe(
+  _playlistDetailAction(ctx: StateContext<IPlayerlistState>, { uid, playlistid, platform }: PlaylistDetailAction) {
+    return this.playlistService.playlistDetails(uid, playlistid, platform).pipe(
       tap(data => {
-        ctx.patchState({
-          playlistDetail: data.data() as IPlayLists
-        });
+        // ctx.patchState({
+        //   playlistDetail: data.data() as IPlayLists
+        // });
       })
     );
   }
