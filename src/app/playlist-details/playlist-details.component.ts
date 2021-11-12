@@ -9,7 +9,7 @@ import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { SongsState } from '../core/stores/songs/songs.state';
-import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { IPlayLists } from 'models/playlist.types';
 import { IPlatformTypes } from 'models/artist.types';
@@ -40,7 +40,6 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       filter((user) => user !== null),
       takeUntil(this.destroy$)
     ).subscribe((user) => {
-      this.store.dispatch(new AllPlaylistTracksAction(this.playlistid!, user.uid!));
       this.store.dispatch(new PlaylistDetailAction(user.uid!, this.playlistid!, IPlatformTypes.spotify));
     });
 

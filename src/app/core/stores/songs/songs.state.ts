@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, AllPlaylistTracksAction, LoadingPlayerAction, SetCurrentSongAction, SoundcloudAudioFileAction, CloseCurrentTrackAction, FilterSongsByPlatformAction } from './songs.actions';
-import { songsStateDefault, ISongsState, ICurrentTrack, ISongCommonState } from './songs.types';
+import { ArtistAlbumSongs, ArtistSongsAction, SaveCurrentSelectedSongAction, GetCurrentSelectedTrackAction, AudioFileAction, SetCurrentSelectedSongAction, SetCurrentTrackPlayStatusAction, ClearSongs, LoadingPlayerAction, SetCurrentSongAction, SoundcloudAudioFileAction, CloseCurrentTrackAction, FilterSongsByPlatformAction } from './songs.actions';
+import { songsStateDefault, ISongsState, ICurrentTrack } from './songs.types';
 import { cloneDeep, orderBy as _orderBy } from 'lodash';
 import { IPlatformTypes } from 'models/artist.types';
 import { IAlbum } from 'models/song.types';
@@ -234,11 +234,6 @@ export class SongsState {
     patchState({
       currentTrack
     });
-  }
-
-  @Action(AllPlaylistTracksAction)
-  _allPlaylistTrackDataAction(ctx: StateContext<ISongsState>, { playlistid, uid }: AllPlaylistTracksAction) {
-
   }
 
   @Action(LoadingPlayerAction)
