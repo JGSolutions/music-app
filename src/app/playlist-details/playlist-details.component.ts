@@ -3,7 +3,7 @@ import { Select, Store } from '@ngxs/store';
 import { filter, map, Observable, shareReplay, Subject, take, takeUntil, tap } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
-import { PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
+import { PlaylistDetailAction, PlaylistTrackSelectionAction } from '../core/stores/playlist/playlist.actions';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
@@ -14,6 +14,7 @@ import { IPlayListDetails } from 'models/playlist.types';
 import { IPlatformTypes } from 'models/artist.types';
 import { isEmpty  as _isEmpty } from 'lodash';
 import { IDurationType } from 'models/song.types';
+import { MatSelectionListChange } from '@angular/material/list';
 
 @Component({
   selector: 'app-playlist-details',
@@ -23,6 +24,7 @@ import { IDurationType } from 'models/song.types';
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlayListDetails>;
+  @Select(PlaylistState.playListSelected) playListSelected$!: Observable<string[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public playlistid!: string;
@@ -58,6 +60,10 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       }),
       shareReplay()
     )
+
+    // this.playListSelected$.subscribe(e => {
+    //   console.log(e);
+    // });
   }
 
   ngOnDestroy() {
@@ -91,5 +97,9 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       verticalPosition: this.verticalPosition,
       duration: 5 * 1000,
     });
+  }
+
+  public tracksSelected(evt: MatSelectionListChange) {
+    this.store.dispatch(new PlaylistTrackSelectionAction(evt.source.selectedOptions.selected.map(s => s.value)))
   }
 }
