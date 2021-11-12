@@ -29,6 +29,7 @@ export interface IPlaylistTracks {
 export interface IPlayListDetails {
   id: string;
   name: string;
+  durationType: IDurationType;
   externalUrl: string;
   platform: IPlatformTypes;
   coverImage: string;

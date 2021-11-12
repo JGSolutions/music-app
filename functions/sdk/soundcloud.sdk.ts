@@ -16,7 +16,7 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
         album: null,
         artists: {id: item.user.id, name: item.user.username },
         duration: item.duration,
-        durationType: IDurationType.seconds,
+        durationType: IDurationType.milliseconds,
         name: item.title,
         id: item.id,
         pictures: {
@@ -26,10 +26,10 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
         },
       };
     });
-
     resolve({
       name: dataApi.title,
       id: dataApi.id,
+      durationType: IDurationType.milliseconds,
       externalUrl: dataApi.permalink_url,
       platform: IPlatformTypes.soundcloud,
       coverImage: dataApi.artwork_url,
