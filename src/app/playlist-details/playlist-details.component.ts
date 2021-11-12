@@ -6,12 +6,11 @@ import { IUserType } from '../core/stores/user/user.types';
 import { PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
-import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { IPlayLists } from 'models/playlist.types';
+import { IPlayListDetails } from 'models/playlist.types';
 import { IPlatformTypes } from 'models/artist.types';
 
 @Component({
@@ -21,8 +20,7 @@ import { IPlatformTypes } from 'models/artist.types';
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlayLists>;
-  @Select(SongsState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
+  @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlayListDetails>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public playlistid!: string;
@@ -44,7 +42,6 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     ).subscribe((user) => {
       this.store.dispatch(new PlaylistDetailAction(user.uid!, this.playlistid!, this.platform));
     });
-
   }
 
   ngOnDestroy() {

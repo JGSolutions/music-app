@@ -8,24 +8,24 @@
   <mat-divider></mat-divider>
 </section>
 
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="playlistDetail$ | async as playlistDetail">
   <div class="row">
     <div class="col-3">
       <section class="sticky-sub-element playlist-info-section">
         <div class="cover-image-wrapper">
-          <button mat-fab color="primary" class="float-fab">
+          <a mat-fab color="primary" class="float-fab" [href]="playlistDetail.externalUrl" target="_blank">
             <mat-icon>play_circle</mat-icon>
-          </button>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" class="cover-image">
+          </a>
+          <img [src]="playlistDetail?.coverImage" class="cover-image">
         </div>
 
         <div class="playlist-info">
           <span class="mat-headline">
-            Playlist Name
+            {{playlistDetail.name}}
           </span>
 
           <div class="playlist-options">
-            <span class="mat-caption">17 456 likes - 21 tracks - 1:45</span>
+            <span class="mat-caption">{{playlistDetail.likes}} likes - {{ playlistDetail.totalTracks }} tracks - 1:45</span>
 
             <button mat-icon-button [matMenuTriggerFor]="playlistMenu">
               <mat-icon>more_horiz</mat-icon>
