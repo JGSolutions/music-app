@@ -72,7 +72,7 @@ export class PlaylistService {
     return this.http.get<IPlayLists[]>(url, headers);
   }
 
-  public playlistDetails(uid: string, playlistId: string, platform: IPlatformTypes): Observable<IPlayListDetails[]> {
+  public playlistDetails(uid: string, playlistId: string, platform: IPlatformTypes): Observable<IPlayListDetails> {
     const url = `${this.domainApi}/playlistDetails?playlistid=${playlistId}&platform=${platform}`;
 
     const headers = {
@@ -81,6 +81,6 @@ export class PlaylistService {
       },
     };
 
-    return this.http.get<IPlayListDetails[]>(url, headers);
+    return this.http.get<IPlayListDetails>(url, headers);
   }
 }

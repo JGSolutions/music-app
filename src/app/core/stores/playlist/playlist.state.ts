@@ -5,7 +5,7 @@ import { PlaylistService } from 'src/app/services/playlist.service';
 import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistDetailAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from './playlist.actions';
 import { IPlayerlistState, ISelectedPlaylist, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
-import { IPlayLists } from 'models/playlist.types';
+import { IPlayListDetails } from 'models/playlist.types';
 
 @State<IPlayerlistState>({
   name: 'playlist',
@@ -97,10 +97,10 @@ export class PlaylistState {
   @Action(PlaylistDetailAction)
   _playlistDetailAction(ctx: StateContext<IPlayerlistState>, { uid, playlistid, platform }: PlaylistDetailAction) {
     return this.playlistService.playlistDetails(uid, playlistid, platform).pipe(
-      tap(data => {
-        // ctx.patchState({
-        //   playlistDetail: data.data() as IPlayLists
-        // });
+      tap((data: IPlayListDetails) => {
+        ctx.patchState({
+          playlistDetail: data
+        });
       })
     );
   }
