@@ -10,7 +10,7 @@
 
 <div class="container-fluid" *ngIf="playlistDetail$ | async as playlistDetail">
   <div class="row">
-    <div class="col-3">
+    <div class="col-sm-6 col-md-5 col-lg-4 col-xxl-3">
       <section class="sticky-sub-element playlist-info-section">
         <div class="cover-image-wrapper">
           <a mat-fab color="primary" class="float-fab" [href]="playlistDetail.externalUrl" target="_blank">
@@ -32,7 +32,7 @@
         </div>
         </section>
     </div>
-    <div class="col-9">
+    <div class="col-sm-6 col-md-7  col-lg-8 col-xxl-9">
       <!-- <section class="options-toolbar">
         <div class="mat-body-2">Selected (2)</div>
         <div>
@@ -51,35 +51,37 @@
       </section>
       <mat-divider></mat-divider>
       <mat-selection-list>
-        <mat-list-option *ngFor="let track of playlistDetail.tracks; let i = index">
-          <div class="index">
-            <div class="mat-body-2">{{ i + 1}}</div>
-            <div class="more-options">
-              <button mat-icon-button (click)="stop($event)" [matMenuTriggerFor]="menu">
-                <mat-icon>more_horiz</mat-icon>
-              </button>
+        <ng-container *ngFor="let track of playlistDetail.tracks; let i = index">
+          <mat-list-option>
+            <div class="index">
+              <div class="mat-body-2">{{ i + 1}}</div>
+              <div class="more-options">
+                <button mat-icon-button (click)="stop($event)" [matMenuTriggerFor]="menu">
+                  <mat-icon>more_horiz</mat-icon>
+                </button>
+              </div>
             </div>
-          </div>
-          <div class="image">
-            <img [src]="track.pictures.medium" width="56" height="56">
-          </div>
-          <div class="song">
-            <span class="mat-body-1">{{ track.name }}</span>
-          </div>
+            <div class="image">
+              <img [src]="track.pictures.medium" width="56" height="56">
+            </div>
+            <div class="song">
+              <span class="mat-body-1">{{ track.name }}</span>
+            </div>
 
-          <div class="album">
-            <p class="mat-body-1" *ngIf="track.album">{{ track.album.name }}</p>
-            <p class="mat-caption">{{ track.artists | joinList: 'name' : ', ' }}</p>
-          </div>
+            <div class="album">
+              <p class="mat-body-1" *ngIf="track.album">{{ track.album.name }}</p>
+              <p class="mat-caption">{{ track.artists | joinList: 'name' : ', ' }}</p>
+            </div>
 
-          <div class="duration">
-            <mat-icon>timelapse</mat-icon>
-            <span class="mat-caption">
-              {{ track.duration | minuteSeconds: durationTypes[track.durationType] }}
-            </span>
-          </div>
-        </mat-list-option>
-        <mat-divider></mat-divider>
+            <div class="duration">
+              <mat-icon>timelapse</mat-icon>
+              <span class="mat-caption">
+                {{ track.duration | minuteSeconds: durationTypes[track.durationType] }}
+              </span>
+            </div>
+          </mat-list-option>
+          <mat-divider></mat-divider>
+        </ng-container>
       </mat-selection-list>
     </div>
     <!-- <div class="col-3">
