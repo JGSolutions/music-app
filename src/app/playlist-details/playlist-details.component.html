@@ -23,10 +23,8 @@
           <span class="mat-headline">
             {{playlistDetail.name}}
           </span>
-
           <div class="playlist-options">
-            <span class="mat-caption">{{playlistDetail.likes}} likes - {{ playlistDetail.totalTracks }} tracks - 1:45</span>
-
+            <span class="mat-caption">{{playlistDetail.likes}} likes - {{ playlistDetail.totalTracks }} tracks - {{ (totalTrackMinutes$ | async)! | minuteSeconds: durationTypes[playlistDetail.durationType] }}</span>
             <button mat-icon-button [matMenuTriggerFor]="playlistMenu">
               <mat-icon>more_horiz</mat-icon>
             </button>
