@@ -12,8 +12,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MinuteSecondsModule } from '../core/pipes/minute-seconds.module';
+import { JoinListPipe } from '../core/pipes/join-list.pipe';
 @NgModule({
-  declarations: [PlaylistDetailsComponent],
+  declarations: [PlaylistDetailsComponent, JoinListPipe],
   imports: [
     CommonModule,
     SongItemModule,
