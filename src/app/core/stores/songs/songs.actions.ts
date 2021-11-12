@@ -50,11 +50,6 @@ export class SetCurrentTrackPlayStatusAction {
   constructor(public isPlaying: boolean) { }
 }
 
-export class AllPlaylistTracksAction {
-  static readonly type = '[Songs] All Playlist Songs Data';
-  constructor(public playlistid: string, public uid: string) { }
-}
-
 export class LoadingPlayerAction {
   static readonly type = '[Songs] Loading player';
   constructor(public loading: boolean) { }

@@ -50,7 +50,7 @@ export const playlistDetails = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
   const playlistId = request.query.playlistid as string;
   const platform = request.query.platform;
-  const pData: unknown[] = [];
+  let pData;
 
   try {
     await adminFirebase.auth().getUser(authorized);
@@ -63,19 +63,18 @@ export const playlistDetails = async (request: Request, response: Response) => {
   switch (platform) {
     case IPlatformTypes.soundcloud:
       auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
-      pData.push(auth.getplayListDetails(playlistId));
+      pData = auth.getplayListDetails(playlistId);
       break;
     case IPlatformTypes.spotify:
       SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
-      pData.push(SpotifySDK.getPlaylistDetails(playlistId));
+      pData = SpotifySDK.getPlaylistDetails(playlistId);
       break;
   }
 
-  Promise.all(pData).then((promiseData) => {
-    const allPlatformData = promiseData.map((data) => data);
-
-    response.status(200).send(allPlatformData);
-  }).catch((err) => {
+  try {
+    const res = await pData;
+    response.status(200).send(res);
+  } catch (err) {
     response.status(500).send(err);
-  });
+  }
 };

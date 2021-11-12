@@ -1,17 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
+import { filter, map, Observable, shareReplay, Subject, take, takeUntil, tap } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { PlaylistDetailAction } from '../core/stores/playlist/playlist.actions';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
-import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { SongsState } from '../core/stores/songs/songs.state';
-import { AllPlaylistTracksAction, SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
+import { SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { IPlayLists } from 'models/playlist.types';
+import { IPlayListDetails } from 'models/playlist.types';
+import { IPlatformTypes } from 'models/artist.types';
+import { isEmpty  as _isEmpty } from 'lodash';
+import { IDurationType } from 'models/song.types';
 
 @Component({
   selector: 'app-playlist-details',
@@ -20,11 +22,13 @@ import { IPlayLists } from 'models/playlist.types';
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
-  @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlayLists>;
-  @Select(SongsState.allPlaylistTracks) allPlaylistTracks$!: Observable<ISelectedPlaylist[]>;
+  @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlayListDetails>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 
   public playlistid!: string;
+  public platform!: IPlatformTypes;
+  public totalTrackMinutes$!: Observable<number>;
+  public durationTypes = IDurationType;
 
   private destroy$ = new Subject<void>();
   private horizontalPosition: MatSnackBarHorizontalPosition = 'start';
@@ -34,15 +38,26 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.playlistid = this.route.snapshot.params.playlistid;
+    this.platform = this.route.snapshot.params.platform;
 
     this.user$.pipe(
       filter((user) => user !== null),
       takeUntil(this.destroy$)
     ).subscribe((user) => {
-      this.store.dispatch(new AllPlaylistTracksAction(this.playlistid!, user.uid!));
-      this.store.dispatch(new PlaylistDetailAction(this.playlistid!));
+      this.store.dispatch(new PlaylistDetailAction(user.uid!, this.playlistid!, this.platform));
     });
 
+    this.totalTrackMinutes$ = this.playlistDetail$.pipe(
+      filter(playlistDetails => !_isEmpty(playlistDetails)),
+      map((playlistDetails: IPlayListDetails) => {
+        let totalDuration = 0;
+        playlistDetails.tracks.forEach((track) => {
+          totalDuration = totalDuration + track.duration;
+        })
+        return totalDuration;
+      }),
+      shareReplay()
+    )
   }
 
   ngOnDestroy() {

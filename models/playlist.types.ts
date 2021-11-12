@@ -18,17 +18,19 @@ export interface IPlaylistTracks {
   dateAdded?: string;
   id: string;
   name: string;
-  album?:  [{id: string, name: string, externalUrl?: string}];
+  album?:  {id: string, name: string, externalUrl?: string};
   externalUrl: string;
   artists: [{id: string, name: string}];
   duration: number;
   durationType: IDurationType;
   previewUrl?: string;
-  images: IAvatar
+  pictures: IAvatar
 }
+
 export interface IPlayListDetails {
   id: string;
   name: string;
+  durationType: IDurationType;
   externalUrl: string;
   platform: IPlatformTypes;
   coverImage: string;

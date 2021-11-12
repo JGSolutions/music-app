@@ -235,6 +235,7 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
 
     resolve({
       name: dataApi.name,
+      durationType: IDurationType.milliseconds,
       id: dataApi.id,
       externalUrl: dataApi.external_urls.spotify,
       platform: IPlatformTypes.spotify,
