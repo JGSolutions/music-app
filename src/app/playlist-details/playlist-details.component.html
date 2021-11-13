@@ -38,7 +38,11 @@
         <div class="mat-body-2">Selected ({{ (playListSelected$ | async)!.length }})</div>
         <div>
           <button mat-icon-button>
-            <mat-icon>swap_horiz</mat-icon>
+            <mat-icon>content_copy</mat-icon>
+          </button>
+
+          <button mat-icon-button>
+            <mat-icon>drive_file_move</mat-icon>
           </button>
 
           <button mat-icon-button>
@@ -190,9 +194,13 @@
     <mat-icon>edit</mat-icon>
     <span>Edit</span>
   </button>
-  <button mat-menu-item>
+  <button mat-menu-item  (click)="deletePlaylist()">
     <mat-icon>delete</mat-icon>
     <span>Delete</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>content_copy</mat-icon>
+    <span>Duplicate</span>
   </button>
   <button mat-menu-item>
     <mat-icon>share</mat-icon>

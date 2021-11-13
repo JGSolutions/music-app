@@ -22,6 +22,9 @@ export interface ISelectedPlaylist {
 }
 
 export interface IPlayerlistState {
+  platform: IPlatformTypes;
+  uid: string;
+  playlistid: string;
   loadingPlaylist: boolean;
   playlistData: IPlayLists[];
   playlistDetail: IPlayListDetails;
@@ -31,6 +34,9 @@ export interface IPlayerlistState {
 }
 
 export const playerlistStateDefault: IPlayerlistState = {
+  platform: IPlatformTypes.spotify,
+  uid: "",
+  playlistid: "",
   loadingPlaylist: false,
   playlistData: [],
   playlistDetail: {} as IPlayListDetails,

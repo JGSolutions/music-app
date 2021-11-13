@@ -104,7 +104,10 @@ export class PlaylistState {
     return this.playlistService.playlistDetails(uid, playlistid, platform).pipe(
       tap((data: IPlayListDetails) => {
         ctx.patchState({
-          playlistDetail: data
+          playlistDetail: data,
+          uid,
+          platform,
+          playlistid
         });
       })
     );
@@ -116,5 +119,4 @@ export class PlaylistState {
       playListSelected: playlistIds
     });
   }
-
 }

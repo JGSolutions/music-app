@@ -60,10 +60,6 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       }),
       shareReplay()
     )
-
-    // this.playListSelected$.subscribe(e => {
-    //   console.log(e);
-    // });
   }
 
   ngOnDestroy() {
@@ -101,5 +97,9 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
 
   public tracksSelected(evt: MatSelectionListChange) {
     this.store.dispatch(new PlaylistTrackSelectionAction(evt.source.selectedOptions.selected.map(s => s.value)))
+  }
+
+  public deletePlaylist() {
+
   }
 }
