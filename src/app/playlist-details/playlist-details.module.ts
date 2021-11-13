@@ -13,6 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MinuteSecondsModule } from '../core/pipes/minute-seconds.module';
 import { JoinListPipe } from '../core/pipes/join-list.pipe';
+import { EmptyResultsModule } from '../shared/components/empty-results/empty-results.module';
 @NgModule({
   declarations: [PlaylistDetailsComponent, JoinListPipe],
   imports: [
@@ -25,6 +26,7 @@ import { JoinListPipe } from '../core/pipes/join-list.pipe';
     MatToolbarModule,
     MatMenuModule,
     MinuteSecondsModule,
+    EmptyResultsModule,
     NgxsModule.forFeature([PlaylistState]),
     RouterModule.forChild([
       { path: '', component: PlaylistDetailsComponent },

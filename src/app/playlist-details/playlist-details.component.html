@@ -51,6 +51,7 @@
         <div class="mat-body-2">Tracks</div>
       </section>
       <mat-divider></mat-divider>
+
       <mat-selection-list (selectionChange)="tracksSelected($event)">
         <ng-container *ngFor="let track of playlistDetail.tracks; let i = index">
           <mat-list-option [value]="track.id">
@@ -84,6 +85,8 @@
           <mat-divider></mat-divider>
         </ng-container>
       </mat-selection-list>
+
+      <app-empty-results [message]="'No Tracks'" *ngIf="playlistDetail?.tracks?.length === 0"></app-empty-results>
     </div>
     <!-- <div class="col-3">
       <div class="wrapper sticky-sub-element">
