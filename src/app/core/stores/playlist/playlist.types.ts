@@ -25,14 +25,16 @@ export interface IPlayerlistState {
   loadingPlaylist: boolean;
   playlistData: IPlayLists[];
   playlistDetail: IPlayListDetails;
-  playlistTrack: ISelectedPlaylist;
-  allPlaylistTracks: ISelectedPlaylist[];
+  playListSelected: string[];
+  // playlistTrack: ISelectedPlaylist;
+  // allPlaylistTracks: ISelectedPlaylist[];
 }
 
 export const playerlistStateDefault: IPlayerlistState = {
   loadingPlaylist: false,
   playlistData: [],
   playlistDetail: {} as IPlayListDetails,
-  playlistTrack: {} as ISelectedPlaylist,
-  allPlaylistTracks: []
+  playListSelected: [],
+  // playlistTrack: {} as ISelectedPlaylist,
+  // allPlaylistTracks: []
 };

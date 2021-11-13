@@ -16,7 +16,8 @@
           <a mat-fab color="primary" class="float-fab" [href]="playlistDetail.externalUrl" target="_blank">
             <mat-icon>play_circle</mat-icon>
           </a>
-          <img [src]="playlistDetail?.coverImage" class="cover-image">
+          <img [src]="playlistDetail?.coverImage" class="cover-image" *ngIf="playlistDetail?.coverImage">
+          <img src="../../../../assets/no-music.svg" class="cover-image" *ngIf="!playlistDetail?.coverImage">
         </div>
 
         <div class="playlist-info">
@@ -32,9 +33,9 @@
         </div>
         </section>
     </div>
-    <div class="col-sm-6 col-md-7  col-lg-8 col-xxl-9">
-      <!-- <section class="options-toolbar">
-        <div class="mat-body-2">Selected (2)</div>
+    <div class="col-sm-6 col-md-7 col-lg-8 col-xxl-9">
+      <section class="options-toolbar" *ngIf="(playListSelected$ | async)!.length > 0">
+        <div class="mat-body-2">Selected ({{ (playListSelected$ | async)!.length }})</div>
         <div>
           <button mat-icon-button>
             <mat-icon>swap_horiz</mat-icon>
@@ -44,15 +45,16 @@
             <mat-icon>delete</mat-icon>
           </button>
         </div>
-      </section> -->
+      </section>
 
-      <section class="options-toolbar">
+      <section class="options-toolbar" *ngIf="(playListSelected$ | async)!.length === 0">
         <div class="mat-body-2">Tracks</div>
       </section>
       <mat-divider></mat-divider>
-      <mat-selection-list>
+
+      <mat-selection-list (selectionChange)="tracksSelected($event)">
         <ng-container *ngFor="let track of playlistDetail.tracks; let i = index">
-          <mat-list-option>
+          <mat-list-option [value]="track.id">
             <div class="index">
               <div class="mat-body-2">{{ i + 1}}</div>
               <div class="more-options">
@@ -83,6 +85,8 @@
           <mat-divider></mat-divider>
         </ng-container>
       </mat-selection-list>
+
+      <app-empty-results [message]="'No Tracks'" *ngIf="playlistDetail?.tracks?.length === 0"></app-empty-results>
     </div>
     <!-- <div class="col-3">
       <div class="wrapper sticky-sub-element">

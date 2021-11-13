@@ -197,7 +197,7 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
         id: item.id,
         externalUrl: item.external_urls.spotify,
         platform: IPlatformTypes.spotify,
-        coverImage: item.images[0].url === null ? "" : item.images[0].url,
+        coverImage: (isUndefined(item.images[0]) || isUndefined(item.images[0].url)) ? "" : item.images[0].url,
         totalTracks: item.tracks.total,
       };
     });
@@ -206,6 +206,7 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
   });
 };
 
+// { "tracks": [{ "uri": "spotify:track:0nfS2TJUiMyHv0hBpcmmco" }] }
 export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
   return new Promise((resolve) => {
     const tracks = dataApi.tracks.items.map((item: any) => {
@@ -239,7 +240,7 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
       id: dataApi.id,
       externalUrl: dataApi.external_urls.spotify,
       platform: IPlatformTypes.spotify,
-      coverImage: dataApi.images[0].url === null ? "" : dataApi.images[0].url,
+      coverImage: dataApi.images.length === 0 ? "" : dataApi.images[0].url,
       totalTracks: dataApi.tracks.items.length,
       likes: dataApi.followers.total,
       tracks,

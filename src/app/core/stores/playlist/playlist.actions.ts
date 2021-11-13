@@ -31,3 +31,8 @@ export class PlaylistDetailAction {
   constructor(public uid: string, public playlistid: string, public platform: IPlatformTypes) { }
 }
 
+export class PlaylistTrackSelectionAction {
+  static readonly type = '[Playlist] Playlist Track Selection';
+  constructor(public playlistIds: string[]) { }
+}
+

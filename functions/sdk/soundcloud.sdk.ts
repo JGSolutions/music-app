@@ -14,7 +14,7 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
       return {
         externalUrl: item.permalink_url,
         album: null,
-        artists: {id: item.user.id, name: item.user.username },
+        artists: [{id: item.user.id, name: item.user.username }],
         duration: item.duration,
         durationType: IDurationType.milliseconds,
         name: item.title,
@@ -26,13 +26,14 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
         },
       };
     });
+
     resolve({
       name: dataApi.title,
       id: dataApi.id,
       durationType: IDurationType.milliseconds,
       externalUrl: dataApi.permalink_url,
       platform: IPlatformTypes.soundcloud,
-      coverImage: dataApi.artwork_url,
+      coverImage: isUndefined(dataApi.artwork_url) ? dataApi.artwork_url : tracks.length > 0 ?? tracks[0].pictures.exLarge,
       totalTracks: dataApi.track_count,
       likes: dataApi.likes_count,
       tracks,
@@ -133,7 +134,7 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
         platform: IPlatformTypes.soundcloud,
         likes: item.likes_count,
         totalTracks: item.tracks.length,
-        coverImage: item.artwork_url === null ? dataApi[0].tracks[0].artwork_url : item.artwork_url,
+        coverImage: isUndefined(item.artwork_url) ? dataApi[0].tracks[0].artwork_url : item.artwork_url,
       };
     });
 
