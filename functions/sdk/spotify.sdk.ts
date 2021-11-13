@@ -240,7 +240,7 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
       id: dataApi.id,
       externalUrl: dataApi.external_urls.spotify,
       platform: IPlatformTypes.spotify,
-      coverImage: dataApi.images[0].url === null ? "" : dataApi.images[0].url,
+      coverImage: dataApi.images.length === 0 ? "" : dataApi.images[0].url,
       totalTracks: dataApi.tracks.items.length,
       likes: dataApi.followers.total,
       tracks,
