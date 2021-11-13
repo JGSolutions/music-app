@@ -32,9 +32,9 @@
         </div>
         </section>
     </div>
-    <div class="col-sm-6 col-md-7  col-lg-8 col-xxl-9">
-      <!-- <section class="options-toolbar">
-        <div class="mat-body-2">Selected (2)</div>
+    <div class="col-sm-6 col-md-7 col-lg-8 col-xxl-9">
+      <section class="options-toolbar" *ngIf="(playListSelected$ | async)!.length > 0">
+        <div class="mat-body-2">Selected ({{ (playListSelected$ | async)!.length }})</div>
         <div>
           <button mat-icon-button>
             <mat-icon>swap_horiz</mat-icon>
@@ -44,9 +44,9 @@
             <mat-icon>delete</mat-icon>
           </button>
         </div>
-      </section> -->
+      </section>
 
-      <section class="options-toolbar">
+      <section class="options-toolbar" *ngIf="(playListSelected$ | async)!.length === 0">
         <div class="mat-body-2">Tracks</div>
       </section>
       <mat-divider></mat-divider>
