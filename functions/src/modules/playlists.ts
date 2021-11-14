@@ -76,6 +76,7 @@ export const playlistDetails = async (request: Request, response: Response) => {
     const res = await pData;
     response.status(200).send(res);
   } catch (err) {
+    console.log(err);
     response.status(500).send(err);
   }
 };

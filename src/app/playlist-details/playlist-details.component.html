@@ -68,7 +68,8 @@
               </div>
             </div>
             <div class="image">
-              <img [src]="track.pictures.medium" width="56" height="56">
+              <img [src]="track.pictures.medium" width="56" height="56" *ngIf="track.pictures.medium">
+              <img src="../../../../assets/no-music.svg" width="56" height="56" *ngIf="!track.pictures.medium">
             </div>
             <div class="song">
               <span class="mat-body-1">{{ track.name }}</span>
