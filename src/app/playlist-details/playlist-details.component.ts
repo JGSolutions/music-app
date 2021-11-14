@@ -32,6 +32,20 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   public totalTrackMinutes$!: Observable<number>;
   public durationTypes = IDurationType;
 
+  public playlistOptions: Record<string, {label: string, icon: string, action: any}[]> = {
+    "spotify" : [
+      {"label" : "Edit", icon: "edit", action: () => {}},
+      {"label" : "Duplicate", icon: "content_copy", action: () => {}},
+      {"label" : "Share", icon: "share", action: () => {}},
+    ],
+    "soundcloud" : [
+      {"label" : "Edit", icon: "edit", action: () => {}},
+      {"label" : "Delete", icon: "delete", action: () => { this.deletePlaylist() }},
+      {"label" : "Duplicate", icon: "content_copy", action: () => {}},
+      {"label" : "Share", icon: "share", action: () => {}},
+    ]
+  }
+
   private destroy$ = new Subject<void>();
   private horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
