@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { filter, map, Observable, shareReplay, Subject, take, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, shareReplay, Subject, take, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { DeletePlaylistAction, PlaylistDetailAction, PlaylistTrackSelectionAction } from '../core/stores/playlist/playlist.actions';
@@ -15,6 +15,8 @@ import { IPlatformTypes } from 'models/artist.types';
 import { isEmpty  as _isEmpty } from 'lodash';
 import { IDurationType } from 'models/song.types';
 import { MatSelectionListChange } from '@angular/material/list';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertComponent } from '../shared/components/alert/alert.component';
 
 @Component({
   selector: 'app-playlist-details',
@@ -40,7 +42,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     ],
     "soundcloud" : [
       {"label" : "Edit", icon: "edit", action: () => {}},
-      {"label" : "Delete", icon: "delete", action: () => { this.deletePlaylist() }},
+      {"label" : "Delete", icon: "delete", action: () => { this.openAlert() }},
       {"label" : "Duplicate", icon: "content_copy", action: () => {}},
       {"label" : "Share", icon: "share", action: () => {}},
     ]
@@ -50,7 +52,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   private horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
-  constructor(private store: Store, private route: ActivatedRoute, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(private store: Store,
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.playlistid = this.route.snapshot.params.playlistid;
@@ -93,14 +99,6 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-  public removeSong(trackid: string): void {
-    this.user$.pipe(
-      take(1)
-    ).subscribe(user => {
-      this.openSnackBar();
-    })
-  }
-
   public openSnackBar() {
     this._snackBar.open('Playlist track has been removed!', '', {
       horizontalPosition: this.horizontalPosition,
@@ -113,9 +111,17 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     this.store.dispatch(new PlaylistTrackSelectionAction(evt.source.selectedOptions.selected.map(s => s.value)))
   }
 
-  public deletePlaylist() {
-    this.store.dispatch(new DeletePlaylistAction()).subscribe(() => {
-      this.router.navigate(["playlist"])
+  public openAlert(): void {
+    this.dialog.open(AlertComponent, {
+      data: {
+        title: "Delete",
+        message: "You sure you want to delete playlist?",
+        successHandler: () => {
+          this.store.dispatch(new DeletePlaylistAction()).subscribe(() => {
+            this.router.navigate(["playlist"])
+          });
+        },
+      },
     });
   }
 }
