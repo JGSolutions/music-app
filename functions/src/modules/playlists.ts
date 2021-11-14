@@ -124,6 +124,8 @@ export const deletePlaylistTracks = async (request: Request, response: Response)
   const authorized = request.headers["authorization"]!;
   const playlistId = request.query.playlistid as string;
   const platform = request.query.platform;
+  const requestBody = request.body;
+
   let pData;
 
   try {
@@ -141,7 +143,7 @@ export const deletePlaylistTracks = async (request: Request, response: Response)
       break;
     case IPlatformTypes.spotify:
       SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
-      pData = SpotifySDK.getPlaylistDetails(playlistId);
+      pData = SpotifySDK.playlistDeleteTracks(playlistId, requestBody);
       break;
   }
 
