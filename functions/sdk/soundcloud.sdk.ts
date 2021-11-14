@@ -20,9 +20,9 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
         name: item.title,
         id: item.id,
         pictures: {
-          medium: item.artwork_url,
-          large: item.artwork_url,
-          exLarge: item.artwork_url,
+          medium: item.artwork_url || "",
+          large: item.artwork_url ? item.artwork_url.replace("-large", "-t500x500") : "",
+          exLlarge: item.artwork_url ? item.artwork_url.replace("-large", "-t500x500") : "",
         },
       };
     });
@@ -33,7 +33,7 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
       durationType: IDurationType.milliseconds,
       externalUrl: dataApi.permalink_url,
       platform: IPlatformTypes.soundcloud,
-      coverImage: isUndefined(dataApi.artwork_url) ? dataApi.artwork_url : tracks.length > 0 ?? tracks[0].pictures.exLarge,
+      coverImage: (isUndefined(dataApi.artwork_url) || dataApi.artwork_url) ? dataApi.artwork_url : tracks.length > 0 ? tracks[0].pictures.large : "",
       totalTracks: dataApi.track_count,
       likes: dataApi.likes_count,
       tracks,
