@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistDetailAction, PlaylistTrackDataAction, PlaylistTrackSelectionAction, RemoveToPlaylistAction } from './playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, DeletePlaylistAction, PlaylistDataAction, PlaylistDetailAction, PlaylistTrackDataAction, PlaylistTrackSelectionAction, RemoveToPlaylistAction } from './playlist.actions';
 import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 import { IPlayListDetails } from 'models/playlist.types';
@@ -118,5 +118,14 @@ export class PlaylistState {
     ctx.patchState({
       playListSelected: playlistIds
     });
+  }
+
+  @Action(DeletePlaylistAction)
+  _deletePlaylistAction(ctx: StateContext<IPlayerlistState>) {
+    const state = ctx.getState();
+    console.log(state.platform);
+    // ctx.patchState({
+    //   playListSelected: playlistIds
+    // });
   }
 }

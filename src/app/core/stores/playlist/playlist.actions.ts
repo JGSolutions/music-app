@@ -38,5 +38,4 @@ export class PlaylistTrackSelectionAction {
 
 export class DeletePlaylistAction {
   static readonly type = '[Playlist] Delete Playlist';
-  constructor(public uid: string, public playlistid: string, public platform: IPlatformTypes) { }
 }
