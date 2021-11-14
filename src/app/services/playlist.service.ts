@@ -83,4 +83,16 @@ export class PlaylistService {
 
     return this.http.get<IPlayListDetails>(url, headers);
   }
+
+  public deletePlaylist(uid: string, playlistId: string, platform: IPlatformTypes): Observable<any> {
+    const url = `${this.domainApi}/deletePlaylist?playlistid=${playlistId}&platform=${platform}`;
+
+    const headers = {
+      headers: {
+        "Authorization": uid
+      },
+    };
+
+    return this.http.delete<any>(url, headers);
+  }
 }

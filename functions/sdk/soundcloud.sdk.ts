@@ -232,6 +232,19 @@ export const auth = {
     }
   },
 
+  async deletePlaylist(id: string): Promise<any> {
+    try {
+      return await axios.delete(`${this.soundcloudDomain}/playlists/${id}`, this.requestHeaders());
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        const res = await this.recreateAccessToken();
+        await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
+        this.token = res.data.access_token;
+        return await this.deletePlaylist(id);
+      }
+    }
+  },
+
   requestHeaders(): any {
     return {
       headers: {

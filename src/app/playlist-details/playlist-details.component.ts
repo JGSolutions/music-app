@@ -4,7 +4,7 @@ import { filter, map, Observable, shareReplay, Subject, take, takeUntil, tap } f
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { DeletePlaylistAction, PlaylistDetailAction, PlaylistTrackSelectionAction } from '../core/stores/playlist/playlist.actions';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlaylistState } from '../core/stores/playlist/playlist.state';
 import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { SongsState } from '../core/stores/songs/songs.state';
@@ -36,7 +36,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   private horizontalPosition: MatSnackBarHorizontalPosition = 'start';
   private verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 
-  constructor(private store: Store, private route: ActivatedRoute, private _snackBar: MatSnackBar) { }
+  constructor(private store: Store, private route: ActivatedRoute, private _snackBar: MatSnackBar, private router: Router) { }
 
   ngOnInit(): void {
     this.playlistid = this.route.snapshot.params.playlistid;
@@ -100,6 +100,8 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   }
 
   public deletePlaylist() {
-    this.store.dispatch(new DeletePlaylistAction());
+    this.store.dispatch(new DeletePlaylistAction()).subscribe(() => {
+      this.router.navigate(["playlist"])
+    });
   }
 }

@@ -123,9 +123,10 @@ export class PlaylistState {
   @Action(DeletePlaylistAction)
   _deletePlaylistAction(ctx: StateContext<IPlayerlistState>) {
     const state = ctx.getState();
-    console.log(state.platform);
     // ctx.patchState({
     //   playListSelected: playlistIds
     // });
+
+    return this.playlistService.deletePlaylist(state.uid, state.playlistid, state.platform);
   }
 }
