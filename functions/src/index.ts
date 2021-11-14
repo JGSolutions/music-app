@@ -10,7 +10,7 @@ import { artistAlbum } from "./modules/artistAlbum";
 import { search } from "./modules/search";
 import { devicePlayback, spotifyPlayback } from "./modules/spotifyPlayback";
 import { soundcloudAudio } from "./modules/soundcloudAudio";
-import { playlists, playlistDetails, deletePlaylist} from "./modules/playlists";
+import { playlists, playlistDetails, deletePlaylist, deletePlaylistTracks} from "./modules/playlists";
 
 const app = express();
 const main = express();
@@ -35,3 +35,4 @@ app.get("/search", search);
 app.get("/playlists", playlists);
 app.get("/playlistDetails", playlistDetails);
 app.delete("/deletePlaylist", deletePlaylist);
+app.delete("/deletePlaylistTracks", deletePlaylistTracks);

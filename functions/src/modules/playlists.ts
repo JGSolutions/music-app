@@ -81,6 +81,14 @@ export const playlistDetails = async (request: Request, response: Response) => {
   }
 };
 
+// eslint-disable-next-line valid-jsdoc
+/**
+ * Deletes the whole playlist. Currently working only fo Soundcloud
+ *
+ * @param request
+ * @param response
+ * @returns
+ */
 export const deletePlaylist = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
   const playlistId = request.query.playlistid as string;
@@ -100,9 +108,40 @@ export const deletePlaylist = async (request: Request, response: Response) => {
       auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
       pData = auth.deletePlaylist(playlistId);
       break;
+  }
+
+  try {
+    await pData;
+    response.status(200).send({
+      "message": "done",
+    });
+  } catch (err) {
+    response.status(500).send(err);
+  }
+};
+
+export const deletePlaylistTracks = async (request: Request, response: Response) => {
+  const authorized = request.headers["authorization"]!;
+  const playlistId = request.query.playlistid as string;
+  const platform = request.query.platform;
+  let pData;
+
+  try {
+    await adminFirebase.auth().getUser(authorized);
+  } catch (err) {
+    response.status(401).send(err);
+    return;
+  }
+
+  const connectedServices = await getConnectServices(authorized);
+  switch (platform) {
+    case IPlatformTypes.soundcloud:
+      // auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
+      // pData = auth.deletePlaylist(playlistId);
+      break;
     case IPlatformTypes.spotify:
-      // SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
-      // pData = SpotifySDK.getPlaylistDetails(playlistId);
+      SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
+      pData = SpotifySDK.getPlaylistDetails(playlistId);
       break;
   }
 
