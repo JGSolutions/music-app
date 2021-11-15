@@ -53,14 +53,8 @@ export const playlistDetails = async (request: Request, response: Response) => {
   const platform = request.query.platform;
   let pData;
 
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    response.status(401).send(err);
-    return;
-  }
-
   const connectedServices = await getConnectServices(authorized);
+
   switch (platform) {
     case IPlatformTypes.soundcloud:
       auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
@@ -127,15 +121,8 @@ export const deletePlaylistTracks = async (request: Request, response: Response)
   const requestBody = request.body;
 
   let pData;
-
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    response.status(401).send(err);
-    return;
-  }
-
   const connectedServices = await getConnectServices(authorized);
+
   switch (platform) {
     case IPlatformTypes.soundcloud:
       // auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
