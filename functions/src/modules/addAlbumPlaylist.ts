@@ -5,7 +5,7 @@
 */
 import { Response, Request } from "express";
 import { IPlatformTypes } from "../../../models/artist.types";
-import { adminFirebase } from "./fb";
+import { adminFirebase } from "../config/fb";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { spotifyKeys } from "../../sdk/api-keys";

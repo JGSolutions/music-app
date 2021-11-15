@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { adminFirebase } from "../modules/fb";
+import { adminFirebase } from "../config/fb";
 import { IPlatformTypes } from "../../../models/artist.types";
 
 const db = adminFirebase.firestore();

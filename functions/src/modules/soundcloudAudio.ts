@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
+import { adminFirebase } from "../config/fb";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { auth } from "../../sdk/soundcloud.sdk";
 import { soundcloudKeys } from "../../sdk/api-keys";

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
+import { adminFirebase } from "../config/fb";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";

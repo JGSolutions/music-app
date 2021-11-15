@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
+import { adminFirebase } from "../config/fb";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { IArtists, IPlatformTypes } from "../../../models/artist.types";

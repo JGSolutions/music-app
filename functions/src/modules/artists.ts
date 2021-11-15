@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
+import { adminFirebase } from "../config/fb";
 import { flatten, keys, reduce, orderBy } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { auth } from "../../sdk/soundcloud.sdk";

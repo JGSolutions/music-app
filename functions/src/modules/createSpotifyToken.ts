@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
+import { adminFirebase } from "../config/fb";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { IAuthorizationToken } from "../../../models/spotify.model";
 
