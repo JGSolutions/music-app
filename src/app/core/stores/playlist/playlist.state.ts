@@ -130,7 +130,11 @@ export class PlaylistState {
   @Action(PlaylistDeleteTracksAction)
   _playlistDeleteTracksAction(ctx: StateContext<IPlayerlistState>) {
     const state = ctx.getState();
-
-    return this.playlistService.deletePlaylistTracks(state.uid, state.playlistid, state.platform, state.playListSelected);
+    console.log(state.playlistDetail.tracks.filter((track) => !state.playListSelected.includes(track.id)));
+    // return this.playlistService.deletePlaylistTracks(state.uid, state.playlistid, state.platform, state.playListSelected).pipe(
+    //   tap(() => {
+    //     state.playlistDetail.tracks.filter((track) => !state.playListSelected.includes(track.id));
+    //   })
+    // );
   }
 }

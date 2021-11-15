@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IPlayListDetails, IPlayLists } from '../../../models/playlist.types';
 import { IPlatformTypes } from 'models/artist.types';
 
@@ -93,16 +93,16 @@ export class PlaylistService {
     });
   }
 
-  public deletePlaylistTracks(uid: string, playlistId: string, platform: IPlatformTypes, ids: string[]): Observable<any> {
+  public deletePlaylistTracks(uid: string, playlistId: string, platform: IPlatformTypes, ids: string[]): Observable<void> {
     const url = `${this.domainApi}/deletePlaylistTracks?playlistid=${playlistId}&platform=${platform}`;
 
-    const headers = {
-      headers: {
-        "Authorization": uid
-      },
-      data: JSON.stringify(ids)
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: uid,
+      }),
+      body: JSON.stringify(ids),
     };
 
-    return this.http.delete<any>(url, headers);
+    return this.http.delete<void>(url, options);
   }
 }
