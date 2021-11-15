@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { ISelectedPlaylist } from '../core/stores/playlist/playlist.types';
-import { clone as _clone } from "lodash";
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { IPlayListDetails, IPlayLists } from '../../../models/playlist.types';
@@ -87,10 +86,21 @@ export class PlaylistService {
   public deletePlaylist(uid: string, playlistId: string, platform: IPlatformTypes): Observable<any> {
     const url = `${this.domainApi}/deletePlaylist?playlistid=${playlistId}&platform=${platform}`;
 
+    return this.http.delete<any>(url, {
+      headers: {
+        "Authorization": uid
+      }
+    });
+  }
+
+  public deletePlaylistTracks(uid: string, playlistId: string, platform: IPlatformTypes, ids: string[]): Observable<any> {
+    const url = `${this.domainApi}/deletePlaylistTracks?playlistid=${playlistId}&platform=${platform}`;
+
     const headers = {
       headers: {
         "Authorization": uid
       },
+      data: JSON.stringify(ids)
     };
 
     return this.http.delete<any>(url, headers);

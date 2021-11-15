@@ -39,3 +39,7 @@ export class PlaylistTrackSelectionAction {
 export class DeletePlaylistAction {
   static readonly type = '[Playlist] Delete Playlist';
 }
+
+export class PlaylistDeleteTracksAction {
+  static readonly type = '[Playlist] Delete Playlist Tracks';
+}
