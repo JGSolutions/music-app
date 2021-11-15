@@ -1,7 +1,6 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "../config/fb";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { IArtists, IPlatformTypes } from "../../../models/artist.types";
@@ -14,12 +13,6 @@ import { auth } from "../../sdk/soundcloud.sdk";
 export const search = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
   const searchValue = request.query.search;
-
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    return response.status(401).send(err);
-  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const connectedServices = await getConnectServices(authorized);

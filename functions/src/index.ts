@@ -24,16 +24,16 @@ main.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // eslint-disable-next-line max-len
 export const api = functions.runWith({ memory: "2GB", timeoutSeconds: 540 }).https.onRequest(main);
-app.get("/artists", artists);
-app.post("/artist", artist);
+app.get("/artists", authentication, artists);
+app.post("/artist", authentication, artist);
 app.post("/mixcloud-audio", mixcloudAudio);
-app.get("/soundcloud-audio", soundcloudAudio);
-app.get("/spotify-playback", spotifyPlayback);
-app.get("/device-playback", devicePlayback);
-app.get("/create-spotify-token", createSpotifyToken);
-app.get("/artist-album", artistAlbum);
-app.get("/search", search);
-app.get("/playlists", playlists);
+app.get("/soundcloud-audio", authentication, soundcloudAudio);
+app.get("/spotify-playback", authentication, spotifyPlayback);
+app.get("/device-playback", authentication, devicePlayback);
+app.get("/create-spotify-token", authentication, createSpotifyToken);
+app.get("/artist-album", authentication, artistAlbum);
+app.get("/search", authentication, search);
+app.get("/playlists", authentication, playlists);
 app.get("/playlistDetails", authentication, playlistDetails);
-app.delete("/deletePlaylist", deletePlaylist);
+app.delete("/deletePlaylist", authentication, deletePlaylist);
 app.delete("/deletePlaylistTracks", authentication, deletePlaylistTracks);

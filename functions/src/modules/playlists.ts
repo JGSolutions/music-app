@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "../config/fb";
 import { flatten, keys } from "lodash";
 import { auth } from "../../sdk/soundcloud.sdk";
 import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";
@@ -11,13 +10,6 @@ import { SpotifySDK } from "../../sdk/spotify.sdk";
 
 export const playlists = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
-
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    response.status(401).send(err);
-    return;
-  }
 
   const connectedServices = await getConnectServices(authorized);
   const platformKeys = keys(connectedServices);
@@ -89,14 +81,8 @@ export const deletePlaylist = async (request: Request, response: Response) => {
   const platform = request.query.platform;
   let pData;
 
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    response.status(401).send(err);
-    return;
-  }
-
   const connectedServices = await getConnectServices(authorized);
+
   switch (platform) {
     case IPlatformTypes.soundcloud:
       auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
