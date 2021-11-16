@@ -36,5 +36,5 @@ export interface IPlayListDetails {
   coverImage: string;
   likes?: number;
   totalTracks?: number;
-  tracks: IPlaylistTracks[];
+  tracks?: IPlaylistTracks[];
 }

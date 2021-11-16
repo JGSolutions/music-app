@@ -91,7 +91,7 @@
         </ng-container>
       </mat-selection-list>
 
-      <app-empty-results [message]="'No Tracks'" *ngIf="playlistDetail?.tracks?.length === 0"></app-empty-results>
+      <app-empty-results [message]="'No Tracks'" *ngIf="(playlistTracks$ | async)?.length === 0"></app-empty-results>
     </div>
     <!-- <div class="col-3">
       <div class="wrapper sticky-sub-element">

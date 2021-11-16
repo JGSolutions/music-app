@@ -108,9 +108,11 @@ export class PlaylistState {
   _playlistDetailAction(ctx: StateContext<IPlayerlistState>, { uid, playlistid, platform }: PlaylistDetailAction) {
     return this.playlistService.playlistDetails(uid, playlistid, platform).pipe(
       tap((data: IPlayListDetails) => {
+        const tracks = data.tracks;
+        delete data.tracks;
         ctx.patchState({
           playlistDetail: data,
-          playlistTracks: data.tracks,
+          playlistTracks: tracks,
           uid,
           platform,
           playlistid
@@ -140,6 +142,7 @@ export class PlaylistState {
       tap(() => {
         ctx.patchState({
           playlistTracks: state.playlistTracks.filter((track) => !state.playListSelected.includes(track.id)),
+          playListSelected: []
         });
       })
     );

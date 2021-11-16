@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { filter, map, Observable, shareReplay, Subject, take, takeUntil } from 'rxjs';
+import { filter, map, Observable, shareReplay, startWith, Subject, take, takeUntil } from 'rxjs';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { DeletePlaylistAction, PlaylistDeleteTracksAction, PlaylistDetailAction, PlaylistTrackSelectionAction } from '../core/stores/playlist/playlist.actions';
@@ -70,15 +70,16 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
       this.store.dispatch(new PlaylistDetailAction(user.uid!, this.playlistid!, this.platform));
     });
 
-    this.totalTrackMinutes$ = this.playlistDetail$.pipe(
-      filter(playlistDetails => !_isEmpty(playlistDetails)),
-      map((playlistDetails: IPlayListDetails) => {
+    this.totalTrackMinutes$ = this.playlistTracks$.pipe(
+      filter(playlistTracks => playlistTracks.length > 0),
+      map((playlistTracks: IPlaylistTracks[]) => {
         let totalDuration = 0;
-        playlistDetails.tracks.forEach((track) => {
+        playlistTracks.forEach((track) => {
           totalDuration = totalDuration + track.duration;
         })
         return totalDuration;
       }),
+      startWith(0),
       shareReplay()
     )
   }
