@@ -6,6 +6,7 @@ import { AddToPlaylistAction, CreatePlaylistAction, DeletePlaylistAction, Playli
 import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 import { IPlayListDetails } from 'models/playlist.types';
+import { IPlatformTypes } from 'models/artist.types';
 
 @State<IPlayerlistState>({
   name: 'playlist',
@@ -123,7 +124,15 @@ export class PlaylistState {
   @Action(PlaylistDeleteTracksAction)
   _playlistDeleteTracksAction(ctx: StateContext<IPlayerlistState>) {
     const state = ctx.getState();
-    return this.playlistService.deletePlaylistTracks(state.uid, state.playlistid, state.platform, state.playListSelected).pipe(
+    let selectedIds = [];
+
+    if (state.platform === IPlatformTypes.soundcloud) {
+      selectedIds = state.playlistTracks.filter(e => !state.playListSelected.includes(e.id)).map(e => e.id);
+    } else {
+      selectedIds = state.playListSelected;
+    }
+
+    return this.playlistService.deletePlaylistTracks(state.uid, state.playlistid, state.platform, selectedIds).pipe(
       tap(() => {
         ctx.patchState({
           playlistTracks: state.playlistTracks.filter((track) => !state.playListSelected.includes(track.id)),

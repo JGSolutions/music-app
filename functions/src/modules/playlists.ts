@@ -111,8 +111,8 @@ export const deletePlaylistTracks = async (request: Request, response: Response)
 
   switch (platform) {
     case IPlatformTypes.soundcloud:
-      // auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
-      // pData = auth.deletePlaylist(playlistId);
+      auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
+      pData = auth.playlistDeleteTracks(playlistId, requestBody);
       break;
     case IPlatformTypes.spotify:
       SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
@@ -129,7 +129,7 @@ export const deletePlaylistTracks = async (request: Request, response: Response)
     if (err.response.status === 403) {
       response.status(err.response.status).send({
         status: err.response.status,
-        message: "You cannot remove tracks from a playlist you don't own.",
+        message: "Cannot remove tracks from a playlist you don't own.",
       });
     } else {
       response.status(err.response.status).send(err);

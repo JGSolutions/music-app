@@ -93,7 +93,7 @@ export class PlaylistService {
     });
   }
 
-  public deletePlaylistTracks(uid: string, playlistId: string, platform: IPlatformTypes, ids: string[]): Observable<void> {
+  public deletePlaylistTracks(uid: string, playlistId: string, platform: IPlatformTypes, ids: string[] | number[]): Observable<void> {
     const url = `${this.domainApi}/deletePlaylistTracks?playlistid=${playlistId}&platform=${platform}`;
 
     const options = {

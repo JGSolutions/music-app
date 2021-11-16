@@ -245,6 +245,30 @@ export const auth = {
     }
   },
 
+  async playlistDeleteTracks(playlistId: string, trackIds: string): Promise<any> {
+    try {
+      const payloadIds = JSON.parse(trackIds).map((id: number) => {
+        return {
+          id,
+        };
+      });
+
+      const payload = {
+        "playlist": {
+          "tracks": payloadIds,
+        },
+      };
+      return await axios.put(`${this.soundcloudDomain}/playlists/${playlistId}`, payload, this.requestHeaders());
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        const res = await this.recreateAccessToken();
+        await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
+        this.token = res.data.access_token;
+        return await this.playlistDeleteTracks(playlistId, trackIds);
+      }
+    }
+  },
+
   requestHeaders(): any {
     return {
       headers: {
