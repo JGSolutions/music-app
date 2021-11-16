@@ -12,11 +12,6 @@ export class AddToPlaylistAction {
   constructor(public selectedSong: ISelectedPlaylist, public selectedPlaylist: string, public uid: string) { }
 }
 
-export class RemoveToPlaylistAction {
-  static readonly type = '[Playlist] Remove From Playlist';
-  constructor(public selectedPlaylist: string, public uid: string) { }
-}
-
 export class PlaylistDataAction {
   static readonly type = '[Playlist] Playlist Data';
   constructor(public uid: string) { }

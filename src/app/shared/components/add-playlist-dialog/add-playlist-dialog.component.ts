@@ -6,7 +6,7 @@ import { Select, Store } from '@ngxs/store';
 import { IPlayLists } from 'models/playlist.types';
 import { Observable } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
-import { AddToPlaylistAction, PlaylistDataAction, PlaylistTrackDataAction, RemoveToPlaylistAction } from 'src/app/core/stores/playlist/playlist.actions';
+import { AddToPlaylistAction, PlaylistDataAction, PlaylistTrackDataAction } from 'src/app/core/stores/playlist/playlist.actions';
 import { PlaylistState } from 'src/app/core/stores/playlist/playlist.state';
 import { ISelectedPlaylist } from 'src/app/core/stores/playlist/playlist.types';
 import { UserState } from 'src/app/core/stores/user/user.state';
@@ -53,11 +53,6 @@ export class AddPlaylistDialogComponent implements OnInit {
       if (event.options[0].selected) {
         this.store.dispatch(new AddToPlaylistAction(
           this.data,
-          event.options[0].value,
-          user.uid!
-        ));
-      } else {
-        this.store.dispatch(new RemoveToPlaylistAction(
           event.options[0].value,
           user.uid!
         ));

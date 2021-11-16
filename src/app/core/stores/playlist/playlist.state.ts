@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { AddToPlaylistAction, CreatePlaylistAction, DeletePlaylistAction, PlaylistDataAction, PlaylistDeleteTracksAction, PlaylistDetailAction, PlaylistTrackDataAction, PlaylistTrackSelectionAction, RemoveToPlaylistAction } from './playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, DeletePlaylistAction, PlaylistDataAction, PlaylistDeleteTracksAction, PlaylistDetailAction, PlaylistTrackDataAction, PlaylistTrackSelectionAction } from './playlist.actions';
 import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 import { IPlayListDetails } from 'models/playlist.types';
@@ -76,21 +76,6 @@ export class PlaylistState {
     // playlistTrackData.playlists = [...playlistsIDs];
 
     // return this.playlistService.updateSelectedPlaylistTracks(playlistTrackData, uid);
-  }
-
-  @Action(RemoveToPlaylistAction)
-  async _removeToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedPlaylist, uid }: RemoveToPlaylistAction) {
-    // let playlistTrackData = _cloneDeep(getState().playlistTrack);
-
-    // const playlistsIDs = new Set(playlistTrackData?.playlists);
-    // playlistsIDs.delete(selectedPlaylist);
-    // playlistTrackData.playlists = [...playlistsIDs];
-
-    // if (playlistTrackData.playlists.length === 0) {
-    //   return this.playlistService.deleteSelectedPlaylist(playlistTrackData.id!, uid);
-    // } else {
-    //   return this.playlistService.updateSelectedPlaylistTracks(playlistTrackData, uid);
-    // }
   }
 
   @Action(PlaylistTrackDataAction)
