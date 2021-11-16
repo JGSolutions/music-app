@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { PlaylistService } from 'src/app/services/playlist.service';
-import { AddToPlaylistAction, CreatePlaylistAction, PlaylistDataAction, PlaylistDetailAction, PlaylistTrackDataAction, PlaylistTrackSelectionAction, RemoveToPlaylistAction } from './playlist.actions';
+import { AddToPlaylistAction, CreatePlaylistAction, DeletePlaylistAction, PlaylistDataAction, PlaylistDeleteTracksAction, PlaylistDetailAction, PlaylistTrackDataAction, PlaylistTrackSelectionAction } from './playlist.actions';
 import { IPlayerlistState, playerlistStateDefault } from './playlist.types';
 import { cloneDeep as _cloneDeep, isUndefined as _isUndefined } from 'lodash';
 import { IPlayListDetails } from 'models/playlist.types';
+import { IPlatformTypes } from 'models/artist.types';
 
 @State<IPlayerlistState>({
   name: 'playlist',
@@ -28,6 +29,11 @@ export class PlaylistState {
   @Selector()
   static playlistDetail(state: IPlayerlistState) {
     return state.playlistDetail;
+  }
+
+  @Selector()
+  static playlistTracks(state: IPlayerlistState) {
+    return state.playlistTracks;
   }
 
   @Selector()
@@ -73,21 +79,6 @@ export class PlaylistState {
     // return this.playlistService.updateSelectedPlaylistTracks(playlistTrackData, uid);
   }
 
-  @Action(RemoveToPlaylistAction)
-  async _removeToPlaylistData({ getState }: StateContext<IPlayerlistState>, { selectedPlaylist, uid }: RemoveToPlaylistAction) {
-    // let playlistTrackData = _cloneDeep(getState().playlistTrack);
-
-    // const playlistsIDs = new Set(playlistTrackData?.playlists);
-    // playlistsIDs.delete(selectedPlaylist);
-    // playlistTrackData.playlists = [...playlistsIDs];
-
-    // if (playlistTrackData.playlists.length === 0) {
-    //   return this.playlistService.deleteSelectedPlaylist(playlistTrackData.id!, uid);
-    // } else {
-    //   return this.playlistService.updateSelectedPlaylistTracks(playlistTrackData, uid);
-    // }
-  }
-
   @Action(PlaylistTrackDataAction)
   _playlistTrackDataAction(ctx: StateContext<IPlayerlistState>, { uid, songid }: PlaylistTrackDataAction) {
     return this.playlistService.getPlaylistTrack(uid, songid).pipe(
@@ -103,8 +94,14 @@ export class PlaylistState {
   _playlistDetailAction(ctx: StateContext<IPlayerlistState>, { uid, playlistid, platform }: PlaylistDetailAction) {
     return this.playlistService.playlistDetails(uid, playlistid, platform).pipe(
       tap((data: IPlayListDetails) => {
+        const tracks = data.tracks;
+        delete data.tracks;
         ctx.patchState({
-          playlistDetail: data
+          playlistDetail: data,
+          playlistTracks: tracks,
+          uid,
+          platform,
+          playlistid
         });
       })
     );
@@ -117,4 +114,31 @@ export class PlaylistState {
     });
   }
 
+  @Action(DeletePlaylistAction)
+  _deletePlaylistAction(ctx: StateContext<IPlayerlistState>) {
+    const state = ctx.getState();
+
+    return this.playlistService.deletePlaylist(state.uid, state.playlistid, state.platform);
+  }
+
+  @Action(PlaylistDeleteTracksAction)
+  _playlistDeleteTracksAction(ctx: StateContext<IPlayerlistState>) {
+    const state = ctx.getState();
+    let selectedIds = [];
+
+    if (state.platform === IPlatformTypes.soundcloud) {
+      selectedIds = state.playlistTracks.filter(e => !state.playListSelected.includes(e.id)).map(e => e.id);
+    } else {
+      selectedIds = state.playListSelected;
+    }
+
+    return this.playlistService.deletePlaylistTracks(state.uid, state.playlistid, state.platform, selectedIds).pipe(
+      tap(() => {
+        ctx.patchState({
+          playlistTracks: state.playlistTracks.filter((track) => !state.playListSelected.includes(track.id)),
+          playListSelected: []
+        });
+      })
+    );
+  }
 }

@@ -20,9 +20,9 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
         name: item.title,
         id: item.id,
         pictures: {
-          medium: item.artwork_url,
-          large: item.artwork_url,
-          exLarge: item.artwork_url,
+          medium: item.artwork_url || "",
+          large: item.artwork_url ? item.artwork_url.replace("-large", "-t500x500") : "",
+          exLlarge: item.artwork_url ? item.artwork_url.replace("-large", "-t500x500") : "",
         },
       };
     });
@@ -33,7 +33,7 @@ export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
       durationType: IDurationType.milliseconds,
       externalUrl: dataApi.permalink_url,
       platform: IPlatformTypes.soundcloud,
-      coverImage: isUndefined(dataApi.artwork_url) ? dataApi.artwork_url : tracks.length > 0 ?? tracks[0].pictures.exLarge,
+      coverImage: (isUndefined(dataApi.artwork_url) || dataApi.artwork_url) ? dataApi.artwork_url : tracks.length > 0 ? tracks[0].pictures.large : "",
       totalTracks: dataApi.track_count,
       likes: dataApi.likes_count,
       tracks,
@@ -228,6 +228,43 @@ export const auth = {
         await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
         this.token = res.data.access_token;
         return await this.audioStream(url);
+      }
+    }
+  },
+
+  async deletePlaylist(id: string): Promise<any> {
+    try {
+      return await axios.delete(`${this.soundcloudDomain}/playlists/${id}`, this.requestHeaders());
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        const res = await this.recreateAccessToken();
+        await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
+        this.token = res.data.access_token;
+        return await this.deletePlaylist(id);
+      }
+    }
+  },
+
+  async playlistDeleteTracks(playlistId: string, trackIds: string): Promise<any> {
+    try {
+      const payloadIds = JSON.parse(trackIds).map((id: number) => {
+        return {
+          id,
+        };
+      });
+
+      const payload = {
+        "playlist": {
+          "tracks": payloadIds,
+        },
+      };
+      return await axios.put(`${this.soundcloudDomain}/playlists/${playlistId}`, payload, this.requestHeaders());
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        const res = await this.recreateAccessToken();
+        await updateConnectedSoundcloudService(this.authorized, res.data.access_token, res.data.refresh_token);
+        this.token = res.data.access_token;
+        return await this.playlistDeleteTracks(playlistId, trackIds);
       }
     }
   },

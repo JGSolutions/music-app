@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { SpotifySDK } from "../../sdk/spotify.sdk";
 import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";
@@ -17,12 +16,6 @@ export const artist = async (request: Request, response: Response) => {
     requestBody = JSON.parse(request.body);
   } catch (err) {
     return response.status(403).send("Invalid Body Request");
-  }
-
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    return response.status(401).send(err);
   }
 
   const connectedServices = await getConnectServices(authorized);

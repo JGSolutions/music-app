@@ -206,7 +206,6 @@ export const playListData = (dataApi: any): Promise<IPlayLists[]> => {
   });
 };
 
-// { "tracks": [{ "uri": "spotify:track:0nfS2TJUiMyHv0hBpcmmco" }] }
 export const playListDetails = (dataApi: any): Promise<IPlayListDetails> => {
   return new Promise((resolve) => {
     const tracks = dataApi.tracks.items.map((item: any) => {
@@ -410,6 +409,24 @@ export const SpotifySDK = {
     const url = `${this.apiDomain}/playlists/${playlistId}`;
     const resp = await axios(url, this.requestHeaders());
     return await playListDetails(resp.data);
+  },
+
+  async playlistDeleteTracks(playlistId: string, trackids: string): Promise<any> {
+    const tracks = JSON.parse(trackids).map((id: string) => {
+      return {
+        uri: `spotify:track:${id}`,
+      };
+    });
+
+    const request = {
+      data: { tracks },
+      headers: {
+        "Authorization": "Bearer " + this.queryParamAccessToken,
+      },
+    };
+
+    const url = `${this.apiDomain}/playlists/${playlistId}/tracks`;
+    return await axios.delete(url, request);
   },
 
   requestHeaders() {

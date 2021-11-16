@@ -6,7 +6,17 @@ export class GlobalErrorHandler implements ErrorHandler {
   constructor(private _snackBar: MatSnackBar) { }
 
   handleError(error: any) {
-    const snackRef = this._snackBar.open("Error occured! Please try again!", 'Reload', {
+    let message = "";
+    switch (error.status) {
+      case 403:
+        message = error.error.message
+        break;
+      default:
+        message = "Error occured. Please try again!"
+        break;
+    }
+
+    const snackRef = this._snackBar.open(message, 'Reload', {
       duration: 10000,
       horizontalPosition: 'left'
     });

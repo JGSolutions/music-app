@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
 import { flatten, keys } from "lodash";
 import { auth } from "../../sdk/soundcloud.sdk";
 import { soundcloudKeys, spotifyKeys } from "../../sdk/api-keys";
@@ -11,13 +10,6 @@ import { SpotifySDK } from "../../sdk/spotify.sdk";
 
 export const playlists = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
-
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    response.status(401).send(err);
-    return;
-  }
 
   const connectedServices = await getConnectServices(authorized);
   const platformKeys = keys(connectedServices);
@@ -42,6 +34,7 @@ export const playlists = async (request: Request, response: Response) => {
 
     response.status(200).send(flattenData);
   }).catch((err) => {
+    console.log(err);
     response.status(500).send(err);
   });
 };
@@ -52,14 +45,8 @@ export const playlistDetails = async (request: Request, response: Response) => {
   const platform = request.query.platform;
   let pData;
 
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    response.status(401).send(err);
-    return;
-  }
-
   const connectedServices = await getConnectServices(authorized);
+
   switch (platform) {
     case IPlatformTypes.soundcloud:
       auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
@@ -75,6 +62,77 @@ export const playlistDetails = async (request: Request, response: Response) => {
     const res = await pData;
     response.status(200).send(res);
   } catch (err) {
+    console.log(err);
     response.status(500).send(err);
+  }
+};
+
+// eslint-disable-next-line valid-jsdoc
+/**
+ * Deletes the whole playlist. Currently working only fo Soundcloud
+ *
+ * @param request
+ * @param response
+ * @returns
+ */
+export const deletePlaylist = async (request: Request, response: Response) => {
+  const authorized = request.headers["authorization"]!;
+  const playlistId = request.query.playlistid as string;
+  const platform = request.query.platform;
+  let pData;
+
+  const connectedServices = await getConnectServices(authorized);
+
+  switch (platform) {
+    case IPlatformTypes.soundcloud:
+      auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
+      pData = auth.deletePlaylist(playlistId);
+      break;
+  }
+
+  try {
+    await pData;
+    response.status(200).send({
+      "message": "done",
+    });
+  } catch (err) {
+    response.status(500).send(err);
+  }
+};
+
+export const deletePlaylistTracks = async (request: Request, response: Response) => {
+  const authorized = request.headers["authorization"]!;
+  const playlistId = request.query.playlistid as string;
+  const platform = request.query.platform;
+  const requestBody = request.body;
+
+  let pData;
+  const connectedServices = await getConnectServices(authorized);
+
+  switch (platform) {
+    case IPlatformTypes.soundcloud:
+      auth.config(soundcloudKeys.clientId, soundcloudKeys.secretApi, soundcloudKeys.uriRedirect, connectedServices[platform].token, connectedServices[platform].refresh_token, authorized);
+      pData = auth.playlistDeleteTracks(playlistId, requestBody);
+      break;
+    case IPlatformTypes.spotify:
+      SpotifySDK.initialize(connectedServices[platform].token, connectedServices[platform].refresh_token, spotifyKeys.clientId, spotifyKeys.secretApi, authorized);
+      pData = SpotifySDK.playlistDeleteTracks(playlistId, requestBody);
+      break;
+  }
+
+  try {
+    await pData;
+    response.status(200).send({
+      "success": true,
+    });
+  } catch (err: any) {
+    if (err.response.status === 403) {
+      response.status(err.response.status).send({
+        status: err.response.status,
+        message: "Cannot remove tracks from a playlist you don't own.",
+      });
+    } else {
+      response.status(err.response.status).send(err);
+    }
   }
 };

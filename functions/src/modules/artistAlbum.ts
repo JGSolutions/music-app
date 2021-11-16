@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
+import { adminFirebase } from "../config/fb";
 import { getConnectServices } from "../utils/connect-services-firebase";
 import { IPlatformTypes } from "../../../models/artist.types";
 import { SpotifySDK } from "../../sdk/spotify.sdk";

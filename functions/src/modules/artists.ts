@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import { Response, Request } from "express";
-import { adminFirebase } from "./fb";
 import { flatten, keys, reduce, orderBy } from "lodash";
 import { MixcloudSDK } from "../../sdk/mixcloud.sdk";
 import { auth } from "../../sdk/soundcloud.sdk";
@@ -15,14 +14,6 @@ const stringSimilarity = require("string-similarity");
 
 export const artists = async (request: Request, response: Response) => {
   const authorized = request.headers["authorization"]!;
-
-  try {
-    await adminFirebase.auth().getUser(authorized);
-  } catch (err) {
-    response.status(401).send(err);
-    return;
-  }
-
   const connectedServices = await getConnectServices(authorized);
   const platformKeys = keys(connectedServices);
   const pData: unknown[] = [];

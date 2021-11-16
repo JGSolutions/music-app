@@ -38,10 +38,14 @@
         <div class="mat-body-2">Selected ({{ (playListSelected$ | async)!.length }})</div>
         <div>
           <button mat-icon-button>
-            <mat-icon>swap_horiz</mat-icon>
+            <mat-icon>content_copy</mat-icon>
           </button>
 
           <button mat-icon-button>
+            <mat-icon>drive_file_move</mat-icon>
+          </button>
+
+          <button mat-icon-button (click)="deleteTracks()">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -53,7 +57,7 @@
       <mat-divider></mat-divider>
 
       <mat-selection-list (selectionChange)="tracksSelected($event)">
-        <ng-container *ngFor="let track of playlistDetail.tracks; let i = index">
+        <ng-container *ngFor="let track of playlistTracks$ | async; let i = index">
           <mat-list-option [value]="track.id">
             <div class="index">
               <div class="mat-body-2">{{ i + 1}}</div>
@@ -64,7 +68,8 @@
               </div>
             </div>
             <div class="image">
-              <img [src]="track.pictures.medium" width="56" height="56">
+              <img [src]="track.pictures.medium" width="56" height="56" *ngIf="track.pictures.medium">
+              <img src="../../../../assets/no-music.svg" width="56" height="56" *ngIf="!track.pictures.medium">
             </div>
             <div class="song">
               <span class="mat-body-1">{{ track.name }}</span>
@@ -86,7 +91,7 @@
         </ng-container>
       </mat-selection-list>
 
-      <app-empty-results [message]="'No Tracks'" *ngIf="playlistDetail?.tracks?.length === 0"></app-empty-results>
+      <app-empty-results [message]="'No Tracks'" *ngIf="(playlistTracks$ | async)?.length === 0"></app-empty-results>
     </div>
     <!-- <div class="col-3">
       <div class="wrapper sticky-sub-element">
@@ -101,66 +106,6 @@
               </div>
               <div class="info">
                 <div mat-line class="mat-caption-platform">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
-                <a mat-line href="">Playlist Name (22)</a>
-              </div>
-            </div>
-            <div>
-              <mat-divider class="divider"></mat-divider>
-            </div>
-          </mat-list-item>
-
-          <mat-list-item>
-            <div class="item-row">
-              <div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Viva_Hernan.jpg/800px-Viva_Hernan.jpg" width="56" height="56" class="playlist-image">
-              </div>
-              <div class="info">
-                <div mat-line class="mat-caption">Spotify</div>
                 <a mat-line href="">Playlist Name (22)</a>
               </div>
             </div>
@@ -186,16 +131,8 @@
 </mat-menu>
 
 <mat-menu #playlistMenu="matMenu">
-  <button mat-menu-item>
-    <mat-icon>edit</mat-icon>
-    <span>Edit</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>delete</mat-icon>
-    <span>Delete</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>share</mat-icon>
-    <span>Share</span>
+  <button mat-menu-item *ngFor="let op of playlistOptions[platform];" (click)="op.action()">
+    <mat-icon>{{op.icon}}</mat-icon>
+    <span>{{ op.label }}</span>
   </button>
 </mat-menu>

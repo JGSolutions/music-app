@@ -14,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MinuteSecondsModule } from '../core/pipes/minute-seconds.module';
 import { JoinListPipe } from '../core/pipes/join-list.pipe';
 import { EmptyResultsModule } from '../shared/components/empty-results/empty-results.module';
+import { AlertModule } from '../shared/components/alert/alert.module';
 @NgModule({
   declarations: [PlaylistDetailsComponent, JoinListPipe],
   imports: [
@@ -27,6 +28,7 @@ import { EmptyResultsModule } from '../shared/components/empty-results/empty-res
     MatMenuModule,
     MinuteSecondsModule,
     EmptyResultsModule,
+    AlertModule,
     NgxsModule.forFeature([PlaylistState]),
     RouterModule.forChild([
       { path: '', component: PlaylistDetailsComponent },
