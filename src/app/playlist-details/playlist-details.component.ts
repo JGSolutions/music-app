@@ -114,7 +114,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   }
 
   public deleteTracks() {
-    this.store.dispatch(new PlaylistDeleteTracksAction())
+    this.store.dispatch(new PlaylistDeleteTracksAction());
   }
 
   public openAlert(): void {

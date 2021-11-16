@@ -417,6 +417,7 @@ export const SpotifySDK = {
         uri: `spotify:track:${id}`,
       };
     });
+
     const request = {
       data: { tracks },
       headers: {

@@ -123,9 +123,16 @@ export const deletePlaylistTracks = async (request: Request, response: Response)
   try {
     await pData;
     response.status(200).send({
-      "message": "done",
+      "success": true,
     });
-  } catch (err) {
-    response.status(500).send(err);
+  } catch (err: any) {
+    if (err.response.status === 403) {
+      response.status(err.response.status).send({
+        status: err.response.status,
+        message: "You cannot remove tracks from a playlist you don't own.",
+      });
+    } else {
+      response.status(err.response.status).send(err);
+    }
   }
 };
