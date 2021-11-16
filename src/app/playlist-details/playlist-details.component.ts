@@ -10,7 +10,7 @@ import { ICurrentTrack } from '../core/stores/songs/songs.types';
 import { SongsState } from '../core/stores/songs/songs.state';
 import { SetCurrentSelectedSongAction } from '../core/stores/songs/songs.actions';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
-import { IPlayListDetails } from 'models/playlist.types';
+import { IPlayListDetails, IPlaylistTracks } from 'models/playlist.types';
 import { IPlatformTypes } from 'models/artist.types';
 import { isEmpty  as _isEmpty } from 'lodash';
 import { IDurationType } from 'models/song.types';
@@ -26,6 +26,7 @@ import { AlertComponent } from '../shared/components/alert/alert.component';
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
   @Select(UserState.userState) user$!: Observable<IUserType>;
   @Select(PlaylistState.playlistDetail) playlistDetail$!: Observable<IPlayListDetails>;
+  @Select(PlaylistState.playlistTracks) playlistTracks$!: Observable<IPlaylistTracks[]>;
   @Select(PlaylistState.playListSelected) playListSelected$!: Observable<string[]>;
   @Select(SongsState.currentTrack) currentTrack$!: Observable<ICurrentTrack>;
 

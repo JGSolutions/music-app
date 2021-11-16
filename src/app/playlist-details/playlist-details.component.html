@@ -57,7 +57,7 @@
       <mat-divider></mat-divider>
 
       <mat-selection-list (selectionChange)="tracksSelected($event)">
-        <ng-container *ngFor="let track of playlistDetail.tracks; let i = index">
+        <ng-container *ngFor="let track of playlistTracks$ | async; let i = index">
           <mat-list-option [value]="track.id">
             <div class="index">
               <div class="mat-body-2">{{ i + 1}}</div>

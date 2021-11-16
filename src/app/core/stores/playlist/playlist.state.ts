@@ -31,6 +31,11 @@ export class PlaylistState {
   }
 
   @Selector()
+  static playlistTracks(state: IPlayerlistState) {
+    return state.playlistTracks;
+  }
+
+  @Selector()
   static playlistTrackIds(state: IPlayerlistState) {
     // return state.playlistTrack.playlists;
   }
@@ -105,6 +110,7 @@ export class PlaylistState {
       tap((data: IPlayListDetails) => {
         ctx.patchState({
           playlistDetail: data,
+          playlistTracks: data.tracks,
           uid,
           platform,
           playlistid
