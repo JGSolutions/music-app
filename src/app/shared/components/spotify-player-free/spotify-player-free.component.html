@@ -6,7 +6,7 @@
     <img [src]="currentTrack.avatar?.medium!" class="music-avatar">
     <div class="loading-avatar"></div>
     <div class="music-details">
-      <span class="mat-body-1 text-ellipsis">{{currentTrack.name}}</span>
+      <span class="mat-body-1">{{currentTrack.name}}</span>
       <div class="artist">
         <app-artist-links [platform]="currentTrack.platform!" [artist]="currentTrack.artist!"></app-artist-links>
       </div>
