@@ -1,0 +1,45 @@
+image: node:14.15
+
+stages:
+  - install
+  - build
+  - deploy
+
+node_modules:
+  stage: install
+  script:
+    - npm install
+    - npm audit fix
+  artifacts:
+    expire_in: 1d
+    paths:
+      - node_modules/
+
+build_frontend:
+  stage: build
+  only:
+    - master
+    - /^dev-.*$/
+  script:
+    - npm run lint
+    - npm run build-prod
+  artifacts:
+    expire_in: 1d
+    paths:
+      - dist/music-app
+  dependencies:
+    - node_modules
+  except:
+    - triggers
+
+deploy_frontend:
+  stage: deploy
+  only:
+    - master
+  script:
+    - npm install -g firebase-tools
+    - firebase use music-app-5c92
+    - firebase deploy --only hosting --token "$FIREBASE_TOKEN"
+  dependencies:
+    - node_modules
+    - build_frontend
