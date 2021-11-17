@@ -126,3 +126,13 @@ body {
 .page-header {
   padding-top: $padding-gap;
 }
+
+.text-ellipsis {
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  white-space: normal;
+  width: 100%;
+}

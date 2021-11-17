@@ -130,18 +130,6 @@ section:is(:hover, :focus) .overlay {
   height: 25px;
 }
 
-.artist-name {
-  max-height: 4rem;
-  overflow: hidden;
-  display: block;
-  -webkit-line-clamp: 2;
-  display: flex;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  text-overflow: ellipsis;
-  white-space: normal;
-}
-
 .now-playing {
   display: flex;
   justify-content: space-between;

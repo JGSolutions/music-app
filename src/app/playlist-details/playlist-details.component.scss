@@ -79,7 +79,7 @@
   }
 
   .index {
-    width: 40px;
+    width: 70px;
     text-align: center;
 
     .more-options {
@@ -100,12 +100,15 @@
   }
 
   .song {
-    width: 35%;
+    width: 45%;
     padding-left: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .album {
-    width: 30%;
+    width: 35%;
+    min-width: 100px;
     display: flex;
     flex-direction: column;
   }
@@ -113,6 +116,7 @@
   .duration {
     display: flex;
     align-items: center;
+    width: 15%;
 
     mat-icon {
       margin-right: 5px;

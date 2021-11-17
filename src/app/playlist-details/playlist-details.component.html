@@ -71,13 +71,13 @@
               <img [src]="track.pictures.medium" width="56" height="56" *ngIf="track.pictures.medium">
               <img src="../../../../assets/no-music.svg" width="56" height="56" *ngIf="!track.pictures.medium">
             </div>
-            <div class="song">
+            <div class="song text-ellipsis">
               <span class="mat-body-1">{{ track.name }}</span>
             </div>
 
             <div class="album">
-              <p class="mat-body-1" *ngIf="track.album">{{ track.album.name }}</p>
-              <p class="mat-caption">{{ track.artists | joinList: 'name' : ', ' }}</p>
+              <p class="mat-body-1 text-ellipsis" *ngIf="track.album">{{ track.album.name }}</p>
+              <p class="mat-caption text-ellipsis">{{ track.artists | joinList: 'name' : ', ' }}</p>
             </div>
 
             <div class="duration">
