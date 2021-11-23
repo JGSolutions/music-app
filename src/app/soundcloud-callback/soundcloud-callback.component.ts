@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { SoundCloudAuth } from 'functions/sdk/soundcloud-auth';
 import { IPlatformTypes } from 'models/artist.types';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, switchMap, takeUntil } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { UserState } from '../core/stores/user/user.state';
 import { IUserType } from '../core/stores/user/user.types';
 import { MusicConnectedService } from '../services/music-connected.service';
+import { SoundcloudAuthService } from '../services/soundcloud-auth.service';
 @Component({
   selector: 'app-soundcloud-callback',
   templateUrl: './soundcloud-callback.component.html',
@@ -22,26 +22,31 @@ export class SoundCloudCallbackComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private soundcloudAuth:  SoundcloudAuthService,
     private connectedServices: MusicConnectedService) {
   }
 
   ngOnInit(): void {
-    SoundCloudAuth.config(
+    this.soundcloudAuth.config(
       environment.soundcloud.clientId,
       environment.soundcloud.secretApi,
       environment.soundcloud.uriRedirect,
     );
 
+    let uid: string;
     combineLatest([this.user$, this.route.queryParams]).pipe(
       filter(([user]) => user !== null),
+      switchMap( (data: any) => {
+        const [user, params] = data;
+        uid = user.uid;
+        return this.soundcloudAuth.oauthToken(params.code);
+      }),
       takeUntil(this.destroy$)
-    ).subscribe(async (data: any) => {
-      const [user, params] = data;
-      const res: any = await SoundCloudAuth.oauthToken(params.code);
-
-      this.connectedServices.connectService(user.uid, {
-        token: res.data.access_token,
-        refresh_token: res.data.refresh_token,
+    ).subscribe((data: any) => {
+      console.log(data);
+      this.connectedServices.connectService(uid, {
+        token: data.access_token,
+        refresh_token: data.refresh_token,
       }, IPlatformTypes.soundcloud);
     });
   }

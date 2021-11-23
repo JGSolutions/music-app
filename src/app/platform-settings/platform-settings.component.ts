@@ -14,8 +14,8 @@ import { IUserType } from '../core/stores/user/user.types';
 import { isEqual as _isEqual, isUndefined as _isUndefined } from "lodash";
 import { IPlatformTypes } from 'models/artist.types';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { SoundCloudAuth } from 'functions/sdk/soundcloud-auth';
 import { MixcloudAuthService } from '../services/mixcloud-auth.service';
+import { SoundcloudAuthService } from '../services/soundcloud-auth.service';
 @Component({
   selector: 'app-platform-settings',
   templateUrl: './platform-settings.component.html',
@@ -35,8 +35,9 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private mixcloudAuth:  MixcloudAuthService,
+    private soundloudAuth:  SoundcloudAuthService,
     private store: Store) {
-    SoundCloudAuth.config(
+      this.soundloudAuth.config(
       environment.soundcloud.clientId,
       environment.soundcloud.secretApi,
       environment.soundcloud.uriRedirect,
@@ -107,7 +108,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
   }
 
   public connectToSoundcloud(): void {
-    this.document.location.href = SoundCloudAuth.authorizeUrl();
+    this.document.location.href = this.soundloudAuth.authorizeUrl();
   }
 
   public connectToSpotify(): void {
