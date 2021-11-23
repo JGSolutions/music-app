@@ -9,7 +9,7 @@ node_modules:
   stage: install
   script:
     - npm install
-    - npm audit fix
+    - npm audit fix --force
   artifacts:
     expire_in: 1d
     paths:
