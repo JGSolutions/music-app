@@ -102,30 +102,6 @@ export const searchResultArtists = (dataApi: any): Promise<any> => {
   });
 };
 
-export const MixcloudAuthorization = {
-  url: "",
-  clientId: "",
-  secretApi: "",
-  mixcloudDomain: "https://www.mixcloud.com",
-  redirectUri: "",
-
-  config(clientId: string, secretApi: string, redirectUri: string): void {
-    this.clientId = clientId;
-    this.secretApi = secretApi;
-    this.redirectUri = redirectUri;
-  },
-
-  authorizeUrl(): string {
-    const q = `?client_id=${this.clientId}&redirect_uri=${this.redirectUri}`;
-    return `${this.mixcloudDomain}/oauth/authorize${q}`;
-  },
-
-  async createAccessTokenUrl(oAuthCode: string): Promise<any> {
-    const url = `${this.mixcloudDomain}/oauth/access_token?client_id=${this.clientId}&redirect_uri=${this.redirectUri}&client_secret=${this.secretApi}&code=${oAuthCode}`;
-    return await axios.get(url);
-  },
-};
-
 export const MixcloudSDK = {
   username: {},
   accessToken: "",
@@ -142,13 +118,6 @@ export const MixcloudSDK = {
     const res: any = await axios(url);
 
     return await res.data.username;
-  },
-
-  async feed(): Promise<any> {
-    const url = `${this.mixcloudApiDomain}/me/feed/?${this.queryParamAccessToken}&limit=1000`;
-    const res: any = axios(url);
-    const { data } = await res;
-    return data.data;
   },
 
   async following(): Promise<IArtists[]> {

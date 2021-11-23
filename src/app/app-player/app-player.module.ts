@@ -28,6 +28,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
+import { MixcloudAuthService } from '../services/mixcloud-auth.service';
 
 @NgModule({
   declarations: [AppPlayerComponent],
@@ -50,6 +51,6 @@ import { MatButtonModule } from '@angular/material/button';
     PlatformSelectionModule,
     NgxsModule.forFeature([ConnectedServicesState, ArtistsState, SongsState, SearchState, HistoryState]),
   ],
-  providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService, PlaylistService],
+  providers: [MusicConnectedService, ApiService, HowlerPlayerService, CurrentTrackService, HistoryService, PlaylistService, MixcloudAuthService],
 })
 export class AppPlayerModule { }

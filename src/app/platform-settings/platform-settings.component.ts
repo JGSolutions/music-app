@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { MixcloudAuthorization } from 'functions/sdk/mixcloud.sdk';
 import { SpotifyAuthorization } from 'functions/sdk/spotify-auth';
 import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, take, takeUntil, withLatestFrom } from 'rxjs/operators';
@@ -16,6 +15,7 @@ import { isEqual as _isEqual, isUndefined as _isUndefined } from "lodash";
 import { IPlatformTypes } from 'models/artist.types';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { SoundCloudAuth } from 'functions/sdk/soundcloud-auth';
+import { MixcloudAuthService } from '../services/mixcloud-auth.service';
 @Component({
   selector: 'app-platform-settings',
   templateUrl: './platform-settings.component.html',
@@ -34,6 +34,7 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
+    private mixcloudAuth:  MixcloudAuthService,
     private store: Store) {
     SoundCloudAuth.config(
       environment.soundcloud.clientId,
@@ -96,13 +97,13 @@ export class PlatformSettingsComponent implements OnInit, OnDestroy {
   }
 
   public connectToMixcloud(): void {
-    MixcloudAuthorization.config(
+    this.mixcloudAuth.config(
       environment.mixcloud.clientId,
       environment.mixcloud.secretApi,
       `${environment.appDomain}mixcloud-callback`
     );
 
-    this.document.location.href = MixcloudAuthorization.authorizeUrl();
+    this.document.location.href = this.mixcloudAuth.authorizeUrl();
   }
 
   public connectToSoundcloud(): void {
