@@ -43,7 +43,6 @@ export class SoundCloudCallbackComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$)
     ).subscribe((data: any) => {
-      console.log(data);
       this.connectedServices.connectService(uid, {
         token: data.access_token,
         refresh_token: data.refresh_token,

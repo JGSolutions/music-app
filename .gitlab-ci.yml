@@ -1,4 +1,4 @@
-image: node:14.15
+image: node:16.12.0
 
 stages:
   - install
@@ -38,7 +38,7 @@ deploy_frontend:
     - master
   script:
     - npm install -g firebase-tools
-    - firebase use music-app-5c92
+    # - firebase use music-app-5c92
     - firebase deploy --only hosting --token "$FIREBASE_TOKEN"
   dependencies:
     - node_modules
